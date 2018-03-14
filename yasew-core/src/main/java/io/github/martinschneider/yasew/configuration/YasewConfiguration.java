@@ -43,19 +43,19 @@ public class YasewConfiguration {
 
 	private UserService userService;
 
-	@Autowired
-	public YasewConfiguration(WebDriverFactory webDriverBuilder, UserService userService) {
-		this.webDriverBuilder = webDriverBuilder;
-		this.userService = userService;
-	}
-
-	/**
-	 * initialise the user service
-	 */
-	@PostConstruct
-	public void initCucumberConfig() {
-		userService.initialize();
-	}
+    @Autowired
+    public YasewConfiguration(WebDriverFactory webDriverBuilder, UserService userService) {
+        this.webDriverBuilder = webDriverBuilder;
+        this.userService = userService;
+    }
+    
+    /**
+     * initialise the user service
+     */
+    @PostConstruct
+    public void initCucumberConfig() {
+        userService.initialize();
+    }
 
 	/**
 	 * set the correct {@link org.openqa.selenium.WebDriver}
