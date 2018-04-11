@@ -11,7 +11,7 @@ import io.github.martinschneider.yasew.user.User;
 
 @Component
 @Profile({Platform.ANDROID, Platform.WEB})
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage<LoginPage>{
 	private HomePage home;
 	
 	public HomePage login(User user)

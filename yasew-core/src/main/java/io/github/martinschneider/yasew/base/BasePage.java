@@ -2,6 +2,8 @@ package io.github.martinschneider.yasew.base;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -13,11 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.galenframework.api.Galen;
+import com.galenframework.reports.GalenTestInfo;
+import com.galenframework.reports.model.LayoutReport;
 
 import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 import io.github.martinschneider.yasew.locator.LocatorMap;
@@ -28,7 +34,7 @@ import io.github.martinschneider.yasew.visual.TemplateMatcher;
  * 
  * @author Martin Schneider
  */
-public abstract class BasePage extends Base {
+public abstract class BasePage<T> extends Base {
 	private final static Logger LOG = LoggerFactory.getLogger(BasePage.class);
 	private final static String IMAGE_FOLDER = "images";
 	private static final double MATCHING_THRESHOLD = 0.9; // for visual template matching
@@ -37,6 +43,12 @@ public abstract class BasePage extends Base {
 
 	@Autowired
 	private TemplateMatcher templateMatcher;
+
+	@Autowired
+	private Eyes eyes;
+
+	@Autowired
+	private List<GalenTestInfo> galenTests;
 
 	/**
 	 * @param locatorKey
@@ -48,7 +60,7 @@ public abstract class BasePage extends Base {
 	protected SelenideElement $(String locatorKey, Object... params) {
 		return Selenide.$(locators.getLocator(locatorKey, params));
 	}
-	
+
 	/**
 	 * @param locatorKey
 	 *            locator key (can include placeholders)
@@ -61,16 +73,16 @@ public abstract class BasePage extends Base {
 	}
 
 	public boolean hasImage(String imageName) {
-		return hasImage(imageName, Configuration.timeout);
+		return hasImage(imageName, MATCHING_THRESHOLD);
 	}
 
-	public boolean hasImage(String imageName, long timeout) {
+	public boolean hasImage(String imageName, double threshold) {
 		WebDriver driver = WebDriverRunner.getWebDriver();
 		if (driver instanceof TakesScreenshot) {
 			File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			return templateMatcher.match(screenshotFile.getAbsolutePath(),
 					this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
-					MATCHING_THRESHOLD);
+					threshold);
 		} else {
 			throw new UnsupportedOperationException("This operation is not supported for the current WebDriver: "
 					+ driver.getClass().getSimpleName() + ".");
@@ -105,6 +117,55 @@ public abstract class BasePage extends Base {
 		for (final String name : props.stringPropertyNames()) {
 			locators.put(name, props.getProperty(name));
 		}
+	}
+
+	/**
+	 * Performs visual checks using Applitools
+	 * 
+	 * @return this
+	 */
+	public T checkWindow() {
+		if (configuration.isEyesEnabled()) {
+			LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
+			eyes.checkWindow();
+		} else {
+			LOG.info(
+					"Eyes disabled, skipping check on class {}. You can enable visual testing with Applitools Eyes by setting eyes.enabled = true in yasew.properties.",
+					this.getClass().getSimpleName());
+		}
+		return (T) this;
+	}
+
+	/**
+	 * Performs layout checks using Galen
+	 * 
+	 * @return this
+	 */
+	public T checkLayout() {
+		if (configuration.isGalenEnabled()) {
+			String baseName = this.getClass().getSimpleName();
+			String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+			String specPath = baseFolder + "/" + configuration.getPlatform() + "/" + baseName + ".spec";
+			LOG.info("Checking layout {}", specPath);
+			String title = "Check layout " + specPath;
+			LayoutReport layoutReport;
+			try {
+				layoutReport = Galen.checkLayout(WebDriverRunner.getWebDriver(),
+						this.getClass().getClassLoader().getResource(specPath).getPath(),
+						Collections.singletonList(configuration.getPlatform()), Collections.<String>emptyList(),
+						new Properties(), null);
+				GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
+				test.getReport().layout(layoutReport, title);
+				galenTests.add(test);
+			} catch (IOException e) {
+				LOG.warn("Error checking layout", e);
+			}
+		} else {
+			LOG.info(
+					"Galen checks disabled, skipping checks for class {}. You can enable Galen by setting galen.enabled = true in yasew.properties.",
+					this.getClass().getSimpleName());
+		}
+		return (T) this;
 	}
 
 	@Autowired
