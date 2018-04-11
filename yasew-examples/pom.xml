@@ -5,14 +5,14 @@
 	<parent>
 		<artifactId>yasew</artifactId>
 		<groupId>io.github.martinschneider</groupId>
-		<version>1.0</version>
+		<version>1.1-SNAPSHOT</version>
 	</parent>
 	<name>YASeW - Yet Another Selenium Wrapper DEMO</name>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<yasew.version>1.0-SNAPSHOT</yasew.version>
+		<yasew.version>1.1-SNAPSHOT</yasew.version>
 	</properties>
 	<artifactId>yasew-examples</artifactId>
 	<repositories>
