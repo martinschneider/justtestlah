@@ -2,6 +2,12 @@
 
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
+### Presentations ###
+
+This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
+* https://www.youtube.com/watch?v=OyAMnBEbT20
+* https://www.youtube.com/watch?v=maJkvP_qk4A
+
 ### Getting started
 Pull the repo and run the example in `yasew-example`. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](http://www.carousell.com).
 
