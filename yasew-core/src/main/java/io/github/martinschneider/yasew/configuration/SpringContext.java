@@ -27,17 +27,23 @@ public class SpringContext {
 
 	@Value("${eyes.apiKey}")
 	private String eyesApiKey;
-	
+
+	@Value("${cloudprovider:local}")
+	private String cloudProvider;
+
 	private List<GalenTestInfo> galenTests = new LinkedList<GalenTestInfo>();
-	
+
 	@Bean
 	public YasewConfiguration config() {
 		return new YasewConfiguration(webDriverFactory(), userService());
 	}
 
 	@Bean
-	public WebDriverFactory webDriverFactory() {
-		return new WebDriverFactory();
+	public WebDriverBuilder webDriverFactory() {
+		if (cloudProvider.equals("browserstack")) {
+			return new BrowserStackWebDriverBuilder();
+		}
+		return new LocalWebDriverBuilder();
 	}
 
 	@Bean
@@ -49,18 +55,16 @@ public class SpringContext {
 	public UserService userService() {
 		return new UserService();
 	}
-	
+
 	@Bean
-	public Eyes eyes()
-	{
+	public Eyes eyes() {
 		Eyes eyes = new Eyes();
-        eyes.setApiKey(eyesApiKey);
-        return eyes;
+		eyes.setApiKey(eyesApiKey);
+		return eyes;
 	}
-	
+
 	@Bean
-	public List<GalenTestInfo> galenTests()
-	{
+	public List<GalenTestInfo> galenTests() {
 		return galenTests;
 	}
 }

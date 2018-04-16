@@ -19,32 +19,33 @@ import io.appium.java_client.ios.IOSElement;
  * 
  * @author Martin Schneider
  */
-public class WebDriverFactory {
+public class LocalWebDriverBuilder implements WebDriverBuilder {
 
 	@Value("${android.deviceName}")
-	private String androidDeviceName;
+	protected String androidDeviceName;
 	
 	@Value("${ios.deviceName}")
-	private String iosDeviceName;
+	protected String iosDeviceName;
 
 	@Value("${android.appPath}")
-	private String androidAppPath;
+	protected String androidAppPath;
 
 	@Value("${ios.appPath}")
-	private String iosAppPath;
+	protected String iosAppPath;
 
 	@Value("${android.appPackage}")
-	private String appPackage;
+	protected String appPackage;
 
 	@Value("${android.appActivity}")
-	private String appActivity;
+	protected String appActivity;
 
 	@Value("${mobile.appiumUrl}")
-	private String appiumUrl;
+	protected String appiumUrl;
 
-	/**
-	 * @return {@link WebDriver} for Android
+	/* (non-Javadoc)
+	 * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#getAndroidDriver()
 	 */
+	@Override
 	public WebDriver getAndroidDriver() {
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("deviceName", androidDeviceName);
@@ -59,6 +60,10 @@ public class WebDriverFactory {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#getIOSDriver()
+	 */
+	@Override
 	public WebDriver getIOSDriver()
 	{
 		DesiredCapabilities capabilities = new DesiredCapabilities();

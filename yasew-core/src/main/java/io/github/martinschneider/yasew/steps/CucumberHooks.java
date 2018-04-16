@@ -48,6 +48,7 @@ public class CucumberHooks {
 
 	@After
 	public void shutdown() throws IOException {
+		WebDriverRunner.closeWebDriver();
 		if (configuration.isEyesEnabled()) {
 			LOG.info("Closing Eyes");
 			eyes.close();
