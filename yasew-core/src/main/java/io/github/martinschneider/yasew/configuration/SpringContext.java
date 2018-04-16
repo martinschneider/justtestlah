@@ -55,16 +55,18 @@ public class SpringContext {
 	public UserService userService() {
 		return new UserService();
 	}
-
+	
 	@Bean
-	public Eyes eyes() {
+	public Eyes eyes()
+	{
 		Eyes eyes = new Eyes();
-		eyes.setApiKey(eyesApiKey);
-		return eyes;
+        eyes.setApiKey(eyesApiKey);
+        return eyes;
 	}
-
+	
 	@Bean
-	public List<GalenTestInfo> galenTests() {
+	public List<GalenTestInfo> galenTests()
+	{
 		return galenTests;
 	}
 }

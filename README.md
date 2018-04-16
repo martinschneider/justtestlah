@@ -215,6 +215,16 @@ YASeW makes use of a variety of frameworks to make writing and executing tests a
 * [OpenCV](https://opencv.org), used for image comparison
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
+### Presentations ###
+
+This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
+
+#### Part 1 ####
+[![Part 1](http://img.youtube.com/vi/OyAMnBEbT20/0.jpg)](http://www.youtube.com/watch?v=OyAMnBEbT20)
+
+#### Part 2 ####
+[![Part 2](http://img.youtube.com/vi/maJkvP_qk4A/0.jpg)](http://www.youtube.com/watch?v=maJkvP_qk4A)
+
 ### Contact and support
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
