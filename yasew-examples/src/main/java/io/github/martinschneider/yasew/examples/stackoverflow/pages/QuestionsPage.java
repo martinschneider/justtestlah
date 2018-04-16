@@ -8,7 +8,7 @@ import io.github.martinschneider.yasew.configuration.Platform;
 
 @Component
 @Profile({ Platform.WEB, Platform.ANDROID , Platform.IOS})
-public class QuestionsPage extends BasePage {
+public class QuestionsPage extends BasePage<QuestionsPage> {
 	
 	private QuestionPage question;
 	

@@ -38,6 +38,7 @@ public class Base implements ApplicationContextAware {
 			if (BasePage.class.isAssignableFrom(field.getType())) {
 				field.setAccessible(true);
 				try {
+					LOG.debug("Loading page object {} of type {}", field.getName(), field.getClass());
 					field.set(this, applicationContext.getBean(field.getType()));
 				} catch (BeansException | IllegalArgumentException | IllegalAccessException e) {
 					LOG.error("Error initializing page objects for class {}", this.getClass());

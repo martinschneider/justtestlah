@@ -11,9 +11,11 @@ import io.github.martinschneider.yasew.user.User;
 @Profile(Platform.IOS)
 public class LoginPage extends io.github.martinschneider.yasew.examples.carousell.pages.LoginPage {
 
+	private HomePage home;
+	
 	public HomePage login(User user)
 	{
-		HomePage home = super.login(user);
+		super.login(user);
 		$("CONFIRM_CHAT_ALERTS").click();
 		$("ALLOW_NOTIFICATIONS").click();
 		return home;

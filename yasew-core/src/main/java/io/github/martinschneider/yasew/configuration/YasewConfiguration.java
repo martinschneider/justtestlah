@@ -39,6 +39,12 @@ public class YasewConfiguration {
 	@Value("${platform}")
 	private String platform;
 
+	@Value("${eyes.enabled:false}")
+	private boolean eyesEnabled;
+
+	@Value("${galen.enabled:false}")
+	private boolean galenEnabled;
+
 	private WebDriverFactory webDriverBuilder;
 
 	private UserService userService;
@@ -63,6 +69,7 @@ public class YasewConfiguration {
 	public void initWebDriver() {
 		// for web the Selenide default behavior is sufficient
 		System.setProperty("browser", browser);
+		System.setProperty("chromeoptions.args", "--app=" + baseUrl);
 
 		// for Android and IOS we construct the {@link WebDriver} ourselves
 		switch (platform) {
@@ -98,5 +105,13 @@ public class YasewConfiguration {
 
 	public String getFeaturesPath() {
 		return featuresPath;
+	}
+
+	public boolean isEyesEnabled() {
+		return eyesEnabled;
+	}
+
+	public boolean isGalenEnabled() {
+		return galenEnabled;
 	}
 }

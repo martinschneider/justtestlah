@@ -73,8 +73,8 @@ public class TemplateMatcher {
 			image = scaleImage(image, 1.1);
 		}
 		if (bestMatch.maxVal >= threshold) {
-			LOG.info("Image {} contains image {} at position ({}, {}) with match quality {}", screenshotFile,
-					templateFile, bestMatch.maxLoc.x, bestMatch.maxLoc.y, bestMatch.maxVal);
+			LOG.info("Image {} contains image {} with match quality {}", screenshotFile,
+					templateFile, bestMatch.maxVal);
 			return true;
 		}
 		// else

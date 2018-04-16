@@ -10,7 +10,7 @@ import io.github.martinschneider.yasew.configuration.Platform;
 
 @Component
 @Profile({ Platform.ANDROID, Platform.IOS })
-public class HomePage extends BasePage {
+public class HomePage extends BasePage<HomePage> {
 
 	private LoginPage loginPage;
 

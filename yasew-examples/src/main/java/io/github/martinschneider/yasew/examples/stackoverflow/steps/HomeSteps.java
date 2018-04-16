@@ -30,6 +30,9 @@ public class HomeSteps extends BaseSteps {
 	public void questionIcon()
 	{
 		assertThat(home.hasImage("questionIcon.png")).as("check that question icon is present").isTrue();
-		assertThat(home.hasImage("facebook.png")).as("check that question icon is present").isFalse();
+		assertThat(home.hasImage("questionIcon_blurred.png")).as("check that blurred question icon is present").isTrue();
+		assertThat(home.hasImage("questionIcon_rotated.png", 0.85)).as("check that rotated question icon is present").isTrue();
+		assertThat(home.hasImage("questionIcon_distorted.png", 0.75)).as("check that distorted question icon is present").isTrue();
+		assertThat(home.hasImage("facebook.png")).as("check that facebook icon is not present").isFalse();
 	}
 }
