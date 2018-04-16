@@ -9,7 +9,7 @@ import io.github.martinschneider.yasew.configuration.Platform;
 import io.github.martinschneider.yasew.examples.stackoverflow.pages.QuestionsPage;
 
 @Component
-@Profile({Platform.ANDROID, Platform.IOS})
+@Profile({Platform.ANDROID})
 public class HomePage extends io.github.martinschneider.yasew.examples.stackoverflow.pages.HomePage {
 	private QuestionsPage questionsPage;
 

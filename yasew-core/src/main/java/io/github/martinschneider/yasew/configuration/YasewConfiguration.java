@@ -45,12 +45,12 @@ public class YasewConfiguration {
 	@Value("${galen.enabled:false}")
 	private boolean galenEnabled;
 
-	private WebDriverFactory webDriverBuilder;
+	private WebDriverBuilder webDriverBuilder;
 
 	private UserService userService;
 
 	@Autowired
-	public YasewConfiguration(WebDriverFactory webDriverBuilder, UserService userService) {
+	public YasewConfiguration(WebDriverBuilder webDriverBuilder, UserService userService) {
 		this.webDriverBuilder = webDriverBuilder;
 		this.userService = userService;
 	}

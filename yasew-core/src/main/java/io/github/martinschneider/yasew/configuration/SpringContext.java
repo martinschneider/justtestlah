@@ -35,11 +35,11 @@ public class SpringContext {
 
 	@Bean
 	public YasewConfiguration config() {
-		return new YasewConfiguration(webDriverFactory(), userService());
+		return new YasewConfiguration(webDriverBuilder(), userService());
 	}
 
 	@Bean
-	public WebDriverBuilder webDriverFactory() {
+	public WebDriverBuilder webDriverBuilder() {
 		if (cloudProvider.equals("browserstack")) {
 			return new BrowserStackWebDriverBuilder();
 		}
