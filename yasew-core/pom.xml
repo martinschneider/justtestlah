@@ -5,7 +5,7 @@
 	<groupId>io.github.martinschneider</groupId>
 	<artifactId>yasew-core</artifactId>
 	<version>1.1-SNAPSHOT</version>
-	<name>YASeW - Yet Another Selenium Wrapper CORE</name>
+	<name>YASeW framework</name>
 	<description>YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. YASew’s main aim is to make the configuration and the actual test code as easy as possible.</description>
 	<developers>
 		<developer>
@@ -196,20 +196,29 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

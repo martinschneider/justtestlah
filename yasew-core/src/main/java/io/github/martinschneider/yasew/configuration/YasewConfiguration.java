@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 
 import io.github.martinschneider.yasew.user.UserService;
@@ -26,6 +27,9 @@ public class YasewConfiguration {
 
 	@Value("${web.baseUrl}")
 	private String baseUrl;
+
+	@Value("${web.headless}")
+	private boolean headless;
 
 	@Value("${features.path:" + DEFAULT_FEATURE_PATH + "}")
 	private String featuresPath;
@@ -69,7 +73,7 @@ public class YasewConfiguration {
 	public void initWebDriver() {
 		// for web the Selenide default behavior is sufficient
 		System.setProperty("browser", browser);
-		System.setProperty("chromeoptions.args", "--app=" + baseUrl);
+		Configuration.headless = headless;
 
 		// for Android and IOS we construct the {@link WebDriver} ourselves
 		switch (platform) {

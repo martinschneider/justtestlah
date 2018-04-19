@@ -7,7 +7,7 @@
 		<groupId>io.github.martinschneider</groupId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
-	<name>YASeW - Yet Another Selenium Wrapper DEMO</name>
+	<name>YASeW framework demos</name>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
