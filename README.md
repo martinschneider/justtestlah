@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew)
 [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.github.martinschneider%3Ayasew)
-[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=ncloc)](https://sonarcloud.io/dashboard?id=io.github.martinschneider%3Ayasew)
-[![Code coverage](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=coverage)](https://sonarcloud.io/dashboard?id=io.github.martinschneider%3Ayasew)
+[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=ncloc)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=ncloc)
+[![Code coverage](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=coverage)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=coverage)
 
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
