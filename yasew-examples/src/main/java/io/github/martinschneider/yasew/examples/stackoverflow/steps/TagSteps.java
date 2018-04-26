@@ -6,15 +6,15 @@ import io.github.martinschneider.yasew.base.BaseSteps;
 import io.github.martinschneider.yasew.examples.stackoverflow.pages.TagsPage;
 
 public class TagSteps extends BaseSteps {
-	private TagsPage tagsPage;
+  private TagsPage tagsPage;
 
-	@Given("^I filter for \"([^\"]*)\"$")
-	public void filter(String filter) {
-		tagsPage.filterTags(filter);
-	}
+  @Given("^I filter for \"([^\"]*)\"$")
+  public void filter(String filter) {
+    tagsPage.filterTags(filter);
+  }
 
-	@When("^I select the tag \"([^\"]*)\"$")
-	public void selectTag(String tagName) {
-		tagsPage.selectTag(tagName);
-	}
+  @When("^I select the tag \"([^\"]*)\"$")
+  public void selectTag(String tagName) {
+    tagsPage.selectTag(tagName);
+  }
 }
