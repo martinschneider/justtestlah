@@ -1,7 +1,6 @@
 ## YASeW - Yet Another Selenium Wrapper
 
 [![Build Status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew)
-[![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=alert_status)](https://sonarcloud.io/dashboard?id=io.github.martinschneider%3Ayasew)
 [![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=ncloc)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=ncloc)
 [![Code coverage](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=coverage)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=coverage)
 
@@ -50,41 +49,40 @@ Feature: Search and tags
 
 @web 
 Scenario: Filter by tags 
-	Given I am on the homepage 
-	When I go to the tags page 
-	And I filter for "selenium" 
-	And I select the tag "selenium" 
-	And I select the first question 
-	Then the question is tagged with "selenium" 
+  Given I am on the homepage 
+  When I go to the tags page 
+  And I filter for "selenium" 
+  And I select the tag "selenium" 
+  And I select the first question 
+  Then the question is tagged with "selenium" 
 	
 @web @android 
 Scenario: Use the search function 
-	Given I am on the homepage 
-	When I search for "selenium" 
-	And I select the first question 
-	Then the question is tagged with "selenium"
+  Given I am on the homepage 
+  When I search for "selenium" 
+  And I select the first question 
+  Then the question is tagged with "selenium"
 ```
 
 Demo of a step definition class:
 ```java
 public class HomeSteps extends BaseSteps {
+  private HomePage home;
 
-	private HomePage home;
+  @Given("^I am on the homepage$")
+  public void homepage() {
+    home.load();
+  }
 
-	@Given("^I am on the homepage$")
-	public void homepage() {
-		home.load();
-	}
+  @When("^I go to the tags page")
+  public void goToTags() {
+    home.navigateToTagsPage();
+  }
 
-	@When("^I go to the tags page")
-	public void goToTags() {
-		home.navigateToTagsPage();
-	}
-
-	@When("I search for \"([^\"]*)\"")
-	public void search(String query) {
-		home.search(query);
-	}
+  @When("I search for \"([^\"]*)\"")
+  public void search(String query) {
+    home.search(query);
+  }
 }
 ```
 
@@ -92,27 +90,27 @@ Demo of a page object:
 ```java
 @Component
 @Profile(Platform.WEB)
-public class HomePage extends BasePage {
-	
-	private QuestionsPage questions;
+public class HomePage extends BasePage<HomePage> {
 
-	private TagsPage tags;
+  private QuestionsPage questions;
 
-	public HomePage load() {
-		open(configuration.getBaseUrl());
-		return this;
-	}
+  private TagsPage tags;
 
-	public TagsPage navigateToTagsPage() {
-		$("MENU_TAGS").click();
-		return tags;
-	}
+  public HomePage load() {
+    open(configuration.getBaseUrl());
+    return this;
+  }
 
-	public QuestionsPage search(String query) {
-		$("SEARCH_FIELD").sendKeys(query);
-		$("SEARCH_BUTTON").should(Condition.appear).click();
-		return questions;
-	}
+  public TagsPage navigateToTagsPage() {
+    $("MENU_TAGS").click();
+    return tags;
+  }
+
+  public QuestionsPage search(String query) {
+    $("SEARCH_FIELD").sendKeys(query);
+    $("SEARCH_BUTTON").should(appear).click();
+    return questions;
+  }
 }
 ```
 
@@ -129,27 +127,46 @@ All configuration goes in a file called `yasew.properties`.
 ```ini
 # GENERAL settings
 platform=web
-pages.package=io.github.martinschneider.yasew.example.pages
-steps.package=io.github.martinschneider.yasew.example.steps
-features.directory=src/test/resources/features/carousell
+pages.package=io.github.martinschneider.yasew.examples.stackoverflow.pages
+steps.package=io.github.martinschneider.yasew.examples.stackoverflow.steps
+features.directory=src/test/resources/features/stackoverflow
+cucumber.report.directory=target/report/cucumber
+
+# optional
+galen.report.directory=target/report/galen
+galen.enabled=false
+eyes.enabled=false
+opencv.enabled=false
+eyes.apiKey=
+cloudprovider=local
+
 
 # WEB settings
 web.baseUrl=https://www.stackoverflow.com
 web.browser=chrome
+web.headless=true
+
 
 # MOBILE settings
 mobile.appiumUrl=http://127.0.0.1:4723/wd/hub
 
+
 # ANDROID settings
-android.deviceName=0123456789ABCDEF
-android.appPath=/path/to/apkfile.apk
 android.appPackage=com.stackexchange.stackoverflow
 android.appActivity=com.stackexchange.stackoverflow.MainActivity
+android.appPath=/Users/martinschneider/stackoverflow.apk
+android.deviceName=Google Nexus 6
+
 
 # IOS settings
-ios.appPath=/path/to/ipafile.ipa # real device
-ios.appPath=/path/to/ipafile.app # simulator
-ios.deviceName=iPhone 7
+ios.appPath=
+ios.deviceName=iPhone 6
+
+
+# BROWSERSTACK settings (requires cloudprovider=browserstack)
+browserstack.debug=true
+browserstack.accessKey=
+browserstack.username=
 ```
 
 You can specify the location of `yasew.properties` on start-up by providing it as a system property: `-DyasewProperties=/path/to/yasew.properties`. If no path is specified it will be loaded from the classpath.
@@ -158,15 +175,13 @@ You can specify the location of `yasew.properties` on start-up by providing it a
 YASeW uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.yasew.YasewTest`:
 
 ```java
-public class TestRunner extends YasewTest{
-}
+public class TestRunner extends YasewTest {}
 ```
 
 Alternatively, you can also use the JUnit test runner directly:
 ```java
 @RunWith(YasewRunner.class)
-public class SomeTestClass {
-}
+public class SomeTestClass {}
 ```
 
 The feature files and steps are automatically picked up from the locations provided in `yasew.properties`.
@@ -208,12 +223,12 @@ POST_TAG=XPATH|//A[contains(@class,'post-tag') and contains(text(),'%s')]
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
 
-### Galen framework
-YaSew includes a proof-of-concept integratuon of the [Galen framework](http://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
+### Galen
+YaSew includes a proof-of-concept integration of the [Galen framework](http://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
 
 Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
 
-Checks can be triggered by calling `checkLayout` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `yasew.properties` (the default is `target/galen-reports/`).
+Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `yasew.properties` (the default is `target/galen-reports/`).
 
 ```
 @objects
@@ -249,7 +264,7 @@ See the [Galen documentation](http://galenframework.com/docs/reference-galen-spe
 
 There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `yasew.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
-Checks can then be triggered by calling `checkLayout` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
+Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
 ### Browserstack
 
@@ -275,7 +290,7 @@ YASeW makes use of a variety of frameworks to make writing and executing tests a
 * [AssertJ](http://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 * [OpenCV](https://opencv.org), used for image comparison
 * [Galen](http://galenframework.com), used for layout based testing
-* [Applitools](https://applitools.com)], used for visual regression testing
+* [Applitools](https://applitools.com), used for visual regression testing
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
