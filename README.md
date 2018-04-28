@@ -68,23 +68,41 @@ Scenario: Use the search function
 Demo of a step definition class:
 ```java
 public class HomeSteps extends BaseSteps {
+  private HomePage home;
 
-	private HomePage home;
+  @Given("^I am on the homepage$")
+  public void homepage() {
+    home.load();
+  }
 
-	@Given("^I am on the homepage$")
-	public void homepage() {
-		home.load();
-	}
+  @When("^I go to the tags page")
+  public void goToTags() {
+    home.navigateToTagsPage();
+  }
 
-	@When("^I go to the tags page")
-	public void goToTags() {
-		home.navigateToTagsPage();
-	}
+  @When("I search for \"([^\"]*)\"")
+  public void search(String query) {
+    home.search(query);
+  }
 
-	@When("I search for \"([^\"]*)\"")
-	public void search(String query) {
-		home.search(query);
-	}
+  @Then("^I can see the ask a question icon$")
+  public void questionIcon() {
+    assertThat(home.hasImage("questionIcon.png"))
+        .as("check that question icon is present")
+        .isTrue();
+    assertThat(home.hasImage("questionIcon_blurred.png"))
+        .as("check that blurred question icon is present")
+        .isTrue();
+    assertThat(home.hasImage("questionIcon_rotated.png", 0.85))
+        .as("check that rotated question icon is present")
+        .isTrue();
+    assertThat(home.hasImage("questionIcon_distorted.png", 0.75))
+        .as("check that distorted question icon is present")
+        .isTrue();
+    assertThat(home.hasImage("facebook.png"))
+        .as("check that facebook icon is not present")
+        .isFalse();
+  }
 }
 ```
 
@@ -92,27 +110,27 @@ Demo of a page object:
 ```java
 @Component
 @Profile(Platform.WEB)
-public class HomePage extends BasePage {
-	
-	private QuestionsPage questions;
+public class HomePage extends BasePage<HomePage> {
 
-	private TagsPage tags;
+  private QuestionsPage questions;
 
-	public HomePage load() {
-		open(configuration.getBaseUrl());
-		return this;
-	}
+  private TagsPage tags;
 
-	public TagsPage navigateToTagsPage() {
-		$("MENU_TAGS").click();
-		return tags;
-	}
+  public HomePage load() {
+    open(configuration.getBaseUrl());
+    return this;
+  }
 
-	public QuestionsPage search(String query) {
-		$("SEARCH_FIELD").sendKeys(query);
-		$("SEARCH_BUTTON").should(Condition.appear).click();
-		return questions;
-	}
+  public TagsPage navigateToTagsPage() {
+    $("MENU_TAGS").click();
+    return tags;
+  }
+
+  public QuestionsPage search(String query) {
+    $("SEARCH_FIELD").sendKeys(query);
+    $("SEARCH_BUTTON").should(appear).click();
+    return questions;
+  }
 }
 ```
 
@@ -158,15 +176,13 @@ You can specify the location of `yasew.properties` on start-up by providing it a
 YASeW uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.yasew.YasewTest`:
 
 ```java
-public class TestRunner extends YasewTest{
-}
+public class TestRunner extends YasewTest {}
 ```
 
 Alternatively, you can also use the JUnit test runner directly:
 ```java
 @RunWith(YasewRunner.class)
-public class SomeTestClass {
-}
+public class SomeTestClass {}
 ```
 
 The feature files and steps are automatically picked up from the locations provided in `yasew.properties`.
