@@ -35,6 +35,7 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
 
   @SuppressWarnings("squid:S00116Field")
   private static final Logger LOG = LoggerFactory.getLogger(YasewRunner.class);
+
   private final JUnitReporter jUnitReporter;
   private final List<FeatureRunner> children = new ArrayList<>();
   private final Runtime runtime;
@@ -47,22 +48,33 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
   private static final String DEFAULT_YASEW_PROPERTIES = "yasew.properties";
   private static final String YASEW_LOCATION_KEY = "yasew.properties";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
+  private static final String OPENCV_ENABLED_KEY = "opencv.enabled";
+  private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
+  private static final String DEFAULT_CUCUMBER_REPORT_DIRECTORY = "target/report/cucumber";
+  private static final String DEFAULT_PLATFORM = "web";
 
   public YasewRunner(Class<?> clazz) throws InitializationError, IOException {
     super(clazz);
 
-    // load the opencv library
-    OpenCV.loadShared();
-    OpenCV.loadLocally();
-    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
+    // Initialize Spring profiles and settings
     init();
+
+    // load OpenCV library
+    if (Boolean.parseBoolean(getProperty(OPENCV_ENABLED_KEY, "false"))) { // load the opencv library
+      OpenCV.loadShared();
+      OpenCV.loadLocally();
+      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
+
     String cucumberOptions =
         "--tags @"
-            + getProperty(PLATFORM_KEY)
+            + getProperty(PLATFORM_KEY, DEFAULT_PLATFORM)
             + " --glue io.github.martinschneider.yasew.steps --glue "
             + getProperty(STEPS_PACKAGE_KEY)
-            + " --plugin pretty --plugin html:report --plugin json:report/cucumber.json "
+            + " --plugin pretty --plugin html:report --plugin json:"
+            + getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY)
+            + "/cucumber.json"
+            + " "
             + getProperty(FEATURES_DIRECTORY_KEY);
     LOG.info("Setting cucumber options ({}) to {}", CUCUMBER_OPTIONS_KEY, cucumberOptions);
     System.setProperty(CUCUMBER_OPTIONS_KEY, cucumberOptions);
@@ -126,17 +138,32 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
     }
   }
 
+  private String getProperty(String key, String defaultValue) {
+    initProperties();
+    String value = props.getProperty(key);
+    if (value != null && !value.isEmpty()) {
+      LOG.debug("Reading property {} = {}", key, value);
+      return value;
+    }
+    LOG.warn("Property {} not set in yasew.properties. Using default value: {}", key, defaultValue);
+    return defaultValue;
+  }
+
   private String getProperty(String key) {
+    initProperties();
+    String value = props.getProperty(key);
+    if (value != null && !value.isEmpty()) {
+      LOG.info("Reading property {} = {}", key, value);
+      return value;
+    }
+    throw new RuntimeException("Mandatory property " + key + " not set in yasew.properties.");
+  }
+
+  private void initProperties() {
     if (props == null) {
       props = new Properties();
       loadProperties();
     }
-    for (final String name : props.stringPropertyNames()) {
-      if (name.equals(PLATFORM_KEY)) {
-        return props.getProperty(key);
-      }
-    }
-    return null;
   }
 
   private void loadProperties() {

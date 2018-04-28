@@ -28,7 +28,7 @@ import io.github.martinschneider.yasew.visual.TemplateMatcher;
 public abstract class BasePage<T> extends Base {
   private static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
   private static final String IMAGE_FOLDER = "images";
-  private static final double MATCHING_THRESHOLD = 0.9; // for visual template matching
+  private static final double DEFAULT_MATCHING_THRESHOLD = 0.9; // for visual template matching
   protected YasewConfiguration configuration;
   private LocatorMap locators = new LocatorMap();
 
@@ -63,7 +63,7 @@ public abstract class BasePage<T> extends Base {
   }
 
   public boolean hasImage(String imageName) {
-    return hasImage(imageName, MATCHING_THRESHOLD);
+    return hasImage(imageName, DEFAULT_MATCHING_THRESHOLD);
   }
 
   public boolean hasImage(String imageName, double threshold) {
