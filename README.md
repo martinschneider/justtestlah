@@ -207,6 +207,62 @@ POST_TAG=XPATH|//A[contains(@class,'post-tag') and contains(text(),'%s')]
 
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
+
+### Galen framework
+YaSew includes a proof-of-concept integratuon of the [Galen framework](http://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
+
+Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
+
+Checks can be triggered by calling `checkLayout` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `yasew.properties` (the default is `target/galen-reports/`).
+
+```
+@objects
+    username_field    xpath    //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_username_text_field']//android.widget.EditText
+    password_field    xpath    //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_password_text_field']//android.widget.EditText
+    login_button      id       com.thecarousell.Carousell:id/login_page_login_button
+
+= Login =
+
+    username_field:
+        above password_field
+        aligned vertically all password_field
+        width 100 % of password_field/width
+        width 100 % of login_button/width
+	
+    password_field:
+        below username_field
+        aligned vertically all username_field
+        width 100 % of username_field/width
+        width 100 % of login_button/width
+        
+    login_button:
+        below password_field
+        below username_field
+        width 100 % of username_field/width
+        width 100 % of password_field/width
+        text is "Log In" 
+```
+
+See the [Galen documentation](http://galenframework.com/docs/reference-galen-spec-language-guide/) for more examples.
+
+### Applitools
+
+There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `yasew.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
+
+Checks can then be triggered by calling `checkLayout` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
+
+### Browserstack
+
+You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `yasew.properties`:
+
+```
+cloudprovider=browserstack
+browserstack.accessKey=
+browserstack.username=
+```
+
+Please note that BrowserStack is a paid service.
+
 ### Used frameworks
 
 YASeW makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
@@ -218,6 +274,9 @@ YASeW makes use of a variety of frameworks to make writing and executing tests a
 * [Selenide](http://selenide.org), a convenience mapper around Selenium
 * [AssertJ](http://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 * [OpenCV](https://opencv.org), used for image comparison
+* [Galen](http://galenframework.com), used for layout based testing
+* [Applitools](https://applitools.com)], used for visual regression testing
+* [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
 ### Presentations ###

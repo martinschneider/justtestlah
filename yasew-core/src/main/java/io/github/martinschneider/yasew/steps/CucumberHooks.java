@@ -1,7 +1,7 @@
 package io.github.martinschneider.yasew.steps;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.slf4j.Logger;
@@ -17,6 +17,8 @@ import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 
 /** Hook to restart the WebDriver before every test */
 public class CucumberHooks {
+
+  private static final String GALEN_REPORT_FOLDER_DATE_PATTERN = "yyyy-MM-dd HH.mm.ss";
 
   private Logger LOG = LoggerFactory.getLogger(CucumberHooks.class);
 
@@ -51,8 +53,14 @@ public class CucumberHooks {
       new HtmlReportBuilder()
           .build(
               galenTests,
-              "target/galen-html-reports/"
-                  + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+              getGalenReportDirectory());
     }
+  }
+
+  private String getGalenReportDirectory() {
+    return configuration.getGalenReportDirectory()
+        + "/"
+        + LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern(GALEN_REPORT_FOLDER_DATE_PATTERN));
   }
 }

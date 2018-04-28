@@ -14,6 +14,7 @@ public class YasewConfiguration {
 
   private static final String DEFAULT_BROWSER = "chrome";
   private static final String DEFAULT_FEATURE_PATH = "src/test/resources/features";
+  private static final String DEFAULT_GALEN_REPORT_DIRECTORY = "target/galen-reports";
 
   @Value("${web.browser:" + DEFAULT_BROWSER + "}")
   private String browser;
@@ -42,6 +43,9 @@ public class YasewConfiguration {
   @Value("${galen.enabled:false}")
   private boolean galenEnabled;
 
+  @Value("${galen.report.directory:" + DEFAULT_GALEN_REPORT_DIRECTORY + "}")
+  private String galenReportDirectory;
+
   private WebDriverBuilder webDriverBuilder;
 
   private UserService userService;
@@ -63,7 +67,6 @@ public class YasewConfiguration {
     // for web the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
     Configuration.headless = headless;
-
     // for Android and IOS we construct the {@link WebDriver} ourselves
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
@@ -99,5 +102,9 @@ public class YasewConfiguration {
 
   public boolean isGalenEnabled() {
     return galenEnabled;
+  }
+
+  public String getGalenReportDirectory() {
+    return galenReportDirectory;
   }
 }
