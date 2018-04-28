@@ -2,11 +2,6 @@ package io.github.martinschneider.yasew.junit;
 
 import org.junit.runner.RunWith;
 
-/**
- * Junit runner for tests
- *
- * @author Martin Schneider
- */
+/** Junit runner for tests */
 @RunWith(YasewRunner.class)
-public class YasewTest {
-}
+public class YasewTest {}
