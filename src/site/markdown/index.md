@@ -3,7 +3,7 @@
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 ### Getting started
-Pull the repo and run the example in `yasew-example`. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
+Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
 
 ```bash
 git clone https://github.com/martinschneider/yasew.git
@@ -32,6 +32,7 @@ Add the following Maven dependency to your `pom.xml`.
 
 ### Page objects, steps and feature files
 There are three main ingredients for tests in YASeW:
+
 * Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
 * Step definitions use page objects to define the actions of a test.  They form the building blocks to write
 * feature files which represent the test cases.
