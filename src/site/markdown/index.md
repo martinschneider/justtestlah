@@ -1,24 +1,19 @@
 ## YASeW - Yet Another Selenium Wrapper
 
-[![Build Status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew)
-[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=ncloc)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=ncloc)
-[![Code coverage](https://sonarcloud.io/api/project_badges/measure?project=io.github.martinschneider%3Ayasew&metric=coverage)](https://sonarcloud.io/component_measures?id=io.github.martinschneider%3Ayasew&metric=coverage)
-
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 ### Getting started
-Pull the repo and run the example in `yasew-example`. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](http://www.carousell.com).
+Pull the repo and run the example in `yasew-example`. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
 
 ```bash
 git clone https://github.com/martinschneider/yasew.git
-cd yasew/yasew-example
-mvn test
+mvn test -Dtest=TestRunner
 ```
 
-To test against Android you need to setup [Appium](http://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` in `yasew.properties`.
+To test against Android you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` in `yasew.properties`.
 
 ```bash
-mvn test -Dyasew.properties=/absolute/path/to/your/yasew.properties
+mvn test -Dtest=TestRunner -Dyasew.properties=/absolute/path/to/your/yasew.properties
 ```
 
 For now YASeW requires Java 8.
@@ -197,7 +192,7 @@ SEARCH_FIELD=input[name=q]
 SEARCH_BUTTON=.iconSearch
 ```
 
-The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](http://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
+The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](https://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
 
 1. It is not possible to directly use elements in step definitions (only in page objects). This is by design as UI elements are meant to be encapsulated in the page objects.
 2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same. 
@@ -224,7 +219,7 @@ Calling `$("POST_TAG", "selenium")` will return an element matching the followin
 
 
 ### Galen
-YaSew includes a proof-of-concept integration of the [Galen framework](http://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
+YaSew includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
 
 Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
 
@@ -258,7 +253,7 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
         text is "Log In" 
 ```
 
-See the [Galen documentation](http://galenframework.com/docs/reference-galen-spec-language-guide/) for more examples.
+See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide/) for more examples.
 
 ### Applitools
 
@@ -283,13 +278,13 @@ Please note that BrowserStack is a paid service.
 YASeW makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
 
 * [Selenium](https://www.seleniumhq.org), the main test framework used by YASeW
-* [Appium](http://appium.io), an extension of Selenium for native mobile app testing
+* [Appium](https://appium.io), an extension of Selenium for native mobile app testing
 * [Cucumber](https://cucumber.io), the BDD framework
 * [JUnit](https://junit.org), the unit testing framework (mostly used as the runner for the tests)
-* [Selenide](http://selenide.org), a convenience mapper around Selenium
-* [AssertJ](http://joel-costigliola.github.io/assertj), fluent assertions for unit tests
+* [Selenide](https://selenide.org), a convenience mapper around Selenium
+* [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 * [OpenCV](https://opencv.org), used for image comparison
-* [Galen](http://galenframework.com), used for layout based testing
+* [Galen](https://galenframework.com), used for layout based testing
 * [Applitools](https://applitools.com), used for visual regression testing
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
@@ -299,10 +294,10 @@ YASeW makes use of a variety of frameworks to make writing and executing tests a
 This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
 
 #### Part 1 ####
-[![Part 1](http://img.youtube.com/vi/OyAMnBEbT20/0.jpg)](http://www.youtube.com/watch?v=OyAMnBEbT20)
+[![Part 1](https://img.youtube.com/vi/OyAMnBEbT20/0.jpg)](https://www.youtube.com/watch?v=OyAMnBEbT20)
 
 #### Part 2 ####
-[![Part 2](http://img.youtube.com/vi/maJkvP_qk4A/0.jpg)](http://www.youtube.com/watch?v=maJkvP_qk4A)
+[![Part 2](https://img.youtube.com/vi/maJkvP_qk4A/0.jpg)](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ### Contact and support
 
