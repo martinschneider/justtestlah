@@ -36,6 +36,9 @@ public class YasewConfiguration {
 
   @Value("${platform}")
   private String platform;
+  
+  @Value("${opencv.enabled:false}")
+  private boolean openCVEnabled;
 
   @Value("${eyes.enabled:false}")
   private boolean eyesEnabled;
@@ -102,6 +105,10 @@ public class YasewConfiguration {
 
   public boolean isGalenEnabled() {
     return galenEnabled;
+  }
+  
+  public boolean isOpenCVEnabled() {
+    return openCVEnabled;
   }
 
   public String getGalenReportDirectory() {

@@ -1,5 +1,6 @@
 package io.github.martinschneider.yasew.visual;
 
+import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
@@ -9,6 +10,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Template matcher
@@ -27,7 +29,10 @@ public class TemplateMatcher {
 
   private Logger LOG = LoggerFactory.getLogger(TemplateMatcher.class);
 
+  private YasewConfiguration configuration;
+
   public boolean match(String screenshotFile, String templateFile, double threshold) {
+    checkForOpenCV();
     Mat image = Imgcodecs.imread(screenshotFile);
     Mat originalImage = image;
     Mat templ = Imgcodecs.imread(templateFile);
@@ -83,6 +88,18 @@ public class TemplateMatcher {
         templateFile,
         bestMatch.maxVal);
     return false;
+  }
+
+  @Autowired
+  public void setConfiguration(YasewConfiguration configuration) {
+    this.configuration = configuration;
+  }
+
+  private void checkForOpenCV() {
+    if (!configuration.isOpenCVEnabled()) {
+      throw new UnsupportedOperationException(
+          "OpenCV is not enabled. Set opencv.enabled=true in yasew.properties!");
+    }
   }
 
   private Mat scaleImage(Mat image, double scaleFactor) {
