@@ -1,6 +1,12 @@
 package io.github.martinschneider.yasew.locator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import io.github.martinschneider.yasew.base.BasePage;
+import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 import java.lang.reflect.Proxy;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,11 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import io.github.martinschneider.yasew.base.BasePage;
-import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 
 @RunWith(DataProviderRunner.class)
 public class LocatorTest {
@@ -24,6 +25,9 @@ public class LocatorTest {
 
   @Mock private YasewConfiguration configuration;
 
+  /**
+   * Initialise mocks.
+   */
   @Before
   public void init() {
     MockitoAnnotations.initMocks(this);
@@ -35,6 +39,11 @@ public class LocatorTest {
     assertThat(target.size()).as("check number of locators").isEqualTo(6);
   }
 
+  /**
+   * Test data provider.
+   * 
+   * @return test data
+   */
   @DataProvider
   public static Object[][] locatorData() {
     return new Object[][] {

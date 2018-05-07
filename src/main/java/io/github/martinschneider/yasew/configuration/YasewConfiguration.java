@@ -1,14 +1,14 @@
 package io.github.martinschneider.yasew.configuration;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
+import io.github.martinschneider.yasew.user.UserService;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
-import io.github.martinschneider.yasew.user.UserService;
 
-/** Main configuration class for YASeW */
+/** Main configuration class for YASeW. */
 @Component
 public class YasewConfiguration {
 
@@ -36,9 +36,9 @@ public class YasewConfiguration {
 
   @Value("${platform}")
   private String platform;
-  
+
   @Value("${opencv.enabled:false}")
-  private boolean openCVEnabled;
+  private boolean openCvEnabled;
 
   @Value("${eyes.enabled:false}")
   private boolean eyesEnabled;
@@ -59,13 +59,14 @@ public class YasewConfiguration {
     this.userService = userService;
   }
 
-  /** initialise the user service */
+  /** Initialise the user service. */
   @PostConstruct
   public void initCucumberConfig() {
     userService.initialize();
   }
 
-  /** set the correct {@link org.openqa.selenium.WebDriver} */
+  /** Set the correct 
+   * {@link org.openqa.selenium.WebDriver}. */
   public void initWebDriver() {
     // for web the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
@@ -74,11 +75,15 @@ public class YasewConfiguration {
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
     } else if (platform.equals(Platform.IOS)) {
-      WebDriverRunner.setWebDriver(webDriverBuilder.getIOSDriver());
+      WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
     }
   }
 
-  /** @return the base URL of the application under test */
+  /**
+   * Gets the base URL of the application under test.
+   *
+   * @return the base URL of the application under test
+   */
   public String getBaseUrl() {
     if (!getPlatform().equals(Platform.WEB)) {
       throw new UnsupportedOperationException("baseUrl is only available for platform web");
@@ -86,7 +91,9 @@ public class YasewConfiguration {
     return baseUrl;
   }
 
-  /** @return the platform to test against */
+  /** 
+   * Get the platform to test against.
+   * @return the platform to test against */
   public String getPlatform() {
     return platform;
   }
@@ -106,9 +113,9 @@ public class YasewConfiguration {
   public boolean isGalenEnabled() {
     return galenEnabled;
   }
-  
-  public boolean isOpenCVEnabled() {
-    return openCVEnabled;
+
+  public boolean isOpenCvEnabled() {
+    return openCvEnabled;
   }
 
   public String getGalenReportDirectory() {

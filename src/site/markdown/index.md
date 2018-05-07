@@ -10,7 +10,7 @@ git clone https://github.com/martinschneider/yasew.git
 mvn test -Dtest=TestRunner
 ```
 
-To test against Android you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` in `yasew.properties`.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `yasew.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change it). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
 
 ```bash
 mvn test -Dtest=TestRunner -Dyasew.properties=/absolute/path/to/your/yasew.properties
@@ -228,33 +228,33 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
 
 ```
 @objects
-    username_field    xpath    //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_username_text_field']//android.widget.EditText
-    password_field    xpath    //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_password_text_field']//android.widget.EditText
-    login_button      id       com.thecarousell.Carousell:id/login_page_login_button
+  username_field  id  com.thecarousell.Carousell:id/login_page_username_text_field
+  password_field  id  com.thecarousell.Carousell:id/login_page_password_text_field
+  login_button    id  com.thecarousell.Carousell:id/login_page_login_button
 
 = Login =
 
-    username_field:
-        above password_field
-        aligned vertically all password_field
-        width 100 % of password_field/width
-        width 100 % of login_button/width
+  username_field:
+      above password_field
+      aligned vertically all password_field
+      width 100 % of password_field/width
+      width 100 % of login_button/width
 	
-    password_field:
-        below username_field
-        aligned vertically all username_field
-        width 100 % of username_field/width
-        width 100 % of login_button/width
+  password_field:
+      below username_field
+      aligned vertically all username_field
+      width 100 % of username_field/width
+      width 100 % of login_button/width
         
-    login_button:
-        below password_field
-        below username_field
-        width 100 % of username_field/width
-        width 100 % of password_field/width
-        text is "Log In" 
+  login_button:
+      below password_field
+      below username_field
+      width 100 % of username_field/width
+      width 100 % of password_field/width
+      text is "Log In" 
 ```
 
-See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide/) for more examples.
+See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
 ### Applitools
 

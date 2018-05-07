@@ -1,15 +1,15 @@
 package io.github.martinschneider.yasew.examples.carousell.pages.ios;
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import io.github.martinschneider.yasew.configuration.Platform;
 import io.github.martinschneider.yasew.examples.carousell.pages.HomePage;
 import io.github.martinschneider.yasew.examples.carousell.pages.LoginPage;
 import io.github.martinschneider.yasew.user.User;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 @Component
 @Profile(Platform.IOS)
-public class IOSLoginPage extends LoginPage {
+public class IOsLoginPage extends LoginPage {
 
   private HomePage home;
 

@@ -1,18 +1,5 @@
 package io.github.martinschneider.yasew.junit;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import org.junit.runner.Description;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.ParentRunner;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.Statement;
-import org.opencv.core.Core;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import cucumber.api.event.TestRunFinished;
 import cucumber.api.junit.Cucumber;
 import cucumber.runtime.ClassFinder;
@@ -28,15 +15,29 @@ import cucumber.runtime.junit.JUnitOptions;
 import cucumber.runtime.junit.JUnitReporter;
 import cucumber.runtime.model.CucumberFeature;
 import io.github.martinschneider.yasew.configuration.Platform;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import nu.pattern.OpenCV;
+import org.junit.runner.Description;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.Statement;
+import org.opencv.core.Core;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/** Custom JUnit runner to dynamically set cucumber.options. Based on {@link Cucumber}. */
+/** Custom JUnit runner to dynamically set cucumber.̰options.
+ * Based on {@link Cucumber}. */
 public class YasewRunner extends ParentRunner<FeatureRunner> {
 
   @SuppressWarnings("squid:S00116Field")
   private static final Logger LOG = LoggerFactory.getLogger(YasewRunner.class);
 
-  private final JUnitReporter jUnitReporter;
+  private final JUnitReporter reporter;
   private final List<FeatureRunner> children = new ArrayList<>();
   private final Runtime runtime;
   private Properties props;
@@ -53,6 +54,13 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
   private static final String DEFAULT_CUCUMBER_REPORT_DIRECTORY = "target/report/cucumber";
   private static final String DEFAULT_PLATFORM = "web";
 
+  /**
+   * Constructs a new {@link YasewRunner}.
+   * 
+   * @param clazz test class
+   * @throws InitializationError {@link InitializationError}
+   * @throws IOException {@link IOException}
+   */
   public YasewRunner(Class<?> clazz) throws InitializationError, IOException {
     super(clazz);
 
@@ -89,7 +97,7 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
     final JUnitOptions junitOptions = new JUnitOptions(runtimeOptions.getJunitOptions());
     final List<CucumberFeature> cucumberFeatures =
         runtimeOptions.cucumberFeatures(resourceLoader, runtime.getEventBus());
-    jUnitReporter =
+    reporter =
         new JUnitReporter(runtime.getEventBus(), runtimeOptions.isStrict(), junitOptions);
     addChildren(cucumberFeatures);
   }
@@ -131,7 +139,7 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
 
   private void addChildren(List<CucumberFeature> cucumberFeatures) throws InitializationError {
     for (CucumberFeature cucumberFeature : cucumberFeatures) {
-      FeatureRunner featureRunner = new FeatureRunner(cucumberFeature, runtime, jUnitReporter);
+      FeatureRunner featureRunner = new FeatureRunner(cucumberFeature, runtime, reporter);
       if (!featureRunner.isEmpty()) {
         children.add(featureRunner);
       }

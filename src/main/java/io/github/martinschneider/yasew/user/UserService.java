@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-/** Simple service to load test users from properties file */
+/** Simple service to load test users from properties file. */
 public final class UserService {
   private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
@@ -20,6 +20,10 @@ public final class UserService {
 
   private Map<String, User> users = new HashMap<String, User>();
 
+  /**
+   * Initialise the user service. Load test users from users.properties file defined in
+   * yasew.properties.
+   */
   public void initialize() {
     LOG.info("Loading test user definitions from {}", usersFile);
     users = new HashMap<String, User>();
@@ -36,7 +40,7 @@ public final class UserService {
   }
 
   /**
-   * Retrieves a value from the message store
+   * Retrieves a value from the message store.
    *
    * @param key key to retrieve
    * @return value for the given key

@@ -3,6 +3,7 @@ package io.github.martinschneider.yasew.base;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,7 +16,11 @@ public class BaseTest {
 
   @Mock private ApplicationContext applicationContext;
 
+  /**
+   * Initialise mocks.
+   */
   @Before
+  @SuppressWarnings("unchecked")
   public void init() {
     MockitoAnnotations.initMocks(this);
     // mocking the Spring application context
@@ -23,7 +28,7 @@ public class BaseTest {
   }
 
   /**
-   * Test the injection of page objects 
+   * Test the injection of page objects .
    */
   @Test
   public void testInjection() {

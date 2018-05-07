@@ -1,6 +1,7 @@
 package io.github.martinschneider.yasew.examples.stackoverflow.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -25,6 +26,9 @@ public class HomeSteps extends BaseSteps {
     home.search(query);
   }
 
+  /**
+   * Checks for the "new question" icon.
+   */
   @Then("^I can see the ask a question icon$")
   public void questionIcon() {
     assertThat(home.hasImage("questionIcon.png"))
