@@ -59,6 +59,7 @@
     <maven.surefire.report.plugin.version>2.21.0</maven.surefire.report.plugin.version>
     <maven.project.info.reports.plugin>2.9</maven.project.info.reports.plugin>
     <github.site.maven.plugin.version>0.12</github.site.maven.plugin.version>
+    <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <doxia.version>1.8</doxia.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -301,6 +302,14 @@
           <formats>
             <format>html</format>
           </formats>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>nl.demon.shadowland.maven.plugins</groupId>
+        <artifactId>sonarqube-maven-report</artifactId>
+        <version>${sonarqube.maven.plugin.version}</version>
+        <configuration>
+          <sonarHostURL>https://sonarcloud.io/</sonarHostURL>
         </configuration>
       </plugin>
     </plugins>
