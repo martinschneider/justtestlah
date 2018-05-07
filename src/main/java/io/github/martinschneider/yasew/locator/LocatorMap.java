@@ -2,14 +2,15 @@ package io.github.martinschneider.yasew.locator;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import java.util.HashMap;
-import org.openqa.selenium.By;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
+import java.util.HashMap;
+import org.openqa.selenium.By;
 
-/** Map to hold element locators */
+/** Map to hold element locators. */
 public class LocatorMap extends HashMap<String, String> {
 
   private static final long serialVersionUID = 1L;
@@ -20,6 +21,13 @@ public class LocatorMap extends HashMap<String, String> {
   private static final String UIAUTOMATOR = "UIAUTOMATOR";
   private static final String SEPARATOR = "|";
 
+  /**
+   * Get a Selenide locator.
+   * 
+   * @param key locator key
+   * @param params locator key parameters
+   * @return {@link SelenideElement}
+   */
   public SelenideElement getLocator(Object key, Object... params) {
     String rawValue = get(key);
     if (rawValue.startsWith(CSS + SEPARATOR)) {
@@ -41,6 +49,13 @@ public class LocatorMap extends HashMap<String, String> {
     }
   }
 
+  /**
+   * Get a Selenide collection locator.
+   * 
+   * @param key locator key
+   * @param params locator key parameters
+   * @return {@link ElementsCollection}
+   */
   public ElementsCollection getCollectionLocator(Object key, Object... params) {
     String rawValue = get(key);
     if (rawValue.startsWith(CSS + SEPARATOR)) {

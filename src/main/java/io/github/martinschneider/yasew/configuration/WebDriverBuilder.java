@@ -4,9 +4,17 @@ import org.openqa.selenium.WebDriver;
 
 public interface WebDriverBuilder {
 
-  /** @return {@link WebDriver} for Android */
+  /**
+   * Get an Android driver instance.
+   *
+   * @return {@link WebDriver} for Android
+   */
   WebDriver getAndroidDriver();
 
-  /** @return {@link WebDriver} for iOS */
-  WebDriver getIOSDriver();
+  /**
+   * Get an iOS driver instance.
+   *
+   * @return {@link WebDriver} for iOS
+   */
+  WebDriver getIOsDriver();
 }

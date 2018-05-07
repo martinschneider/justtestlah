@@ -1,5 +1,16 @@
 package io.github.martinschneider.yasew.base;
 
+import com.applitools.eyes.selenium.Eyes;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
+import com.galenframework.api.Galen;
+import com.galenframework.reports.GalenTestInfo;
+import com.galenframework.reports.model.LayoutReport;
+import io.github.martinschneider.yasew.configuration.YasewConfiguration;
+import io.github.martinschneider.yasew.locator.LocatorMap;
+import io.github.martinschneider.yasew.visual.TemplateMatcher;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -12,19 +23,8 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.applitools.eyes.selenium.Eyes;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
-import com.galenframework.api.Galen;
-import com.galenframework.reports.GalenTestInfo;
-import com.galenframework.reports.model.LayoutReport;
-import io.github.martinschneider.yasew.configuration.YasewConfiguration;
-import io.github.martinschneider.yasew.locator.LocatorMap;
-import io.github.martinschneider.yasew.visual.TemplateMatcher;
 
-/** Base class for page objects */
+/** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   private static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
   private static final String IMAGE_FOLDER = "images";
@@ -43,6 +43,8 @@ public abstract class BasePage<T> extends Base {
   @Autowired private List<GalenTestInfo> galenTests;
 
   /**
+   * Selenide style locator.
+   *
    * @param locatorKey locator key (can include placeholders)
    * @param params parameters to replace the placeholders
    * @return {@link SelenideElement}
@@ -53,6 +55,8 @@ public abstract class BasePage<T> extends Base {
   }
 
   /**
+   * Selenide style collection locator.
+   *
    * @param locatorKey locator key (can include placeholders)
    * @param params parameters to replace the placeholders
    * @return {@link ElementsCollection}
@@ -66,6 +70,13 @@ public abstract class BasePage<T> extends Base {
     return hasImage(imageName, DEFAULT_MATCHING_THRESHOLD);
   }
 
+  /**
+   * Checks for the given image within the current screen.
+   *
+   * @param imageName image to check for
+   * @param threshold matching threshold
+   * @return
+   */
   public boolean hasImage(String imageName, double threshold) {
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
@@ -82,7 +93,8 @@ public abstract class BasePage<T> extends Base {
     }
   }
 
-  /** initialize the {@link LocatorMap} */
+  /** Initialize the 
+   * {@link LocatorMap}. */
   @PostConstruct
   public void initializeLocatorMap() {
     Class<?> parent = this.getClass();
@@ -111,27 +123,30 @@ public abstract class BasePage<T> extends Base {
   }
 
   /**
-   * Performs visual checks using Applitools
+   * Performs visual checks using Applitools.
    *
    * @return this
    */
+  @SuppressWarnings("unchecked")
   public T checkWindow() {
     if (configuration.isEyesEnabled()) {
       LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
       eyes.checkWindow();
     } else {
       LOG.info(
-          "Eyes disabled, skipping check on class {}. You can enable visual testing with Applitools Eyes by setting eyes.enabled = true in yasew.properties.",
+          "Eyes disabled, skipping check on class {}. You can enable visual testing with "
+          + "Applitools Eyes by setting eyes.enabled = true in yasew.properties.",
           this.getClass().getSimpleName());
     }
     return (T) this;
   }
 
   /**
-   * Performs layout checks using Galen
+   * Performs layout checks using Galen.
    *
    * @return this
    */
+  @SuppressWarnings("unchecked")
   public T checkLayout() {
     if (configuration.isGalenEnabled()) {
       String baseName = this.getClass().getSimpleName();
@@ -157,7 +172,8 @@ public abstract class BasePage<T> extends Base {
       }
     } else {
       LOG.info(
-          "Galen checks disabled, skipping checks for class {}. You can enable Galen by setting galen.enabled = true in yasew.properties.",
+          "Galen checks disabled, skipping checks for class {}. " 
+          + "You can enable Galen by setting galen.enabled = true in yasew.properties.",
           this.getClass().getSimpleName());
     }
     return (T) this;

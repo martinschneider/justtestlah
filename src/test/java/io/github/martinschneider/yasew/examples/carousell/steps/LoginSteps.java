@@ -1,12 +1,13 @@
 package io.github.martinschneider.yasew.examples.carousell.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.martinschneider.yasew.base.BaseSteps;
 import io.github.martinschneider.yasew.examples.carousell.pages.HomePage;
 import io.github.martinschneider.yasew.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoginSteps extends BaseSteps {
 
@@ -14,8 +15,13 @@ public class LoginSteps extends BaseSteps {
 
   private HomePage homePage;
 
+  /**
+   * Login the given user.
+   * 
+   * @param userKey userKey of the user to log in
+   */
   @When("^I login as \"([^\"]*)\"$")
-  public void iLoginAs(String userKey) {
+  public void loginAs(String userKey) {
     homePage
         .checkWindow()
         .goToLogin()
@@ -26,7 +32,7 @@ public class LoginSteps extends BaseSteps {
   }
 
   @Then("^I see the user menu$")
-  public void iSeeTheUserMenu() {
+  public void isUserMenuVisible() {
     assertThat(homePage.isUserMenuVisible()).as("user menu is visible").isTrue();
   }
 }

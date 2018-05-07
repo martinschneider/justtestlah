@@ -1,4 +1,4 @@
-<project name="YASeW">
+<project name="YASeW test framework">
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>

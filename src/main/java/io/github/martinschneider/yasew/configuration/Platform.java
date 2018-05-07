@@ -1,6 +1,6 @@
 package io.github.martinschneider.yasew.configuration;
 
-/** Constants for platforms */
+/** Constants for platforms. */
 public class Platform {
 
   private Platform() {}

@@ -3,6 +3,7 @@ package io.github.martinschneider.yasew.visual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 import nu.pattern.OpenCV;
 import org.junit.BeforeClass;
@@ -13,13 +14,16 @@ public class TemplateMatcherTest {
 
   private static TemplateMatcher target = new TemplateMatcher();
 
+  /**
+   * Initialise mocks and configuration.
+   */
   @BeforeClass
-  public static void setup() {
+  public static void init() {
     OpenCV.loadShared();
     OpenCV.loadLocally();
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     YasewConfiguration configuration = mock(YasewConfiguration.class);
-    when(configuration.isOpenCVEnabled()).thenReturn(true);
+    when(configuration.isOpenCvEnabled()).thenReturn(true);
     target.setConfiguration(configuration);
   }
 

@@ -1,5 +1,6 @@
 package io.github.martinschneider.yasew.base;
 
+import io.github.martinschneider.yasew.configuration.SpringContext;
 import java.lang.reflect.Field;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
-import io.github.martinschneider.yasew.configuration.SpringContext;
 
 /**
  * Base class for all Spring managed pages and step definitions
@@ -19,7 +19,7 @@ import io.github.martinschneider.yasew.configuration.SpringContext;
 @ContextConfiguration(classes = SpringContext.class)
 public class Base implements ApplicationContextAware {
 
-  private Logger LOG = LoggerFactory.getLogger(Base.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Base.class);
   private ApplicationContext applicationContext;
 
   /**
@@ -35,9 +35,9 @@ public class Base implements ApplicationContextAware {
         try {
           LOG.debug("Loading page object {} of type {}", field.getName(), field.getClass());
           field.set(this, applicationContext.getBean(field.getType()));
-        } catch (BeansException | IllegalArgumentException | IllegalAccessException e) {
+        } catch (BeansException | IllegalArgumentException | IllegalAccessException exception) {
           LOG.error("Error initializing page objects for class {}", this.getClass());
-          LOG.error("Exception", e);
+          LOG.error("Exception", exception);
         }
       }
     }

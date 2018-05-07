@@ -1,6 +1,7 @@
 package io.github.martinschneider.yasew.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,6 +9,9 @@ public class UserServiceTest {
 
   private UserService target = new UserService();
 
+  /**
+   * Initialise test users.
+   */
   @Before
   public void init() {
     String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");

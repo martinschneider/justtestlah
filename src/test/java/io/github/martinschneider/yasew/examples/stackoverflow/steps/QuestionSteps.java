@@ -1,6 +1,7 @@
 package io.github.martinschneider.yasew.examples.stackoverflow.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import io.github.martinschneider.yasew.base.BaseSteps;
@@ -17,6 +18,11 @@ public class QuestionSteps extends BaseSteps {
     questionsPage.openFirstQuestion();
   }
 
+  /**
+   * Check whether a question is tagged with a given tag.
+   * 
+   * @param tagName name of the tag
+   */
   @Then("the question is tagged with \"([^\"]*)\"")
   public void isQuestionTaggedWith(String tagName) {
     assertThat(questionPage.hasTag(tagName))

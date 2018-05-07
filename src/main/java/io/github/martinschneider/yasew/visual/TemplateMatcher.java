@@ -27,13 +27,21 @@ public class TemplateMatcher {
   private static final int MIN_IMAGE_WIDTH = 320;
   private static final int MAX_IMAGE_WIDTH = 2048;
 
-  private Logger LOG = LoggerFactory.getLogger(TemplateMatcher.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TemplateMatcher.class);
 
   private YasewConfiguration configuration;
 
-  public boolean match(String screenshotFile, String templateFile, double threshold) {
-    checkForOpenCV();
-    Mat image = Imgcodecs.imread(screenshotFile);
+  /**
+   * Check whether the template appears anywhere within the target image.
+   * 
+   * @param targetFile path to the target file
+   * @param templateFile path to the template file
+   * @param threshold matching threshold
+   * @return true if a match has been found within the given threshold
+   */
+  public boolean match(String targetFile, String templateFile, double threshold) {
+    checkForOpenCv();
+    Mat image = Imgcodecs.imread(targetFile);
     Mat originalImage = image;
     Mat templ = Imgcodecs.imread(templateFile);
 
@@ -76,7 +84,7 @@ public class TemplateMatcher {
     if (bestMatch.maxVal >= threshold) {
       LOG.info(
           "Image {} contains image {} with match quality {}",
-          screenshotFile,
+          targetFile,
           templateFile,
           bestMatch.maxVal);
       return true;
@@ -84,7 +92,7 @@ public class TemplateMatcher {
     // else
     LOG.info(
         "Image {} does not contain image {}. The closest match has quality {}",
-        screenshotFile,
+        targetFile,
         templateFile,
         bestMatch.maxVal);
     return false;
@@ -95,8 +103,11 @@ public class TemplateMatcher {
     this.configuration = configuration;
   }
 
-  private void checkForOpenCV() {
-    if (!configuration.isOpenCVEnabled()) {
+  /**
+   * Check whether OpenCV is enabled.
+   */
+  private void checkForOpenCv() {
+    if (!configuration.isOpenCvEnabled()) {
       throw new UnsupportedOperationException(
           "OpenCV is not enabled. Set opencv.enabled=true in yasew.properties!");
     }
