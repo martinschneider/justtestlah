@@ -1,3 +1,6 @@
+[<img src="https://travis-ci.org/martinschneider/yasew.svg?branch=master" height="41" alt="Build status"/>](https://travis-ci.org/martinschneider/yasew)
+[<img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg" height="41" alt="Buy me a coffee"/>](https://www.buymeacoffee.com/mschneider)
+
 ## YASeW - Yet Another Selenium Wrapper
 
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
@@ -305,3 +308,5 @@ This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of 
 ### Contact and support
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
+
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/mschneider)
