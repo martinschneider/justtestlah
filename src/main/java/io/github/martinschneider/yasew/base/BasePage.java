@@ -84,7 +84,7 @@ public abstract class BasePage<T> extends Base {
       return templateMatcher.match(
           screenshotFile.getAbsolutePath(),
           this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
-          threshold);
+          threshold).isFound();
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
