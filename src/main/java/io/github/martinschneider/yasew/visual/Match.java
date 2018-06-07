@@ -45,7 +45,7 @@ public class Match {
     this.found = found;
   }
 
-  public double getX() {
+  public int getX() {
     return x;
   }
 
