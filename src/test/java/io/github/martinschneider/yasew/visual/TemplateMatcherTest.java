@@ -28,55 +28,73 @@ public class TemplateMatcherTest {
   @Test
   public void testMatchPerfect() {
     assertThat(
-            target.match(getPath("perfectMatch.png"), getPath("questionIcon.png"), 1, "sameSize"))
+            target
+                .match(getPath("perfectMatch.png"), getPath("questionIcon.png"), 1, "sameSize")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testMatchScaleDown() {
     assertThat(
-            target.match(
-                getPath("smallerMatch.png"), getPath("questionIcon.png"), 0.9, "scaleDown"))
+            target
+                .match(getPath("smallerMatch.png"), getPath("questionIcon.png"), 0.9, "scaleDown")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testMatchScaleUp() {
     assertThat(
-            target.match(getPath("largerMatch.png"), getPath("questionIcon.png"), 0.9, "scaleUp"))
+            target
+                .match(getPath("largerMatch.png"), getPath("questionIcon.png"), 0.9, "scaleUp")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testBlurred() {
     assertThat(
-            target.match(
-                getPath("perfectMatch.png"), getPath("questionIcon_blurred.png"), 0.9, "blurred"))
+            target
+                .match(
+                    getPath("perfectMatch.png"),
+                    getPath("questionIcon_blurred.png"),
+                    0.9,
+                    "blurred")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testDistorted() {
     assertThat(
-            target.match(
-                getPath("perfectMatch.png"),
-                getPath("questionIcon_distorted.png"),
-                0.75,
-                "distorted"))
+            target
+                .match(
+                    getPath("perfectMatch.png"),
+                    getPath("questionIcon_distorted.png"),
+                    0.75,
+                    "distorted")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testRotated() {
     assertThat(
-            target.match(
-                getPath("perfectMatch.png"), getPath("questionIcon_rotated.png"), 0.85, "rotated"))
+            target
+                .match(
+                    getPath("perfectMatch.png"),
+                    getPath("questionIcon_rotated.png"),
+                    0.85,
+                    "rotated")
+                .isFound())
         .isTrue();
   }
 
   @Test
   public void testNoMatch() {
-    assertThat(target.match(getPath("noMatch.png"), getPath("questionIcon.png"), 0.5)).isFalse();
+    assertThat(target.match(getPath("noMatch.png"), getPath("questionIcon.png"), 0.5).isFound())
+        .isFalse();
   }
 
   private String getPath(String fileName) {
