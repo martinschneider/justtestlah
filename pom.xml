@@ -35,29 +35,30 @@
     </license>
   </licenses>
   <properties>
-    <spring.version>5.0.5.RELEASE</spring.version>
-    <appium.version>6.0.0-BETA5</appium.version>
-    <selenium.version>3.11.0</selenium.version>
-    <selenide.version>4.11.2</selenide.version>
-    <cucumber.version>2.4.0</cucumber.version>
-    <opencv.version>3.2.0-1</opencv.version>
+    <spring.version>5.1.0.RELEASE</spring.version>
+    <appium.version>6.1.0</appium.version>
+    <selenium.version>3.14.0</selenium.version>
+    <selenide.version>5.0.0-rc.1</selenide.version>
+    <cucumber.version>4.0.0</cucumber.version>
+    <gherkin.version>5.1.0</gherkin.version>
+    <opencv.version>3.4.2-0</opencv.version>
     <applitools.version>3.31</applitools.version>
-    <galen.version>2.0.3</galen.version>
-    <junit.version>4.12</junit.version>
+    <galen.version>2.3.7</galen.version>
+    <junit.version>5.3.1</junit.version>
     <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
-    <slf4j.version>1.7.25</slf4j.version>
-    <assertj.version>3.9.1</assertj.version>
-    <mockito.version>2.18.3</mockito.version>
-    <commons.collections.version>4.1</commons.collections.version>
+    <slf4j.version>1.8.0-beta2</slf4j.version>
+    <assertj.version>3.11.1</assertj.version>
+    <mockito.version>2.22.0</mockito.version>
+    <commons.collections.version>4.2</commons.collections.version>
     <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
-    <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
-    <maven.site.plugin.version>3.7</maven.site.plugin.version>
+    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+    <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
     <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
     <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
     <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
     <cobertura.maven.plugin.version>2.7</cobertura.maven.plugin.version>
-    <maven.surefire.report.plugin.version>2.21.0</maven.surefire.report.plugin.version>
-    <maven.project.info.reports.plugin>2.9</maven.project.info.reports.plugin>
+    <maven.surefire.report.plugin.version>2.22.0</maven.surefire.report.plugin.version>
+    <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <github.site.maven.plugin.version>0.12</github.site.maven.plugin.version>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <doxia.version>1.8</doxia.version>
@@ -84,9 +85,10 @@
       <version>${cucumber.version}</version>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.cucumber</groupId>
@@ -97,6 +99,11 @@
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
       <version>${cucumber.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>gherkin</artifactId>
+      <version>${gherkin.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

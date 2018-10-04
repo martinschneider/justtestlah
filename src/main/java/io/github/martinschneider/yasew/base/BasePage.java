@@ -160,10 +160,7 @@ public abstract class BasePage<T> extends Base {
             Galen.checkLayout(
                 WebDriverRunner.getWebDriver(),
                 this.getClass().getClassLoader().getResource(specPath).getPath(),
-                Collections.singletonList(configuration.getPlatform()),
-                Collections.<String>emptyList(),
-                new Properties(),
-                null);
+                Collections.singletonList(configuration.getPlatform()));
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);
