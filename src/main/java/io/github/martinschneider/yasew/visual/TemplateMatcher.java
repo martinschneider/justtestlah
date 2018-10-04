@@ -43,9 +43,9 @@ public class TemplateMatcher {
    * @param targetFile path to the target file
    * @param templateFile path to the template file
    * @param threshold matching threshold
-   * @return true if a match has been found within the given threshold
+   * @return {@link Match}
    */
-  public boolean match(String targetFile, String templateFile, double threshold) {
+  public Match match(String targetFile, String templateFile, double threshold) {
     return match(
         targetFile,
         templateFile,
@@ -60,10 +60,9 @@ public class TemplateMatcher {
    * @param templateFile path to the template file
    * @param threshold matching threshold
    * @param description of the check
-   * @return true if a match has been found within the given threshold
+   * @return {@link Match}
    */
-  public boolean match(
-      String targetFile, String templateFile, double threshold, String description) {
+  public Match match(String targetFile, String templateFile, double threshold, String description) {
     checkForOpenCv();
     Mat image = Imgcodecs.imread(targetFile);
     Mat templ = Imgcodecs.imread(templateFile);
@@ -125,7 +124,10 @@ public class TemplateMatcher {
           System.getProperty("user.dir") + "/target/" + description + "." + FILE_EXTENSION;
       LOG.info("Writing result of template matching to {}", fileName);
       Imgcodecs.imwrite(fileName, image);
-      return true;
+      return new Match(
+          true,
+          (int) Math.round(bestMatch.maxLoc.x + templ.cols() / 2),
+          (int) Math.round(bestMatch.maxLoc.y + templ.rows() / 2));
     }
     // else
     LOG.info(
@@ -133,7 +135,7 @@ public class TemplateMatcher {
         targetFile,
         templateFile,
         bestMatch.maxVal);
-    return false;
+    return new Match(false);
   }
 
   @Autowired
@@ -141,9 +143,7 @@ public class TemplateMatcher {
     this.configuration = configuration;
   }
 
-  /**
-   * Check whether OpenCV is enabled.
-   */
+  /** Check whether OpenCV is enabled. */
   private void checkForOpenCv() {
     if (!configuration.isOpenCvEnabled()) {
       throw new UnsupportedOperationException(
