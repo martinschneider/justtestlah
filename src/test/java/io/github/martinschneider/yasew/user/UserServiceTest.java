@@ -16,7 +16,7 @@ public class UserServiceTest {
   public void init() {
     String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");
     target.usersFile =
-        this.getClass().getClassLoader().getResource(baseFolder + "/user.properties").getFile();
+        this.getClass().getClassLoader().getResource(baseFolder + "/users.properties").getFile();
     target.initialize();
   }
 
