@@ -15,10 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 /** YASeW Spring context. */
 @Configuration
 @PropertySource(
-    value = {"yasew.properties", "file:${yasew.properties}"},
-    ignoreResourceNotFound = true
+  value = {"yasew.properties", "file:${yasew.properties}"},
+  ignoreResourceNotFound = true
 )
-@ComponentScan(basePackages = "${pages.package}")
+@ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
 public class SpringContext {
 
   @Value("${eyes.apiKey}")

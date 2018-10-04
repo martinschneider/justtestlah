@@ -1,14 +1,13 @@
 package io.github.martinschneider.yasew.base;
 
-import io.github.martinschneider.yasew.configuration.SpringContext;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.test.context.ContextConfiguration;
 
 /**
  * Base class for all Spring managed pages and step definitions
@@ -16,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
  * <p>We inject all page objects. This way it is not necessary to annotate them with {@link
  * org.springframework.beans.factory.annotation.Autowired}.
  */
-@ContextConfiguration(classes = SpringContext.class)
 public class Base implements ApplicationContextAware {
 
   private static final Logger LOG = LoggerFactory.getLogger(Base.class);
