@@ -2,48 +2,69 @@ package io.github.martinschneider.yasew.locator;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import java.util.HashMap;
+import java.util.Map;
 import org.openqa.selenium.By;
 
 /** Map to hold element locators. */
-public class LocatorMap extends HashMap<String, String> {
+public class LocatorMap {
 
-  private static final long serialVersionUID = 1L;
-  private static final String CSS = "CSS";
-  private static final String XPATH = "XPATH";
-  private static final String ID = "ID";
-  private static final String ACCESIBILITY_ID = "ACCESIBILITY_ID";
-  private static final String UIAUTOMATOR = "UIAUTOMATOR";
-  private static final String SEPARATOR = "|";
+  private Map<String, Map<String, Map<String, String>>> map;
+
+  /**
+   * Default constructor.
+   */
+  public LocatorMap() {
+    this.map = new HashMap<String, Map<String, Map<String, String>>>();
+  }  
+  
+  /**
+   * @param map locator map
+   */
+  public LocatorMap(Map<String, Map<String, Map<String, String>>> map) {
+    this.map = map;
+  }
+
+  /**
+   * @return the locator map
+   */
+  public Map<String, Map<String, Map<String, String>>> getMap() {
+    return map;
+  }
+
+  private static final String CSS = "css";
+  private static final String XPATH = "xpath";
+  private static final String ID = "id";
+  private static final String ACCESIBILITY_ID = "accesibilityId";
+  private static final String UIAUTOMATOR = "uiAutomator";
 
   /**
    * Get a Selenide locator.
    * 
    * @param key locator key
+   * @param platform platform
    * @param params locator key parameters
    * @return {@link SelenideElement}
    */
-  public SelenideElement getLocator(Object key, Object... params) {
-    String rawValue = get(key);
-    if (rawValue.startsWith(CSS + SEPARATOR)) {
-      return $(By.cssSelector(formatValue(cutPrefix(rawValue, CSS), params)));
-    } else if (rawValue.startsWith(XPATH + SEPARATOR)) {
-      return $(By.xpath(formatValue(cutPrefix(rawValue, XPATH), params)));
-    } else if (rawValue.startsWith(ID + SEPARATOR)) {
-      return $(By.id(formatValue(cutPrefix(rawValue, ID), params)));
-    } else if (rawValue.startsWith(ACCESIBILITY_ID + SEPARATOR)) {
-      return $(
-          ByAccessibilityId.AccessibilityId(
-              formatValue(cutPrefix(rawValue, ACCESIBILITY_ID), params)));
-    } else if (rawValue.startsWith(UIAUTOMATOR)) {
-      return $(
-          ByAndroidUIAutomator.AccessibilityId(
-              formatValue(cutPrefix(rawValue, UIAUTOMATOR), params)));
+  public SelenideElement getLocator(String key, String platform, Object... params) {
+    Map<String, String> platformKey = map.get(key).get(platform);
+    String type = platformKey.get("type");
+    String rawValue = platformKey.get("value");
+
+    if (type.equalsIgnoreCase(CSS)) {
+      return $(By.cssSelector(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(XPATH)) {
+      return $(By.xpath(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(ID)) {
+      return $(By.id(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
+      return $(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
+      return $(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -53,25 +74,25 @@ public class LocatorMap extends HashMap<String, String> {
    * Get a Selenide collection locator.
    * 
    * @param key locator key
+   * @param platform platform
    * @param params locator key parameters
    * @return {@link ElementsCollection}
    */
-  public ElementsCollection getCollectionLocator(Object key, Object... params) {
-    String rawValue = get(key);
-    if (rawValue.startsWith(CSS + SEPARATOR)) {
-      return $$(By.cssSelector(formatValue(cutPrefix(rawValue, CSS), params)));
-    } else if (rawValue.startsWith(XPATH + SEPARATOR)) {
-      return $$(By.xpath(formatValue(cutPrefix(rawValue, XPATH), params)));
-    } else if (rawValue.startsWith(ID + SEPARATOR)) {
-      return $$(By.id(formatValue(cutPrefix(rawValue, ID), params)));
-    } else if (rawValue.startsWith(ACCESIBILITY_ID + SEPARATOR)) {
-      return $$(
-          ByAccessibilityId.AccessibilityId(
-              formatValue(cutPrefix(rawValue, ACCESIBILITY_ID), params)));
-    } else if (rawValue.startsWith(UIAUTOMATOR)) {
-      return $$(
-          ByAndroidUIAutomator.AccessibilityId(
-              formatValue(cutPrefix(rawValue, UIAUTOMATOR), params)));
+  public ElementsCollection getCollectionLocator(String key, String platform, Object... params) {
+    Map<String, String> platformKey = map.get(key).get(platform);
+    String type = platformKey.get("type");
+    String rawValue = platformKey.get("value");
+
+    if (type.equalsIgnoreCase(CSS)) {
+      return $$(By.cssSelector(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(XPATH)) {
+      return $$(By.xpath(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(ID)) {
+      return $$(By.id(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
+      return $$(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
+      return $$(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
     } else {
       return $$(formatValue(rawValue, params));
     }
@@ -79,9 +100,5 @@ public class LocatorMap extends HashMap<String, String> {
 
   private String formatValue(String rawValue, Object... params) {
     return String.format(rawValue, params);
-  }
-
-  private String cutPrefix(String rawValue, String prefix) {
-    return rawValue.substring(prefix.length() + SEPARATOR.length());
   }
 }

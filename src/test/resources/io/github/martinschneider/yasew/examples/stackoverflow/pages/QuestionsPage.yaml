@@ -1,0 +1,7 @@
+QUESTION_LINK:
+  web:
+    type: css
+    value: ".result-link a, #questions .summary a.question-hyperlink"
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/question_list_item_title

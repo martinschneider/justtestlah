@@ -51,6 +51,7 @@
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.11.1</assertj.version>
     <mockito.version>2.22.0</mockito.version>
+    <snakeyaml.version>1.21</snakeyaml.version>
     <commons.collections.version>4.2</commons.collections.version>
     <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
@@ -211,6 +212,11 @@
       <artifactId>junit-dataprovider</artifactId>
       <version>${junit.dataprovider.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>${snakeyaml.version}</version>
     </dependency>
   </dependencies>
   <distributionManagement>

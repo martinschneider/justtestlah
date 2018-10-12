@@ -10,12 +10,12 @@ import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.model.LayoutReport;
 import io.github.martinschneider.yasew.configuration.YasewConfiguration;
 import io.github.martinschneider.yasew.locator.LocatorMap;
+import io.github.martinschneider.yasew.locator.LocatorParser;
 import io.github.martinschneider.yasew.visual.TemplateMatcher;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 import javax.annotation.PostConstruct;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -30,17 +30,23 @@ public abstract class BasePage<T> extends Base {
   private static final String IMAGE_FOLDER = "images";
   private static final double DEFAULT_MATCHING_THRESHOLD = 0.9; // for visual template matching
   protected YasewConfiguration configuration;
-  private LocatorMap locators = new LocatorMap();
+  private LocatorMap locators;
 
   protected LocatorMap getLocators() {
     return locators;
   }
 
-  @Autowired private TemplateMatcher templateMatcher;
+  @Autowired
+  private LocatorParser locatorParser;
 
-  @Autowired private Eyes eyes;
+  @Autowired
+  private TemplateMatcher templateMatcher;
 
-  @Autowired private List<GalenTestInfo> galenTests;
+  @Autowired
+  private Eyes eyes;
+
+  @Autowired
+  private List<GalenTestInfo> galenTests;
 
   /**
    * Selenide style locator.
@@ -51,7 +57,7 @@ public abstract class BasePage<T> extends Base {
    */
   @SuppressWarnings("squid:S00100Method") // the method name is on purpose
   protected SelenideElement $(String locatorKey, Object... params) {
-    return Selenide.$(locators.getLocator(locatorKey, params));
+    return Selenide.$(locators.getLocator(locatorKey, configuration.getPlatform(), params));
   }
 
   /**
@@ -63,7 +69,8 @@ public abstract class BasePage<T> extends Base {
    */
   @SuppressWarnings("squid:S00100Method") // the method name is on purpose
   protected ElementsCollection $$(String locatorKey, Object... params) {
-    return Selenide.$$(locators.getCollectionLocator(locatorKey, params));
+    return Selenide
+        .$$(locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
   }
 
   public boolean hasImage(String imageName) {
@@ -75,51 +82,41 @@ public abstract class BasePage<T> extends Base {
    *
    * @param imageName image to check for
    * @param threshold matching threshold
-   * @return
+   * @return true, if the image has been found on the current screen
    */
   public boolean hasImage(String imageName, double threshold) {
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
       File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-      return templateMatcher.match(
-          screenshotFile.getAbsolutePath(),
+      return templateMatcher.match(screenshotFile.getAbsolutePath(),
           this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
           threshold).isFound();
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
-              + driver.getClass().getSimpleName()
-              + ".");
+              + driver.getClass().getSimpleName() + ".");
     }
   }
 
-  /** Initialize the 
-   * {@link LocatorMap}. */
+  /**
+   * Initialize the {@link LocatorMap}.
+   */
   @PostConstruct
   public void initializeLocatorMap() {
     Class<?> parent = this.getClass();
+    String fileName = null;
     do {
       String baseName = parent.getSimpleName();
       String baseFolder = parent.getPackage().getName().replaceAll("\\.", "/");
-      // load general locators
-      loadLocators(baseFolder + "/" + baseName + ".properties");
-      // load platform-specific locators
-      loadLocators(baseFolder + "/" + configuration.getPlatform() + "/" + baseName + ".properties");
+      fileName = baseFolder + "/" + baseName + ".yaml";
       parent = parent.getSuperclass();
     } while (!parent.equals(BasePage.class));
+    loadLocators(fileName);
   }
 
   private void loadLocators(String fileName) {
-    LOG.info("Loading message properties from {}...", fileName);
-    Properties props = new Properties();
-    try {
-      props.load(BasePage.class.getClassLoader().getResourceAsStream(fileName));
-    } catch (NullPointerException | IOException e) {
-      LOG.warn("Error loading message properties from {}", fileName);
-    }
-    for (final String name : props.stringPropertyNames()) {
-      locators.put(name, props.getProperty(name));
-    }
+    LOG.info("Loading locators from {}...", fileName);
+    locators = new LocatorMap(locatorParser.parse(fileName));
   }
 
   /**
@@ -135,7 +132,7 @@ public abstract class BasePage<T> extends Base {
     } else {
       LOG.info(
           "Eyes disabled, skipping check on class {}. You can enable visual testing with "
-          + "Applitools Eyes by setting eyes.enabled = true in yasew.properties.",
+              + "Applitools Eyes by setting eyes.enabled = true in yasew.properties.",
           this.getClass().getSimpleName());
     }
     return (T) this;
@@ -156,11 +153,9 @@ public abstract class BasePage<T> extends Base {
       String title = "Check layout " + specPath;
       LayoutReport layoutReport;
       try {
-        layoutReport =
-            Galen.checkLayout(
-                WebDriverRunner.getWebDriver(),
-                this.getClass().getClassLoader().getResource(specPath).getPath(),
-                Collections.singletonList(configuration.getPlatform()));
+        layoutReport = Galen.checkLayout(WebDriverRunner.getWebDriver(),
+            this.getClass().getClassLoader().getResource(specPath).getPath(),
+            Collections.singletonList(configuration.getPlatform()));
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);
@@ -169,8 +164,8 @@ public abstract class BasePage<T> extends Base {
       }
     } else {
       LOG.info(
-          "Galen checks disabled, skipping checks for class {}. " 
-          + "You can enable Galen by setting galen.enabled = true in yasew.properties.",
+          "Galen checks disabled, skipping checks for class {}. "
+              + "You can enable Galen by setting galen.enabled = true in yasew.properties.",
           this.getClass().getSimpleName());
     }
     return (T) this;

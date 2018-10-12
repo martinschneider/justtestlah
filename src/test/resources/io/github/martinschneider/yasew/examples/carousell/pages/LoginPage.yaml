@@ -1,0 +1,50 @@
+USERNAME_FIELD:
+  web:
+    type: css
+    value: "#USER_NAME"
+  ios:
+    type: accesibilityId
+    value: login_page_username_text_field
+  android:
+    type: xpath
+    value: //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_username_text_field']//android.widget.EditText
+
+PASSWORD_FIELD:
+  web:
+    type: css
+    value: "#PASSWORD"
+  ios:
+    type: accesibilityId
+    value: login_page_password_text_field
+  android:
+    type: xpath
+    value: //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_password_text_field']//android.widget.EditText
+    
+LOGIN_BUTTON:
+  web:
+    type: xpath
+    value: "//BUTTON//SPAN[text()='Log in']"
+  ios:
+    type: accesibilityId
+    value: login_page_login_button
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/login_page_login_button
+
+ERROR_MESSAGE:
+  web:
+    type: css
+    value: li.alert
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/textinput_error
+
+CONFIRM_CHAT_ALERTS:
+  ios:
+    type: accesibilityId
+    value: Notify me of chats
+
+ALLOW_NOTIFICATIONS:
+  ios:
+    type: accesibilityId
+    value: Allow

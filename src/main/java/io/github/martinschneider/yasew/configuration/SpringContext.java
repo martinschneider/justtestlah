@@ -2,6 +2,7 @@ package io.github.martinschneider.yasew.configuration;
 
 import com.applitools.eyes.selenium.Eyes;
 import com.galenframework.reports.GalenTestInfo;
+import io.github.martinschneider.yasew.locator.LocatorParser;
 import io.github.martinschneider.yasew.user.UserService;
 import io.github.martinschneider.yasew.visual.TemplateMatcher;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.yaml.snakeyaml.Yaml;
 
 /** YASeW Spring context. */
 @Configuration
@@ -32,6 +34,18 @@ public class SpringContext {
   @Bean
   public YasewConfiguration config() {
     return new YasewConfiguration(webDriverBuilder(), userService());
+  }
+  
+  @Bean
+  public Yaml yamlParser()
+  {
+    return new Yaml();
+  }
+  
+  @Bean
+  public LocatorParser locatorParser()
+  {
+    return new LocatorParser();
   }
 
   /**
