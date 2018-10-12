@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.martinschneider</groupId>
@@ -47,6 +48,7 @@
     <junit.version>5.3.1</junit.version>
     <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
     <slf4j.version>1.8.0-beta2</slf4j.version>
+    <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.11.1</assertj.version>
     <mockito.version>2.22.0</mockito.version>
     <commons.collections.version>4.2</commons.collections.version>
@@ -73,6 +75,12 @@
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>${selenium.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.appium</groupId>
@@ -122,8 +130,18 @@
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
+      <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -170,6 +188,12 @@
       <groupId>com.applitools</groupId>
       <artifactId>eyes-selenium-java3</artifactId>
       <version>${applitools.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.galenframework</groupId>
