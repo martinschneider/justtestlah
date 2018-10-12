@@ -1,0 +1,9 @@
+TAG_FILTER:
+  web:
+    type: css
+    value: "#tagfilter"
+    
+TAG_SELECT:
+  web:
+    type: css
+    value: .post-tag

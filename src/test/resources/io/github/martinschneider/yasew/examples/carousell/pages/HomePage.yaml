@@ -1,0 +1,21 @@
+LOGIN_BUTTON:
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/welcome_page_login_button
+  ios:
+    type: accesibilityId
+    value: welcome_page_login_button
+  web:
+    type: css
+    value: #navbarLoginLink
+    
+USER_MENU:
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/text_tab
+  ios:
+    type: accesibilityId
+    value: header_page_me_tab
+  web:
+    type: css
+    value: div.navbar-avatar-wrapper

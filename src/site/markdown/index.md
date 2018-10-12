@@ -1,5 +1,4 @@
 [<img src="https://travis-ci.org/martinschneider/yasew.svg?branch=master" height="41" alt="Build status"/>](https://travis-ci.org/martinschneider/yasew)
-[<img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-1.svg" height="41" alt="Buy me a coffee"/>](https://www.buymeacoffee.com/mschneider)
 
 ## YASeW - Yet Another Selenium Wrapper
 
@@ -13,13 +12,11 @@ git clone https://github.com/martinschneider/yasew.git
 mvn test -Dtest=TestRunner
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `yasew.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change it). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `yasew.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
 
 ```bash
 mvn test -Dtest=TestRunner -Dyasew.properties=/absolute/path/to/your/yasew.properties
 ```
-
-For now YASeW requires Java 8.
 
 ### Use in your own projects
 
@@ -29,9 +26,9 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>yasew-core</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <!-- You can also try the latest snapshot release instead -->
-  <!-- <version>1.2-SNAPSHOT</version> -->
+  <!-- <version>1.3-SNAPSHOT</version> -->
 </dependency>
 ```
 
@@ -188,14 +185,21 @@ public class SomeTestClass {}
 The feature files and steps are automatically picked up from the locations provided in `yasew.properties`.
 
 ### Locators
-Elements can be identified by a unique `ID`, a `CSS` or an `XPATH` expression. `AccesibilityId` and `UIAutomator` are supported as well. Each element has a unique key (e.g. `SEARCH_FIELD`) which is mapped to its corresponding locator expression in a .`properties` file. There is one general `.properties` file for every page object. If the locators differ between platforms there are additional files for each platform. The files have the same name as the corresponding JAVA class and are put under the same folder.
-For example the page object for the homepage is `demoproject.pages.HomePage` (under `/src/main/java`). Then the corresponding locators are expected in `/demoproject/pages/HomePage.properties` (under `/src/main/resources`). The platform-specific ones go in sub-folders, e.g. `/src/main/resources/demoproject/pages/web/HomePage.properties`:
+Elements can be identified by a unique `id`, a `css` or an `xpath` expression. `AccesibilityId` (for iOS) and `UIAutomator` (for Android) are supported as well. Each element has a unique key (e.g. `SEARCH_FIELD`) which is mapped to its corresponding locator expression in a .`yaml` file.
+For example, let's say the page object for the home page is `demoproject.pages.HomePage` (under `/src/main/java`). Then the corresponding locators are expected in `/demoproject/pages/HomePage.yaml` (under `/src/main/resources`).
 
-Example of a locator properties file:
-```ini
-MENU_TAGS=ID|nav-tags
-SEARCH_FIELD=input[name=q]
-SEARCH_BUTTON=.iconSearch
+Example of a locator YAML file:
+```yaml
+LOGIN_BUTTON:
+  web:
+    type: xpath
+    value: "//BUTTON//SPAN[text()='Log in']"
+  ios:
+    type: accesibilityId
+    value: login_page_login_button
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/login_page_login_button
 ```
 
 The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](https://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
@@ -203,16 +207,7 @@ The correct locator will be automatically resolved for the current platform. Tak
 1. It is not possible to directly use elements in step definitions (only in page objects). This is by design as UI elements are meant to be encapsulated in the page objects.
 2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same. 
 
-The type of a locator is specified by adding a prefix (followed by a `|`):
-```
-ID|someId
-XPATH|someXPathExpression
-CSS|someCSSSelector
-ACCESSIBILITY_ID|someAccesibilityId # for iOS tests with XCUITest
-UIAUTOMATOR|someUiAutomator # for Android tests with UiAutomator
-```
-
-If omitted the default is `CSS`.
+If omitted the default type of locators is `css`.
 
 #### Placeholders
 Locators can include placeholders which will be replaced by variables passed to the `$` method. For example:

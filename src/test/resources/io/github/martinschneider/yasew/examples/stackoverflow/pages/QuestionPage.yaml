@@ -1,0 +1,7 @@
+POST_TAG:
+  web:
+    type: xpath
+    value: "//A[contains(@class,'post-tag') and contains(text(),'%s')]"
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/question_view_item_tags
