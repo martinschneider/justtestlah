@@ -40,6 +40,7 @@ import org.junit.runners.model.Statement;
 import org.opencv.core.Core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class YasewRunner extends ParentRunner<FeatureRunner> {
@@ -79,6 +80,8 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
     // Initialize Spring profiles and settings
     init();
 
+    bridgeLogging();
+
     // load OpenCV library
     if (Boolean.parseBoolean(getProperty(OPENCV_ENABLED_KEY, "false"))) { // load the opencv library
       OpenCV.loadShared();
@@ -86,16 +89,11 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
       System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
 
-    String cucumberOptions =
-        "--tags @"
-            + getProperty(PLATFORM_KEY, DEFAULT_PLATFORM)
-            + " --glue io.github.martinschneider.yasew.steps --glue "
-            + getProperty(STEPS_PACKAGE_KEY)
-            + " --plugin pretty --plugin html:report --plugin json:"
-            + getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY)
-            + "/cucumber.json"
-            + " "
-            + getProperty(FEATURES_DIRECTORY_KEY);
+    String cucumberOptions = "--tags @" + getProperty(PLATFORM_KEY, DEFAULT_PLATFORM)
+        + " --glue io.github.martinschneider.yasew.steps --glue " + getProperty(STEPS_PACKAGE_KEY)
+        + " --plugin pretty --plugin html:report --plugin json:"
+        + getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY)
+        + "/cucumber.json" + " " + getProperty(FEATURES_DIRECTORY_KEY);
     LOG.info("Setting cucumber options ({}) to {}", CUCUMBER_OPTIONS_KEY, cucumberOptions);
     System.setProperty(CUCUMBER_OPTIONS_KEY, cucumberOptions);
     Assertions.assertNoCucumberAnnotatedMethods(clazz);
@@ -115,7 +113,7 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
     BackendSupplier backendSupplier =
         new BackendModuleBackendSupplier(resourceLoader, classFinder, runtimeOptions);
     this.bus = new TimeServiceEventBus(TimeService.SYSTEM);
-    
+
     this.runnerSupplier = new ThreadLocalRunnerSupplier(runtimeOptions, bus, backendSupplier);
     RerunFilters rerunFilters = new RerunFilters(runtimeOptions, featureLoader);
     this.filters = new Filters(runtimeOptions, rerunFilters);
@@ -133,6 +131,11 @@ public class YasewRunner extends ParentRunner<FeatureRunner> {
     runnerSupplier.get().reportStepDefinitions(stepDefinitionReporter);
 
     addChildren(features);
+  }
+
+  private void bridgeLogging() {
+    SLF4JBridgeHandler.removeHandlersForRootLogger();
+    SLF4JBridgeHandler.install();
   }
 
   @Override
