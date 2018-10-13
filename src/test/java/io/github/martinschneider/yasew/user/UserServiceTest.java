@@ -2,6 +2,7 @@ package io.github.martinschneider.yasew.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class UserServiceTest {
    */
   @Before
   public void init() {
-    String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");
+    String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);
     target.usersFile =
         this.getClass().getClassLoader().getResource(baseFolder + "/users.properties").getFile();
     target.initialize();
