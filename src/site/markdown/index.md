@@ -28,9 +28,9 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>yasew-core</artifactId>
-  <version>1.2</version>
-  <!-- You can also try the latest snapshot release instead -->
-  <!-- <version>1.3-SNAPSHOT</version> -->
+  <version>1.1</version>
+  <!-- You can also use the latest snapshot version instead -->
+  <!-- <version>1.2-SNAPSHOT</version> -->
 </dependency>
 ```
 
