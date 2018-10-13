@@ -1,6 +1,8 @@
-[<img src="https://travis-ci.org/martinschneider/yasew.svg?branch=master" height="41" alt="Build status"/>](https://travis-ci.org/martinschneider/yasew)
-
 ## YASeW - Yet Another Selenium Wrapper
+
+[![Build status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew)
+
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/yasew-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/yasew-core)
 
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
