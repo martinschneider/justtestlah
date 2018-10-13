@@ -1,3 +1,1 @@
-## YASeW - Yet Another Selenium Wrapper
-
-[Documentation](https://martinschneider.github.io/yasew/)
+./src/site/markdown/index.md
