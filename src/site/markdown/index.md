@@ -1,12 +1,10 @@
-## YASeW - Yet Another Selenium Wrapper
+# YASeW - Yet Another Selenium Wrapper
 
-[![Build status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew)
-
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/yasew-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/yasew-core)
+[![Build status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/yasew-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/yasew-core)
 
 YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
-### Getting started
+## Getting started
 Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
 
 ```bash
@@ -20,7 +18,7 @@ The default platform is `web`. To test one of the mobile apps you need to setup 
 mvn test -Dtest=TestRunner -Dyasew.properties=/absolute/path/to/your/yasew.properties
 ```
 
-### Use in your own projects
+## Use in your own projects
 
 Add the following Maven dependency to your `pom.xml`.
 
@@ -34,7 +32,7 @@ Add the following Maven dependency to your `pom.xml`.
 </dependency>
 ```
 
-### Page objects, steps and feature files
+## Page objects, steps and feature files
 There are three main ingredients for tests in YASeW:
 
 * Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
@@ -121,7 +119,7 @@ private HomePage home;
 
 As long as the page object class extends `io.github.martinschneider.yasew.base.BasePage` YASeW (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
 
-### Configuration
+## Configuration
 All configuration goes in a file called `yasew.properties`.
 
 ```ini
@@ -171,7 +169,7 @@ browserstack.username=
 
 You can specify the location of `yasew.properties` on start-up by providing it as a system property: `-DyasewProperties=/path/to/yasew.properties`. If no path is specified it will be loaded from the classpath.
 
-### Test runner
+## Test runner
 YASeW uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.yasew.YasewTest`:
 
 ```java
@@ -186,7 +184,7 @@ public class SomeTestClass {}
 
 The feature files and steps are automatically picked up from the locations provided in `yasew.properties`.
 
-### Locators
+## Locators
 Elements can be identified by a unique `id`, a `css` or an `xpath` expression. `AccesibilityId` (for iOS) and `UIAutomator` (for Android) are supported as well. Each element has a unique key (e.g. `SEARCH_FIELD`) which is mapped to its corresponding locator expression in a .`yaml` file.
 For example, let's say the page object for the home page is `demoproject.pages.HomePage` (under `/src/main/java`). Then the corresponding locators are expected in `/demoproject/pages/HomePage.yaml` (under `/src/main/resources`).
 
@@ -211,7 +209,7 @@ The correct locator will be automatically resolved for the current platform. Tak
 
 If omitted the default type of locators is `css`.
 
-#### Placeholders
+### Placeholders
 Locators can include placeholders which will be replaced by variables passed to the `$` method. For example:
 
 ```ini
@@ -221,7 +219,7 @@ POST_TAG=XPATH|//A[contains(@class,'post-tag') and contains(text(),'%s')]
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
 
-### Galen
+## Galen
 YaSew includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
 
 Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
@@ -258,13 +256,13 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
-### Applitools
+## Applitools
 
 There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `yasew.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
 Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
-### Browserstack
+## Browserstack
 
 You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `yasew.properties`:
 
@@ -276,7 +274,7 @@ browserstack.username=
 
 Please note that BrowserStack is a paid service.
 
-### Used frameworks
+## Used frameworks
 
 YASeW makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
 
@@ -292,17 +290,17 @@ YASeW makes use of a variety of frameworks to make writing and executing tests a
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
-### Presentations ###
+## Presentations
 
 This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
 
-#### Part 1 ####
+### Part 1
 [![Part 1](https://img.youtube.com/vi/OyAMnBEbT20/0.jpg)](https://www.youtube.com/watch?v=OyAMnBEbT20)
 
-#### Part 2 ####
+### Part 2
 [![Part 2](https://img.youtube.com/vi/maJkvP_qk4A/0.jpg)](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
-### Contact and support
+## Contact and support
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 

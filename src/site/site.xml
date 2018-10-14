@@ -3,51 +3,35 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
 
-    <skin>
-      <groupId>com.bernardomg.maven.skins</groupId>
-      <artifactId>docs-maven-skin</artifactId>
-      <version>1.3.2</version>
-    </skin>
+  <skin>
+    <groupId>com.bernardomg.maven.skins</groupId>
+    <artifactId>docs-maven-skin</artifactId>
+    <version>${maven.site.skin.version}</version>
+  </skin>
 
-    <custom>
-      <skinConfig>
-        <keywords>Testautomation, Selenium, Appium</keywords>
-        <topNav>
-          <menu>Reports</menu>
-        </topNav>
-        <iconNav>
-          <menu>Icons</menu>
-        </iconNav>
-      </skinConfig>
-    </custom>
+  <custom>
+    <skinConfig>
+      <keywords>Testautomation, Selenium, Appium</keywords>
+      <topNav>
+        <menu>Info and reports</menu>
+        <menu>Documentation</menu>
+      </topNav>
+      <iconNav>
+        <menu>Icons</menu>
+      </iconNav>
+    </skinConfig>
+  </custom>
 
-    <body>
-      <menu name="Reports" inherit="top">
-        <item name="Checkstyle" href="./checkstyle.html" />
-        <item name="CI management" href="./ci-management.html" />
-        <item name="Cobertura" href="./cobertura/index.html" />
-        <item name="Dependencies" href="./dependencies.html" />
-        <item name="Dependency info" href="./dependency-info.html" />
-        <item name="Distribution management"
-          href="./distribution-management.html" />
-        <item name="Issue management"
-          href="./issue-management.html" />
-        <item name="Plugin management"
-          href="./plugin-management.html" />
-        <item name="Plugins" href="./plugins.html" />
-        <item name="Project info" href="./project-info.html" />
-        <item name="Project reports" href="./project-reports.html" />
-        <item name="SCM" href="./scm.html" />
-        <item name="Sonarcloud" href="./sonarcloud.html" />
-        <item name="Summary" href="./summary.html" />
-        <item name="Surefire report" href="./surefire-report.html" />
-        <item name="Team" href="./team.html" />
-      </menu>
-      <menu name="Documentation" inherit="bottom">
-        <item name="API docs" href="../apidocs/index.html" />
-      </menu>
-      <menu name="Icons" inherit="bottom">
-        <item name="Github" img="github" href="${project.scm.url}" />
-      </menu>
-    </body>
-  </project>
+  <body>
+    <menu name="Info and reports" inherit="top">
+      <item name="Info" href="./project-info.html" />
+      <item name="Reports" href="./project-reports.html" />
+    </menu>
+    <menu name="Documentation" inherit="top">
+      <item name="API docs" href="../apidocs/index.html" />
+    </menu>
+    <menu name="Icons" inherit="bottom">
+      <item name="Github" img="github" href="${project.scm.url}" />
+    </menu>
+  </body>
+</project>
