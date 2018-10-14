@@ -2,6 +2,7 @@ package io.github.martinschneider.yasew.locator;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.appium.java_client.MobileBy.ByAccessibilityId;
@@ -15,25 +16,16 @@ public class LocatorMap {
 
   private Map<String, Map<String, Map<String, String>>> map;
 
-  /**
-   * Default constructor.
-   */
+  /** Default constructor. */
   public LocatorMap() {
     this.map = new HashMap<String, Map<String, Map<String, String>>>();
-  }  
-  
-  /**
-   * @param map locator map
-   */
-  public LocatorMap(Map<String, Map<String, Map<String, String>>> map) {
-    this.map = map;
   }
 
   /**
-   * @return the locator map
-   */
-  public Map<String, Map<String, Map<String, String>>> getMap() {
-    return map;
+   * Construct a locator map from an existing {@link Map} object.
+   * @param map locator map */
+  public LocatorMap(Map<String, Map<String, Map<String, String>>> map) {
+    this.map = map;
   }
 
   private static final String CSS = "css";
@@ -44,7 +36,7 @@ public class LocatorMap {
 
   /**
    * Get a Selenide locator.
-   * 
+   *
    * @param key locator key
    * @param platform platform
    * @param params locator key parameters
@@ -72,7 +64,7 @@ public class LocatorMap {
 
   /**
    * Get a Selenide collection locator.
-   * 
+   *
    * @param key locator key
    * @param platform platform
    * @param params locator key parameters

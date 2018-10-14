@@ -28,7 +28,7 @@ public class HomePage extends BasePage<HomePage> {
 
   /**
    * Perform a search.
-   * 
+   *
    * @param query search query
    * @return {@link QuestionsPage}
    */

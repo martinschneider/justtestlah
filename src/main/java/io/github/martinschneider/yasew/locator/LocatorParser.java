@@ -22,6 +22,12 @@ public class LocatorParser {
     this.yamlParser = yamlParser;
   }
 
+  /**
+   * Parse locators from file.
+   *
+   * @param fileName the path to the file to parse the locators from
+   * @return {@link Map} structure of the locators
+   */
   public Map<String, Map<String, Map<String, String>>> parse(String fileName) {
     InputStream inputStream = BasePage.class.getClassLoader().getResourceAsStream(fileName);
     if (inputStream == null) {

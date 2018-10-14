@@ -17,8 +17,8 @@ import org.yaml.snakeyaml.Yaml;
 /** YASeW Spring context. */
 @Configuration
 @PropertySource(
-  value = {"yasew.properties", "file:${yasew.properties}"},
-  ignoreResourceNotFound = true
+    value = {"yasew.properties", "file:${yasew.properties}"},
+    ignoreResourceNotFound = true
 )
 @ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
 public class SpringContext {
@@ -35,22 +35,20 @@ public class SpringContext {
   public YasewConfiguration config() {
     return new YasewConfiguration(webDriverBuilder(), userService());
   }
-  
+
   @Bean
-  public Yaml yamlParser()
-  {
+  public Yaml yamlParser() {
     return new Yaml();
   }
-  
+
   @Bean
-  public LocatorParser locatorParser()
-  {
+  public LocatorParser locatorParser() {
     return new LocatorParser();
   }
 
   /**
    * Construct the matching {@link WebDriverBuilder}.
-   * 
+   *
    * @return {@link WebDriverBuilder} matching the configured cloud provider
    */
   @Bean

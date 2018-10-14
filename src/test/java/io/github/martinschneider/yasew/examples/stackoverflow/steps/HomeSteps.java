@@ -26,9 +26,7 @@ public class HomeSteps extends BaseSteps {
     home.search(query);
   }
 
-  /**
-   * Checks for the "new question" icon.
-   */
+  /** Checks for the "new question" icon. */
   @Then("^I can see the ask a question icon$")
   public void questionIcon() {
     assertThat(home.hasImage("questionIcon.png"))

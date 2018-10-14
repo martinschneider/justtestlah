@@ -36,17 +36,13 @@ public abstract class BasePage<T> extends Base {
     return locators;
   }
 
-  @Autowired
-  private LocatorParser locatorParser;
+  @Autowired private LocatorParser locatorParser;
 
-  @Autowired
-  private TemplateMatcher templateMatcher;
+  @Autowired private TemplateMatcher templateMatcher;
 
-  @Autowired
-  private Eyes eyes;
+  @Autowired private Eyes eyes;
 
-  @Autowired
-  private List<GalenTestInfo> galenTests;
+  @Autowired private List<GalenTestInfo> galenTests;
 
   /**
    * Selenide style locator.
@@ -69,8 +65,8 @@ public abstract class BasePage<T> extends Base {
    */
   @SuppressWarnings("squid:S00100Method") // the method name is on purpose
   protected ElementsCollection $$(String locatorKey, Object... params) {
-    return Selenide
-        .$$(locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
+    return Selenide.$$(
+        locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
   }
 
   public boolean hasImage(String imageName) {
@@ -88,13 +84,20 @@ public abstract class BasePage<T> extends Base {
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
       File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-      return templateMatcher.match(screenshotFile.getAbsolutePath(),
-          this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
-          threshold).isFound();
+      return templateMatcher
+          .match(
+              screenshotFile.getAbsolutePath(),
+              this.getClass()
+                  .getClassLoader()
+                  .getResource(IMAGE_FOLDER + "/" + imageName)
+                  .getFile(),
+              threshold)
+          .isFound();
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
-              + driver.getClass().getSimpleName() + ".");
+              + driver.getClass().getSimpleName()
+              + ".");
     }
   }
 
@@ -153,9 +156,11 @@ public abstract class BasePage<T> extends Base {
       String title = "Check layout " + specPath;
       LayoutReport layoutReport;
       try {
-        layoutReport = Galen.checkLayout(WebDriverRunner.getWebDriver(),
-            this.getClass().getClassLoader().getResource(specPath).getPath(),
-            Collections.singletonList(configuration.getPlatform()));
+        layoutReport =
+            Galen.checkLayout(
+                WebDriverRunner.getWebDriver(),
+                this.getClass().getClassLoader().getResource(specPath).getPath(),
+                Collections.singletonList(configuration.getPlatform()));
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);

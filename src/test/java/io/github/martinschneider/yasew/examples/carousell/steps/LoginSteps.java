@@ -17,7 +17,7 @@ public class LoginSteps extends BaseSteps {
 
   /**
    * Login the given user.
-   * 
+   *
    * @param userKey userKey of the user to log in
    */
   @When("^I login as \"([^\"]*)\"$")

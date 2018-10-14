@@ -15,7 +15,7 @@ public class TagsPage extends BasePage<TagsPage> {
 
   /**
    * Filter questions.
-   * 
+   *
    * @param filter search filter
    * @return {@link TagsPage}
    */

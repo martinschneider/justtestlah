@@ -10,9 +10,7 @@ public class UserServiceTest {
 
   private UserService target = new UserService();
 
-  /**
-   * Initialise test users.
-   */
+  /** Initialise test users. */
   @Before
   public void init() {
     String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);

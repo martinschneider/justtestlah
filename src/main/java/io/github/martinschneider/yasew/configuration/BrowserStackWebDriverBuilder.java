@@ -31,8 +31,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   /*
    * (non-Javadoc)
    *
-   * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#
-   * getAndroidDriver()
+   * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder# getAndroidDriver()
    */
   @Override
   public WebDriver getAndroidDriver() {
@@ -50,8 +49,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   /*
    * (non-Javadoc)
    *
-   * @see
-   * io.github.martinschneider.yasew.configuration.WebDriverBuilder#getIOSDriver()
+   * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#getIOSDriver()
    */
   @Override
   public WebDriver getIOsDriver() {

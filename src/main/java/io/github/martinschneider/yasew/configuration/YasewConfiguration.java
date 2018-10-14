@@ -91,9 +91,11 @@ public class YasewConfiguration {
     return baseUrl;
   }
 
-  /** 
+  /**
    * Get the platform to test against.
-   * @return the platform to test against */
+   *
+   * @return the platform to test against
+   */
   public String getPlatform() {
     return platform;
   }

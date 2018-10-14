@@ -15,7 +15,7 @@ public class LoginPage extends BasePage<LoginPage> {
 
   /**
    * Log in the given user.
-   * 
+   *
    * @param user the user to log in
    * @return {@link HomePage}
    */

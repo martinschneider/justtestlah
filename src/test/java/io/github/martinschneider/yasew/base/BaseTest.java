@@ -16,9 +16,7 @@ public class BaseTest {
 
   @Mock private ApplicationContext applicationContext;
 
-  /**
-   * Initialise mocks.
-   */
+  /** Initialise mocks. */
   @Before
   @SuppressWarnings("unchecked")
   public void init() {
@@ -27,9 +25,7 @@ public class BaseTest {
     doReturn(new TestPageObject()).when(applicationContext).getBean(any(Class.class));
   }
 
-  /**
-   * Test the injection of page objects .
-   */
+  /** Test the injection of page objects . */
   @Test
   public void testInjection() {
     target.setApplicationContext(applicationContext);

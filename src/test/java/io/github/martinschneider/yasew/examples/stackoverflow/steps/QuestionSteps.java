@@ -20,7 +20,7 @@ public class QuestionSteps extends BaseSteps {
 
   /**
    * Check whether a question is tagged with a given tag.
-   * 
+   *
    * @param tagName name of the tag
    */
   @Then("the question is tagged with \"([^\"]*)\"")

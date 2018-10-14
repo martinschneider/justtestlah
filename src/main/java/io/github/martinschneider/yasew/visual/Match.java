@@ -5,7 +5,8 @@ package io.github.martinschneider.yasew.visual;
  *
  * <p>found = true, if a match has been detected
  *
- * <p>if found = true then x and y represent the rounded coordinates of the center of the match
+ * <p>if found = true then matchX and matchY represent the rounded coordinates of the center of the
+ * match
  */
 public class Match {
 
@@ -23,19 +24,19 @@ public class Match {
    * Constructor.
    *
    * @param found true, if a match has been detected
-   * @param x x coordinate of the center of the match
-   * @param y y coordinate of the center of the match
+   * @param matchX x coordinate of the center of the match
+   * @param matchY y coordinate of the center of the match
    */
-  public Match(boolean found, int x, int y) {
+  public Match(boolean found, int matchX, int matchY) {
     super();
     this.found = found;
-    this.x = x;
-    this.y = y;
+    this.matchX = matchX;
+    this.matchY = matchY;
   }
 
   private boolean found;
-  private int x;
-  private int y;
+  private int matchX;
+  private int matchY;
 
   public boolean isFound() {
     return found;
@@ -46,18 +47,18 @@ public class Match {
   }
 
   public int getX() {
-    return x;
+    return matchX;
   }
 
-  public void setX(int x) {
-    this.x = x;
+  public void setX(int matchX) {
+    this.matchX = matchX;
   }
 
   public int getY() {
-    return y;
+    return matchY;
   }
 
-  public void setY(int y) {
-    this.y = y;
+  public void setY(int matchY) {
+    this.matchY = matchY;
   }
 }

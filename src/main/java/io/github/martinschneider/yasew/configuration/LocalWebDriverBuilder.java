@@ -37,7 +37,9 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Value("${mobile.appiumUrl}")
   protected String appiumUrl;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   *
    * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#getAndroidDriver()
    */
   @Override
@@ -55,7 +57,9 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     }
   }
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   *
    * @see io.github.martinschneider.yasew.configuration.WebDriverBuilder#getIOSDriver()
    */
   @Override

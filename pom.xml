@@ -65,7 +65,7 @@
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <github.site.maven.plugin.version>0.12</github.site.maven.plugin.version>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
-    <doxia.version>1.8</doxia.version>
+    <checkstyle.version>8.13</checkstyle.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -231,6 +231,22 @@
     </repository>
   </distributionManagement>
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven.checkstyle.plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${checkstyle.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>

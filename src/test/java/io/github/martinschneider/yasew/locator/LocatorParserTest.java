@@ -1,6 +1,7 @@
 package io.github.martinschneider.yasew.locator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.Map;
 import org.junit.Test;
@@ -19,11 +20,15 @@ public class LocatorParserTest {
 
     assertThat(locatorMap.get("SEARCH_FIELD")).as("verifying SEARCH_FIELD locator").isNotNull();
     assertThat(locatorMap.get("SEARCH_FIELD").get("android"))
-        .as("verifying SEARCH_FIELD Android locator").isNotNull();
+        .as("verifying SEARCH_FIELD Android locator")
+        .isNotNull();
     assertThat(locatorMap.get("SEARCH_FIELD").get("android").get("type"))
-        .as("verifying SEARCH_FIELD Android locator type").isNotNull().isEqualTo("id");
+        .as("verifying SEARCH_FIELD Android locator type")
+        .isNotNull()
+        .isEqualTo("id");
     assertThat(locatorMap.get("SEARCH_FIELD").get("android").get("value"))
-        .as("verifying SEARCH_FIELD Android locator type").isNotNull()
+        .as("verifying SEARCH_FIELD Android locator type")
+        .isNotNull()
         .isEqualTo("com.stackexchange.stackoverflow:id/search_src_text");
   }
 }
