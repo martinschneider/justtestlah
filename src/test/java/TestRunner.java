@@ -1,3 +1,3 @@
-import io.github.martinschneider.yasew.junit.YasewTest;
+import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
 
-public class TestRunner extends YasewTest {}
+public class TestRunner extends JustTestLahTest {}

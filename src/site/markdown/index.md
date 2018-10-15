@@ -1,21 +1,21 @@
-# YASeW - Yet Another Selenium Wrapper
+# JustTestLah! 🇸🇬
 
-[![Build status](https://travis-ci.org/martinschneider/yasew.svg?branch=master)](https://travis-ci.org/martinschneider/yasew) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/yasew-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/yasew-core)
+[![Build status](https://travis-ci.org/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
 
-YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration as easy and the test code as simple and readable as possible.
+JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 ## Getting started
 Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
 
 ```bash
-git clone https://github.com/martinschneider/yasew.git
+git clone https://github.com/martinschneider/justtestlah.git
 mvn test -Dtest=TestRunner
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `yasew.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
 
 ```bash
-mvn test -Dtest=TestRunner -Dyasew.properties=/absolute/path/to/your/yasew.properties
+mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties
 ```
 
 ## Use in your own projects
@@ -25,7 +25,7 @@ Add the following Maven dependency to your `pom.xml`.
 ```xml
 <dependency>
   <groupId>io.github.martinschneider</groupId>
-  <artifactId>yasew-core</artifactId>
+  <artifactId>justtestlah-core</artifactId>
   <version>1.1</version>
   <!-- You can also use the latest snapshot version instead -->
   <!-- <version>1.2-SNAPSHOT</version> -->
@@ -33,7 +33,7 @@ Add the following Maven dependency to your `pom.xml`.
 ```
 
 ## Page objects, steps and feature files
-There are three main ingredients for tests in YASeW:
+There are three main ingredients for tests in JustTestLah!:
 
 * Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
 * Step definitions use page objects to define the actions of a test.  They form the building blocks to write
@@ -117,16 +117,16 @@ You can inject page objects in steps by declaring a private field:
 private HomePage home;
 ```
 
-As long as the page object class extends `io.github.martinschneider.yasew.base.BasePage` YASeW (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
+As long as the page object class extends `io.github.martinschneider.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
 
 ## Configuration
-All configuration goes in a file called `yasew.properties`.
+All configuration goes in a file called `justtestlah.properties`.
 
 ```ini
 # GENERAL settings
 platform=web
-pages.package=io.github.martinschneider.yasew.examples.stackoverflow.pages
-steps.package=io.github.martinschneider.yasew.examples.stackoverflow.steps
+pages.package=io.github.martinschneider.justtestlah.examples.stackoverflow.pages
+steps.package=io.github.martinschneider.justtestlah.examples.stackoverflow.steps
 features.directory=src/test/resources/features/stackoverflow
 cucumber.report.directory=target/report/cucumber
 
@@ -167,22 +167,22 @@ browserstack.accessKey=
 browserstack.username=
 ```
 
-You can specify the location of `yasew.properties` on start-up by providing it as a system property: `-DyasewProperties=/path/to/yasew.properties`. If no path is specified it will be loaded from the classpath.
+You can specify the location of `justtestlah.properties` on start-up by providing it as a system property: `-DjusttestlahProperties=/path/to/justtestlah.properties`. If no path is specified it will be loaded from the classpath.
 
 ## Test runner
-YASeW uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.yasew.YasewTest`:
+JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.justtestlah.JustTestLahTest`:
 
 ```java
-public class TestRunner extends YasewTest {}
+public class TestRunner extends JustTestLahTest {}
 ```
 
 Alternatively, you can also use the JUnit test runner directly:
 ```java
-@RunWith(YasewRunner.class)
+@RunWith(JustTestLahRunner.class)
 public class SomeTestClass {}
 ```
 
-The feature files and steps are automatically picked up from the locations provided in `yasew.properties`.
+The feature files and steps are automatically picked up from the locations provided in `justtestlah.properties`.
 
 ## Locators
 Elements can be identified by a unique `id`, a `css` or an `xpath` expression. `AccesibilityId` (for iOS) and `UIAutomator` (for Android) are supported as well. Each element has a unique key (e.g. `SEARCH_FIELD`) which is mapped to its corresponding locator expression in a .`yaml` file.
@@ -220,11 +220,11 @@ Calling `$("POST_TAG", "selenium")` will return an element matching the followin
 
 
 ## Galen
-YaSew includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `yasew.properties`.
+JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
 Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
 
-Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `yasew.properties` (the default is `target/galen-reports/`).
+Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
 
 ```
 @objects
@@ -258,13 +258,13 @@ See the [Galen documentation](https://galenframework.com/docs/reference-galen-sp
 
 ## Applitools
 
-There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `yasew.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
+There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
 Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
 ## Browserstack
 
-You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `yasew.properties`:
+You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
 
 ```
 cloudprovider=browserstack
@@ -276,9 +276,9 @@ Please note that BrowserStack is a paid service.
 
 ## Used frameworks
 
-YASeW makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
+JustTestLah! makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
 
-* [Selenium](https://www.seleniumhq.org), the main test framework used by YASeW
+* [Selenium](https://www.seleniumhq.org), the main test framework used by JustTestLah!
 * [Appium](https://appium.io), an extension of Selenium for native mobile app testing
 * [Cucumber](https://cucumber.io), the BDD framework
 * [JUnit](https://junit.org), the unit testing framework (mostly used as the runner for the tests)

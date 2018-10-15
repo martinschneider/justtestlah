@@ -4,28 +4,28 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.martinschneider</groupId>
-  <artifactId>yasew-core</artifactId>
+  <artifactId>justtestlah-core</artifactId>
   <version>1.2-SNAPSHOT</version>
-  <name>YASeW</name>
-  <description>YASeW is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. YASeW's main aim is to make the configuration and the actual test code as easy as possible.</description>
+  <name>JustTestLah!</name>
+  <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <developers>
     <developer>
       <name>Martin Schneider</name>
       <email>mart.schneider@gmail.com</email>
     </developer>
   </developers>
-  <url>https://martinschneider.github.io/yasew</url>
+  <url>https://martinschneider.github.io/justtestlah</url>
   <scm>
-    <url>https://github.com/martinschneider/YASeW</url>
-    <connection>scm:git:git://github.com/martinschneider/YASeW.git</connection>
+    <url>https://github.com/martinschneider/JustTestLah</url>
+    <connection>scm:git:git://github.com/martinschneider/JustTestLah.git</connection>
   </scm>
   <ciManagement>
     <system>Travis CI</system>
-    <url>https://travis-ci.org/martinschneider/yasew</url>
+    <url>https://travis-ci.org/martinschneider/justtestlah</url>
   </ciManagement>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/martinschneider/YASeW/issues</url>
+    <url>https://github.com/martinschneider/JustTestLah/issues</url>
   </issueManagement>
   <licenses>
     <license>
