@@ -20,7 +20,7 @@ script:
 - mvn clean install -Dchromeoptions.args=--no-sandbox
 
 after_success:
-- travis_wait 30 mvn org.jacoco:jacoco-maven-plugin:prepare-agent sonar:sonar
+- mvn sonar:sonar
 - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then mvn site; fi
 
 env:
