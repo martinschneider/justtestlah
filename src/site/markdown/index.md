@@ -212,8 +212,11 @@ If omitted the default type of locators is `css`.
 ### Placeholders
 Locators can include placeholders which will be replaced by variables passed to the `$` method. For example:
 
-```ini
-POST_TAG=XPATH|//A[contains(@class,'post-tag') and contains(text(),'%s')]
+```yaml
+POST_TAG:
+  web:
+    type: xpath
+    value: "//A[contains(@class,'post-tag') and contains(text(),'%s')]"
 ```
 
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
@@ -294,14 +297,11 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
 
-### Part 1
-[![Part 1](https://img.youtube.com/vi/OyAMnBEbT20/0.jpg)](https://www.youtube.com/watch?v=OyAMnBEbT20)
-
-### Part 2
-[![Part 2](https://img.youtube.com/vi/maJkvP_qk4A/0.jpg)](https://www.youtube.com/watch?v=maJkvP_qk4A)
+[Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
+[Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Contact and support
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
-[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-1.svg)](https://www.buymeacoffee.com/mschneider)
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)

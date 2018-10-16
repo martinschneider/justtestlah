@@ -187,7 +187,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       LOG.debug("Reading property {} = {}", key, value);
       return value;
     }
-    LOG.warn("Property {} not set in justtestlah.properties. Using default value: {}", key, defaultValue);
+    LOG.warn("Property {} not set in justtestlah.properties. Using default value: {}", key,
+        defaultValue);
     return defaultValue;
   }
 
