@@ -223,5 +223,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-report/**
-build/**
+**/report/**
+**/build/**
