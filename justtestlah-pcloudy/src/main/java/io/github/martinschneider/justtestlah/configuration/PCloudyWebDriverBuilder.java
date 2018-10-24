@@ -15,17 +15,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-public class PCloudyConfiguration extends LocalWebDriverBuilder implements WebDriverBuilder {
+public class PCloudyWebDriverBuilder extends LocalWebDriverBuilder implements WebDriverBuilder {
 
   private static final String PCLOUDY_API_URL = "https://device.pcloudy.com/api/";
 
-  private static final Logger LOG = LoggerFactory.getLogger(PCloudyConfiguration.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PCloudyWebDriverBuilder.class);
 
   @Value("${pcloudy.email}")
   private String email;
@@ -51,7 +52,8 @@ public class PCloudyConfiguration extends LocalWebDriverBuilder implements WebDr
       return null;
     }
     return new AndroidDriver<AndroidElement>(buildPCloudyUrl(pCloudySession),
-        addAndroidCapabilities(new DesiredCapabilities()));
+        addPCloudyCapabilities(addAndroidCapabilities(new DesiredCapabilities()),
+            pCloudySession.getDto()));
   }
 
   /*
@@ -68,8 +70,17 @@ public class PCloudyConfiguration extends LocalWebDriverBuilder implements WebDr
       LOG.error("Error creating pCloudy session!", exception);
       return null;
     }
-    return new IOSDriver<IOSElement>(buildPCloudyUrl(pCloudySession),
-        addIOsCapabilities(addIOsCapabilities(new DesiredCapabilities())));
+    return new IOSDriver<IOSElement>(buildPCloudyUrl(pCloudySession), addPCloudyCapabilities(
+        addIOsCapabilities(new DesiredCapabilities()), pCloudySession.getDto()));
+  }
+
+  private Capabilities addPCloudyCapabilities(DesiredCapabilities capabilities,
+      BookingDtoDevice device) {
+    capabilities.setCapability("deviceName", device.capabilities.deviceName);
+    capabilities.setCapability("browserName", device.capabilities.browserName);
+    capabilities.setCapability("platformName", device.capabilities.platformName);
+    capabilities.setCapability("app", "");
+    return capabilities;
   }
 
   private URL buildPCloudyUrl(PCloudyAppiumSession pCloudySession) {

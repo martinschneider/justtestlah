@@ -70,7 +70,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities.setCapability("launchTimeout", 90000);
     capabilities.setCapability("deviceName", deviceName);
     capabilities.setCapability("browserName", deviceName);
-   // capabilities.setCapability("app", appPath);
+    capabilities.setCapability("app", appPath);
     capabilities.setCapability("platformName", platform);
     capabilities.setCapability("rotatable", true);
     return capabilities;

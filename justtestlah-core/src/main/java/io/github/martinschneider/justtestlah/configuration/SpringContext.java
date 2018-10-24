@@ -24,7 +24,7 @@ import org.yaml.snakeyaml.Yaml;
 @ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
 public class SpringContext {
 
-  private static final String PCLOUDY_WEB_DRIVER_BUILDER_CLASS = "io.github.martinschneider.justtestlah.configuration.PCloudyConfiguration";
+  private static final String PCLOUDY_WEB_DRIVER_BUILDER_CLASS = "io.github.martinschneider.justtestlah.configuration.PCloudyWebDriverBuilder";
   private static final String BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS = "io.github.martinschneider.justtestlah.configuration.BrowserStackWebDriverBuilder";
 
   private Logger LOG = LoggerFactory.getLogger(SpringContext.class);
@@ -71,6 +71,7 @@ public class SpringContext {
       } catch (Exception e) {
         LOG.error(
             "Couldn't instantiate BrowserStackWebDriverBuilder. Ensure that you included `justestlah-browserstack` in your pom.xml!");
+        System.exit(1);
       }
     } else if (cloudProvider.equals("pcloudy")) {
       try {
@@ -79,6 +80,7 @@ public class SpringContext {
       } catch (Exception e) {
         LOG.error(
             "Couldn't instantiate PCloudyWebDriverBuilder. Ensure that you included `justestlah-pcloudy` in your pom.xml!");
+        System.exit(1);
       }
     }
     return null;
