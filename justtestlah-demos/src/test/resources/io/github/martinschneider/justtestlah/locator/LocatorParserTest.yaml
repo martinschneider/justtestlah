@@ -1,0 +1,14 @@
+SEARCH_FIELD:
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/search_src_text
+
+ITEM_SCORE:
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/question_list_item_score
+  
+TOOLBAR:
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/toolbar
