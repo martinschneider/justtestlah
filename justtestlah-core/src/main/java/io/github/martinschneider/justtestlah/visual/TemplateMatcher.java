@@ -126,8 +126,8 @@ public class TemplateMatcher {
       Imgcodecs.imwrite(fileName, image);
       return new Match(
           true,
-          (int) Math.round(bestMatch.maxLoc.x + templ.cols() / 2),
-          (int) Math.round(bestMatch.maxLoc.y + templ.rows() / 2));
+          (int) Math.round(bestMatch.maxLoc.x + templ.cols() / 2.0),
+          (int) Math.round(bestMatch.maxLoc.y + templ.rows() / 2.0));
     }
     // else
     LOG.info(

@@ -244,7 +244,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
         LOG.info("Loading JustTestLah properties from classpath ({})", propertiesLocation);
         props.load(JustTestLahTest.class.getClassLoader().getResourceAsStream(propertiesLocation));
       }
-      if (Boolean.parseBoolean(props.get(EXPOSE_SYSTEM_PROPERTIES_KEY).toString())) {
+      if (props.get(EXPOSE_SYSTEM_PROPERTIES_KEY)==null || Boolean.parseBoolean(props.get(EXPOSE_SYSTEM_PROPERTIES_KEY).toString())) {
         props.forEach((key, value) -> System.setProperty(key.toString(), value.toString()));
       }
     } catch (NullPointerException | IOException e) {

@@ -7,6 +7,8 @@ import io.github.martinschneider.justtestlah.user.User;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import static com.codeborne.selenide.Selenide.sleep;
+
 @Component
 @Profile(Platform.IOS)
 public class IOsLoginPage extends LoginPage {
@@ -16,6 +18,7 @@ public class IOsLoginPage extends LoginPage {
   @Override
   public HomePage login(User user) {
     super.login(user);
+    sleep(5000);
     $("CONFIRM_CHAT_ALERTS").click();
     $("ALLOW_NOTIFICATIONS").click();
     return home;
