@@ -9,7 +9,7 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.3</version>
+    <version>1.3.1</version>
   </parent>
   <developers>
     <developer>
@@ -49,10 +49,33 @@
       <artifactId>justtestlah-browserstack</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.github.martinschneider</groupId>
-      <artifactId>justtestlah-pcloudy</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    <!-- Uncomment these lines for pCloudy support. Make sure to also install 
+      the pCloudy Java connector to your Maven repository! -->
+    <!-- <dependency> -->
+    <!-- <groupId>io.github.martinschneider</groupId> -->
+    <!-- <artifactId>justtestlah-pcloudy</artifactId> -->
+    <!-- <version>${project.version}</version> -->
+    <!-- </dependency> -->
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.trivago.rta</groupId>
+        <artifactId>cluecumber-report-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>report</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>reporting</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceJsonReportDirectory>${project.build.directory}/report/cucumber</sourceJsonReportDirectory>
+          <generatedHtmlReportDirectory>${project.build.directory}/report/cucumber</generatedHtmlReportDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

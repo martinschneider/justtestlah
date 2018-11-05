@@ -25,3 +25,8 @@ MENU_TAGS:
   web: 
     type: css
     value: "#nav-tags"
+
+GDPR_CONSENT_DISMISS:
+  web:
+    type: xpath
+    value: "//div[@id='js-gdpr-consent-banner']//a[contains(@aria-label,'notice-dismiss')]"
