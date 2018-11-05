@@ -26,7 +26,7 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.2</version>
+  <version>1.3.1</version>
   <!-- You can also use the latest snapshot version instead -->
   <!-- <version>1.3-SNAPSHOT</version> -->
 </dependency>
@@ -259,13 +259,17 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
-## Applitools
+## Cloud service integrations
+
+JustTestLah! supports integration with various cloud service provides. Most of them are in PoC state. Please feel free to contribute.
+
+### Applitools
 
 There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
 Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
-## Browserstack
+### Browserstack
 
 You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
 
@@ -276,6 +280,18 @@ browserstack.username=
 ```
 
 Please note that BrowserStack is a paid service.
+
+### pCloudy
+
+You can run tests against [pCloudy](hhttps://device.pcloudy.com) by adding the following configuration in `justtestlah.properties`:
+
+```
+cloudprovider=pcloudy
+pcloudy.email=
+pcloudy.apikey=
+```
+
+Please note that pCloudy is a paid service.
 
 ## Used frameworks
 
@@ -297,8 +313,8 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
 
-[Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
-[Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+* [Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
+* [Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Contact and support
 

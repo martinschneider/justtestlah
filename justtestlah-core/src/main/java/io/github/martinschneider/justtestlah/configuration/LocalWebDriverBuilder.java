@@ -69,10 +69,8 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities.setCapability("newCommandTimeout", 600);
     capabilities.setCapability("launchTimeout", 90000);
     capabilities.setCapability("deviceName", deviceName);
-    capabilities.setCapability("browserName", deviceName);
     capabilities.setCapability("app", appPath);
     capabilities.setCapability("platformName", platform);
-    capabilities.setCapability("rotatable", true);
     return capabilities;
   }
 
@@ -80,8 +78,6 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities = addCommonCapabilities(capabilities);
     capabilities.setCapability("automationName", "XCUITest");
     capabilities.setCapability("showXcodeLog", true);
-    capabilities.setCapability("startIWDP", true);
-    capabilities.setCapability("bundleId", "io.appium.WebDriverAgentRunner");
     return capabilities;
   }
 

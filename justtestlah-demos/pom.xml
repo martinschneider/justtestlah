@@ -9,35 +9,8 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.3</version>
+    <version>1.3.1</version>
   </parent>
-  <developers>
-    <developer>
-      <name>Martin Schneider</name>
-      <email>mart.schneider@gmail.com</email>
-    </developer>
-  </developers>
-  <url>https://martinschneider.github.io/justtestlah</url>
-  <scm>
-    <url>https://github.com/martinschneider/JustTestLah</url>
-    <connection>scm:git:git://github.com/martinschneider/JustTestLah.git</connection>
-  </scm>
-  <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/martinschneider/justtestlah</url>
-  </ciManagement>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/martinschneider/JustTestLah/issues</url>
-  </issueManagement>
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-      <comments>A business-friendly OSS license</comments>
-    </license>
-  </licenses>
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>
@@ -49,10 +22,33 @@
       <artifactId>justtestlah-browserstack</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.github.martinschneider</groupId>
-      <artifactId>justtestlah-pcloudy</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+    <!-- Uncomment these lines for pCloudy support. Make sure to also install 
+      the pCloudy Java connector to your Maven repository! -->
+    <!-- <dependency> -->
+    <!-- <groupId>io.github.martinschneider</groupId> -->
+    <!-- <artifactId>justtestlah-pcloudy</artifactId> -->
+    <!-- <version>${project.version}</version> -->
+    <!-- </dependency> -->
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.trivago.rta</groupId>
+        <artifactId>cluecumber-report-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>report</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>reporting</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceJsonReportDirectory>${project.build.directory}/report/cucumber</sourceJsonReportDirectory>
+          <generatedHtmlReportDirectory>${project.build.directory}/report/cucumber</generatedHtmlReportDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
