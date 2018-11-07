@@ -316,6 +316,10 @@ This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of 
 * [Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
 * [Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
+## Known issues & limitations
+
+JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11). Due to an [issue in OpenCV](https://github.com/openpnp/opencv/issues/33) the template matching functionality is currently not supported beyond Java 9.
+
 ## Contact and support
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)

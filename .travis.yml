@@ -1,4 +1,9 @@
 language: java
+jdk:
+  - openjdk8
+  - openjdk9
+  - openjdk10
+  - openjdk11
 cache:
   directories: $HOME/.m2
 install: mvn install:install-file -Dfile=justtestlah-pcloudy/pCloudy-java-connector-11.0.5-jar-with-dependencies.jar -DgroupId=pCloudy-java-connector -DartifactId=pCloudy-java-connector -Dversion=11.0.5 -Dpackaging=jar
