@@ -9,6 +9,7 @@ Pull the repo and run the example. It includes automated tests for [Stack Overfl
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
+cd justtestlah-demos
 mvn test -Dtest=TestRunner
 ```
 
