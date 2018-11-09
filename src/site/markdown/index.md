@@ -312,10 +312,15 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Presentations
 
-This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of the presentation can be found below.
+This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up. Videos and slides of the presentation can be found below.
 
-* [Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
-* [Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+* [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)
+* [Video Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
+* [Video Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+
+I also showcased JustTestLah! during the Testingmind Software Testing Symposium in Manila.
+
+* [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
 
 ## Known issues & limitations
 
@@ -324,6 +329,8 @@ This framework started as a PoC for the 2nd Singapore Appium Meet-up. Videos of 
 * The Galen PoC only works on Appium 1.7. Newer versions are not yet supported.
 
 ## Contact and support
+
+Please let me know about any feedback, questions or ideas for improvement.
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
