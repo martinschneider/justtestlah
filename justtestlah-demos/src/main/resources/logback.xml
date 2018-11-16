@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <configuration>
+  <contextListener class="io.github.martinschneider.justtestlah.log.LoggerAppInfoEnricher"/>
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
       by default -->
     <encoder>
-      <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
+      <pattern>%cyan(${appInfo}) %cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
       </pattern>
     </encoder>
   </appender>
