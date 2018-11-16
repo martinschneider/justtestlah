@@ -1,5 +1,6 @@
 package io.github.martinschneider.justtestlah.log;
 
+/** DTO to hold application meta information. */
 public class ApplicationInfo {
 
   @Override

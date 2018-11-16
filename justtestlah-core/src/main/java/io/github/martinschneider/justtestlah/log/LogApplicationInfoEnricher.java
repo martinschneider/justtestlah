@@ -14,7 +14,8 @@ import ch.qos.logback.core.spi.LifeCycle;
 import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
 
-public class LoggerApplicationInfoEnricher extends ContextAwareBase
+/** Enrich meta information about the application under test to the log file. */
+public class LogApplicationInfoEnricher extends ContextAwareBase
     implements LoggerContextListener, LifeCycle {
 
   private boolean started = false;
@@ -28,35 +29,17 @@ public class LoggerApplicationInfoEnricher extends ContextAwareBase
     Context context = getContext();
     String platform = props.getProperty("platform");
     String appPath = props.getProperty(platform + ".appPath");
-    
-    // set android.tools.path as System property
-    String androidToolsPath = props.getProperty("android.tools.path");
-    if (androidToolsPath != null) {
-      System.setProperty("android.tools.path", androidToolsPath);
-    }
 
     StringBuilder strBuilder = new StringBuilder(platform.toUpperCase());
-    String appInfo = getAppVersionService().getAppInfo(platform, appPath).toString();
-    if (appInfo != null && !appInfo.isEmpty()) {
-      strBuilder.append(" ");
-      strBuilder.append(appInfo);
+    if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios")) {
+      String appInfo = new ApplicationInfoService().getAppInfo(appPath).toString();
+      if (appInfo != null && !appInfo.isEmpty()) {
+        strBuilder.append(" ");
+        strBuilder.append(appInfo);
+      }
     }
     context.putProperty("appInfo", strBuilder.toString());
     started = true;
-  }
-
-  private ApplicationInfoService getAppVersionService() {
-    
-	  String osName = System.getProperty("os.name");
-	  if (osName.contains("Mac"))
-	  {
-		  return new MacOSXApplicationInfoService();
-	  }
-	  else
-	  {
-		  // we only support Mac for now, sorry ;-)
-		  return new DummyApplicationInfoService();
-	  }
   }
 
   private Properties getProperties() {
