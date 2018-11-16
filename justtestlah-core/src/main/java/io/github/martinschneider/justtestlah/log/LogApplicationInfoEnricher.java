@@ -13,6 +13,7 @@ import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.LifeCycle;
 import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
+import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfoService;
 
 /** Enrich meta information about the application under test to the log file. */
 public class LogApplicationInfoEnricher extends ContextAwareBase

@@ -1,4 +1,4 @@
-package io.github.martinschneider.justtestlah.log;
+package io.github.martinschneider.justtestlah.mobile.tools;
 
 /** DTO to hold application meta information. */
 public class ApplicationInfo {
