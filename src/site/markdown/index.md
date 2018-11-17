@@ -27,9 +27,9 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.3.1</version>
+  <version>1.3.2</version>
   <!-- You can also use the latest snapshot version instead -->
-  <!-- <version>1.3-SNAPSHOT</version> -->
+  <!-- <version>1.3.3-SNAPSHOT</version> -->
 </dependency>
 ```
 

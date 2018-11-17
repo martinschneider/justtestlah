@@ -61,8 +61,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private static final String TAGS_KEY = "tags";
   private static final String CUCUMBER_OPTIONS_KEY = "cucumber.options";
   private static final String FEATURES_DIRECTORY_KEY = "features.directory";
-  private static final String DEFAULT_JUST_TEST_LAH_PROPERTIES = "justtestlah.properties";
-  static final String JUST_TEST_LAH_LOCATION_KEY = "justtestlah.properties";
+  public static final String DEFAULT_JUST_TEST_LAH_PROPERTIES = "justtestlah.properties";
+  public static final String JUST_TEST_LAH_LOCATION_KEY = "justtestlah.properties";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
   private static final String OPENCV_ENABLED_KEY = "opencv.enabled";
   private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
