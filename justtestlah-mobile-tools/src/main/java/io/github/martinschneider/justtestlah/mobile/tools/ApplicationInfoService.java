@@ -79,7 +79,7 @@ public class ApplicationInfoService {
           .map(Path::toFile)
           .forEach(File::delete);
     } catch (IOException exception) {
-      LOG.error(String.format("Error deleting ", tmpFolder), exception);
+      LOG.error(String.format("Error deleting %s", tmpFolder), exception);
     }
     return appInfo;
   }
