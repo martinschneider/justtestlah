@@ -322,6 +322,10 @@ I also showcased JustTestLah! during the Testingmind Software Testing Symposium 
 
 * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
 
+## Articles
+
+[This article](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79) explains how to use JustTestLah! (amongst other options) to query meta information from APK, IPA and APP packages.
+
 ## Known issues & limitations
 
 * JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11). Due to an [issue in OpenCV](https://github.com/openpnp/opencv/issues/33) the template matching functionality is currently not supported beyond Java 9.
