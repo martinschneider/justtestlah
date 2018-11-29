@@ -243,12 +243,12 @@ new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
 
 Note, that future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
 
-The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached. This will be improved in the future but already serves most test cases.
+The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
 
-Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching works.
+Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
 
 ### Matching threshold
-Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define. The possible values range from 0 (no match whatsoever) to 1 (pixel-perfect match). The default is `0.9`.
+Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
 
 ### Client and server-mode matching
 There are two modes to use template matching which can be configured in `justtestlah.properties`:
