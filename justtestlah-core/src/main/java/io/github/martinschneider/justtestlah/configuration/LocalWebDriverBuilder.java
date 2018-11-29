@@ -17,8 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.codeborne.selenide.WebDriverRunner;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
 
 /** Factory for {@link WebDriver}. */
@@ -55,7 +56,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Override
   public WebDriver getAndroidDriver() {
     try {
-      return new AppiumDriver<AndroidElement>(
+      return new AndroidDriver<AndroidElement>(
           new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities()));
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
@@ -81,7 +82,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Override
   public WebDriver getIOsDriver() {
     try {
-      return new AppiumDriver<IOSElement>(
+      return new IOSDriver<IOSElement>(
           new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()));
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);

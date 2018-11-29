@@ -1,0 +1,4 @@
+QUESTION_TITLE:
+  android:
+    type: id
+    value: com.stackexchange.stackoverflow:id/fragment_ask_edit_title
