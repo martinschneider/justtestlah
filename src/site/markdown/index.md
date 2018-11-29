@@ -364,6 +364,10 @@ It has been showcased and mentioned in various presentations:
 * [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up.
   * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
 
+## Articles
+
+[This article](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79) explains how to use JustTestLah! (amongst other options) to query meta information from APK, IPA and APP packages.
+
 ## Known issues & limitations
 
 * JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11).
