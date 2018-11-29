@@ -6,11 +6,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.martinschneider.justtestlah.base.BaseSteps;
+import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.HomePage;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.NewQuestionPage;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.android.AndroidHomePage;
 
 public class HomeSteps extends BaseSteps {
-  private AndroidHomePage home;
+  private HomePage home;
   private NewQuestionPage askQuestion;
 
   @Given("^I am on the homepage$")
@@ -45,7 +46,8 @@ public class HomeSteps extends BaseSteps {
 
   @When("^I click on the question icon$")
   public void questionIcon() {
-    home.tapOnQuestionIcon();
+    // this step is platform-dependent
+    ((AndroidHomePage) home).tapOnQuestionIcon();
   }
 
   @Then("^I can enter a new question$")
