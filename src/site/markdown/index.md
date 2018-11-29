@@ -361,7 +361,7 @@ It has been showcased and mentioned in various presentations:
 * Martin Schneider: A single framework for Android, IOS and Web testing. 2018-11-09, Testingmind Software Testing Symposium, Manila
   * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
 
-* [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up.
+* [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up
   * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
 
 ## Articles
