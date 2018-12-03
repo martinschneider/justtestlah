@@ -37,8 +37,8 @@ public class JustTestLahConfiguration {
   @Value("${platform}")
   private String platform;
 
-  @Value("${opencv.enabled:false}")
-  private boolean openCvEnabled;
+  @Value("${opencv.mode:client}")
+  private String openCVMode;
 
   @Value("${eyes.enabled:false}")
   private boolean eyesEnabled;
@@ -124,7 +124,7 @@ public class JustTestLahConfiguration {
   }
 
   public boolean isOpenCvEnabled() {
-    return openCvEnabled;
+    return openCVMode.equals("client");
   }
 
   public String getGalenReportDirectory() {

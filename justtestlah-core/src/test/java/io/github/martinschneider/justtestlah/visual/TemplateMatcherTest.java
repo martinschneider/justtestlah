@@ -18,7 +18,7 @@ public class TemplateMatcherTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(TemplateMatcherTest.class);
 
-  private static TemplateMatcher target = new TemplateMatcher();
+  private static OpenCVTemplateMatcher target = new OpenCVTemplateMatcher();
 
   /** Initialise mocks and configuration. */
   @BeforeClass

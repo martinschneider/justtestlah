@@ -222,6 +222,43 @@ POST_TAG:
 
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
+## Template matching
+JustTestLah! allows locating elements using a template image:
+
+```
+boolean isImagePresent = homePage.hasImage("questionIcon.png");
+
+Match image = homePage.findImage("questionIcon.png");
+```
+
+The images are expected under `/src/test/resources/images`.
+
+The `Match` object contains the x and y coordinate of the matched image (more precisely, the center of the rectangle representing the match). These can be used to interact with an element located this way. For example, we can tap on an element like this:
+
+```
+new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
+.tap(PointOption.point(questionIcon.getX(), questionIcon.getY()))
+.perform();
+```
+
+Note, that future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
+
+The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
+
+Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
+
+### Matching threshold
+Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
+
+### Client and server-mode matching
+There are two modes to use template matching which can be configured in `justtestlah.properties`:
+
+`opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires OpenCV which is imported as a Maven dependency (https://github.com/openpnp/opencv).
+
+`opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
+
+### Known bugs
+Setting the `threshold` for server-mode matching does not have any effect. Appium will still use its default of `0.5`. So in effect, the default threshold is `0.9` for client mode and `0.5` for server mode. For client mode you can overwrite the default, for server mode you cannot until there is a fix.
 
 ## Galen
 JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
@@ -312,15 +349,20 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Presentations
 
-This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up. Videos and slides of the presentation can be found below.
+This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up.
 
-* [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)
-* [Video Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
-* [Video Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+It has been showcased and mentioned in various presentations:
 
-I also showcased JustTestLah! during the Testingmind Software Testing Symposium in Manila.
+* Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV. 2018-04-12, 2nd Singapore Appium Meet-up
+  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)
+  * [Video Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
+  * [Video Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
-* [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
+* Martin Schneider: A single framework for Android, IOS and Web testing. 2018-11-09, Testingmind Software Testing Symposium, Manila
+  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
+
+* [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up
+  * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
 
 ## Articles
 
@@ -328,9 +370,11 @@ I also showcased JustTestLah! during the Testingmind Software Testing Symposium 
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11). Due to an [issue in OpenCV](https://github.com/openpnp/opencv/issues/33) the template matching functionality is currently not supported beyond Java 9.
+* JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11).
 
-* The Galen PoC only works on Appium 1.7. Newer versions are not yet supported.
+* Template matching using Appium (aka server-mode) is still in an early stage. The latest RC of JustTestLah! actually uses a snapshot version of the Appium Java client to access this feature. One known issue is that setting the `threshold` will have no effect when using server-mode template matching. The default value of `0.5` will always be used. I am working on a fix.
+
+* The Galen PoC only works on Appium 1.7. Newer versions are not yet supported. Please feel free to contribute an update for this feature.
 
 ## Contact and support
 

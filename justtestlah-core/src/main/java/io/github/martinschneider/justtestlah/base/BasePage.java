@@ -1,5 +1,19 @@
 package io.github.martinschneider.justtestlah.base;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
@@ -8,21 +22,15 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.galenframework.api.Galen;
 import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.model.LayoutReport;
+
+import io.appium.java_client.HasSettings;
+import io.appium.java_client.Setting;
 import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 import io.github.martinschneider.justtestlah.locator.LocatorMap;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
+import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
+import io.github.martinschneider.justtestlah.visual.Match;
 import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
@@ -68,7 +76,7 @@ public abstract class BasePage<T> extends Base {
   }
 
   public boolean hasImage(String imageName) {
-    return hasImage(imageName, DEFAULT_MATCHING_THRESHOLD);
+    return hasImage(imageName, 0.9);
   }
 
   /**
@@ -79,18 +87,32 @@ public abstract class BasePage<T> extends Base {
    * @return true, if the image has been found on the current screen
    */
   public boolean hasImage(String imageName, double threshold) {
+    return findImage(imageName, threshold).isFound();
+  }
+
+  /**
+   * Finds the given image within the current screen.
+   *
+   * @param imageName image to check for
+   * @param threshold matching threshold
+   * @return {@link Match}
+   */
+  public Match findImage(String imageName, double threshold) {
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
       File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-      return templateMatcher
-          .match(
-              screenshotFile.getAbsolutePath(),
-              this.getClass()
-                  .getClassLoader()
-                  .getResource(IMAGE_FOLDER + "/" + imageName)
-                  .getFile(),
-              threshold)
-          .isFound();
+      if (templateMatcher instanceof AppiumTemplateMatcher) {
+        if (driver instanceof HasSettings) {
+          LOG.info("Setting image matching threshold to {}", threshold);
+          HasSettings settingsDriver = ((HasSettings) driver);
+          settingsDriver.setSetting(Setting.IMAGE_MATCH_THRESHOLD, threshold);
+        }
+        ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
+      }
+      return templateMatcher.match(
+          screenshotFile.getAbsolutePath(),
+          this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
+          threshold);
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
@@ -99,9 +121,7 @@ public abstract class BasePage<T> extends Base {
     }
   }
 
-  /**
-   * Initialize the {@link LocatorMap}.
-   */
+  /** Initialize the {@link LocatorMap}. */
   @PostConstruct
   public void initializeLocatorMap() {
     Class<?> parent = this.getClass();

@@ -64,7 +64,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   public static final String DEFAULT_JUST_TEST_LAH_PROPERTIES = "justtestlah.properties";
   public static final String JUST_TEST_LAH_LOCATION_KEY = "justtestlah.properties";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-  private static final String OPENCV_ENABLED_KEY = "opencv.enabled";
+  private static final String OPENCV_MODE_KEY = "opencv.mode";
   private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
   private static final String EXPOSE_SYSTEM_PROPERTIES_KEY = "expose.system.properties";
   private static final String JUSTTESTLAH_SPRING_CONTEXT_KEY = "justtestlah.use.springcontext";
@@ -88,7 +88,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     bridgeLogging();
 
     // load OpenCV library
-    if (Boolean.parseBoolean(getProperty(OPENCV_ENABLED_KEY, "false"))) { // load the opencv library
+    if (getProperty(OPENCV_MODE_KEY, "client").equals("client")) { // load the opencv library
       OpenCV.loadShared();
       OpenCV.loadLocally();
       System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

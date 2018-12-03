@@ -9,7 +9,7 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.3.2</version>
+    <version>1.4-RC1</version>
   </parent>
   <dependencies>
     <dependency>
