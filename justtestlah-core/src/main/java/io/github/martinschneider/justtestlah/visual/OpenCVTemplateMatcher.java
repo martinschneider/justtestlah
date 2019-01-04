@@ -10,17 +10,17 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 
 /**
- * Implementation of {@link TemplateMatcher} using OpenCV on the client 
+ * Implementation of {@link TemplateMatcher} using OpenCV on the client
  *
  * <p>This class provides methods to check whether a given image (template) is part of another one
  * (target). We use a simple (yet effective) way to detect the template image in various sizes by
@@ -29,9 +29,18 @@ import io.github.martinschneider.justtestlah.configuration.JustTestLahConfigurat
  * <p>We return on the first match that exceeds the specific threshold (matching quality). This
  * means that it is not necessarily the best possible match.
  */
+@Component
 public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(OpenCVTemplateMatcher.class);
+
+  @Autowired private ImageUtils imageUtils;
+
+  /** @param imageUtils {@link ImageUtils} */
+  @Autowired
+  public OpenCVTemplateMatcher(ImageUtils imageUtils) {
+    this.imageUtils = imageUtils;
+  }
 
   private JustTestLahConfiguration configuration;
 
@@ -85,7 +94,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
           image.rows(),
           new File(templateFile).getName(),
           threshold);
-      image = scaleImage(image, 0.9);
+      image = imageUtils.scaleImage(image, 0.9);
     }
     if (bestMatch.maxVal < threshold) {
       image = originalImage;
@@ -110,7 +119,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
           image.rows(),
           new File(templateFile).getName(),
           threshold);
-      image = scaleImage(image, 1.1);
+      image = imageUtils.scaleImage(image, 1.1);
     }
     if (bestMatch.maxVal >= threshold) {
       // calculating the scale factor to mark the match on the original image
@@ -176,12 +185,5 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
       throw new UnsupportedOperationException(
           "OpenCV is not enabled. Set opencv.mode=client in justtestlah.properties!");
     }
-  }
-
-  private Mat scaleImage(Mat image, double scaleFactor) {
-    Mat resizedImage = new Mat();
-    Size sz = new Size(image.width() * scaleFactor, image.height() * scaleFactor);
-    Imgproc.resize(image, resizedImage, sz);
-    return resizedImage;
   }
 }

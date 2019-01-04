@@ -30,3 +30,8 @@ GDPR_CONSENT_DISMISS:
   web:
     type: xpath
     value: "//div[@id='js-gdpr-consent-banner']//a[contains(@aria-label,'notice-dismiss')]"
+    
+QUESTION_ICON:
+  android:
+    type: image
+    value: questionIcon.png
