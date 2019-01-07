@@ -82,7 +82,7 @@ public abstract class BasePage<T> extends Base {
    * @return true, if the image has been found on the current screen
    */
   public boolean hasImage(String imageName) {
-    return hasImage(imageName, DEFAULT_MATCHING_THRESHOLD);
+    return hasImage(imageName, 0.9);
   }
 
   /**

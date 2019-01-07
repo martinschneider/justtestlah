@@ -15,6 +15,13 @@ import io.appium.java_client.Setting;
 import io.github.martinschneider.justtestlah.configuration.Platform;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.HomePage;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.QuestionsPage;
+import io.appium.java_client.PerformsTouchActions;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
+import io.github.martinschneider.justtestlah.configuration.Platform;
+import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.HomePage;
+import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.QuestionsPage;
+import io.github.martinschneider.justtestlah.visual.Match;
 
 @Component
 @Profile({Platform.ANDROID})
