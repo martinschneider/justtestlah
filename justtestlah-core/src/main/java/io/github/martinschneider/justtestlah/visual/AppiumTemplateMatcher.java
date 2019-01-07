@@ -1,8 +1,6 @@
 package io.github.martinschneider.justtestlah.visual;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,12 +11,13 @@ import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.imagecomparison.OccurrenceMatchingOptions;
@@ -32,14 +31,23 @@ import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
  * (target). We use a simple (yet effective) way to detect the template image in various sizes by
  * scaling the target up and down to a minimum and maximum size.
  */
+@Component
 public class AppiumTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AppiumTemplateMatcher.class);
+
+  @Autowired private ImageUtils imageUtils;
 
   private static final String TEMPLATE_MATCHING_ERROR =
       "Cannot find any occurences of the partial image in the full image";
 
   private AppiumDriver<WebElement> driver;
+
+  /** @param imageUtils {@link ImageUtils} */
+  @Autowired
+  public AppiumTemplateMatcher(ImageUtils imageUtils) {
+    this.imageUtils = imageUtils;
+  }
 
   @SuppressWarnings("unchecked")
   public void setDriver(WebDriver driver) {
@@ -102,8 +110,8 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
     byte[] template, target;
     BufferedImage targetImage, originalImage;
     try {
-      template = Base64.encodeBase64(IOUtils.toByteArray(new File(templateFile).toURI().toURL()));
-      target = Base64.encodeBase64(IOUtils.toByteArray(new File(targetFile).toURI().toURL()));
+      template = imageUtils.encodeBase64(templateFile).getBytes();
+      target = imageUtils.encodeBase64(targetFile).getBytes();
       targetImage = originalImage = ImageIO.read(new File(targetFile));
     } catch (IOException exception) {
       LOG.error("Error processing target and/or template file", exception);
@@ -114,16 +122,16 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
         match =
             match(
                 originalImage, targetImage, targetFile, templateFile, target, template, threshold);
-        targetImage = scaleTargetImage(targetImage, 0.9);
-        target = imageToBase64String(targetImage);
+        targetImage = imageUtils.scaleImage(targetImage, 0.9);
+        target = imageUtils.imageToBase64String(targetImage);
       }
       targetImage = originalImage;
       while (!match.isFound() && targetImage.getWidth() < MAX_IMAGE_WIDTH) {
         match =
             match(
                 originalImage, targetImage, targetFile, templateFile, target, template, threshold);
-        targetImage = scaleTargetImage(targetImage, 1.1);
-        target = imageToBase64String(targetImage);
+        targetImage = imageUtils.scaleImage(targetImage, 1.1);
+        target = imageUtils.imageToBase64String(targetImage);
       }
     } else {
       throw new UnsupportedOperationException(
@@ -157,27 +165,5 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
           threshold);
     }
     return match;
-  }
-
-  private byte[] imageToBase64String(BufferedImage targetImage) {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try {
-      ImageIO.write(targetImage, "png", baos);
-    } catch (IOException e) {
-      LOG.error("Error processing image");
-      return null;
-    }
-    return Base64.encodeBase64(baos.toByteArray());
-  }
-
-  private BufferedImage scaleTargetImage(BufferedImage targetImage, double scale) {
-    int newWidth = (int) (targetImage.getWidth() * scale);
-    int newHeight = (int) (targetImage.getHeight() * scale);
-    BufferedImage outputImage = new BufferedImage(newWidth, newHeight, targetImage.getType());
-    Graphics2D g2d = outputImage.createGraphics();
-    g2d.drawImage(targetImage, 0, 0, newWidth, newHeight, null);
-    g2d.dispose();
-    targetImage = outputImage;
-    return targetImage;
   }
 }

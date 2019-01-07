@@ -29,13 +29,13 @@ import io.github.martinschneider.justtestlah.configuration.JustTestLahConfigurat
 import io.github.martinschneider.justtestlah.locator.LocatorMap;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
 import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
+import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import io.github.martinschneider.justtestlah.visual.Match;
 import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
 
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
-  private static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
-  private static final String IMAGE_FOLDER = "images";
+  protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
   private static final double DEFAULT_MATCHING_THRESHOLD = 0.9; // for visual template matching
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
@@ -51,6 +51,8 @@ public abstract class BasePage<T> extends Base {
   @Autowired private Eyes eyes;
 
   @Autowired private List<GalenTestInfo> galenTests;
+  
+  @Autowired private ImageUtils imageUtils;
 
   /**
    * Selenide style locator.
@@ -75,6 +77,10 @@ public abstract class BasePage<T> extends Base {
         locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
   }
 
+  /**
+   * @param imageName image to check for
+   * @return true, if the image has been found on the current screen
+   */
   public boolean hasImage(String imageName) {
     return hasImage(imageName, 0.9);
   }
@@ -111,7 +117,7 @@ public abstract class BasePage<T> extends Base {
       }
       return templateMatcher.match(
           screenshotFile.getAbsolutePath(),
-          this.getClass().getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile(),
+          imageUtils.getFullPath(imageName),
           threshold);
     } else {
       throw new UnsupportedOperationException(

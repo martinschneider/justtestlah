@@ -3,13 +3,18 @@ package io.github.martinschneider.justtestlah.locator;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import io.appium.java_client.MobileBy.ByAccessibilityId;
-import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.openqa.selenium.By;
+
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileBy.ByAccessibilityId;
+import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
+import io.github.martinschneider.justtestlah.visual.ImageUtils;
 
 /** Map to hold element locators. */
 public class LocatorMap {
@@ -23,7 +28,9 @@ public class LocatorMap {
 
   /**
    * Construct a locator map from an existing {@link Map} object.
-   * @param map locator map */
+   *
+   * @param map locator map
+   */
   public LocatorMap(Map<String, Map<String, Map<String, String>>> map) {
     this.map = map;
   }
@@ -33,6 +40,7 @@ public class LocatorMap {
   private static final String ID = "id";
   private static final String ACCESIBILITY_ID = "accesibilityId";
   private static final String UIAUTOMATOR = "uiAutomator";
+  private static final String IMAGE = "image";
 
   /**
    * Get a Selenide locator.
@@ -57,6 +65,8 @@ public class LocatorMap {
       return $(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(IMAGE)) {
+      return $(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -85,6 +95,8 @@ public class LocatorMap {
       return $$(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $$(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
+    } else if (type.equalsIgnoreCase(IMAGE)) {
+      return $$(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
     } else {
       return $$(formatValue(rawValue, params));
     }

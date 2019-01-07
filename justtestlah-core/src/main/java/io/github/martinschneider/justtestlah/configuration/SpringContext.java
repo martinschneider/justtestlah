@@ -19,6 +19,7 @@ import com.galenframework.reports.GalenTestInfo;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
 import io.github.martinschneider.justtestlah.user.UserService;
 import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
+import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import io.github.martinschneider.justtestlah.visual.OpenCVTemplateMatcher;
 import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
 
@@ -102,13 +103,17 @@ public class SpringContext {
   }
 
   @Bean
+  public ImageUtils imageUtils() {
+    return new ImageUtils();
+  }
+
+  @Bean
   public TemplateMatcher templateMatcher() {
+    ImageUtils imageUtils = new ImageUtils();
     if (openCVmode.equals("server")) {
-      return new AppiumTemplateMatcher();
-    }
-    else
-    {
-    	return new OpenCVTemplateMatcher();
+      return new AppiumTemplateMatcher(imageUtils);
+    } else {
+      return new OpenCVTemplateMatcher(imageUtils);
     }
   }
 
