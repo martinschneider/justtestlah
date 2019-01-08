@@ -51,9 +51,10 @@ public class PCloudyWebDriverBuilder extends LocalWebDriverBuilder implements We
       LOG.error("Error creating pCloudy session!", exception);
       return null;
     }
-    return new AndroidDriver<AndroidElement>(buildPCloudyUrl(pCloudySession),
-        addPCloudyCapabilities(addAndroidCapabilities(new DesiredCapabilities()),
-            pCloudySession.getDto()));
+    return new AndroidDriver<AndroidElement>(
+        buildPCloudyUrl(pCloudySession),
+        addPCloudyCapabilities(
+            addAndroidCapabilities(new DesiredCapabilities()), pCloudySession.getDto()));
   }
 
   /*
@@ -70,12 +71,14 @@ public class PCloudyWebDriverBuilder extends LocalWebDriverBuilder implements We
       LOG.error("Error creating pCloudy session!", exception);
       return null;
     }
-    return new IOSDriver<IOSElement>(buildPCloudyUrl(pCloudySession), addPCloudyCapabilities(
-        addIOsCapabilities(new DesiredCapabilities()), pCloudySession.getDto()));
+    return new IOSDriver<IOSElement>(
+        buildPCloudyUrl(pCloudySession),
+        addPCloudyCapabilities(
+            addIOsCapabilities(new DesiredCapabilities()), pCloudySession.getDto()));
   }
 
-  private Capabilities addPCloudyCapabilities(DesiredCapabilities capabilities,
-      BookingDtoDevice device) {
+  private Capabilities addPCloudyCapabilities(
+      DesiredCapabilities capabilities, BookingDtoDevice device) {
     capabilities.setCapability("deviceName", device.capabilities.deviceName);
     capabilities.setCapability("browserName", device.capabilities.browserName);
     capabilities.setCapability("platformName", device.capabilities.platformName);
@@ -85,7 +88,9 @@ public class PCloudyWebDriverBuilder extends LocalWebDriverBuilder implements We
 
   private URL buildPCloudyUrl(PCloudyAppiumSession pCloudySession) {
     try {
-      return pCloudySession.getConnector().AppiumApis()
+      return pCloudySession
+          .getConnector()
+          .AppiumApis()
           .getAppiumEndpoint(pCloudySession.getAuthToken());
     } catch (IOException | ConnectError | InterruptedException exception) {
       LOG.error("Error building pCloudy Appium URL!", exception);

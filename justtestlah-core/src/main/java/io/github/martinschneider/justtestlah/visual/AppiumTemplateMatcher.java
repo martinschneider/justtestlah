@@ -1,5 +1,8 @@
 package io.github.martinschneider.justtestlah.visual;
 
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.imagecomparison.OccurrenceMatchingOptions;
+import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -7,9 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -18,10 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.imagecomparison.OccurrenceMatchingOptions;
-import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
 
 /**
  * Implementation of {@link TemplateMatcher} using Appium's image locator (which uses OpenCV on the

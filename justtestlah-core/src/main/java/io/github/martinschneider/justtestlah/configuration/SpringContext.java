@@ -1,9 +1,16 @@
 package io.github.martinschneider.justtestlah.configuration;
 
+import com.applitools.eyes.selenium.Eyes;
+import com.galenframework.reports.GalenTestInfo;
+import io.github.martinschneider.justtestlah.locator.LocatorParser;
+import io.github.martinschneider.justtestlah.user.UserService;
+import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
+import io.github.martinschneider.justtestlah.visual.ImageUtils;
+import io.github.martinschneider.justtestlah.visual.OpenCVTemplateMatcher;
+import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,16 +19,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.yaml.snakeyaml.Yaml;
-
-import com.applitools.eyes.selenium.Eyes;
-import com.galenframework.reports.GalenTestInfo;
-
-import io.github.martinschneider.justtestlah.locator.LocatorParser;
-import io.github.martinschneider.justtestlah.user.UserService;
-import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
-import io.github.martinschneider.justtestlah.visual.ImageUtils;
-import io.github.martinschneider.justtestlah.visual.OpenCVTemplateMatcher;
-import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
 
 /** JustTestLah! Spring context. */
 @Configuration

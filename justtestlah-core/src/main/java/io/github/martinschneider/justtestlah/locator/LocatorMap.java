@@ -3,18 +3,15 @@ package io.github.martinschneider.justtestlah.locator;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.openqa.selenium.By;
-
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import io.github.martinschneider.justtestlah.visual.ImageUtils;
+import java.util.HashMap;
+import java.util.Map;
+import org.openqa.selenium.By;
 
 /** Map to hold element locators. */
 public class LocatorMap {

@@ -1,19 +1,16 @@
 package io.github.martinschneider.justtestlah.steps;
 
+import com.galenframework.reports.GalenTestInfo;
+import com.galenframework.reports.HtmlReportBuilder;
+import cucumber.api.java.After;
+import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.galenframework.reports.GalenTestInfo;
-import com.galenframework.reports.HtmlReportBuilder;
-
-import cucumber.api.java.After;
-import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 
 /** Hook to restart the WebDriver before every test. */
 public class GalenHooks {

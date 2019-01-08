@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
-
 import javax.imageio.ImageIO;
-
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
@@ -96,8 +94,7 @@ public class ImageUtils {
   /**
    * @param image the {@link Mat} to scale
    * @param scaleFactor the scale factor (&lt;1 will scale down, &gt;1 will scale up, 1 = 100%)
-   * @return a {@link Mat} which is a version of the original image scaled by the given
-   *     factor
+   * @return a {@link Mat} which is a version of the original image scaled by the given factor
    */
   public Mat scaleImage(Mat image, double scaleFactor) {
     Mat resizedImage = new Mat();

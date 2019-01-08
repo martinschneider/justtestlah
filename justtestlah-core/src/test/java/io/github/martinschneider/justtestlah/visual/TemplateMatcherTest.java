@@ -4,14 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
+import nu.pattern.OpenCV;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opencv.core.Core;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
-import nu.pattern.OpenCV;
 
 public class TemplateMatcherTest {
 

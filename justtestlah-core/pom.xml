@@ -9,7 +9,7 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.4-RC2</version>
+    <version>1.4</version>
   </parent>
   <dependencies>
     <dependency>
@@ -22,10 +22,8 @@
       <artifactId>selenium-java</artifactId>
     </dependency>
     <dependency>
-<!--       <groupId>io.appium</groupId> -->
-      <groupId>com.github.appium</groupId>
+      <groupId>io.appium</groupId>
       <artifactId>java-client</artifactId>
-      <version>b10f52148f21eabfe8f2eb41fc8b569ab6096bfd</version>
     </dependency>
     <dependency>
       <groupId>io.cucumber</groupId>

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile(Platform.WEB)
-public class WebHomePage extends io.github.martinschneider.justtestlah.examples.carousell.pages.HomePage {
+public class WebHomePage
+    extends io.github.martinschneider.justtestlah.examples.carousell.pages.HomePage {
 
   private LoginPage login;
 

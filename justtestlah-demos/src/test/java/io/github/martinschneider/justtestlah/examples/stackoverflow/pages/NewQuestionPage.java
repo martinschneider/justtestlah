@@ -1,11 +1,10 @@
 package io.github.martinschneider.justtestlah.examples.stackoverflow.pages;
 
+import io.github.martinschneider.justtestlah.base.BasePage;
+import io.github.martinschneider.justtestlah.configuration.Platform;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import io.github.martinschneider.justtestlah.base.BasePage;
-import io.github.martinschneider.justtestlah.configuration.Platform;
 
 @Component
 @Profile({Platform.WEB})

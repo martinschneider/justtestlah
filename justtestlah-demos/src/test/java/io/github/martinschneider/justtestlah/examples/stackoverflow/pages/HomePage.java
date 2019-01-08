@@ -5,7 +5,6 @@ import static com.codeborne.selenide.Selenide.open;
 
 import io.github.martinschneider.justtestlah.base.BasePage;
 import io.github.martinschneider.justtestlah.configuration.Platform;
-
 import org.openqa.selenium.WebElement;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -21,9 +20,8 @@ public class HomePage extends BasePage<HomePage> {
   public HomePage load() {
     open(configuration.getBaseUrl());
     WebElement dismissButton = $("GDPR_CONSENT_DISMISS");
-    if (dismissButton.isDisplayed())
-    {
-    	dismissButton.click();
+    if (dismissButton.isDisplayed()) {
+      dismissButton.click();
     }
     return this;
   }

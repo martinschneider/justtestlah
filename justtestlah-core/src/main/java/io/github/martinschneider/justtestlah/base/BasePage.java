@@ -1,19 +1,5 @@
 package io.github.martinschneider.justtestlah.base;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
@@ -22,7 +8,6 @@ import com.codeborne.selenide.WebDriverRunner;
 import com.galenframework.api.Galen;
 import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.model.LayoutReport;
-
 import io.appium.java_client.HasSettings;
 import io.appium.java_client.Setting;
 import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
@@ -32,6 +17,17 @@ import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
 import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import io.github.martinschneider.justtestlah.visual.Match;
 import io.github.martinschneider.justtestlah.visual.TemplateMatcher;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
@@ -51,7 +47,7 @@ public abstract class BasePage<T> extends Base {
   @Autowired private Eyes eyes;
 
   @Autowired private List<GalenTestInfo> galenTests;
-  
+
   @Autowired private ImageUtils imageUtils;
 
   /**
@@ -116,9 +112,7 @@ public abstract class BasePage<T> extends Base {
         ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
       }
       return templateMatcher.match(
-          screenshotFile.getAbsolutePath(),
-          imageUtils.getFullPath(imageName),
-          threshold);
+          screenshotFile.getAbsolutePath(), imageUtils.getFullPath(imageName), threshold);
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "

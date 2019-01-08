@@ -27,7 +27,7 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.4-RC2</version>
+  <version>1.4</version>
 </dependency>
 ```
 
@@ -255,9 +255,6 @@ There are two modes to use template matching which can be configured in `justtes
 
 `opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
 
-### Known bugs
-Setting the `threshold` for server-mode matching does not have any effect. Appium will still use its default of `0.5`. So in effect, the default threshold is `0.9` for client mode and `0.5` for server mode. For client mode you can overwrite the default, for server mode you cannot until there is a fix.
-
 ## Galen
 JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
@@ -361,6 +358,9 @@ It has been showcased and mentioned in various presentations:
 
 * [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up
   * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
+  
+* Martin Schneider: Re-use automated test scenarios across different platforms. 2019-01-08, Testing Corner, Taipei
+  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
 
 ## Articles
 
@@ -369,8 +369,6 @@ It has been showcased and mentioned in various presentations:
 ## Known issues & limitations
 
 * JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11).
-
-* Template matching using Appium (aka server-mode) is still in an early stage. The latest RC of JustTestLah! actually uses a snapshot version of the Appium Java client to access this feature. One known issue is that setting the `threshold` will have no effect when using server-mode template matching. The default value of `0.5` will always be used. I am working on a fix.
 
 * The Galen PoC only works on Appium 1.7. Newer versions are not yet supported. Please feel free to contribute an update for this feature.
 

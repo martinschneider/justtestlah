@@ -1,17 +1,14 @@
 package io.github.martinschneider.justtestlah.steps;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.WebDriverRunner;
-
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
+import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /** Hook to restart the WebDriver before every test. */
 public class ApplitoolsHooks {

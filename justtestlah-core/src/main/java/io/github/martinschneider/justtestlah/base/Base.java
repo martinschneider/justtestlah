@@ -2,7 +2,6 @@ package io.github.martinschneider.justtestlah.base;
 
 import java.lang.reflect.Field;
 import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

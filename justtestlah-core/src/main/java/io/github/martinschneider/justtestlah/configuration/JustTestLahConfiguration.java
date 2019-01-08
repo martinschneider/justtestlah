@@ -48,7 +48,7 @@ public class JustTestLahConfiguration {
 
   @Value("${galen.report.directory:" + DEFAULT_GALEN_REPORT_DIRECTORY + "}")
   private String galenReportDirectory;
-  
+
   @Value("${cloudprovider:local}")
   private String cloudProvider;
 
@@ -68,8 +68,7 @@ public class JustTestLahConfiguration {
     userService.initialize();
   }
 
-  /** Set the correct 
-   * {@link org.openqa.selenium.WebDriver}. */
+  /** Set the correct {@link org.openqa.selenium.WebDriver}. */
   public void initWebDriver() {
     // for web and local testing the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
@@ -79,9 +78,7 @@ public class JustTestLahConfiguration {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
     } else if (platform.equals(Platform.IOS)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
-    }
-    else if (platform.equals(Platform.WEB) && cloudProvider.equals("browserstack"))
-    {
+    } else if (platform.equals(Platform.WEB) && cloudProvider.equals("browserstack")) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
     }
   }

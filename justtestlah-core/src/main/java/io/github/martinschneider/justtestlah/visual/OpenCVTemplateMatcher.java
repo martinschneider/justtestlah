@@ -1,9 +1,9 @@
 package io.github.martinschneider.justtestlah.visual;
 
+import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
@@ -16,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
 
 /**
  * Implementation of {@link TemplateMatcher} using OpenCV on the client

@@ -42,9 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
-/**
- * Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}.
- */
+/** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
@@ -110,10 +108,14 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     // Parse the features early. Don't proceed when there are lexer errors
     final List<CucumberFeature> features = featureSupplier.get();
     List<String> featureList = new ArrayList<String>();
-    features.forEach(feature -> {
-      featureList.add(feature.getGherkinFeature().getFeature().getName());
-    });
-    LOG.debug("Found {} feature(s) in {}: {}", features.size(), getProperty(FEATURES_DIRECTORY_KEY),
+    features.forEach(
+        feature -> {
+          featureList.add(feature.getGherkinFeature().getFeature().getName());
+        });
+    LOG.debug(
+        "Found {} feature(s) in {}: {}",
+        features.size(),
+        getProperty(FEATURES_DIRECTORY_KEY),
         featureList);
 
     ClassFinder classFinder = new ResourceLoaderClassFinder(resourceLoader, classLoader);
@@ -155,8 +157,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     cucumberOptions.append(" --glue ");
     cucumberOptions.append(getProperty(STEPS_PACKAGE_KEY));
     cucumberOptions.append(" --plugin pretty --plugin html:report --plugin json:");
-    cucumberOptions
-        .append(getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY));
+    cucumberOptions.append(
+        getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY));
     cucumberOptions.append("/cucumber.json ");
     cucumberOptions.append(getProperty(FEATURES_DIRECTORY_KEY));
     return cucumberOptions.toString();
@@ -211,7 +213,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       LOG.debug("Reading property {} = {}", key, value);
       return value;
     }
-    LOG.warn("Property {} not set in justtestlah.properties. Using default value: {}", key,
+    LOG.warn(
+        "Property {} not set in justtestlah.properties. Using default value: {}",
+        key,
         defaultValue);
     return defaultValue;
   }
@@ -244,7 +248,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
         LOG.info("Loading JustTestLah properties from classpath ({})", propertiesLocation);
         props.load(JustTestLahTest.class.getClassLoader().getResourceAsStream(propertiesLocation));
       }
-      if (props.get(EXPOSE_SYSTEM_PROPERTIES_KEY)==null || Boolean.parseBoolean(props.get(EXPOSE_SYSTEM_PROPERTIES_KEY).toString())) {
+      if (props.get(EXPOSE_SYSTEM_PROPERTIES_KEY) == null
+          || Boolean.parseBoolean(props.get(EXPOSE_SYSTEM_PROPERTIES_KEY).toString())) {
         props.forEach((key, value) -> System.setProperty(key.toString(), value.toString()));
       }
     } catch (NullPointerException | IOException e) {

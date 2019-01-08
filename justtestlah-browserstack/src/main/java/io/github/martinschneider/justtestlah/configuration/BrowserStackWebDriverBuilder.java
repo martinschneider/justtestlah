@@ -32,7 +32,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getAndroidDriver() {
-    return new AppiumDriver<AndroidElement>(buildBrowserStackUrl(accessKey, username),
+    return new AppiumDriver<AndroidElement>(
+        buildBrowserStackUrl(accessKey, username),
         addAndroidCapabilities(new DesiredCapabilities()));
   }
 
@@ -43,8 +44,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getIOsDriver() {
-    return new AppiumDriver<IOSElement>(buildBrowserStackUrl(accessKey, username),
-        addIOsCapabilities(new DesiredCapabilities()));
+    return new AppiumDriver<IOSElement>(
+        buildBrowserStackUrl(accessKey, username), addIOsCapabilities(new DesiredCapabilities()));
   }
 
   protected DesiredCapabilities addCommonCapabilities(DesiredCapabilities capabilities) {

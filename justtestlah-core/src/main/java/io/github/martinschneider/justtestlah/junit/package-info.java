@@ -1,4 +1,2 @@
-/**
- * JUnit runner and test class
- */
+/** JUnit runner and test class */
 package io.github.martinschneider.justtestlah.junit;

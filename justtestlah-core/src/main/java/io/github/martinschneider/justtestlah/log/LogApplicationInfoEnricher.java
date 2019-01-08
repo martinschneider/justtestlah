@@ -1,9 +1,5 @@
 package io.github.martinschneider.justtestlah.log;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -14,6 +10,9 @@ import ch.qos.logback.core.spi.LifeCycle;
 import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
 import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfoService;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /** Enrich meta information about the application under test to the log file. */
 public class LogApplicationInfoEnricher extends ContextAwareBase
