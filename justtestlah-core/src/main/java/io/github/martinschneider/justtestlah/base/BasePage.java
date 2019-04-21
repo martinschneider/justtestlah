@@ -136,7 +136,7 @@ public abstract class BasePage<T> extends Base {
   }
 
   private void loadLocators(String fileName) {
-    LOG.info("Loading locators from {}...", fileName);
+    LOG.info("Loading locators from {}", fileName);
     locators = new LocatorMap(locatorParser.parse(fileName));
   }
 
@@ -182,8 +182,8 @@ public abstract class BasePage<T> extends Base {
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);
-      } catch (IOException e) {
-        LOG.warn("Error checking layout", e);
+      } catch (IOException exception) {
+        LOG.warn("Error checking layout", exception);
       }
     } else {
       LOG.info(

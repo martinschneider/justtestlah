@@ -12,9 +12,13 @@ import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.By;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Map to hold element locators. */
 public class LocatorMap {
+
+  private static final Logger LOG = LoggerFactory.getLogger(LocatorMap.class);
 
   private Map<String, Map<String, Map<String, String>>> map;
 
@@ -51,6 +55,7 @@ public class LocatorMap {
     Map<String, String> platformKey = map.get(key).get(platform);
     String type = platformKey.get("type");
     String rawValue = platformKey.get("value");
+    LOG.debug("Getting locator {} of type {}", rawValue, type);
 
     if (type.equalsIgnoreCase(CSS)) {
       return $(By.cssSelector(formatValue(rawValue, params)));
@@ -61,7 +66,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
       return $(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
-      return $(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
+      return $(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
       return $(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
     } else {
@@ -91,7 +96,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
       return $$(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
-      return $$(ByAndroidUIAutomator.AccessibilityId(formatValue(rawValue, params)));
+      return $$(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
       return $$(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
     } else {

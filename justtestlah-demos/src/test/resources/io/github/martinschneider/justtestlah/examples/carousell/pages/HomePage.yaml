@@ -6,9 +6,17 @@ LOGIN_BUTTON:
     type: accesibilityId
     value: welcome_page_login_button
   web:
-    type: css
-    value: #navbarLoginLink
-    
+    type: xpath
+    value: //button[text()='Login']
+   
+SELL_BUTTON:
+  android:
+    type: xpath
+    value: //*[@resource-id="com.thecarousell.Carousell:id/button_sell"]
+  ios:
+    type: accessibilityId
+    value: header_page_sell_button
+
 USER_MENU:
   android:
     type: id

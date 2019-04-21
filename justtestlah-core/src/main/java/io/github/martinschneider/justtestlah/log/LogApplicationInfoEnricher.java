@@ -7,8 +7,9 @@ import ch.qos.logback.classic.spi.LoggerContextListener;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.LifeCycle;
-import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
+import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
+import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfo;
 import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfoService;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,8 +33,8 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
 
     StringBuilder strBuilder = new StringBuilder(platform.toUpperCase());
     if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios")) {
-      String appInfo = new ApplicationInfoService().getAppInfo(appPath).toString();
-      if (appInfo != null && !appInfo.isEmpty()) {
+      ApplicationInfo appInfo = new ApplicationInfoService().getAppInfo(appPath);
+      if (appInfo != null && !appInfo.toString().isEmpty()) {
         strBuilder.append(" ");
         strBuilder.append(appInfo);
       }
@@ -44,15 +45,15 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
 
   private Properties getProperties() {
     Properties props = new Properties();
-    String propertiesLocation = System.getProperty(JustTestLahRunner.JUST_TEST_LAH_LOCATION_KEY);
+    String propertiesLocation = System.getProperty(PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY);
     try {
       if (propertiesLocation != null) {
         props.load(new FileInputStream(propertiesLocation));
       } else {
-        propertiesLocation = JustTestLahRunner.DEFAULT_JUST_TEST_LAH_PROPERTIES;
+        propertiesLocation = PropertiesHolder.DEFAULT_JUST_TEST_LAH_PROPERTIES;
         props.load(JustTestLahTest.class.getClassLoader().getResourceAsStream(propertiesLocation));
       }
-    } catch (NullPointerException | IOException e) {
+    } catch (NullPointerException | IOException exception) {
     }
     return props;
   }

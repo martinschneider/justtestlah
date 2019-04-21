@@ -13,11 +13,13 @@ cd justtestlah-demos
 mvn test -Dtest=TestRunner
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo you need to have a [Carousell](https://www.carousell.com) account.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `testusers.properties`.
 
 ```bash
-mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties
+mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties -Dtestusers.file=/absolute/path/to/your/testusers.properties
 ```
+
+Both parameters are optional; the default configuration files can be found under `justtestlah-demos/src/test/resources`. The `testusers.properties` is only required for tests which make use of `io.github.martinschneider.justtestlah.user.UserService`.
 
 ## Use in your own projects
 
@@ -27,7 +29,7 @@ Add the following Maven dependency to your `pom.xml`.
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.4</version>
+  <version>${justtestlah.version}</version>
 </dependency>
 ```
 
@@ -255,6 +257,60 @@ There are two modes to use template matching which can be configured in `justtes
 
 `opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
 
+Note, that not all cloud providers (see below) support this.
+
+## Test user management
+JustTestLah! implements a basic test user configuration. Test users are stored in a properties file passed as a VM argument: `-Dtestusers.file=/absolute/path/to/testusers.properties`. The content of the file looks as follows:
+
+```ini
+key1=user1:pw1
+key2=user2:pw2
+...
+``` 
+
+You can then call `io.github.martinschneider.justtestlah.user.UserService.get(String)` with the key as a parameter to retrieve the test user data as an object of type `io.github.martinschneider.justtestlah.user.User`.
+
+For example:
+
+```java
+public class LoginSteps extends BaseSteps {
+  @Autowired private UserService userService;
+  private HomePage homePage;
+  
+  /**
+   * Login the given user.
+   *
+   * @param userKey userKey of the user to log in
+   */
+  @When("^I login as \"([^\"]*)\"$")
+  public void loginAs(String userKey) {
+    homePage.login(userService.get(userKey))
+  }
+}
+```
+
+```java
+@Component
+@Profile({Platform.ANDROID, Platform.WEB})
+public class LoginPage extends BasePage<LoginPage> {
+  private HomePage home;
+
+  /**
+   * Log in the given user.
+   *
+   * @param user the user to log in
+   * @return {@link HomePage}
+   */
+  public HomePage login(User user) {
+    $("USERNAME_FIELD").sendKeys(user.getUsername());
+    $("PASSWORD_FIELD").sendKeys(user.getPassword());
+    $("LOGIN_BUTTON").click();
+    return home;
+  }
+}
+```
+
+
 ## Galen
 JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
@@ -302,31 +358,107 @@ There is a proof-of-concept integration of [Applitools](https://applitools.com).
 
 Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
+### AWS Devicefarm
+
+You can run tests against [AWS Devicefarm](https://us-west-2.console.aws.amazon.com/devicefarm/) by adding the following configuration in `justtestlah.properties`:
+
+```
+cloudprovider=aws
+
+# The arn of your AWS Devicefarm project (mandatory)
+aws.projectArn=
+
+# App package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+aws.appPackageArn=
+
+# Test package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+#aws.testPackageArn=
+
+# Optional extra data
+aws.extraDataArn=
+
+# Fully-qualified path to the justtestlah-demos project (required to build the test package)
+aws.demo.path=
+
+# Name for the test package (must match <finalName> in the justtestlah-demos pom.xml)
+aws.testpackage.name=justtestlah-awsdevicefarm
+
+# Device filters (optional)
+aws.minOsVersion=9.0
+aws.maxOsVersion=
+aws.osVersion=
+aws.model=
+aws.manufacturer=
+aws.formFactor=PHONE
+aws.waitForDevice=true
+
+# Optional device configuration
+aws.deviceLatitude=
+aws.deviceLongitude
+aws.bluetooth=
+aws.gps=
+aws.nfc=
+aws.wifi=
+# set this to true if you use device slots 
+aws.runUnmetered=false
+
+# Additional AWS Devicefarm configuration
+aws.accountsCleanup=
+aws.appPackagesCleanup=
+aws.jobTimeOut=
+aws.skipAppResign=
+```
+
+Make sure `justtestlah-awsdevicefarm` is on your classpath:
+
+```
+<dependency>
+  <groupId>io.github.martinschneider</groupId>
+  <artifactId>justtestlah-awsdevicefarm</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+Please note that AWS Devicefarm is a paid service.
+
+
 ### Browserstack
 
 You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
 
 ```
 cloudprovider=browserstack
-browserstack.accessKey=
+
+# Browserstack username
 browserstack.username=
+# Browserstack access key
+browserstack.accessKey=
+
+# Optional settings, see https://www.browserstack.com/automate/capabilities
+browserstack.debug=true
+browserstack.appiumLogs=true
+browserstack.video=true
+browserstack.geoLocation=SG
+browserstack.networkProfile=
+browserstack.customNetwork=
+browserstack.timezone=SG
+browserstack.appium_version=1.8.0
+```
+
+Make sure `justtestlah-browserstack` is on your classpath:
+
+```
+<dependency>
+  <groupId>io.github.martinschneider</groupId>
+  <artifactId>justtestlah-browserstack</artifactId>
+  <version>${project.version}</version>
+</dependency>
 ```
 
 Please note that BrowserStack is a paid service.
 
-### pCloudy
 
-You can run tests against [pCloudy](hhttps://device.pcloudy.com) by adding the following configuration in `justtestlah.properties`:
-
-```
-cloudprovider=pcloudy
-pcloudy.email=
-pcloudy.apikey=
-```
-
-Please note that pCloudy is a paid service.
-
-## Used frameworks
+## Used frameworks (selection)
 
 JustTestLah! makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
 
@@ -368,7 +500,7 @@ It has been showcased and mentioned in various presentations:
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 8 or higher (and has been tested on Java 8, 9, 10 and 11).
+* JustTestLah! requires Java 9 or higher (and has been tested on Java 9, 10, 11 and 12). The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 yet](https://github.com/openpnp/opencv/issues/44).
 
 * The Galen PoC only works on Appium 1.7. Newer versions are not yet supported. Please feel free to contribute an update for this feature.
 

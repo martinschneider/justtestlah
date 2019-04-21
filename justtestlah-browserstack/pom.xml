@@ -9,13 +9,18 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
   </parent>
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>
       <artifactId>justtestlah-core</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>${apache.http.components.version}</version>
     </dependency>
   </dependencies>
 </project>

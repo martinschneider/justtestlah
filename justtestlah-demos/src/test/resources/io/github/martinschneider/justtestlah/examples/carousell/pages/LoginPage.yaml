@@ -1,29 +1,29 @@
 USERNAME_FIELD:
   web:
     type: css
-    value: "#USER_NAME"
+    value: input[name='username']
   ios:
     type: accesibilityId
     value: login_page_username_text_field
   android:
     type: xpath
-    value: //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_username_text_field']//android.widget.EditText
+    value: //*[@text="email or username"]
 
 PASSWORD_FIELD:
   web:
     type: css
-    value: "#PASSWORD"
+    value: input[name='password']
   ios:
     type: accesibilityId
     value: login_page_password_text_field
   android:
     type: xpath
-    value: //TextInputLayout[@resource-id='com.thecarousell.Carousell:id/login_page_password_text_field']//android.widget.EditText
+    value: //*[@text="password"]
     
 LOGIN_BUTTON:
   web:
     type: xpath
-    value: "//BUTTON//SPAN[text()='Log in']"
+    value: "//BUTTON[text()='Log in']"
   ios:
     type: accesibilityId
     value: login_page_login_button

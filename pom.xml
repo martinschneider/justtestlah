@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -48,10 +48,10 @@
   </licenses>
   <modules>
     <module>justtestlah-core</module>
-    <module>justtestlah-browserstack</module>
-    <module>justtestlah-pcloudy</module>
     <module>justtestlah-demos</module>
     <module>justtestlah-mobile-tools</module>
+    <module>justtestlah-awsdevicefarm</module>
+    <module>justtestlah-browserstack</module>
   </modules>
   <repositories>
     <repository>
@@ -80,6 +80,7 @@
     <dd.plist.version>1.21</dd.plist.version>
     <apk.parser.version>2.6.4</apk.parser.version>
     <zip4j.version>1.3.2</zip4j.version>
+    <apache.http.components.version>4.5.8</apache.http.components.version>
     <commons.collections.version>4.2</commons.collections.version>
     <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
@@ -90,6 +91,7 @@
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M3</maven.surefire.report.plugin.version>
+    <maven.invoker.version>3.0.1</maven.invoker.version>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <cluecumber.report.plugin.version>1.6.2</cluecumber.report.plugin.version>
@@ -101,6 +103,7 @@
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     <fmt.version>2.6.0</fmt.version>
+    <aws.sdk.version>1.11.466</aws.sdk.version>
   </properties>
   <dependencyManagement>
     <dependencies>
