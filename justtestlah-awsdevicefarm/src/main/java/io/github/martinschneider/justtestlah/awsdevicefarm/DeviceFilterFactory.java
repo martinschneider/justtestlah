@@ -2,8 +2,8 @@ package io.github.martinschneider.justtestlah.awsdevicefarm;
 
 import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.DeviceFilter;
-import com.amazonaws.services.devicefarm.model.DeviceFilterOperator;
 import com.amazonaws.services.devicefarm.model.ListDevicesRequest;
+import com.amazonaws.services.devicefarm.model.RuleOperator;
 import io.github.martinschneider.justtestlah.awsdevicefarm.devicefilter.DeviceFilterConstants;
 import io.github.martinschneider.justtestlah.awsdevicefarm.devicefilter.DeviceFilterStringUtils;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
@@ -37,19 +37,16 @@ public class DeviceFilterFactory {
     addFilter(
         deviceFilters,
         "OS_VERSION",
-        DeviceFilterOperator.GREATER_THAN_OR_EQUALS,
+        RuleOperator.GREATER_THAN_OR_EQUALS,
         properties.getOptionalProperty("aws.minOsVersion"));
     addFilter(
         deviceFilters,
         "OS_VERSION",
-        DeviceFilterOperator.LESS_THAN_OR_EQUALS,
+        RuleOperator.LESS_THAN_OR_EQUALS,
         properties.getOptionalProperty("aws.maxOsVersion"));
     addFilter(deviceFilters, "OS_VERSION", properties.getOptionalProperty("aws.osVersion"));
     addFilter(
-        deviceFilters,
-        "MODEL",
-        DeviceFilterOperator.CONTAINS,
-        properties.getOptionalProperty("aws.model"));
+        deviceFilters, "MODEL", RuleOperator.CONTAINS, properties.getOptionalProperty("aws.model"));
     addFilter(deviceFilters, "FORM_FACTOR", properties.getOptionalProperty("aws.formFactor"));
     addFilter(deviceFilters, "MANUFACTURER", properties.getOptionalProperty("aws.manufacturer"));
     return deviceFilters;
@@ -57,14 +54,11 @@ public class DeviceFilterFactory {
 
   private List<DeviceFilter> addFilter(
       List<DeviceFilter> deviceFilters, String attribute, String... values) {
-    return addFilter(deviceFilters, attribute, DeviceFilterOperator.EQUALS, values);
+    return addFilter(deviceFilters, attribute, RuleOperator.EQUALS, values);
   }
 
   private List<DeviceFilter> addFilter(
-      List<DeviceFilter> deviceFilters,
-      String attribute,
-      DeviceFilterOperator operator,
-      String... values) {
+      List<DeviceFilter> deviceFilters, String attribute, RuleOperator operator, String... values) {
     if (values.length > 0 && values[0] != null && !values[0].isEmpty()) {
       deviceFilters.add(
           new DeviceFilter().withAttribute(attribute).withOperator(operator).withValues(values));

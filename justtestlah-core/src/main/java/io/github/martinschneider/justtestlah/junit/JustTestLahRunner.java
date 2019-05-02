@@ -14,7 +14,6 @@ import cucumber.runtime.ClassFinder;
 import cucumber.runtime.FeaturePathFeatureSupplier;
 import cucumber.runtime.RuntimeOptions;
 import cucumber.runtime.filter.Filters;
-import cucumber.runtime.filter.RerunFilters;
 import cucumber.runtime.formatter.PluginFactory;
 import cucumber.runtime.formatter.Plugins;
 import cucumber.runtime.io.MultiLoader;
@@ -35,7 +34,6 @@ import nu.pattern.OpenCV;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
@@ -73,7 +71,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private static final String DEFAULT_PLATFORM = "web";
   private static final String DELIMITER = ",";
 
-  private Runner runner;
+  private Runner awsRunner;
 
   /**
    * Constructs a new {@link JustTestLahRunner}.
@@ -88,15 +86,12 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     // Initialize Spring profiles and settings
     init();
 
-    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
-      runner = getAWSRunner(clazz);
-    } else {
-      runner = new BlockJUnit4ClassRunner(clazz);
-    }
-
     // Bridge logging to SLF4J
     bridgeLogging();
 
+    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+      awsRunner = getAWSRunner(clazz);
+    }
     if (!properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
       // load OpenCV library
       if (properties
@@ -110,11 +105,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       String cucumberOptions = buildCucumberOptions();
       LOG.info("Setting cucumber options ({}) to {}", CUCUMBER_OPTIONS_KEY, cucumberOptions);
       System.setProperty(CUCUMBER_OPTIONS_KEY, cucumberOptions);
-      Assertions.assertNoCucumberAnnotatedMethods(clazz);
 
       ClassLoader classLoader = clazz.getClassLoader();
       Assertions.assertNoCucumberAnnotatedMethods(clazz);
-
       RuntimeOptions runtimeOptions = new RuntimeOptions(cucumberOptions);
       ResourceLoader resourceLoader = new MultiLoader(classLoader);
       FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
@@ -140,8 +133,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
       this.runnerSupplier =
           new ThreadLocalRunnerSupplier(runtimeOptions, eventBus, backendSupplier);
-      RerunFilters rerunFilters = new RerunFilters(runtimeOptions, featureLoader);
-      this.filters = new Filters(runtimeOptions, rerunFilters);
+      this.filters = new Filters(runtimeOptions);
       this.junitOptions =
           new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
       Plugins plugins = new Plugins(classLoader, new PluginFactory(), eventBus, runtimeOptions);
@@ -149,7 +141,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
       // Start the run before reading the features.
       // Allows the test source read events to be broadcast properly
-      eventBus.send(new TestRunStarted(eventBus.getTime()));
+      eventBus.send(new TestRunStarted(eventBus.getTime(), eventBus.getTimeMillis()));
       for (CucumberFeature feature : features) {
         feature.sendTestSourceRead(eventBus);
       }
@@ -210,7 +202,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       @Override
       public void evaluate() throws Throwable {
         features.evaluate();
-        eventBus.send(new TestRunFinished(eventBus.getTime()));
+        eventBus.send(new TestRunFinished(eventBus.getTime(), eventBus.getTimeMillis()));
       }
     };
   }
@@ -285,6 +277,10 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   @Override
   public void run(RunNotifier notifier) {
-    runner.run(notifier);
+    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+      awsRunner.run(notifier);
+    } else {
+      super.run(notifier);
+    }
   }
 }
