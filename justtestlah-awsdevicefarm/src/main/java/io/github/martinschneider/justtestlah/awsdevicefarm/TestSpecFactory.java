@@ -31,7 +31,7 @@ public class TestSpecFactory {
   public String createTestSpec() throws IOException {
     Scanner scanner =
         new Scanner(
-            TestRunner.class
+            AWSTestRunner.class
                 .getClassLoader()
                 .getResourceAsStream("aws-devicefarm-testspec-template.yml"));
     String testSpec = scanner.useDelimiter("\\A").next();

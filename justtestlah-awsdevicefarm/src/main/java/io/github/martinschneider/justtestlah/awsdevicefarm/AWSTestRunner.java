@@ -12,10 +12,14 @@ import com.amazonaws.services.devicefarm.model.TestType;
 import com.amazonaws.services.devicefarm.model.UploadType;
 import io.github.martinschneider.justtestlah.awsdevicefarm.utils.FormattingUtils;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
+import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,29 +37,44 @@ import org.slf4j.LoggerFactory;
  *   <li>Collect the results
  * </ol>
  */
-public class TestRunner {
+public class AWSTestRunner extends Runner {
 
   private static final int TIMEOUT = 60;
   private PropertiesHolder properties = new PropertiesHolder();
-  private Logger LOG = LoggerFactory.getLogger(TestRunner.class);
+  private Logger LOG = LoggerFactory.getLogger(AWSTestRunner.class);
   private AWSService awsService = new AWSService();
 
-  public void run(RunNotifier notifier)
-      throws IOException, AWSDeviceFarmException, InterruptedException, MavenInvocationException {
+  public AWSTestRunner(Class<?> testClass) {}
+
+  public void run(RunNotifier notifier) {
 
     String projectArn = properties.getOptionalProperty("aws.projectArn");
 
     /** TEST SPEC FILE */
     LOG.info("Creating test spec file from template");
-    String testSpecFile = new TestSpecFactory(properties).createTestSpec();
+    String testSpecFile = null;
+    try {
+      testSpecFile = new TestSpecFactory(properties).createTestSpec();
+    } catch (IOException exception) {
+      LOG.error("Error creating test spec file", exception);
+    }
     LOG.info("Uploading test spec file to AWS Devicefarm");
-    String testSpecArn = uploadTestSpec(projectArn, new File(testSpecFile));
+    String testSpecArn = null;
+    try {
+      testSpecArn = uploadTestSpec(projectArn, new File(testSpecFile));
+    } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
+      LOG.error("Error uploading test spec file", exception);
+    }
 
     /** APP PACKAGE */
     String appArn = properties.getOptionalProperty("aws.appPackageArn");
     if (appArn == null || appArn.isEmpty()) {
       LOG.info("Uploading app package to AWS Devicefarm");
-      appArn = uploadAppPackage(projectArn, new File(properties.getProperty("android.appPath")));
+      try {
+        appArn = uploadAppPackage(projectArn, new File(properties.getProperty("android.appPath")));
+      } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
+        LOG.error("Error uploading app package", exception);
+      }
     } else {
       LOG.info("Using existing app package {}", appArn);
     }
@@ -64,9 +83,18 @@ public class TestRunner {
     String testArn = properties.getOptionalProperty("aws.testPackageArn");
     if (testArn == null || testArn.isEmpty()) {
       LOG.info("Creating test package for AWS Devicefarm");
-      File testPackage = new TestPackager(properties).packageProjectForDeviceFarm();
+      File testPackage = null;
+      try {
+        testPackage = new TestPackager(properties).packageProjectForDeviceFarm();
+      } catch (MavenInvocationException exception) {
+        LOG.error("Error creating test package", exception);
+      }
       LOG.info("Uploading test package to AWS Devicefarm");
-      testArn = uploadTestPackage(projectArn, testPackage);
+      try {
+        testArn = uploadTestPackage(projectArn, testPackage);
+      } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
+        LOG.error("Error uploading test package", exception);
+      }
     } else {
       LOG.info("Using existing test package {}", testArn);
     }
@@ -92,14 +120,25 @@ public class TestRunner {
     runRequest.setTest(test);
 
     LOG.info("Scheduling run on AWS Devicefarm");
+    Description testDescription = getDescription().getChildren().get(0);
+    notifier.fireTestStarted(testDescription);
     ScheduleRunResult runResult = awsService.getAws().scheduleRun(runRequest);
     String runArn = runResult.getRun().getArn();
     LOG.info("Scheduled run with arn {}", runArn);
-    waitForResult(runArn);
-    // TODO: handle the AWS Devicefarm test results for JUnit
+
+    /** WAIT FOR TEST COMPLETION */
+    if (waitForResult(runArn).equalsIgnoreCase("PASSED")) {
+      notifier.fireTestFinished(testDescription);
+    } else {
+      notifier.fireTestFailure(
+          new Failure(
+              testDescription,
+              new AssertionError(
+                  "There were test failures. Please check the run on AWS Devicefarm.")));
+    }
   }
 
-  private void waitForResult(String runArn) {
+  private String waitForResult(String runArn) {
     GetRunRequest getRunRequest = new GetRunRequest().withArn(runArn);
     Run run = awsService.getAws().getRun(getRunRequest).getRun();
     LOG.info("Waiting for run {}", run.getArn());
@@ -124,6 +163,7 @@ public class TestRunner {
       } while (elapsedTime < 10000);
     } while (!status.equals("COMPLETED"));
     LOG.info("{} device minutes used", run.getDeviceMinutes().getTotal());
+    return run.getResult();
   }
 
   private String uploadAppPackage(String projectArn, File appPackage)
@@ -152,5 +192,21 @@ public class TestRunner {
     deviceSelectionConfiguration.withFilters(deviceFilters).withMaxDevices(1);
     runRequest.setDeviceSelectionConfiguration(deviceSelectionConfiguration);
     return runRequest;
+  }
+
+  @Override
+  /**
+   * the description must match the one in {@link
+   * io.github.martinschneider.justtestlah.junit.JustTestLahRunner}
+   */
+  public Description getDescription() {
+    Description suiteDescription =
+        Description.createSuiteDescription(JustTestLahRunner.AWS_JUNIT_SUITE_DESCRIPTION);
+    Description groupDescription =
+        Description.createTestDescription(
+            "groupName", JustTestLahRunner.AWS_JUNIT_GROUP_DESCRIPTION);
+    suiteDescription.addChild(groupDescription);
+    suiteDescription.addChild(groupDescription);
+    return suiteDescription;
   }
 }

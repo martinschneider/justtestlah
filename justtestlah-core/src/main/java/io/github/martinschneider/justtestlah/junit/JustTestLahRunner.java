@@ -27,13 +27,15 @@ import cucumber.runtime.model.CucumberFeature;
 import cucumber.runtime.model.FeatureLoader;
 import io.github.martinschneider.justtestlah.configuration.Platform;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
-import io.github.martinschneider.justtestlah.runners.AWSTestRunner;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import nu.pattern.OpenCV;
 import org.junit.runner.Description;
+import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
@@ -44,6 +46,9 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
+
+  public static final String AWS_JUNIT_GROUP_DESCRIPTION = "Test results";
+  public static final String AWS_JUNIT_SUITE_DESCRIPTION = "AWS Devicefarm execution";
 
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
 
@@ -68,6 +73,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private static final String DEFAULT_PLATFORM = "web";
   private static final String DELIMITER = ",";
 
+  private Runner runner;
+
   /**
    * Constructs a new {@link JustTestLahRunner}.
    *
@@ -80,6 +87,12 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
     // Initialize Spring profiles and settings
     init();
+
+    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+      runner = getAWSRunner(clazz);
+    } else {
+      runner = new BlockJUnit4ClassRunner(clazz);
+    }
 
     // Bridge logging to SLF4J
     bridgeLogging();
@@ -237,11 +250,41 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   }
 
   @Override
-  public void run(RunNotifier notifier) {
+  public Description getDescription() {
     if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
-      new AWSTestRunner().run(notifier);
+      Description suiteDescription =
+          Description.createSuiteDescription(AWS_JUNIT_SUITE_DESCRIPTION);
+      suiteDescription.addChild(
+          Description.createTestDescription("groupName", AWS_JUNIT_GROUP_DESCRIPTION));
+      return suiteDescription;
     } else {
-      super.run(notifier);
+      return super.getDescription();
     }
+  }
+
+  /** this method uses reflection to avoid a compile-time dependency on justtestlah-awsdevicefarm */
+  private Runner getAWSRunner(Class<?> clazz) {
+    try {
+      return (Runner)
+          Class.forName("io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner")
+              .getConstructor(Class.class)
+              .newInstance(clazz);
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException
+        | ClassNotFoundException exception) {
+      LOG.error(
+          "Unable to create an instance of io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner. Ensure justtestlah-aws is on your classpath (check your Maven pom.xml).",
+          exception);
+    }
+    return null;
+  }
+
+  @Override
+  public void run(RunNotifier notifier) {
+    runner.run(notifier);
   }
 }
