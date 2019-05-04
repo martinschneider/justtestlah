@@ -112,7 +112,7 @@ public class TemplateMatcherTest {
     LOG.info("Java version is {}", version);
     if (version.startsWith("12")) {
       LOG.warn(
-          "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/33). Skipping tests!",
+          "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/44). Skipping tests!",
           version);
       return false;
     }
