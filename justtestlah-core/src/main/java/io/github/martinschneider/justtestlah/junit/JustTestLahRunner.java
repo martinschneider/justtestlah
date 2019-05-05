@@ -90,9 +90,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     bridgeLogging();
 
     if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+      LOG.info("Using io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner");
       awsRunner = getAWSRunner(clazz);
-    }
-    if (!properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+    } else {
       // load OpenCV library
       if (properties
           .getProperty(OPENCV_MODE_KEY, "client")
@@ -152,12 +152,26 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   String buildCucumberOptions() {
     StringBuilder cucumberOptions = new StringBuilder();
-    cucumberOptions.append("--tags @" + properties.getProperty(PLATFORM_KEY, DEFAULT_PLATFORM));
+    cucumberOptions.append("--tags '@" + properties.getProperty(PLATFORM_KEY, DEFAULT_PLATFORM));
     String tags = properties.getProperty(TAGS_KEY, null);
     if (tags != null) {
-      for (String tag : tags.split(DELIMITER)) {
-        cucumberOptions.append(" --tags @");
-        cucumberOptions.append(tag);
+      // Prevent injection attacks
+      if (tags.contains("'")) {
+        throw new RuntimeException(
+            String.format("Invalid character ' in tag expression: %s", tags));
+      }
+      // support legacy format (i.e. comma-separated list of tags without @)
+      if (!tags.contains("@")) {
+        for (String tag : tags.split(DELIMITER)) {
+          cucumberOptions.append(" and @");
+          cucumberOptions.append(tag);
+        }
+        cucumberOptions.append("'");
+      } else // no format (tag expressions)
+      {
+        cucumberOptions.append(" and (");
+        cucumberOptions.append(tags);
+        cucumberOptions.append(")'");
       }
     }
     if (Boolean.parseBoolean(
