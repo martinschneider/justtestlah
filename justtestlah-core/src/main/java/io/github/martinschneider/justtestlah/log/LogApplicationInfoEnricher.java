@@ -20,6 +20,8 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
     implements LoggerContextListener, LifeCycle {
 
   private boolean started = false;
+  
+  private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
 
   @Override
   public void start() {
@@ -33,7 +35,7 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
 
     StringBuilder strBuilder = new StringBuilder(platform.toUpperCase());
     if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios")) {
-      ApplicationInfo appInfo = new ApplicationInfoService().getAppInfo(appPath);
+      ApplicationInfo appInfo = applicationInfoService.getAppInfo(appPath);
       if (appInfo != null && !appInfo.toString().isEmpty()) {
         strBuilder.append(" ");
         strBuilder.append(appInfo);
@@ -82,4 +84,10 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
 
   @Override
   public void onLevelChange(Logger logger, Level level) {}
+  
+  // package-private for unit testing
+  void setApplicationInfoService(ApplicationInfoService applicationInfoService)
+  {
+	  this.applicationInfoService = applicationInfoService;
+  }
 }

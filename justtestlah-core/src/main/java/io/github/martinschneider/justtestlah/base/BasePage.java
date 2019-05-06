@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
-  private static final double DEFAULT_MATCHING_THRESHOLD = 0.9; // for visual template matching
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
 
