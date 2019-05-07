@@ -27,12 +27,13 @@ public class WebDriverHooks {
   }
 
   /**
-   * Close the web driver and Applitools. Generate Galen reports.
+   * Close the web driver.
    *
    * @throws IOException {@link IOException}
    */
   @After(order = 1)
   public void shutdown() throws IOException {
+    LOG.info("Closing web driver");
     WebDriverRunner.closeWebDriver();
   }
 }

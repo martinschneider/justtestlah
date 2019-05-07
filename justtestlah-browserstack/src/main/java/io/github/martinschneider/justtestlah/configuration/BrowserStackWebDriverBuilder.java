@@ -110,7 +110,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     return capabilities;
   }
 
-  private void uploadAppPackage(String path) {
+  private String uploadAppPackage(String path) {
     LOG.info("Uploading app package {} to Browserstack", path);
     CloseableHttpClient httpClient = HttpClients.createSystem();
     HttpPost httpPost = new HttpPost(BS_UPLOAD_PATH);
@@ -130,13 +130,15 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     if (response.getStatusLine().getStatusCode() != 200) {
       throw new RuntimeException(
           String.format(
-              "Upload returned non-200 responses: %d - %s",
+              "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
               response.getStatusLine().getStatusCode(), responseString));
     }
     try {
-      appUrl =
+      String appUrl =
           new JsonParser().parse(responseString).getAsJsonObject().get("app_url").getAsString();
       LOG.info("Successfully uploaded app package to {}", appUrl);
+      this.appiumUrl = appUrl;
+      return appUrl;
     } catch (JsonSyntaxException | ParseException exception) {
       throw new RuntimeException("Error parsing response from Browserstack", exception);
     }

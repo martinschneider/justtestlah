@@ -20,7 +20,7 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
     implements LoggerContextListener, LifeCycle {
 
   private boolean started = false;
-  
+
   private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
 
   @Override
@@ -49,7 +49,7 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
     Properties props = new Properties();
     String propertiesLocation = System.getProperty(PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY);
     try {
-      if (propertiesLocation != null) {
+      if (propertiesLocation != null && !propertiesLocation.isEmpty()) {
         props.load(new FileInputStream(propertiesLocation));
       } else {
         propertiesLocation = PropertiesHolder.DEFAULT_JUST_TEST_LAH_PROPERTIES;
@@ -84,10 +84,9 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
 
   @Override
   public void onLevelChange(Logger logger, Level level) {}
-  
+
   // package-private for unit testing
-  void setApplicationInfoService(ApplicationInfoService applicationInfoService)
-  {
-	  this.applicationInfoService = applicationInfoService;
+  void setApplicationInfoService(ApplicationInfoService applicationInfoService) {
+    this.applicationInfoService = applicationInfoService;
   }
 }

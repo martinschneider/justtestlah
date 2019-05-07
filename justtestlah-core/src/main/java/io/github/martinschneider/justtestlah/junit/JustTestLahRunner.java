@@ -97,9 +97,13 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       if (properties
           .getProperty(OPENCV_MODE_KEY, "client")
           .equals("client")) { // load the opencv library
-        OpenCV.loadShared();
-        OpenCV.loadLocally();
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        try {
+          OpenCV.loadShared();
+          OpenCV.loadLocally();
+          System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        } catch (ExceptionInInitializerError exception) {
+          LOG.error("Error loading OpenCV libraries", exception);
+        }
       }
 
       String cucumberOptions = buildCucumberOptions();
