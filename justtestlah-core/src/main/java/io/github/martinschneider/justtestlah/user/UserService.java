@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 public final class UserService {
   private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-  private static final String TESTUSERS_DEFAULT_FILE = "users.properties";
+  public static final String TESTUSERS_DEFAULT_FILE = "testusers.properties";
 
-  @Value("${testusers.file:" + TESTUSERS_DEFAULT_FILE + "}")
+  @Value("${testusers.file}")
   String usersFile;
 
   private Map<String, User> users = new HashMap<String, User>();
@@ -29,8 +29,13 @@ public final class UserService {
     users = new HashMap<String, User>();
     Properties props = new Properties();
     try {
-      props.load(new FileInputStream(usersFile));
-    } catch (IOException e) {
+      if (usersFile != null && !usersFile.isEmpty()) {
+        props.load(new FileInputStream(usersFile));
+      } else {
+        LOG.info("Loading JustTestLah properties from classpath ({})", TESTUSERS_DEFAULT_FILE);
+        props.load(UserService.class.getClassLoader().getResourceAsStream(TESTUSERS_DEFAULT_FILE));
+      }
+    } catch (IOException exception) {
       LOG.warn("Error loading test user definitions from {}", usersFile);
     }
     for (final String key : props.stringPropertyNames()) {
@@ -46,6 +51,14 @@ public final class UserService {
    * @return value for the given key
    */
   public User get(String key) {
-    return users.get(key);
+    User user = users.get(key);
+    if (user == null) {
+      throw new RuntimeException(String.format("User %s not found", key));
+    }
+    return user;
+  }
+
+  public void setUsersFile(String usersFile) {
+    this.usersFile = usersFile;
   }
 }

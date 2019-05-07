@@ -23,13 +23,11 @@ import org.yaml.snakeyaml.Yaml;
 /** JustTestLah! Spring context. */
 @Configuration
 @PropertySource(
-    value = {"justtestlah.properties", "file:${justtestlah.properties}"},
+    value = {"file:${justtestlah.properties}", "justtestlah.properties"},
     ignoreResourceNotFound = true)
 @ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
 public class SpringContext {
 
-  private static final String PCLOUDY_WEB_DRIVER_BUILDER_CLASS =
-      "io.github.martinschneider.justtestlah.configuration.PCloudyWebDriverBuilder";
   private static final String BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS =
       "io.github.martinschneider.justtestlah.configuration.BrowserStackWebDriverBuilder";
 
@@ -76,17 +74,9 @@ public class SpringContext {
     else if (cloudProvider.equals("browserstack")) {
       try {
         return getWebDriverBuilder(BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS);
-      } catch (Exception e) {
+      } catch (Exception exception) {
         LOG.error(
             "Couldn't instantiate BrowserStackWebDriverBuilder. Ensure that you included `justestlah-browserstack` in your pom.xml!");
-        System.exit(1);
-      }
-    } else if (cloudProvider.equals("pcloudy")) {
-      try {
-        return getWebDriverBuilder(PCLOUDY_WEB_DRIVER_BUILDER_CLASS);
-      } catch (Exception e) {
-        LOG.error(
-            "Couldn't instantiate PCloudyWebDriverBuilder. Ensure that you included `justestlah-pcloudy` in your pom.xml!");
         System.exit(1);
       }
     }

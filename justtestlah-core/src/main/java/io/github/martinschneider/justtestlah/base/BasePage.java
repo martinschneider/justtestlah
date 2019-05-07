@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
-  private static final double DEFAULT_MATCHING_THRESHOLD = 0.9; // for visual template matching
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
 
@@ -136,7 +135,7 @@ public abstract class BasePage<T> extends Base {
   }
 
   private void loadLocators(String fileName) {
-    LOG.info("Loading locators from {}...", fileName);
+    LOG.info("Loading locators from {}", fileName);
     locators = new LocatorMap(locatorParser.parse(fileName));
   }
 
@@ -182,8 +181,8 @@ public abstract class BasePage<T> extends Base {
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);
-      } catch (IOException e) {
-        LOG.warn("Error checking layout", e);
+      } catch (IOException exception) {
+        LOG.warn("Error checking layout", exception);
       }
     } else {
       LOG.info(

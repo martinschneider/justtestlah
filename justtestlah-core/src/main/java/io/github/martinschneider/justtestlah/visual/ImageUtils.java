@@ -67,7 +67,7 @@ public class ImageUtils {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try {
       ImageIO.write(image, "png", baos);
-    } catch (IOException e) {
+    } catch (IOException exception) {
       LOG.error("Error processing image");
       return null;
     }

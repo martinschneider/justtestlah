@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<configuration>
+  <contextListener class="io.github.martinschneider.justtestlah.log.LogApplicationInfoEnricher"/>
+  <appender name="STDOUT"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+      by default -->
+    <encoder>
+      <!-- no colours for AWS Devicefarm log -->
+      <pattern>${appInfo} %d{HH:mm:ss.SSS} %.-1level %C{0}:%M:%L %msg %n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+  <logger name="io.github.martinschneider.justtestlah" level="info" />
+</configuration>

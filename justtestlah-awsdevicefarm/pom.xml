@@ -3,14 +3,15 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>justtestlah-pcloudy</artifactId>
-  <name>JustTestLah! PCloudy</name>
+  <artifactId>justtestlah-awsdevicefarm</artifactId>
+  <name>JustTestLah! AWS Devicefarm</name>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
   </parent>
+
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>
@@ -18,9 +19,14 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>pCloudy-java-connector</groupId>
-      <artifactId>pCloudy-java-connector</artifactId>
-      <version>${pcloudy.connector.version}</version>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>${aws.sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-invoker</artifactId>
+      <version>${maven.invoker.version}</version>
     </dependency>
   </dependencies>
 </project>

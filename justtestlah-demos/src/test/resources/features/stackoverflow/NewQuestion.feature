@@ -1,4 +1,4 @@
-@android
+@android @opencv
 Feature: New question
 
 Scenario: Verify quick link visibility

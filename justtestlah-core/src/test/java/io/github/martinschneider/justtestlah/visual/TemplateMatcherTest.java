@@ -1,6 +1,7 @@
 package io.github.martinschneider.justtestlah.visual;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -9,14 +10,19 @@ import nu.pattern.OpenCV;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opencv.core.Core;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TemplateMatcherTest {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TemplateMatcherTest.class);
 
   private static OpenCVTemplateMatcher target = new OpenCVTemplateMatcher(new ImageUtils());
 
   /** Initialise mocks and configuration. */
   @BeforeClass
   public static void init() {
+    assumeTrue(javaVersionNotEqualTo12());
     OpenCV.loadShared();
     OpenCV.loadLocally();
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -99,5 +105,17 @@ public class TemplateMatcherTest {
 
   private String getPath(String fileName) {
     return this.getClass().getClassLoader().getResource("images/" + fileName).getFile();
+  }
+
+  private static boolean javaVersionNotEqualTo12() {
+    String version = System.getProperty("java.version");
+    LOG.info("Java version is {}", version);
+    if (version.startsWith("12")) {
+      LOG.warn(
+          "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/44). Skipping tests!",
+          version);
+      return false;
+    }
+    return true;
   }
 }

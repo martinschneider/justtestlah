@@ -19,6 +19,6 @@ public class HomePage extends BasePage<HomePage> {
   }
 
   public boolean isUserMenuVisible() {
-    return $("USER_MENU").shouldBe(appear).isDisplayed();
+    return $("SELL_BUTTON").waitUntil(appear, 10000).isDisplayed();
   }
 }

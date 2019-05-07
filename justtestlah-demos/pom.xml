@@ -9,8 +9,13 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
   </parent>
+  <properties>
+    <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
+    <maven.jar.plugin.version>3.1.0</maven.jar.plugin.version>
+    <maven.dependency.plugin.version>3.1.0</maven.dependency.plugin.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>
@@ -22,13 +27,11 @@
       <artifactId>justtestlah-browserstack</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!-- Uncomment these lines for pCloudy support. Make sure to also install 
-      the pCloudy Java connector to your Maven repository! -->
-    <!-- <dependency> -->
-    <!-- <groupId>io.github.martinschneider</groupId> -->
-    <!-- <artifactId>justtestlah-pcloudy</artifactId> -->
-    <!-- <version>${project.version}</version> -->
-    <!-- </dependency> -->
+    <dependency>
+      <groupId>io.github.martinschneider</groupId>
+      <artifactId>justtestlah-awsdevicefarm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -51,4 +54,70 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>aws</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>${maven.dependency.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>copy-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>${maven.jar.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>test-jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>${maven.assembly.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>tests</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <finalName>justtestlah-awsdevicefarm</finalName>
+                  <appendAssemblyId>false</appendAssemblyId>
+                  <descriptors>
+                    <descriptor>src/main/assembly/aws-devicefarm.xml</descriptor>
+                  </descriptors>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.12.4</version>
+            <configuration>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

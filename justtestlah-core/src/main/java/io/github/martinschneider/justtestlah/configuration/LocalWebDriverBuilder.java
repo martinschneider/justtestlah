@@ -45,6 +45,9 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Value("${mobile.appiumUrl}")
   protected String appiumUrl;
 
+  @Value("${mobile.deviceOrientation}")
+  protected String deviceOrientation;
+
   /*
    * (non-Javadoc)
    *
@@ -55,12 +58,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     try {
       return new AndroidDriver<AndroidElement>(
           new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities()));
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
-    } catch (WebDriverException e) {
-      LOG.error("Error creating web driver", e);
-      LOG.error("Appium server error: {}", getServerError(e));
-      if (e.getMessage().contains("Connection refused")) {
+    } catch (MalformedURLException exception) {
+      throw new RuntimeException(exception);
+    } catch (WebDriverException exception) {
+      LOG.error("Error creating web driver", exception);
+      LOG.error("Appium server error: {}", getServerError(exception));
+      if (exception.getMessage().contains("Connection refused")) {
         LOG.error("Check whether Appium is running!");
       }
       if (Boolean.parseBoolean(System.getProperty(EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR))) {
@@ -81,12 +84,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     try {
       return new IOSDriver<IOSElement>(
           new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()));
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
-    } catch (WebDriverException e) {
-      LOG.error("Error creating web driver", e);
-      LOG.error("Appium server error: {}", getServerError(e));
-      if (e.getMessage().contains("Connection refused")) {
+    } catch (MalformedURLException exception) {
+      throw new RuntimeException(exception);
+    } catch (WebDriverException exception) {
+      LOG.error("Error creating web driver", exception);
+      LOG.error("Appium server error: {}", getServerError(exception));
+      if (exception.getMessage().contains("Connection refused")) {
         LOG.error("Check whether Appium is running!");
       }
       if (Boolean.parseBoolean(System.getProperty(EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR))) {
@@ -97,15 +100,15 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     }
   }
 
-  private String getServerError(Throwable e) {
-    while (e != null) {
-      if (e.getMessage() != null && e.getMessage().contains("remote stacktrace:")) {
-        Matcher m = Pattern.compile("remote stacktrace:(.*)\\n").matcher(e.getMessage());
+  private String getServerError(Throwable exception) {
+    while (exception != null) {
+      if (exception.getMessage() != null && exception.getMessage().contains("remote stacktrace:")) {
+        Matcher m = Pattern.compile("remote stacktrace:(.*)\\n").matcher(exception.getMessage());
         if (m.find()) {
           return m.group(1).trim();
         }
       }
-      e = e.getCause();
+      exception = exception.getCause();
     }
     return null;
   }
@@ -116,6 +119,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities.setCapability("deviceName", deviceName);
     capabilities.setCapability("app", appPath);
     capabilities.setCapability("platformName", platform);
+    capabilities.setCapability("deviceOrientation", deviceOrientation);
     return capabilities;
   }
 

@@ -26,6 +26,9 @@ public class ApplicationInfoService {
   private final Logger LOG = LoggerFactory.getLogger(ApplicationInfoService.class);
 
   public ApplicationInfo getAppInfo(String appPath) {
+    if (appPath == null) {
+      return null;
+    }
     if (appPath.endsWith(".apk")) {
       return getAPKAppInfo(appPath);
     } else if (appPath.endsWith(".ipa")) {
@@ -97,7 +100,7 @@ public class ApplicationInfoService {
         if (apkFile != null) {
           apkFile.close();
         }
-      } catch (IOException e) {
+      } catch (IOException exception) {
       }
     }
 

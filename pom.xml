@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -48,10 +48,10 @@
   </licenses>
   <modules>
     <module>justtestlah-core</module>
-    <module>justtestlah-browserstack</module>
-    <module>justtestlah-pcloudy</module>
     <module>justtestlah-demos</module>
     <module>justtestlah-mobile-tools</module>
+    <module>justtestlah-awsdevicefarm</module>
+    <module>justtestlah-browserstack</module>
   </modules>
   <repositories>
     <repository>
@@ -60,47 +60,50 @@
     </repository>
   </repositories>
   <properties>
-    <spring.version>5.1.3.RELEASE</spring.version>
+    <spring.version>5.1.6.RELEASE</spring.version>
     <appium.version>7.0.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.1.0</selenide.version>
-    <cucumber.version>4.2.0</cucumber.version>
+    <selenide.version>5.2.2</selenide.version>
+    <cucumber.version>4.3.0</cucumber.version>
     <gherkin.version>5.1.0</gherkin.version>
-    <pcloudy.connector.version>11.0.5</pcloudy.connector.version>
     <opencv.version>3.4.2-1</opencv.version>
-    <applitools.version>3.143.0</applitools.version>
-    <galen.version>2.4.0</galen.version>
-    <junit.version>5.3.2</junit.version>
+    <applitools.version>3.151.2</applitools.version>
+    <galen.version>2.4.4</galen.version>
+    <junit.version>5.4.2</junit.version>
     <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
-    <slf4j.version>1.8.0-beta2</slf4j.version>
+    <slf4j.version>1.8.0-beta4</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
-    <assertj.version>3.11.1</assertj.version>
-    <mockito.version>2.23.4</mockito.version>
-    <snakeyaml.version>1.23</snakeyaml.version>
+    <assertj.version>3.12.2</assertj.version>
+    <mockito.version>2.27.0</mockito.version>
+    <snakeyaml.version>1.24</snakeyaml.version>
     <dd.plist.version>1.21</dd.plist.version>
-    <apk.parser.version>2.6.4</apk.parser.version>
+    <apk.parser.version>2.6.6</apk.parser.version>
     <zip4j.version>1.3.2</zip4j.version>
-    <commons.collections.version>4.2</commons.collections.version>
+    <bytebuddy.version>1.9.12</bytebuddy.version>
+    <apache.http.components.version>4.5.8</apache.http.components.version>
+    <commons.collections.version>4.3</commons.collections.version>
     <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
-    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
     <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
     <maven.site.skin.version>1.4.0</maven.site.skin.version>
     <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
     <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-    <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+    <maven.jacoco.plugin.version>0.8.3</maven.jacoco.plugin.version>
     <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M3</maven.surefire.report.plugin.version>
+    <maven.invoker.version>3.0.1</maven.invoker.version>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <cluecumber.report.plugin.version>1.6.2</cluecumber.report.plugin.version>
-    <checkstyle.version>8.16</checkstyle.version>
+    <checkstyle.version>8.20</checkstyle.version>
+    <fmt.version>2.8</fmt.version>
+    <aws.sdk.version>1.11.543</aws.sdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>10</maven.compiler.source>
+    <maven.compiler.target>10</maven.compiler.target>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-    <fmt.version>2.6.0</fmt.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -265,6 +268,12 @@
         <artifactId>zip4j</artifactId>
         <version>${zip4j.version}</version>
       </dependency>
+      <dependency>
+        <groupId>net.bytebuddy</groupId>
+        <artifactId>byte-buddy</artifactId>
+        <version>${bytebuddy.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
   <build>

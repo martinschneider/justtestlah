@@ -1,0 +1,100 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      # AWS still only supports Java 8, so we install Java 12 ourselves
+      # https://forums.aws.amazon.com/thread.jspa?threadID=299604
+      - wget -q https://download.java.net/java/GA/jdk12/GPL/openjdk-12_linux-x64_bin.tar.gz
+      - tar -xzf openjdk-12_linux-x64_bin.tar.gz
+      - export JAVA_HOME=$(pwd)/jdk-12
+      - export PATH=$(pwd)/jdk-12/bin:$PATH
+      - which java
+      - java -version
+      
+      # Required for image recognition but AWS doesn't support it yet (https://forums.aws.amazon.com/thread.jspa?threadID=300720)
+      #- npm i -g opencv4nodejs
+      
+      - export APPIUM_VERSION=1.9.1
+      - avm $APPIUM_VERSION
+
+  pre_test:
+    commands:
+      - echo "whoami `whoami`"
+      - aws --version
+      
+      # Starting Appium server
+      - echo "Starting appium server"
+      - >-
+        appium --log-timestamp --chromedriver-executable $DEVICEFARM_CHROMEDRIVER_EXECUTABLE  >> $DEVICEFARM_LOG_DIR/appiumlog.txt 2>&1 &
+
+      - >-
+        start_appium_timeout=0;
+        while [ true ];
+        do
+            if [ $start_appium_timeout -gt 30 ];
+            then
+                echo "appium server never started in 30 seconds. Exiting";
+                exit 1;
+            fi;
+            grep -i "Appium REST http interface listener started on 0.0.0.0:4723" $DEVICEFARM_LOG_DIR/appiumlog.txt >> /dev/null 2>&1;
+            if [ $? -eq 0 ];
+            then
+                echo "Appium REST http interface listener started on 0.0.0.0:4723";
+                break;
+            else
+                echo "Waiting for appium server to start. Sleeping for 1 second";
+                sleep 1;
+                start_appium_timeout=$((start_appium_timeout+1));
+            fi;
+        done;
+
+  test:
+    commands:
+      # Prepare the test code
+      - cd $DEVICEFARM_TEST_PACKAGE_PATH
+      - echo "Extracting JAR files"
+      - mkdir classes
+      - cd classes
+      # Unpack everything into `classes` (hacky!)
+      - unzip -o ../\*.jar
+      - cd ..
+      # Copy the feature files to `src/test/resources` (so we don't need to change the `features.directory` parameter)
+      - mkdir -p src/test/resources/features
+      - cp -r classes/features src/test/resources
+      # Remove `justtestlah.properties` and `testusers.properties` from classpath to avoid conflicts during property resolution
+      - rm classes/justtestlah.properties
+      - rm classes/testusers.properties
+      
+      - echo "Writing justtestlah.properties"
+      # We base64 encode the run configuration (`justtestlah.properties`) and
+      # the test users (`testusers.properties`) into this template (see 
+      # io.github.martinschneider.justtestlah.awsdevicefarm.TestSpecFactory).
+      # During the execution we decode it and write it back to two files which
+      # are then passed to the test execution. The alternative would be to put
+      # them into the test package but we don't want to re-upload this for
+      # every change of configuration.
+      - echo "__JUSTTESTLAH_PROPERTIES_BASE64__" | base64 --decode > justtestlah.properties
+      - echo "Writing testusers.properties"
+      - echo "__TESTUSERS_PROPERTIES_BASE64__" | base64 --decode > testusers.properties
+      
+      # Set the path to the app package (we don't care about the platform, we
+      # just set both and ignore the other).
+      - echo "android.appPath=$DEVICEFARM_APP_PATH" >> justtestlah.properties
+      - echo "ios.appPath=$DEVICEFARM_APP_PATH" >> justtestlah.properties
+      
+      # When executing the code on AWS `cloudprovider=local`
+      # Only when we trigger the tests on our machine we set
+      # `cloudprovider=aws`.
+      - echo "cloudprovider=local" >> justtestlah.properties
+      - cat justtestlah.properties
+
+      # Finally...
+      - echo "Executing test scenarios"
+      - java -Dappium.screenshots.dir=$DEVICEFARM_SCREENSHOT_PATH -Djusttestlah.properties=$(pwd)/justtestlah.properties -Dtestusers.file=$(pwd)/testusers.properties -Dlogback.configurationFile=classes/logback-aws.xml -cp classes:dependency-jars/* org.junit.runner.JUnitCore TestRunner
+
+  post_test:
+    commands:
+
+artifacts:
+  - $DEVICEFARM_LOG_DIR
