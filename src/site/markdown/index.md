@@ -495,7 +495,7 @@ It has been showcased and mentioned in various presentations:
   * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
   
 * Martin Schneider: testDevices.scaleUp(); Thoughts about mobile testing on the cloud. 2019-05-07, Testing Corner, Taipei
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20about%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)
+  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)
 
 ## Articles
 

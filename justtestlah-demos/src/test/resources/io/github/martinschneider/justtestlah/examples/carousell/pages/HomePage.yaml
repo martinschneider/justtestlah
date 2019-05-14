@@ -11,8 +11,8 @@ LOGIN_BUTTON:
    
 SELL_BUTTON:
   android:
-    type: xpath
-    value: //*[@resource-id="com.thecarousell.Carousell:id/button_sell"]
+    type: id
+    value: com.thecarousell.Carousell:id/button_sell
   ios:
     type: accessibilityId
     value: header_page_sell_button
