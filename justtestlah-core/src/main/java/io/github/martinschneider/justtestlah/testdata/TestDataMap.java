@@ -19,8 +19,7 @@ import org.springframework.stereotype.Component;
 /**
  * Container to hold test data.
  *
- * <p>
- * Test data is loaded from YAML files on the classpath which match the specified ant pattern.
+ * <p>Test data is loaded from YAML files on the classpath which match the specified ant pattern.
  */
 @Component
 public class TestDataMap {
@@ -35,11 +34,9 @@ public class TestDataMap {
   @Value("${model.package}")
   private String modelPackage;
 
-  @Autowired
-  private TestDataParser parser;
+  @Autowired private TestDataParser parser;
 
-  @Autowired
-  private TestDataObjectRegistry registry;
+  @Autowired private TestDataObjectRegistry registry;
 
   private Map<Class<?>, Map<String, Object>> testDataMap =
       new HashMap<Class<?>, Map<String, Object>>();
@@ -81,8 +78,8 @@ public class TestDataMap {
     LOG.info("Scanning classpath for test data classes");
     try (ScanResult scanResult =
         new ClassGraph().whitelistPackages(modelPackage).enableAnnotationInfo().scan()) {
-      for (ClassInfo routeClassInfo : scanResult
-          .getClassesWithAnnotation(TestData.class.getName())) {
+      for (ClassInfo routeClassInfo :
+          scanResult.getClassesWithAnnotation(TestData.class.getName())) {
         Class<?> type = routeClassInfo.loadClass();
 
         String name = type.getAnnotation(TestData.class).value();
