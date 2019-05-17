@@ -38,6 +38,10 @@ public class TestDataMap {
 
   @Autowired private TestDataObjectRegistry registry;
 
+  /**
+   * the key is the type (class), the value is another map which holds the corresponding test data
+   * objects for each entity
+   */
   private Map<Class<?>, Map<String, Object>> testDataMap =
       new HashMap<Class<?>, Map<String, Object>>();
 
@@ -51,9 +55,10 @@ public class TestDataMap {
     LOG.info("Initialising test data map");
     initializeTestDataObjectRegistry();
     String pattern;
-    if (testDataFilter != null || testDataFilter.isEmpty() || testDataFilter.startsWith("$")) {
+    if (testDataFilter != null && !testDataFilter.isEmpty() && !testDataFilter.startsWith("$")) {
       pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", testDataFilter);
     } else {
+      // scan everywhere
       pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", "**");
     }
     LOG.info("Scanning for test data files using the pattern {}", pattern);

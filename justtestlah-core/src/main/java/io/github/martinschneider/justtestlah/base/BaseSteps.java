@@ -12,13 +12,12 @@ public class BaseSteps extends Base {
     return testdata(type, "default");
   }
 
+  protected String testdata(String name) {
+    // TODO: implement!
+    return testdata(String.class, name);
+  }
+
   protected <T> T testdata(Class<T> type, String name) {
     return testDataMap.get(type, name);
   }
-
-  // TODO!
-  //    protected String testdata(String name)
-  //    {
-  //        return testDataMap.getIndividualProperty(name);
-  //    }
 }

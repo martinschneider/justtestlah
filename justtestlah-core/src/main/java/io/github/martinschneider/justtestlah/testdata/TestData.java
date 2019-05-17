@@ -8,8 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Annotates Java classes representing test data entities.
  *
- * <p>After constructing the {@link io.github.martinschneider.justtestlah.testdata.TestDataMap} all
- * annotated classes will be registered with {@link
+ * <p>All annotated classes will be registered with {@link
  * io.github.martinschneider.justtestlah.testdata.TestDataObjectRegistry}.
  */
 @Target(ElementType.TYPE)
