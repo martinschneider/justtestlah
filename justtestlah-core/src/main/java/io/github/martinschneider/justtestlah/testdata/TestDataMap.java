@@ -58,8 +58,7 @@ public class TestDataMap {
     if (testDataFilter != null && !testDataFilter.isEmpty() && !testDataFilter.startsWith("$")) {
       pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", testDataFilter);
     } else {
-      // scan everywhere
-      pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", "**");
+      return;
     }
     LOG.info("Scanning for test data files using the pattern {}", pattern);
     for (Resource resource : new PathMatchingResourcePatternResolver().getResources(pattern)) {
