@@ -25,7 +25,7 @@ public class FileEntity extends org.apache.http.entity.FileEntity {
     super.writeTo(this.outstream);
   }
 
-  /** Progress: 0-100 */
+  /** @return the progress of the upload (0-100) */
   public int getProgress() {
     if (outstream == null) {
       return 0;

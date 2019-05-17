@@ -1,12 +1,9 @@
-package io.github.martinschneider.justtestlah.user;
+package io.github.martinschneider.justtestlah.examples.carousell.model;
 
-/**
- * DTO for test users.
- *
- * @deprecated use a custom User model and
- *     io.github.martinschneider.justtestlah.base.BaseSteps.testdata(Class) instead
- */
-@Deprecated(since = "1.6", forRemoval = true)
+import io.github.martinschneider.justtestlah.testdata.TestData;
+
+/** DTO for test users. */
+@TestData("user")
 public class User {
   private String username;
   private String password;

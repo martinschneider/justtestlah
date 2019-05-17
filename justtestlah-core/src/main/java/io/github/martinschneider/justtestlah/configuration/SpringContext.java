@@ -3,6 +3,9 @@ package io.github.martinschneider.justtestlah.configuration;
 import com.applitools.eyes.selenium.Eyes;
 import com.galenframework.reports.GalenTestInfo;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
+import io.github.martinschneider.justtestlah.testdata.TestDataMap;
+import io.github.martinschneider.justtestlah.testdata.TestDataObjectRegistry;
+import io.github.martinschneider.justtestlah.testdata.TestDataParser;
 import io.github.martinschneider.justtestlah.user.UserService;
 import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
 import io.github.martinschneider.justtestlah.visual.ImageUtils;
@@ -69,7 +72,8 @@ public class SpringContext {
     if (cloudProvider.equals("local")) {
       return new LocalWebDriverBuilder();
     }
-    // TODO: use Spring to contribute WebDriverBuilders from other modules instead of hard-coding
+    // TODO: use Spring to contribute WebDriverBuilders from other modules instead
+    // of hard-coding
     // the class names
     else if (cloudProvider.equals("browserstack")) {
       try {
@@ -107,6 +111,21 @@ public class SpringContext {
   @Bean
   public UserService userService() {
     return new UserService();
+  }
+
+  @Bean
+  public TestDataMap testDataMap() {
+    return new TestDataMap();
+  }
+
+  @Bean
+  public TestDataParser testDataParser() {
+    return new TestDataParser();
+  }
+
+  @Bean
+  public TestDataObjectRegistry testDataObjectRegistry() {
+    return new TestDataObjectRegistry();
   }
 
   /**

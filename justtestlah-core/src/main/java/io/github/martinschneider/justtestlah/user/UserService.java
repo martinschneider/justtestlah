@@ -9,7 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-/** Simple service to load test users from properties file. */
+/**
+ * Simple service to load test users from properties file.
+ *
+ * @deprecated use a custom User model and
+ *     io.github.martinschneider.justtestlah.base.BaseSteps.testdata(Class) instead
+ */
+@Deprecated(since = "1.6", forRemoval = true)
 public final class UserService {
   private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 

@@ -5,13 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import io.github.martinschneider.justtestlah.base.BaseSteps;
+import io.github.martinschneider.justtestlah.examples.carousell.model.User;
 import io.github.martinschneider.justtestlah.examples.carousell.pages.HomePage;
-import io.github.martinschneider.justtestlah.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoginSteps extends BaseSteps {
-
-  @Autowired private UserService userService;
 
   private HomePage homePage;
 
@@ -27,7 +24,7 @@ public class LoginSteps extends BaseSteps {
         .goToLogin()
         .checkWindow()
         .checkLayout()
-        .login(userService.get(userKey))
+        .login(testdata(User.class))
         .checkWindow();
   }
 
