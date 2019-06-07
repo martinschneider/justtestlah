@@ -34,6 +34,9 @@ public class TestDataMap {
   @Value("${model.package}")
   private String modelPackage;
 
+  @Value("${testdata.enabled:true}")
+  private boolean testDataEnabled;
+
   @Autowired private TestDataParser parser;
 
   @Autowired private TestDataObjectRegistry registry;
@@ -52,27 +55,29 @@ public class TestDataMap {
    */
   @PostConstruct
   public void initializeTestDataMap() throws IOException {
-    LOG.info("Initialising test data map");
-    initializeTestDataObjectRegistry();
-    String pattern;
-    if (filter != null && !filter.isEmpty() && !filter.startsWith("$")) {
-      pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", filter);
-    } else {
-      return;
-    }
-    LOG.info("Scanning for test data files using the pattern {}", pattern);
-    for (Resource resource : new PathMatchingResourcePatternResolver().getResources(pattern)) {
-      Pair<Object, String> result = parser.parse(resource);
-      Object entity = result.getLeft();
-      String entityName = result.getRight();
-      Class<?> type = entity.getClass();
-      LOG.info("Adding {}, {} to test data map for type {}", entityName, entity, type.getName());
-      if (!testDataMap.containsKey(type)) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put(entityName, entity);
-        testDataMap.put(type, map);
+    if (testDataEnabled) {
+      LOG.info("Initialising test data map");
+      initializeTestDataObjectRegistry();
+      String pattern;
+      if (filter != null && !filter.isEmpty() && !filter.startsWith("$")) {
+        pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", filter);
       } else {
-        testDataMap.get(type).put(entityName, entity);
+        return;
+      }
+      LOG.info("Scanning for test data files using the pattern {}", pattern);
+      for (Resource resource : new PathMatchingResourcePatternResolver().getResources(pattern)) {
+        Pair<Object, String> result = parser.parse(resource);
+        Object entity = result.getLeft();
+        String entityName = result.getRight();
+        Class<?> type = entity.getClass();
+        LOG.info("Adding {}, {} to test data map for type {}", entityName, entity, type.getName());
+        if (!testDataMap.containsKey(type)) {
+          Map<String, Object> map = new HashMap<String, Object>();
+          map.put(entityName, entity);
+          testDataMap.put(type, map);
+        } else {
+          testDataMap.get(type).put(entityName, entity);
+        }
       }
     }
   }
@@ -127,5 +132,9 @@ public class TestDataMap {
 
   void setModelPackage(String modelPackage) {
     this.modelPackage = modelPackage;
+  }
+
+  void setTestDataEnabled(boolean testDataEnabled) {
+    this.testDataEnabled = testDataEnabled;
   }
 }

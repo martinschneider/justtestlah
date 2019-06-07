@@ -19,6 +19,7 @@ public class TestDataMapTest {
     parser.setTestDataObjectRegistry(registry);
     target.setParser(parser);
     target.setFilter("io/github/martinschneider/justtestlah/testdata/valid");
+    target.setTestDataEnabled(true);
   }
 
   @Test

@@ -301,12 +301,15 @@ User user = testdata(User.class, "userWithInvalidPassword");
 
 The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
 
-There are two configuration values for this feature:
+There are three configuration values for this feature:
 ```model.package=
 testdata.filter=
+testdata.enabled=
 ```
 
 `model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`). `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
+
+Setting `testdata.enabled=false` disables the YAML test data resolution.
 
 ## Cloud service integrations
 
