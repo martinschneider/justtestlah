@@ -50,7 +50,7 @@ public class PropertiesHolder {
   private void loadProperties() {
     String propertiesLocation = System.getProperty(JUST_TEST_LAH_LOCATION_KEY);
     try {
-      if (propertiesLocation != null) {
+      if (propertiesLocation != null && !propertiesLocation.isEmpty()) {
         LOG.info("Loading JustTestLah properties from {}", propertiesLocation);
         props.load(new FileInputStream(propertiesLocation));
       } else {
