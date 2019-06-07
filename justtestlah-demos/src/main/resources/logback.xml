@@ -1,13 +1,26 @@
 <?xml version="1.0"?>
 <configuration>
-  <contextListener class="io.github.martinschneider.justtestlah.log.LogApplicationInfoEnricher"/>
+  <contextListener
+    class="io.github.martinschneider.justtestlah.log.ApplicationInfoEnricher" />
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
-    <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
-      by default -->
     <encoder>
       <pattern>%cyan(${appInfo}) %cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
       </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="webdriver"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%red(%msg) %n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="entryExit"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%black(${appInfo} %d{HH:mm:ss.SSS} %.-1level %msg) %n</pattern>
     </encoder>
   </appender>
 
@@ -15,5 +28,14 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="io.github.martinschneider.justtestlah" level="info" />
+  <logger name="webdriver" level="info" additivity="false">
+    <appender-ref ref="webdriver" />
+  </logger>
+  
+  <logger name="entryExit" level="info" additivity="false">
+    <appender-ref ref="entryExit" />
+  </logger>
+  
+  <logger name="io.github.martinschneider.justtestlah"
+    level="info" />
 </configuration>

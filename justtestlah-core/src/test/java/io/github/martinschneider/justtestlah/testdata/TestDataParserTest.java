@@ -19,8 +19,8 @@ public class TestDataParserTest {
     target.setYamlParser(new Yaml());
     target.setTestDataObjectRegistry(testDataObjectRegistry);
     Pair<Object, String> result =
-        target.parse(new ClassPathResource("TestEntity1.yaml", this.getClass()));
-    assertThat(result.getRight()).as("check entity name").isEqualTo("TestEntity1");
+        target.parse(new ClassPathResource("valid/TestEntity1/test-123.yaml", this.getClass()));
+    assertThat(result.getRight()).as("check entity name").isEqualTo("test-123");
     Object element = result.getLeft();
     assertThat(element.getClass()).as("check type of element").isEqualTo(TestEntity1.class);
     TestEntity1 entity1 = (TestEntity1) element;
@@ -30,12 +30,12 @@ public class TestDataParserTest {
   @Test
   public void testPrimitiveTypes() throws IOException {
     TestDataObjectRegistry testDataObjectRegistry = new TestDataObjectRegistry();
-    testDataObjectRegistry.register(TestEntity2.class, "entity2");
+    testDataObjectRegistry.register(TestEntity2.class, "testEntity2");
     target.setYamlParser(new Yaml());
     target.setTestDataObjectRegistry(testDataObjectRegistry);
     Pair<Object, String> result =
-        target.parse(new ClassPathResource("TestEntity2.yaml", this.getClass()));
-    assertThat(result.getRight()).as("check entity name").isEqualTo("TestEntity2");
+        target.parse(new ClassPathResource("valid/TestEntity2/test-456.yaml", this.getClass()));
+    assertThat(result.getRight()).as("check entity name").isEqualTo("test-456");
     Object element = result.getLeft();
     assertThat(element.getClass()).as("check type of element").isEqualTo(TestEntity2.class);
     TestEntity2 entity2 = (TestEntity2) element;
@@ -86,7 +86,10 @@ public class TestDataParserTest {
     assertThat(
             assertThrows(
                     TestDataException.class,
-                    () -> target.parse(new ClassPathResource("TestEntity1.yaml", this.getClass())),
+                    () ->
+                        target.parse(
+                            new ClassPathResource(
+                                "valid/TestEntity1/test-123.yaml", this.getClass())),
                     "Expected exception")
                 .getMessage())
         .as("check exception message")

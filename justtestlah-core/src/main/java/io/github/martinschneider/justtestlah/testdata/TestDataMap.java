@@ -26,10 +26,10 @@ public class TestDataMap {
 
   private static final Logger LOG = LoggerFactory.getLogger(TestDataMap.class);
 
-  private static final String TEST_DATA_YAML_PATTERN = "**/__filter__/testdata/**/*.y*ml";
+  private static final String TEST_DATA_YAML_PATTERN = "**/__filter__/**/*.y*ml";
 
-  @Value("${testdata.filter}")
-  private String testDataFilter;
+  @Value("${testdata.filter:testdata}")
+  private String filter;
 
   @Value("${model.package}")
   private String modelPackage;
@@ -55,8 +55,8 @@ public class TestDataMap {
     LOG.info("Initialising test data map");
     initializeTestDataObjectRegistry();
     String pattern;
-    if (testDataFilter != null && !testDataFilter.isEmpty() && !testDataFilter.startsWith("$")) {
-      pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", testDataFilter);
+    if (filter != null && !filter.isEmpty() && !filter.startsWith("$")) {
+      pattern = TEST_DATA_YAML_PATTERN.replace("__filter__", filter);
     } else {
       return;
     }
@@ -80,15 +80,19 @@ public class TestDataMap {
   private void initializeTestDataObjectRegistry() {
     LOG.info("Initialising test data object registry");
     LOG.info("Scanning classpath for test data classes");
-    try (ScanResult scanResult =
-        new ClassGraph().whitelistPackages(modelPackage).enableAnnotationInfo().scan()) {
+    ClassGraph classGraph = new ClassGraph().enableAnnotationInfo();
+    if (modelPackage != null && !modelPackage.isEmpty()) {
+      classGraph = classGraph.whitelistPackages(modelPackage);
+    }
+    try (ScanResult scanResult = classGraph.scan()) {
       for (ClassInfo routeClassInfo :
           scanResult.getClassesWithAnnotation(TestData.class.getName())) {
         Class<?> type = routeClassInfo.loadClass();
 
         String name = type.getAnnotation(TestData.class).value();
         if (name.isEmpty()) {
-          name = type.getSimpleName().toLowerCase();
+          name = type.getSimpleName();
+          name = name.substring(0, 1).toLowerCase() + name.substring(1);
         }
         LOG.info("Register class {} as {}", type, name);
         registry.register(type, name);
@@ -106,5 +110,22 @@ public class TestDataMap {
 
   public String testdata(String name) {
     return get(String.class, name);
+  }
+
+  // for unit testing
+  void setRegistry(TestDataObjectRegistry registry) {
+    this.registry = registry;
+  }
+
+  void setFilter(String filter) {
+    this.filter = filter;
+  }
+
+  void setParser(TestDataParser parser) {
+    this.parser = parser;
+  }
+
+  void setModelPackage(String modelPackage) {
+    this.modelPackage = modelPackage;
   }
 }

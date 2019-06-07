@@ -48,10 +48,6 @@ public class TestDataParser {
       throw new TestDataException(
           String.format("Test data YAML file %s could not be loaded", resource.getDescription()));
     }
-    if (inputStream == null) {
-      LOG.warn("Could not load test data from {}", resource.getFilename());
-      return null;
-    }
     return map(yamlParser.load(inputStream), getEntityName(resource.getFilename()));
   }
 

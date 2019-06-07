@@ -4,7 +4,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import io.github.martinschneider.justtestlah.configuration.JustTestLahConfiguration;
-import io.github.martinschneider.justtestlah.configuration.SpringContext;
+import io.github.martinschneider.justtestlah.configuration.SpringConfig;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /** Hook to restart the WebDriver before every test. */
-@ContextConfiguration(classes = SpringContext.class)
+@ContextConfiguration(classes = SpringConfig.class)
 public class WebDriverHooks {
 
   private static final Logger LOG = LoggerFactory.getLogger(WebDriverHooks.class);

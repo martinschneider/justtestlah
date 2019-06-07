@@ -1,6 +1,6 @@
 package io.github.martinschneider.justtestlah.testdata;
 
-@TestData("entity2")
+@TestData
 public class TestEntity2 {
 
   private String stringValue;

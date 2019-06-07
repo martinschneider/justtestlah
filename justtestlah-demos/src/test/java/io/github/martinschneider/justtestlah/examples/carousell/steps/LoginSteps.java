@@ -7,10 +7,17 @@ import cucumber.api.java.en.When;
 import io.github.martinschneider.justtestlah.base.BaseSteps;
 import io.github.martinschneider.justtestlah.examples.carousell.model.User;
 import io.github.martinschneider.justtestlah.examples.carousell.pages.HomePage;
+import io.github.martinschneider.justtestlah.examples.carousell.pages.LoginPage;
+import io.github.martinschneider.justtestlah.examples.carousell.pages.WelcomePage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoginSteps extends BaseSteps {
 
-  private HomePage homePage;
+  @Autowired private WelcomePage welcomePage;
+
+  @Autowired private LoginPage loginPage;
+
+  @Autowired private HomePage homePage;
 
   /**
    * Login the given user.
@@ -19,17 +26,22 @@ public class LoginSteps extends BaseSteps {
    */
   @When("^I login as \"([^\"]*)\"$")
   public void loginAs(String userKey) {
-    homePage
+    welcomePage
         .checkWindow()
         .goToLogin()
         .checkWindow()
         .checkLayout()
-        .login(testdata(User.class))
+        .login(testdata(User.class, userKey))
         .checkWindow();
   }
 
-  @Then("^I see the user menu$")
-  public void isUserMenuVisible() {
-    assertThat(homePage.isUserMenuVisible()).as("user menu is visible").isTrue();
+  @Then("^I see the sell button$")
+  public void isSellButtonVisible() {
+    assertThat(homePage.isSellButtonVisible()).as("sell button is displayed").isTrue();
+  }
+
+  @Then("^I see an error message$")
+  public void isErrorMessageVisible() {
+    assertThat(loginPage.isErrorMessageVisible()).as("error message id displayed").isTrue();
   }
 }

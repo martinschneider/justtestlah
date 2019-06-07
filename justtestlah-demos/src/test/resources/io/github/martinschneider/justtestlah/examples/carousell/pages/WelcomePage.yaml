@@ -1,0 +1,10 @@
+LOGIN_BUTTON:
+  android:
+    type: id
+    value: com.thecarousell.Carousell:id/welcome_page_login_button
+  ios:
+    type: accesibilityId
+    value: welcome_page_login_button
+  web:
+    type: xpath
+    value: //button[text()='Login']

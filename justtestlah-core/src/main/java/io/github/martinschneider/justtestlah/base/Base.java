@@ -26,17 +26,21 @@ public class Base implements ApplicationContextAware {
   @PostConstruct
   public void initPages() {
     LOG.info("Initializing page objects for class {}", this.getClass());
-    for (Field field : this.getClass().getDeclaredFields()) {
-      if (BasePage.class.isAssignableFrom(field.getType())) {
-        field.setAccessible(true);
-        try {
-          LOG.debug("Loading page object {} of type {}", field.getName(), field.getClass());
-          field.set(this, applicationContext.getBean(field.getType()));
-        } catch (BeansException | IllegalArgumentException | IllegalAccessException exception) {
-          LOG.error("Error initializing page objects for class {}", this.getClass());
-          LOG.error("Exception", exception);
+    Class<?> clazz = this.getClass();
+    while (clazz != Base.class) {
+      for (Field field : clazz.getDeclaredFields()) {
+        if (BasePage.class.isAssignableFrom(field.getType())) {
+          field.setAccessible(true);
+          try {
+            LOG.debug("Loading page object {} of type {}", field.getName(), field.getType());
+            field.set(this, applicationContext.getBean(field.getType()));
+          } catch (BeansException | IllegalArgumentException | IllegalAccessException exception) {
+            LOG.error("Error initializing page objects for class {}", this.getClass());
+            LOG.error("Exception", exception);
+          }
         }
       }
+      clazz = clazz.getSuperclass();
     }
   }
 

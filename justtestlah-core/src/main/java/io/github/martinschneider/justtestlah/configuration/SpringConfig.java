@@ -2,6 +2,7 @@ package io.github.martinschneider.justtestlah.configuration;
 
 import com.applitools.eyes.selenium.Eyes;
 import com.galenframework.reports.GalenTestInfo;
+import io.github.martinschneider.justtestlah.aop.AopConfig;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
 import io.github.martinschneider.justtestlah.testdata.TestDataMap;
 import io.github.martinschneider.justtestlah.testdata.TestDataObjectRegistry;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.yaml.snakeyaml.Yaml;
 
@@ -29,12 +31,13 @@ import org.yaml.snakeyaml.Yaml;
     value = {"file:${justtestlah.properties}", "justtestlah.properties"},
     ignoreResourceNotFound = true)
 @ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
-public class SpringContext {
+@Import(AopConfig.class)
+public class SpringConfig {
 
   private static final String BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS =
       "io.github.martinschneider.justtestlah.configuration.BrowserStackWebDriverBuilder";
 
-  private Logger LOG = LoggerFactory.getLogger(SpringContext.class);
+  private Logger LOG = LoggerFactory.getLogger(SpringConfig.class);
 
   @Value("${opencv.mode}")
   private String openCVmode;

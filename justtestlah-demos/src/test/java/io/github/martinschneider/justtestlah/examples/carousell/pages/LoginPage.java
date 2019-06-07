@@ -26,7 +26,7 @@ public class LoginPage extends BasePage<LoginPage> {
     return home;
   }
 
-  public boolean isErrorMessagePresent() {
+  public boolean isErrorMessageVisible() {
     return $("ERROR_MESSAGE").should(appear).isDisplayed();
   }
 }
