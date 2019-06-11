@@ -4,31 +4,31 @@
 
 JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
-<!-- MarkdownTOC -->
+<!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
 
-- Getting started
-- Use in your own projects
-- Page objects, steps and feature files
-- Configuration
-- Test runner
-- Locators
-  - Placeholders
-- Test data handling
-- Cloud service integrations
-  - Browserstack
-  - AWS Devicefarm
-- Template matching
-  - Matching threshold
-  - Client and server-mode matching
-- Applitools
-- Galen
-- Used libraries
-- Articles
-- Presentations
-- Known issues & limitations
-- Contact and support
+- [Getting started](#getting-started)   
+- [Use in your own projects](#use-in-your-own-projects)   
+- [Page objects, steps and feature files](#page-objects-steps-and-feature-files)   
+- [Configuration](#configuration)   
+- [Test runner](#test-runner)   
+- [Locators](#locators)   
+   - [Placeholders](#placeholders)   
+- [Test data handling](#test-data-handling)   
+- [Cloud service integrations](#cloud-service-integrations)   
+   - [Browserstack](#browserstack)   
+   - [AWS Devicefarm](#aws-devicefarm)   
+- [Template matching](#template-matching)   
+   - [Matching threshold](#matching-threshold)   
+   - [Client and server-mode matching](#client-and-server-mode-matching)   
+- [Applitools](#applitools)   
+- [Galen](#galen)   
+- [Used libraries](#used-libraries)   
+- [Articles](#articles)   
+- [Presentations](#presentations)   
+- [Known issues & limitations](#known-issues-limitations)   
+- [Contact and support](#contact-and-support)   
 
-<!-- /MarkdownTOC -->
+<!-- /MDTOC -->
 
 
 ## Getting started
@@ -71,22 +71,22 @@ Steps and page objects are designed to be highly re-usable.
 
 Demo of a feature file:
 ```cucumber
-Feature: Search and tags 
+Feature: Search and tags
 
-@web 
-Scenario: Filter by tags 
-  Given I am on the homepage 
-  When I go to the tags page 
-  And I filter for "selenium" 
-  And I select the tag "selenium" 
-  And I select the first question 
-  Then the question is tagged with "selenium" 
-	
-@web @android 
-Scenario: Use the search function 
-  Given I am on the homepage 
-  When I search for "selenium" 
-  And I select the first question 
+@web
+Scenario: Filter by tags
+  Given I am on the homepage
+  When I go to the tags page
+  And I filter for "selenium"
+  And I select the tag "selenium"
+  And I select the first question
+  Then the question is tagged with "selenium"
+
+@web @android
+Scenario: Use the search function
+  Given I am on the homepage
+  When I search for "selenium"
+  And I select the first question
   Then the question is tagged with "selenium"
 ```
 
@@ -233,7 +233,7 @@ LOGIN_BUTTON:
 The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](https://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
 
 1. It is not possible to directly use elements in step definitions (only in page objects). This is by design as UI elements are meant to be encapsulated in the page objects.
-2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same. 
+2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same.
 
 If omitted the default type of locators is `css`.
 
@@ -391,7 +391,7 @@ aws.bluetooth=
 aws.gps=
 aws.nfc=
 aws.wifi=
-# set this to true if you use device slots 
+# set this to true if you use device slots
 aws.runUnmetered=false
 
 # Additional AWS Devicefarm configuration
@@ -479,19 +479,19 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
       aligned vertically all password_field
       width 100 % of password_field/width
       width 100 % of login_button/width
-  
+
   password_field:
       below username_field
       aligned vertically all username_field
       width 100 % of username_field/width
       width 100 % of login_button/width
-        
+
   login_button:
       below password_field
       below username_field
       width 100 % of username_field/width
       width 100 % of password_field/width
-      text is "Log In" 
+      text is "Log In"
 ```
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
@@ -547,4 +547,3 @@ Please let me know about any feedback, questions or ideas for improvement.
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)
-# New Document
