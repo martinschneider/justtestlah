@@ -514,11 +514,9 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Articles
 
-[This article](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79) explains how to use JustTestLah! (amongst other options) to query meta information from APK, IPA and APP packages.
-
-[This article](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d) describes how to utilize AWS Devicefarm with JustTestLah!
-
-[This article](https://medium.com/@mart.schneider/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738) shows how DI and Spring can be used for test automation frameworks.
+* [How to read version and other information from Android and iOS apps using Java](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79)
+* [Mobile Test Automation Using AWS Device Farm](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d)
+* [Leveraging Spring dependency injection for UI automation](https://medium.com/@mart.schneider/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738)
 
 ## Presentations
 
@@ -526,22 +524,13 @@ This framework (under the name YaSeW) started as a PoC for the 2nd Singapore App
 
 It has been showcased and mentioned in various presentations:
 
-* Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV. 2018-04-12, 2nd Singapore Appium Meet-up
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)
-  * [Video Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
-  * [Video Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
-
-* Martin Schneider: A single framework for Android, IOS and Web testing. 2018-11-09, Testingmind Software Testing Symposium, Manila
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-
-* [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up
-  * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
-  
-* Martin Schneider: Re-use automated test scenarios across different platforms. 2019-01-08, Testing Corner, Taipei
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
-  
-* Martin Schneider: testDevices.scaleUp(); Thoughts about mobile testing on the cloud. 2019-05-07, Testing Corner, Taipei
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)
+| Date       | Event                                            | Location | Talk | Links
+| ---------- | -----------------------------------------------  | -------- | ---- | ------
+| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br>[Video](https://youtu.be/g_RZmU-fpYU)
+| 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
+| 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
+| 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
+| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br>[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br>[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 
@@ -558,3 +547,4 @@ Please let me know about any feedback, questions or ideas for improvement.
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)
+# New Document
