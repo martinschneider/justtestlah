@@ -309,7 +309,7 @@ testdata.enabled=
 
 `model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`). `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
 
-Setting `testdata.enabled=false` disables the YAML test data resolution.
+Setting `testdata.enabled=true` enables the YAML test data resolution. The default is `false`!
 
 ## Cloud service integrations
 
@@ -526,11 +526,11 @@ It has been showcased and mentioned in various presentations:
 
 | Date       | Event                                            | Location | Talk | Links
 | ---------- | -----------------------------------------------  | -------- | ---- | ------
-| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br>[Video](https://youtu.be/g_RZmU-fpYU)
+| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
 | 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
 | 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
 | 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br>[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br>[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 

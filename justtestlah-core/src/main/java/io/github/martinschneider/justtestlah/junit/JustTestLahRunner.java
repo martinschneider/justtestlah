@@ -13,6 +13,7 @@ import cucumber.runtime.BackendSupplier;
 import cucumber.runtime.ClassFinder;
 import cucumber.runtime.FeaturePathFeatureSupplier;
 import cucumber.runtime.RuntimeOptions;
+import cucumber.runtime.RuntimeOptionsFactory;
 import cucumber.runtime.filter.Filters;
 import cucumber.runtime.formatter.PluginFactory;
 import cucumber.runtime.formatter.Plugins;
@@ -36,6 +37,7 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.RunnerScheduler;
 import org.junit.runners.model.Statement;
 import org.opencv.core.Core;
 import org.slf4j.Logger;
@@ -51,11 +53,12 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
 
   private final List<FeatureRunner> children = new ArrayList<FeatureRunner>();
-  private EventBus eventBus = null;
+  private List<CucumberFeature> features = new ArrayList<CucumberFeature>();
   private ThreadLocalRunnerSupplier runnerSupplier = null;
-  private Filters filters = null;
-  private JUnitOptions junitOptions = null;
+  private Plugins plugins = null;
+  private EventBus bus = null;
   private PropertiesHolder properties = new PropertiesHolder();
+  private boolean multiThreadingAssumed = false;
 
   private static final String STEPS_PACKAGE_KEY = "steps.package";
   private static final String CLOUD_PROVIDER = "cloudprovider";
@@ -94,9 +97,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       awsRunner = getAWSRunner(clazz);
     } else {
       // load OpenCV library
-      if (properties
-          .getProperty(OPENCV_MODE_KEY, "client")
-          .equals("client")) { // load the opencv library
+      if (properties.getProperty(OPENCV_MODE_KEY, "client").equals("client")) { // load the opencv
+        // library
         try {
           OpenCV.loadShared();
           OpenCV.loadLocally();
@@ -110,48 +112,108 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       LOG.info("Setting cucumber options ({}) to {}", CUCUMBER_OPTIONS_KEY, cucumberOptions);
       System.setProperty(CUCUMBER_OPTIONS_KEY, cucumberOptions);
 
-      ClassLoader classLoader = clazz.getClassLoader();
-      Assertions.assertNoCucumberAnnotatedMethods(clazz);
-      RuntimeOptions runtimeOptions = new RuntimeOptions(cucumberOptions);
-      ResourceLoader resourceLoader = new MultiLoader(classLoader);
-      FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
-      FeaturePathFeatureSupplier featureSupplier =
-          new FeaturePathFeatureSupplier(featureLoader, runtimeOptions);
-      // Parse the features early. Don't proceed when there are lexer errors
-      final List<CucumberFeature> features = featureSupplier.get();
-      List<String> featureList = new ArrayList<String>();
-      features.forEach(
-          feature -> {
-            featureList.add(feature.getGherkinFeature().getFeature().getName());
-          });
-      LOG.debug(
-          "Found {} feature(s) in {}: {}",
-          features.size(),
-          properties.getProperty(FEATURES_DIRECTORY_KEY),
-          featureList);
-
-      ClassFinder classFinder = new ResourceLoaderClassFinder(resourceLoader, classLoader);
-      BackendSupplier backendSupplier =
-          new BackendModuleBackendSupplier(resourceLoader, classFinder, runtimeOptions);
-      this.eventBus = new TimeServiceEventBus(TimeService.SYSTEM);
-
-      this.runnerSupplier =
-          new ThreadLocalRunnerSupplier(runtimeOptions, eventBus, backendSupplier);
-      this.filters = new Filters(runtimeOptions);
-      this.junitOptions =
-          new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
-      Plugins plugins = new Plugins(classLoader, new PluginFactory(), eventBus, runtimeOptions);
-      final StepDefinitionReporter stepDefinitionReporter = plugins.stepDefinitionReporter();
-
-      // Start the run before reading the features.
-      // Allows the test source read events to be broadcast properly
-      eventBus.send(new TestRunStarted(eventBus.getTime(), eventBus.getTimeMillis()));
-      for (CucumberFeature feature : features) {
-        feature.sendTestSourceRead(eventBus);
-      }
-      runnerSupplier.get().reportStepDefinitions(stepDefinitionReporter);
-      addChildren(features);
+      initCucumber(clazz);
     }
+  }
+
+  /**
+   * This is the code taken from {@link Cucumber}
+   *
+   * @param clazz {@link Class}
+   * @throws InitializationError {@link InitializationError}
+   */
+  private void initCucumber(Class<?> clazz) throws InitializationError {
+    Assertions.assertNoCucumberAnnotatedMethods(clazz);
+
+    // Parse the options early to provide fast feedback about invalid options
+    RuntimeOptionsFactory runtimeOptionsFactory = new RuntimeOptionsFactory(clazz);
+    RuntimeOptions runtimeOptions = runtimeOptionsFactory.create();
+    JUnitOptions junitOptions =
+        new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
+
+    ClassLoader classLoader = clazz.getClassLoader();
+    ResourceLoader resourceLoader = new MultiLoader(classLoader);
+    ClassFinder classFinder = new ResourceLoaderClassFinder(resourceLoader, classLoader);
+
+    // Parse the features early. Don't proceed when there are lexer errors
+    FeatureLoader featureLoader = new FeatureLoader(resourceLoader);
+    FeaturePathFeatureSupplier featureSupplier =
+        new FeaturePathFeatureSupplier(featureLoader, runtimeOptions);
+    this.features = featureSupplier.get();
+
+    // Create plugins after feature parsing to avoid the creation of empty files on lexer errors.
+    this.plugins = new Plugins(classLoader, new PluginFactory(), runtimeOptions);
+    this.bus = new TimeServiceEventBus(TimeService.SYSTEM);
+
+    BackendSupplier backendSupplier =
+        new BackendModuleBackendSupplier(resourceLoader, classFinder, runtimeOptions);
+    this.runnerSupplier = new ThreadLocalRunnerSupplier(runtimeOptions, bus, backendSupplier);
+    Filters filters = new Filters(runtimeOptions);
+    for (CucumberFeature cucumberFeature : features) {
+      FeatureRunner featureRunner =
+          new FeatureRunner(cucumberFeature, filters, runnerSupplier, junitOptions);
+      if (!featureRunner.isEmpty()) {
+        children.add(featureRunner);
+      }
+    }
+    LOG.debug(
+        "Found {} feature(s) in {}: {}",
+        features.size(),
+        properties.getProperty(FEATURES_DIRECTORY_KEY),
+        features);
+  }
+
+  @Override
+  public List<FeatureRunner> getChildren() {
+    return children;
+  }
+
+  @Override
+  protected Description describeChild(FeatureRunner child) {
+    return child.getDescription();
+  }
+
+  @Override
+  protected void runChild(FeatureRunner child, RunNotifier notifier) {
+    child.run(notifier);
+  }
+
+  @Override
+  protected Statement childrenInvoker(RunNotifier notifier) {
+    Statement runFeatures = super.childrenInvoker(notifier);
+    return new RunCucumber(runFeatures);
+  }
+
+  class RunCucumber extends Statement {
+    private final Statement runFeatures;
+
+    RunCucumber(Statement runFeatures) {
+      this.runFeatures = runFeatures;
+    }
+
+    @Override
+    public void evaluate() throws Throwable {
+      if (multiThreadingAssumed) {
+        plugins.setSerialEventBusOnEventListenerPlugins(bus);
+      } else {
+        plugins.setEventBusOnEventListenerPlugins(bus);
+      }
+
+      bus.send(new TestRunStarted(bus.getTime(), bus.getTimeMillis()));
+      for (CucumberFeature feature : features) {
+        feature.sendTestSourceRead(bus);
+      }
+      StepDefinitionReporter stepDefinitionReporter = plugins.stepDefinitionReporter();
+      runnerSupplier.get().reportStepDefinitions(stepDefinitionReporter);
+      runFeatures.evaluate();
+      bus.send(new TestRunFinished(bus.getTime(), bus.getTimeMillis()));
+    }
+  }
+
+  @Override
+  public void setScheduler(RunnerScheduler scheduler) {
+    super.setScheduler(scheduler);
+    multiThreadingAssumed = true;
   }
 
   String buildCucumberOptions() {
@@ -196,43 +258,6 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private void bridgeLogging() {
     SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
-  }
-
-  @Override
-  public List<FeatureRunner> getChildren() {
-    return children;
-  }
-
-  @Override
-  protected Description describeChild(FeatureRunner child) {
-    return child.getDescription();
-  }
-
-  @Override
-  protected void runChild(FeatureRunner child, RunNotifier notifier) {
-    child.run(notifier);
-  }
-
-  @Override
-  protected Statement childrenInvoker(RunNotifier notifier) {
-    final Statement features = super.childrenInvoker(notifier);
-    return new Statement() {
-      @Override
-      public void evaluate() throws Throwable {
-        features.evaluate();
-        eventBus.send(new TestRunFinished(eventBus.getTime(), eventBus.getTimeMillis()));
-      }
-    };
-  }
-
-  private void addChildren(List<CucumberFeature> cucumberFeatures) throws InitializationError {
-    for (CucumberFeature cucumberFeature : cucumberFeatures) {
-      FeatureRunner featureRunner =
-          new FeatureRunner(cucumberFeature, filters, runnerSupplier, junitOptions);
-      if (!featureRunner.isEmpty()) {
-        children.add(featureRunner);
-      }
-    }
   }
 
   private void init() {

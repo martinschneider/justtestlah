@@ -67,16 +67,13 @@ phases:
       - rm classes/testusers.properties
       
       - echo "Writing justtestlah.properties"
-      # We base64 encode the run configuration (`justtestlah.properties`) and
-      # the test users (`testusers.properties`) into this template (see 
-      # io.github.martinschneider.justtestlah.awsdevicefarm.TestSpecFactory).
-      # During the execution we decode it and write it back to two files which
-      # are then passed to the test execution. The alternative would be to put
-      # them into the test package but we don't want to re-upload this for
+      # We base64 encode the run configuration (`justtestlah.properties`) into
+      # this template (see io.github.martinschneider.justtestlah.awsdevicefarm.TestSpecFactory).
+      # During the execution we decode it and write it back to a file which
+      # is then passed to the test execution. The alternative would be to put
+      # it into the test package but we don't want to re-upload it for
       # every change of configuration.
       - echo "__JUSTTESTLAH_PROPERTIES_BASE64__" | base64 --decode > justtestlah.properties
-      - echo "Writing testusers.properties"
-      - echo "__TESTUSERS_PROPERTIES_BASE64__" | base64 --decode > testusers.properties
       
       # Set the path to the app package (we don't care about the platform, we
       # just set both and ignore the other).
@@ -91,7 +88,7 @@ phases:
 
       # Finally...
       - echo "Executing test scenarios"
-      - java -Dappium.screenshots.dir=$DEVICEFARM_SCREENSHOT_PATH -Djusttestlah.properties=$(pwd)/justtestlah.properties -Dtestusers.file=$(pwd)/testusers.properties -Dlogback.configurationFile=classes/logback-aws.xml -cp classes:dependency-jars/* org.junit.runner.JUnitCore TestRunner
+      - java -Dappium.screenshots.dir=$DEVICEFARM_SCREENSHOT_PATH -Djusttestlah.properties=$(pwd)/justtestlah.properties -Dlogback.configurationFile=classes/logback-aws.xml -cp classes:dependency-jars/* org.junit.runner.JUnitCore TestRunner
 
   post_test:
     commands:

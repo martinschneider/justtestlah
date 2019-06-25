@@ -1,10 +1,10 @@
 package io.github.martinschneider.justtestlah.examples.stackoverflow.pages;
 
-import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selenide.open;
 
 import io.github.martinschneider.justtestlah.base.BasePage;
 import io.github.martinschneider.justtestlah.configuration.Platform;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -38,8 +38,7 @@ public class HomePage extends BasePage<HomePage> {
    * @return {@link QuestionsPage}
    */
   public QuestionsPage search(String query) {
-    $("SEARCH_FIELD").sendKeys(query);
-    $("SEARCH_BUTTON").should(appear).click();
+    $("SEARCH_FIELD").sendKeys(query + Keys.RETURN);
     return questions;
   }
 }

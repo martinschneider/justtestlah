@@ -34,7 +34,7 @@ public class TestDataMap {
   @Value("${model.package}")
   private String modelPackage;
 
-  @Value("${testdata.enabled:true}")
+  @Value("${testdata.enabled:false}")
   private boolean testDataEnabled;
 
   @Autowired private TestDataParser parser;

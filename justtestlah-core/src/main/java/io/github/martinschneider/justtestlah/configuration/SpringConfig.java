@@ -7,7 +7,6 @@ import io.github.martinschneider.justtestlah.locator.LocatorParser;
 import io.github.martinschneider.justtestlah.testdata.TestDataMap;
 import io.github.martinschneider.justtestlah.testdata.TestDataObjectRegistry;
 import io.github.martinschneider.justtestlah.testdata.TestDataParser;
-import io.github.martinschneider.justtestlah.user.UserService;
 import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
 import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import io.github.martinschneider.justtestlah.visual.OpenCVTemplateMatcher;
@@ -52,7 +51,7 @@ public class SpringConfig {
 
   @Bean
   public JustTestLahConfiguration config() {
-    return new JustTestLahConfiguration(webDriverBuilder(), userService());
+    return new JustTestLahConfiguration(webDriverBuilder());
   }
 
   @Bean
@@ -109,11 +108,6 @@ public class SpringConfig {
     } else {
       return new OpenCVTemplateMatcher(imageUtils);
     }
-  }
-
-  @Bean
-  public UserService userService() {
-    return new UserService();
   }
 
   @Bean

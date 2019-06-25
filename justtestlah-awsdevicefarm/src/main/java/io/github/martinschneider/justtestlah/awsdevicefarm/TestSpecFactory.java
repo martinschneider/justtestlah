@@ -1,8 +1,6 @@
 package io.github.martinschneider.justtestlah.awsdevicefarm;
 
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
-import io.github.martinschneider.justtestlah.user.UserService;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -39,31 +37,6 @@ public class TestSpecFactory {
     StringWriter justTestLahProperties = new StringWriter();
     Properties props = new Properties();
     props.putAll(properties.getProperties());
-
-    // encode the test users into the testSpec file
-    String testUsersFile = props.getProperty("testusers.file");
-    Properties testUsers = new Properties();
-    try {
-      if (testUsersFile != null && !testUsersFile.isEmpty()) {
-        testUsers.load(new FileInputStream(testUsersFile));
-      } else {
-        LOG.info(
-            "Loading JustTestLah properties from classpath ({})",
-            UserService.TESTUSERS_DEFAULT_FILE);
-        testUsers.load(
-            UserService.class
-                .getClassLoader()
-                .getResourceAsStream(UserService.TESTUSERS_DEFAULT_FILE));
-      }
-    } catch (IOException exception) {
-      LOG.warn("Error loading test user definitions from {}", testUsersFile);
-    }
-    StringWriter testUsersProperties = new StringWriter();
-    testUsers.store(testUsersProperties, "test users");
-    testSpec =
-        testSpec.replaceAll(
-            "__TESTUSERS_PROPERTIES_BASE64__",
-            Base64.encodeAsString(testUsersProperties.toString()));
 
     // these settings will be overridden by the test spec execution
     props.remove("android.appPath");
