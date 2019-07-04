@@ -52,8 +52,8 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
 
-  private final List<FeatureRunner> children = new ArrayList<FeatureRunner>();
-  private List<CucumberFeature> features = new ArrayList<CucumberFeature>();
+  private final List<FeatureRunner> children = new ArrayList<>();
+  private List<CucumberFeature> features = new ArrayList<>();
   private ThreadLocalRunnerSupplier runnerSupplier = null;
   private Plugins plugins = null;
   private EventBus bus = null;

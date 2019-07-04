@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestDataObjectRegistry {
 
-  private Logger LOG = LoggerFactory.getLogger(TestDataObjectRegistry.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TestDataObjectRegistry.class);
 
   private BiMap<String, Class<?>> registry = HashBiMap.create();
 

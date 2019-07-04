@@ -45,8 +45,7 @@ public class TestDataMap {
    * the key is the type (class), the value is another map which holds the corresponding test data
    * objects for each entity
    */
-  private Map<Class<?>, Map<String, Object>> testDataMap =
-      new HashMap<Class<?>, Map<String, Object>>();
+  private Map<Class<?>, Map<String, Object>> testData = new HashMap<>();
 
   /**
    * Initialize the map.
@@ -71,12 +70,12 @@ public class TestDataMap {
         String entityName = result.getRight();
         Class<?> type = entity.getClass();
         LOG.info("Adding {}, {} to test data map for type {}", entityName, entity, type.getName());
-        if (!testDataMap.containsKey(type)) {
-          Map<String, Object> map = new HashMap<String, Object>();
+        if (!testData.containsKey(type)) {
+          Map<String, Object> map = new HashMap<>();
           map.put(entityName, entity);
-          testDataMap.put(type, map);
+          testData.put(type, map);
         } else {
-          testDataMap.get(type).put(entityName, entity);
+          testData.get(type).put(entityName, entity);
         }
       }
     }
@@ -106,7 +105,7 @@ public class TestDataMap {
   }
 
   public <T> T get(Class<T> type, String name) {
-    return (T) testDataMap.get(type).get(name);
+    return (T) testData.get(type).get(name);
   }
 
   public <T> T get(Class<T> type) {

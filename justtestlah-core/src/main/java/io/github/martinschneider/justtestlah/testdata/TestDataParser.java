@@ -41,6 +41,7 @@ public class TestDataParser {
    *     filename)
    */
   public Pair<Object, String> parse(Resource resource) {
+    LOG.debug("Parsing test data from {}", resource.getDescription());
     InputStream inputStream = null;
     try {
       inputStream = resource.getInputStream();

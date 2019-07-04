@@ -39,8 +39,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   private static final Logger LOG = LoggerFactory.getLogger("webdriver");
 
-  private List<String> logTypes = new ArrayList<String>();
+  private List<String> logTypes = new ArrayList<>();
 
+  @SuppressWarnings("squid:S4784")
   private void appendWebDriverLog(WebDriver driver) {
     for (String logType : logTypes) {
       for (LogEntry log : driver.manage().logs().get(logType)) {
@@ -48,6 +49,8 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
         String message = log.getMessage();
         // filter out messages related to fetching the log
         if (!message.matches(REGEXP_FILTER)) {
+          // TODO: use lambda expression once SLF4J releases it:
+          // https://jira.qos.ch/browse/SLF4J-371
           LOG.info("{} {} {}", logType, formatter.format(log.getTimestamp()), log.getMessage());
         }
       }
@@ -55,7 +58,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeAlertAccept(WebDriver driver) {}
+  public void beforeAlertAccept(WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterAlertAccept(WebDriver driver) {
@@ -69,10 +74,14 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeAlertDismiss(WebDriver driver) {}
+  public void beforeAlertDismiss(WebDriver driver) {
+    // do nothing
+  }
 
   @Override
-  public void beforeNavigateTo(String url, WebDriver driver) {}
+  public void beforeNavigateTo(String url, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterNavigateTo(String url, WebDriver driver) {
@@ -80,7 +89,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeNavigateBack(WebDriver driver) {}
+  public void beforeNavigateBack(WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterNavigateBack(WebDriver driver) {
@@ -88,7 +99,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeNavigateForward(WebDriver driver) {}
+  public void beforeNavigateForward(WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterNavigateForward(WebDriver driver) {
@@ -96,7 +109,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeNavigateRefresh(WebDriver driver) {}
+  public void beforeNavigateRefresh(WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterNavigateRefresh(WebDriver driver) {
@@ -104,7 +119,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeFindBy(By by, WebElement element, WebDriver driver) {}
+  public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterFindBy(By by, WebElement element, WebDriver driver) {
@@ -112,7 +129,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeClickOn(WebElement element, WebDriver driver) {}
+  public void beforeClickOn(WebElement element, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterClickOn(WebElement element, WebDriver driver) {
@@ -129,7 +148,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeScript(String script, WebDriver driver) {}
+  public void beforeScript(String script, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterScript(String script, WebDriver driver) {
@@ -137,7 +158,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeSwitchToWindow(String windowName, WebDriver driver) {}
+  public void beforeSwitchToWindow(String windowName, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterSwitchToWindow(String windowName, WebDriver driver) {
@@ -150,13 +173,19 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public <X> void beforeGetScreenshotAs(OutputType<X> target) {}
+  public <X> void beforeGetScreenshotAs(OutputType<X> target) {
+    // do nothing
+  }
 
   @Override
-  public <X> void afterGetScreenshotAs(OutputType<X> target, X screenshot) {}
+  public <X> void afterGetScreenshotAs(OutputType<X> target, X screenshot) {
+    // do nothing
+  }
 
   @Override
-  public void beforeGetText(WebElement element, WebDriver driver) {}
+  public void beforeGetText(WebElement element, WebDriver driver) {
+    // do nothing
+  }
 
   @Override
   public void afterGetText(WebElement element, WebDriver driver, String text) {

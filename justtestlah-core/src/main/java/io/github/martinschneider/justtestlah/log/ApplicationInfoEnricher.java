@@ -43,7 +43,9 @@ public class ApplicationInfoEnricher extends ContextAwareBase
   }
 
   @Override
-  public void stop() {}
+  public void stop() {
+    // do nothing
+  }
 
   @Override
   public boolean isStarted() {
@@ -56,16 +58,24 @@ public class ApplicationInfoEnricher extends ContextAwareBase
   }
 
   @Override
-  public void onStart(LoggerContext context) {}
+  public void onStart(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onReset(LoggerContext context) {}
+  public void onReset(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onStop(LoggerContext context) {}
+  public void onStop(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onLevelChange(Logger logger, Level level) {}
+  public void onLevelChange(Logger logger, Level level) {
+    // do nothing
+  }
 
   // package-private for unit testing
   void setApplicationInfoService(ApplicationInfoService applicationInfoService) {

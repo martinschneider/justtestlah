@@ -36,7 +36,7 @@ public class SpringConfig {
   private static final String BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS =
       "io.github.martinschneider.justtestlah.configuration.BrowserStackWebDriverBuilder";
 
-  private Logger LOG = LoggerFactory.getLogger(SpringConfig.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SpringConfig.class);
 
   @Value("${opencv.mode}")
   private String openCVmode;
