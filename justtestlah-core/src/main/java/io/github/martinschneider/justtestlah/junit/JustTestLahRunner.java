@@ -47,6 +47,9 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
+  private static final String OPENCV_CLIENT = "client";
+  private static final String CLOUDPROVIDER_AWS = "aws";
+  private static final String CLOUDPROVIDER_LOCAL = "local";
   public static final String AWS_JUNIT_GROUP_DESCRIPTION = "Test results";
   public static final String AWS_JUNIT_SUITE_DESCRIPTION = "AWS Devicefarm execution";
 
@@ -92,12 +95,14 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     // Bridge logging to SLF4J
     bridgeLogging();
 
-    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
       LOG.info("Using io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner");
       awsRunner = getAWSRunner(clazz);
     } else {
       // load OpenCV library
-      if (properties.getProperty(OPENCV_MODE_KEY, "client").equals("client")) { // load the opencv
+      if (properties
+          .getProperty(OPENCV_MODE_KEY, OPENCV_CLIENT)
+          .equals(OPENCV_CLIENT)) { // load the opencv
         // library
         try {
           OpenCV.loadShared();
@@ -286,7 +291,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   @Override
   public Description getDescription() {
-    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
       Description suiteDescription =
           Description.createSuiteDescription(AWS_JUNIT_SUITE_DESCRIPTION);
       suiteDescription.addChild(
@@ -320,7 +325,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
   @Override
   public void run(RunNotifier notifier) {
-    if (properties.getProperty(CLOUD_PROVIDER, "local").equals("aws")) {
+    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
       awsRunner.run(notifier);
     } else {
       super.run(notifier);

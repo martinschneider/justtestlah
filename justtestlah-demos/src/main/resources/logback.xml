@@ -13,7 +13,7 @@
   <appender name="webdriver"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%red(%msg) %n</pattern>
+      <pattern>%yellow(%msg) %n</pattern>
     </encoder>
   </appender>
   

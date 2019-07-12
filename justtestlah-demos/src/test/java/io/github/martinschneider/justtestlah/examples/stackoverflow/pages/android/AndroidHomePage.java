@@ -2,13 +2,9 @@ package io.github.martinschneider.justtestlah.examples.stackoverflow.pages.andro
 
 import static com.codeborne.selenide.Selenide.sleep;
 
-import com.codeborne.selenide.WebDriverRunner;
-import io.appium.java_client.HasSettings;
-import io.appium.java_client.Setting;
 import io.github.martinschneider.justtestlah.configuration.Platform;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.HomePage;
 import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.QuestionsPage;
-import org.openqa.selenium.WebElement;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -30,10 +26,6 @@ public class AndroidHomePage extends HomePage {
   }
 
   public void tapOnQuestionIcon() {
-    WebElement element = $("QUESTION_ICON");
-    LOG.info(element.getLocation().toString());
-    ((HasSettings) WebDriverRunner.getWebDriver())
-        .setSetting(Setting.FIX_IMAGE_FIND_SCREENSHOT_DIMENSIONS, false);
     $("QUESTION_ICON").click();
   }
 }

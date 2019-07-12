@@ -1,5 +1,6 @@
 package io.github.martinschneider.justtestlah.examples.stackoverflow.pages;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selenide.open;
 
 import io.github.martinschneider.justtestlah.base.BasePage;
@@ -27,7 +28,8 @@ public class HomePage extends BasePage<HomePage> {
   }
 
   public TagsPage navigateToTagsPage() {
-    $("MENU_TAGS").click();
+    $("MENU_TOGGLE").click();
+    $("MENU_TAGS").should(appear).click();
     return tags;
   }
 

@@ -15,6 +15,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WrapsDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,11 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
 
   @SuppressWarnings("unchecked")
   public void setDriver(WebDriver driver) {
-    this.driver = (AppiumDriver) driver;
+    if (driver instanceof WrapsDriver) {
+      this.driver = (AppiumDriver) ((WrapsDriver) driver).getWrappedDriver();
+    } else {
+      this.driver = (AppiumDriver) driver;
+    }
   }
 
   @Override
@@ -104,8 +109,10 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
   @Override
   public Match match(String targetFile, String templateFile, double threshold, String description) {
     Match match = new Match(false, 0, 0);
-    byte[] template, target;
-    BufferedImage targetImage, originalImage;
+    byte[] template;
+    byte[] target;
+    BufferedImage targetImage;
+    BufferedImage originalImage;
     try {
       template = imageUtils.encodeBase64(templateFile).getBytes();
       target = imageUtils.encodeBase64(targetFile).getBytes();

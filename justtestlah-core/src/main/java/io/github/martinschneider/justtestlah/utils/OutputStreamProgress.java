@@ -2,6 +2,7 @@ package io.github.martinschneider.justtestlah.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Extension of {@link OutputStreamProgress} to enable a progress report for file uploads.
@@ -12,8 +13,9 @@ import java.io.OutputStream;
 public class OutputStreamProgress extends OutputStream {
 
   private final OutputStream outstream;
-  private volatile long bytesWritten = 0;
+  private AtomicLong bytesWritten = new AtomicLong(0);
 
+  /** @param outstream {@link OutputStream} */
   public OutputStreamProgress(OutputStream outstream) {
     this.outstream = outstream;
   }
@@ -21,19 +23,19 @@ public class OutputStreamProgress extends OutputStream {
   @Override
   public void write(int b) throws IOException {
     outstream.write(b);
-    bytesWritten++;
+    bytesWritten.incrementAndGet();
   }
 
   @Override
   public void write(byte[] b) throws IOException {
     outstream.write(b);
-    bytesWritten += b.length;
+    bytesWritten.addAndGet(b.length);
   }
 
   @Override
   public void write(byte[] b, int off, int len) throws IOException {
     outstream.write(b, off, len);
-    bytesWritten += len;
+    bytesWritten.addAndGet(len);
   }
 
   @Override
@@ -47,6 +49,6 @@ public class OutputStreamProgress extends OutputStream {
   }
 
   public long getWrittenLength() {
-    return bytesWritten;
+    return bytesWritten.get();
   }
 }

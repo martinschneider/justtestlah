@@ -26,7 +26,7 @@ phases:
       # Starting Appium server
       - echo "Starting appium server"
       - >-
-        appium --log-timestamp --chromedriver-executable $DEVICEFARM_CHROMEDRIVER_EXECUTABLE  >> $DEVICEFARM_LOG_DIR/appiumlog.txt 2>&1 &
+        appium --relaxed-security --log-timestamp --chromedriver-executable $DEVICEFARM_CHROMEDRIVER_EXECUTABLE  >> $DEVICEFARM_LOG_DIR/appiumlog.txt 2>&1 &
 
       - >-
         start_appium_timeout=0;
@@ -62,9 +62,8 @@ phases:
       # Copy the feature files to `src/test/resources` (so we don't need to change the `features.directory` parameter)
       - mkdir -p src/test/resources/features
       - cp -r classes/features src/test/resources
-      # Remove `justtestlah.properties` and `testusers.properties` from classpath to avoid conflicts during property resolution
+      # Remove `justtestlah.properties` from classpath to avoid conflicts during property resolution
       - rm classes/justtestlah.properties
-      - rm classes/testusers.properties
       
       - echo "Writing justtestlah.properties"
       # We base64 encode the run configuration (`justtestlah.properties`) into

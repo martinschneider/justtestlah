@@ -49,8 +49,7 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
         String message = log.getMessage();
         // filter out messages related to fetching the log
         if (!message.matches(REGEXP_FILTER)) {
-          // TODO: use lambda expression once SLF4J releases it:
-          // https://jira.qos.ch/browse/SLF4J-371
+          // TODO: use lambda expressions once SLF4j supports it
           LOG.info("{} {} {}", logType, formatter.format(log.getTimestamp()), log.getMessage());
         }
       }
@@ -139,8 +138,9 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
   }
 
   @Override
-  public void beforeChangeValueOf(
-      WebElement element, WebDriver driver, CharSequence[] keysToSend) {}
+  public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
+    // do nothing
+  }
 
   @Override
   public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {

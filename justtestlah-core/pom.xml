@@ -9,8 +9,11 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.6-RC1</version>
+    <version>1.6-RC2</version>
   </parent>
+  <properties>
+    <version.rules.configuration>file:///${project.basedir}/../maven-version-rules.xml</version.rules.configuration>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>

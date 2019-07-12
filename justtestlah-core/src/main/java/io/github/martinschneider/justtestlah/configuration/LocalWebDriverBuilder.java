@@ -28,7 +28,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   private static final String EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR =
       "exitOnWebDriverInitialisationError";
 
-  private Logger LOG = LoggerFactory.getLogger(LocalWebDriverBuilder.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LocalWebDriverBuilder.class);
 
   @Value("${platform}")
   protected String platform;

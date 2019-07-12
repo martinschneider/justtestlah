@@ -7,8 +7,10 @@ import java.util.List;
 /** Helper class to format {@link DeviceFilter} for log output */
 public class DeviceFilterStringUtils {
 
+  private DeviceFilterStringUtils() {}
+
   public static String prettyPrintDeviceFilterList(List<DeviceFilter> deviceFilters) {
-    List<String> resultStrings = new ArrayList<String>();
+    List<String> resultStrings = new ArrayList<>();
     for (DeviceFilter deviceFilter : deviceFilters) {
       resultStrings.add(prettyPrintDeviceFilter(deviceFilter));
     }

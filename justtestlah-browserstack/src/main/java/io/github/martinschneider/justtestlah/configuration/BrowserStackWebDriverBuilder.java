@@ -62,7 +62,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   private String timezone;
 
   @Value("${browserstack.appium_version}")
-  private String appium_version;
+  private String appiumVersion;
 
   private String appUrl;
 
@@ -89,6 +89,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
         buildBrowserStackUrl(accessKey, username), addIOsCapabilities(new DesiredCapabilities()));
   }
 
+  @Override
   protected DesiredCapabilities addCommonCapabilities(DesiredCapabilities capabilities) {
     super.addCommonCapabilities(capabilities);
     Object app = capabilities.getCapability("app");
@@ -106,41 +107,49 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     capabilities.setCapability("browserstack.video", video);
     capabilities.setCapability("browserstack.geoLocation", geoLocation);
     capabilities.setCapability("browserstack.timezone", timezone);
-    capabilities.setCapability("browserstack.appium_version", appium_version);
+    capabilities.setCapability("browserstack.appium_version", appiumVersion);
     return capabilities;
   }
 
   private String uploadAppPackage(String path) {
     LOG.info("Uploading app package {} to Browserstack", path);
-    CloseableHttpClient httpClient = HttpClients.createSystem();
-    HttpPost httpPost = new HttpPost(BS_UPLOAD_PATH);
-    String encoding = Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
-    httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
-    httpPost.setEntity(
-        MultipartEntityBuilder.create().addPart("file", new FileBody(new File(path))).build());
-    HttpResponse response = null;
-    String responseString;
+    final CloseableHttpClient httpClient = HttpClients.createSystem();
     try {
-      response = httpClient.execute(httpPost);
-      responseString = EntityUtils.toString(response.getEntity());
-    } catch (IOException exception) {
-      throw new RuntimeException(
-          String.format("Error uploading file to Browserstack: %s", exception.getMessage()));
-    }
-    if (response.getStatusLine().getStatusCode() != 200) {
-      throw new RuntimeException(
-          String.format(
-              "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
-              response.getStatusLine().getStatusCode(), responseString));
-    }
-    try {
-      String appUrl =
-          new JsonParser().parse(responseString).getAsJsonObject().get("app_url").getAsString();
-      LOG.info("Successfully uploaded app package to {}", appUrl);
-      this.appiumUrl = appUrl;
-      return appUrl;
-    } catch (JsonSyntaxException | ParseException exception) {
-      throw new RuntimeException("Error parsing response from Browserstack", exception);
+      HttpPost httpPost = new HttpPost(BS_UPLOAD_PATH);
+      String encoding = Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
+      httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
+      httpPost.setEntity(
+          MultipartEntityBuilder.create().addPart("file", new FileBody(new File(path))).build());
+      HttpResponse response = null;
+      String responseString;
+      try {
+        response = httpClient.execute(httpPost);
+        responseString = EntityUtils.toString(response.getEntity());
+      } catch (IOException exception) {
+        throw new RuntimeException(
+            String.format("Error uploading file to Browserstack: %s", exception.getMessage()));
+      }
+      if (response.getStatusLine().getStatusCode() != 200) {
+        throw new RuntimeException(
+            String.format(
+                "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
+                response.getStatusLine().getStatusCode(), responseString));
+      }
+      try {
+        String browserstackAppUrl =
+            new JsonParser().parse(responseString).getAsJsonObject().get("app_url").getAsString();
+        LOG.info("Successfully uploaded app package to {}", browserstackAppUrl);
+        this.appiumUrl = browserstackAppUrl;
+        return browserstackAppUrl;
+      } catch (JsonSyntaxException | ParseException exception) {
+        throw new RuntimeException("Error parsing response from Browserstack", exception);
+      }
+    } finally {
+      try {
+        httpClient.close();
+      } catch (IOException exception) {
+        LOG.error("Error closing HTTP client", exception);
+      }
     }
   }
 

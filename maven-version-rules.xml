@@ -14,5 +14,19 @@
         <ignoreVersion type="regex">6.*</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="io.appium" artifactId="java-client"
+      comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- This would require Selenium 4 -->
+        <ignoreVersion type="regex">7.1.0</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="junit" artifactId="junit"
+      comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- Not supported by AWS Devicefarm -->
+        <ignoreVersion type="regex">4.13.*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
   </rules>
 </ruleset>

@@ -1,5 +1,6 @@
 package io.github.martinschneider.justtestlah.awsdevicefarm;
 
+import com.amazonaws.util.Base64;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -7,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.Scanner;
-import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TestSpecFactory {
 
-  private Logger LOG = LoggerFactory.getLogger(TestSpecFactory.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TestSpecFactory.class);
 
   private PropertiesHolder properties;
 
@@ -49,7 +49,7 @@ public class TestSpecFactory {
     testSpec =
         testSpec.replaceAll(
             "__JUSTTESTLAH_PROPERTIES_BASE64__",
-            Base64.encodeAsString(justTestLahProperties.toString()));
+            Base64.encodeAsString(justTestLahProperties.toString().getBytes()));
 
     LOG.info("Test spec file: \n{}", testSpec);
     String path = System.getProperty("java.io.tmpdir") + "aws-devicefarm-testspec.yml";
