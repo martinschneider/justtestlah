@@ -7,6 +7,35 @@ jdk:
   - openjdk12
 cache:
   directories: $HOME/.m2
+  
+sudo: required
+before_install:
+  # Install the Android SDK Dependency.
+  - export ANDROID_HOME=~/android-sdk-linux
+  - if [ $TRAVIS_OS_NAME == "osx" ]; then wget -q "https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip" -O android-sdk-tools.zip; else wget -q "https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip" -O android-sdk-tools.zip; fi
+  - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
+  - rm android-sdk-tools.zip
+  - PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+  # Silence warning.
+  - mkdir -p ~/.android
+  - touch ~/.android/repositories.cfg
+  - HOMEBREW_NO_AUTO_UPDATE=1
+  - if [ $TRAVIS_OS_NAME == "osx" ]; then brew cask uninstall java; brew tap caskroom/versions; brew cask install java8; fi
+  # Accept licenses before installing components, no need to echo y for each component
+  - yes | sdkmanager --licenses
+  # Platform tools
+  - sdkmanager "emulator" "tools" "platform-tools" > /dev/null
+  - sdkmanager --list | head -15
+  # install older packages (for emulator)
+  - sdkmanager "build-tools;25.0.2" "platforms;android-25" > /dev/null
+  # Create and start emulator.
+  - sdkmanager "system-images;android-25;google_apis;arm64-v8a" > /dev/null
+  - sdkmanager --list | head -15
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-25;google_apis;arm64-v8a"
+  # fix timezone warning
+  - if [ $TRAVIS_OS_NAME == "osx" ]; then sudo ln -sf /usr/share/zoneinfo/US/Pacific /etc/localtime; fi
+  # use the absolute emulator path in case older version installed (on default path)
+  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -gpu swiftshader &
 install:
 addons:
   homebrew:
@@ -19,6 +48,10 @@ addons:
     organization: martinschneider-github
     token: 
       secure: Jy11hm6mSF1KkMl00MxmkWcI9v5MN5CFiC5l3ze3dS/Uss8LO12I84/KBAiVPwdNA2KQLcuXePT2G/imvMhnvQIkhFvI0JsQXYGQFLV/ubsOICE1HQ30MpHwclUPrVfRc/b9rVz0Fdt2iiaIhrSShdVepQB9o4GQdtud4S8/CDMs6S6MdOUs/KWzqrfMoM19iXH72TvOc9OHZVqMPpKGQ9PY8zCgb1kvuOVmBBNEXmtyT5aRf9wt2BKMbWTy84LaLV5ITVK2VxyRPoDPXRm/AjjT9csEnx/bIKJ5nTwBvSxYYf/EUnKO6Bn333A4m60FTt6GkapLE9PFhOTldy/8ovkKaNw+M1oNmhPtUmPSqZrRaIcDFi53/iayDkdvkTAcas7nm0S8cXnRvDWmSEntOz+JqTamgoyPhyBq9a3UBnuaZ/w5imcbikSo/zJo2wqocs1QjsvlX4UYW1mk9AOyd+KbFgzRxb21uUJcAYShxNEcvMr+khI90+hExq+2r0ccIKS2GpLWQMjbZfKcgNNB51n6D31BKcRx5MxYLSjmw2QCBn5ONBq9yJOp2p+j0I3GxPNN1KzUPqoCQNUAxpJK3q2Nvhe0/xyV+eo1B71EDYiCZU+v/bUN5x+KV6cSDfwtCw8+tZ25Ur57VU0TlwKk80ZeA4U4Zmz6eh0cwXYDu/w=
+before_script:
+  # Wait for emulator to startup.
+  - ./scripts/android-wait-for-emulator.sh
+  - adb shell input keyevent 82
 script:
  - mvn install -Dchromeoptions.args=--no-sandbox
 after_success: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then mvn sonar:sonar; fi'
