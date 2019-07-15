@@ -139,7 +139,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
         String browserstackAppUrl =
             new JsonParser().parse(responseString).getAsJsonObject().get("app_url").getAsString();
         LOG.info("Successfully uploaded app package to {}", browserstackAppUrl);
-        this.appiumUrl = browserstackAppUrl;
+        this.appUrl = browserstackAppUrl;
         return browserstackAppUrl;
       } catch (JsonSyntaxException | ParseException exception) {
         throw new RuntimeException("Error parsing response from Browserstack", exception);
