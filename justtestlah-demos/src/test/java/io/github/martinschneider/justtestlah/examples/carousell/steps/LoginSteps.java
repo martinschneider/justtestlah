@@ -24,7 +24,7 @@ public class LoginSteps extends BaseSteps {
    *
    * @param userKey userKey of the user to log in
    */
-  @When("^I login as \"([^\"]*)\"$")
+  @When("I login as {string}")
   public void loginAs(String userKey) {
     welcomePage
         .checkWindow()
@@ -35,12 +35,12 @@ public class LoginSteps extends BaseSteps {
         .checkWindow();
   }
 
-  @Then("^I see the sell button$")
+  @Then("I see the sell button")
   public void isSellButtonVisible() {
     assertThat(homePage.isSellButtonVisible()).as("sell button is displayed").isTrue();
   }
 
-  @Then("^I see an error message$")
+  @Then("I see an error message")
   public void isErrorMessageVisible() {
     assertThat(loginPage.isErrorMessageVisible()).as("error message id displayed").isTrue();
   }

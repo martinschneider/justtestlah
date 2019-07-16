@@ -1,9 +1,8 @@
-package io.github.martinschneider.justtestlah.junit;
+package io.cucumber.junit;
 
 import cucumber.api.StepDefinitionReporter;
 import cucumber.api.event.TestRunFinished;
 import cucumber.api.event.TestRunStarted;
-import cucumber.api.junit.Cucumber;
 import cucumber.runner.EventBus;
 import cucumber.runner.ThreadLocalRunnerSupplier;
 import cucumber.runner.TimeService;
@@ -11,20 +10,20 @@ import cucumber.runner.TimeServiceEventBus;
 import cucumber.runtime.BackendModuleBackendSupplier;
 import cucumber.runtime.BackendSupplier;
 import cucumber.runtime.ClassFinder;
+import cucumber.runtime.Env;
 import cucumber.runtime.FeaturePathFeatureSupplier;
-import cucumber.runtime.RuntimeOptions;
-import cucumber.runtime.RuntimeOptionsFactory;
 import cucumber.runtime.filter.Filters;
 import cucumber.runtime.formatter.PluginFactory;
 import cucumber.runtime.formatter.Plugins;
 import cucumber.runtime.io.MultiLoader;
 import cucumber.runtime.io.ResourceLoader;
 import cucumber.runtime.io.ResourceLoaderClassFinder;
-import cucumber.runtime.junit.Assertions;
-import cucumber.runtime.junit.FeatureRunner;
-import cucumber.runtime.junit.JUnitOptions;
 import cucumber.runtime.model.CucumberFeature;
 import cucumber.runtime.model.FeatureLoader;
+import io.cucumber.core.options.CucumberOptionsAnnotationParser;
+import io.cucumber.core.options.EnvironmentOptionsParser;
+import io.cucumber.core.options.RuntimeOptions;
+import io.cucumber.junit.Cucumber.RunCucumber;
 import io.github.martinschneider.justtestlah.configuration.Platform;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import java.io.IOException;
@@ -100,9 +99,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       awsRunner = getAWSRunner(clazz);
     } else {
       // load OpenCV library
-      if (properties
-          .getProperty(OPENCV_MODE_KEY, OPENCV_CLIENT)
-          .equals(OPENCV_CLIENT)) { // load the opencv
+      if (properties.getProperty(OPENCV_MODE_KEY, OPENCV_CLIENT).equals(OPENCV_CLIENT)) { // load
+        // the
+        // opencv
         // library
         try {
           OpenCV.loadShared();
@@ -130,14 +129,27 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private void initCucumber(Class<?> clazz) throws InitializationError {
     Assertions.assertNoCucumberAnnotatedMethods(clazz);
 
-    // Parse the options early to provide fast feedback about invalid options
-    RuntimeOptionsFactory runtimeOptionsFactory = new RuntimeOptionsFactory(clazz);
-    RuntimeOptions runtimeOptions = runtimeOptionsFactory.create();
-    JUnitOptions junitOptions =
-        new JUnitOptions(runtimeOptions.isStrict(), runtimeOptions.getJunitOptions());
-
     ClassLoader classLoader = clazz.getClassLoader();
     ResourceLoader resourceLoader = new MultiLoader(classLoader);
+
+    // Parse the options early to provide fast feedback about invalid options
+    RuntimeOptions annotationOptions =
+        new CucumberOptionsAnnotationParser(resourceLoader)
+            .withOptionsProvider(new JUnitCucumberOptionsProvider())
+            .parse(clazz)
+            .build();
+
+    RuntimeOptions runtimeOptions =
+        new EnvironmentOptionsParser(resourceLoader).parse(Env.INSTANCE).build(annotationOptions);
+
+    JUnitOptions junitAnnotationOptions = new JUnitOptionsParser().parse(clazz).build();
+
+    JUnitOptions junitOptions =
+        new JUnitOptionsParser()
+            .parse(runtimeOptions.getJunitOptions())
+            .setStrict(runtimeOptions.isStrict())
+            .build(junitAnnotationOptions);
+
     ClassFinder classFinder = new ResourceLoaderClassFinder(resourceLoader, classLoader);
 
     // Parse the features early. Don't proceed when there are lexer errors

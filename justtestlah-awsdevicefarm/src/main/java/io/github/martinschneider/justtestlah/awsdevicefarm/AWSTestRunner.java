@@ -1,17 +1,5 @@
 package io.github.martinschneider.justtestlah.awsdevicefarm;
 
-import com.amazonaws.services.devicefarm.model.DeviceFilter;
-import com.amazonaws.services.devicefarm.model.DeviceSelectionConfiguration;
-import com.amazonaws.services.devicefarm.model.GetRunRequest;
-import com.amazonaws.services.devicefarm.model.Run;
-import com.amazonaws.services.devicefarm.model.ScheduleRunRequest;
-import com.amazonaws.services.devicefarm.model.ScheduleRunResult;
-import com.amazonaws.services.devicefarm.model.ScheduleRunTest;
-import com.amazonaws.services.devicefarm.model.TestType;
-import com.amazonaws.services.devicefarm.model.UploadType;
-import io.github.martinschneider.justtestlah.awsdevicefarm.utils.FormattingUtils;
-import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
-import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -22,6 +10,18 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.amazonaws.services.devicefarm.model.DeviceFilter;
+import com.amazonaws.services.devicefarm.model.DeviceSelectionConfiguration;
+import com.amazonaws.services.devicefarm.model.GetRunRequest;
+import com.amazonaws.services.devicefarm.model.Run;
+import com.amazonaws.services.devicefarm.model.ScheduleRunRequest;
+import com.amazonaws.services.devicefarm.model.ScheduleRunResult;
+import com.amazonaws.services.devicefarm.model.ScheduleRunTest;
+import com.amazonaws.services.devicefarm.model.TestType;
+import com.amazonaws.services.devicefarm.model.UploadType;
+import io.cucumber.junit.JustTestLahRunner;
+import io.github.martinschneider.justtestlah.awsdevicefarm.utils.FormattingUtils;
+import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 
 /**
  * AWS Test runner.

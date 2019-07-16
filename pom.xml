@@ -65,7 +65,7 @@
     <appium.version>7.0.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
     <selenide.version>5.2.4</selenide.version>
-    <cucumber.version>4.4.0</cucumber.version>
+    <cucumber.version>4.5.4</cucumber.version>
     <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
     <applitools.version>3.155.0</applitools.version>
