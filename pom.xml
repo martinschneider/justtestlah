@@ -112,6 +112,7 @@
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
     <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <cluecumber.report.plugin.version>2.0.1</cluecumber.report.plugin.version>
     <checkstyle.version>8.22</checkstyle.version>
