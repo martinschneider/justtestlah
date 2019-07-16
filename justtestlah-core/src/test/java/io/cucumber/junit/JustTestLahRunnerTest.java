@@ -1,17 +1,17 @@
 package io.cucumber.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import java.io.IOException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.InitializationError;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import io.cucumber.junit.JustTestLahRunner;
-import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 
 @RunWith(DataProviderRunner.class)
 public class JustTestLahRunnerTest {

@@ -1,15 +1,5 @@
 package io.github.martinschneider.justtestlah.awsdevicefarm;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import org.apache.maven.shared.invoker.MavenInvocationException;
-import org.junit.runner.Description;
-import org.junit.runner.Runner;
-import org.junit.runner.notification.Failure;
-import org.junit.runner.notification.RunNotifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.amazonaws.services.devicefarm.model.DeviceFilter;
 import com.amazonaws.services.devicefarm.model.DeviceSelectionConfiguration;
 import com.amazonaws.services.devicefarm.model.GetRunRequest;
@@ -22,6 +12,16 @@ import com.amazonaws.services.devicefarm.model.UploadType;
 import io.cucumber.junit.JustTestLahRunner;
 import io.github.martinschneider.justtestlah.awsdevicefarm.utils.FormattingUtils;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.Failure;
+import org.junit.runner.notification.RunNotifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * AWS Test runner.
