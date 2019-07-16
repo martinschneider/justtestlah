@@ -1,6 +1,7 @@
 # JustTestLah! 🇸🇬
 
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_large)
 
 JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
@@ -53,6 +54,10 @@ Both parameters are optional; the default configuration files can be found under
 Add the following Maven dependency to your `pom.xml`.
 
 ```xml
+<properties>
+  <justtestlah.verison>1.6</justtestlah.verison>
+</properties>
+
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
