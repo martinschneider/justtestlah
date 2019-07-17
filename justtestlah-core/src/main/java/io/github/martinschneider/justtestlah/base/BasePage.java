@@ -197,4 +197,8 @@ public abstract class BasePage<T> extends Base {
   public void setConfiguration(JustTestLahConfiguration configuration) {
     this.configuration = configuration;
   }
+
+  public void verify() {
+    // overwrite in page classes
+  }
 }

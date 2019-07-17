@@ -15,9 +15,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class LogApplicationInfoEnricherTest {
+public class ApplicationInfoEnricherTest {
 
-  private LogApplicationInfoEnricher target = new LogApplicationInfoEnricher();
+  private ApplicationInfoEnricher target = new ApplicationInfoEnricher();
 
   @Mock private Context mockContext;
   @Mock private ApplicationInfoService applicationInfoService;

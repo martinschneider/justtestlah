@@ -3,6 +3,7 @@ package io.github.martinschneider.justtestlah.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import org.apache.http.entity.FileEntity;
 
 /**
  * Extension of {@link org.apache.http.entity.FileEntity} to enable a progress report for file
@@ -11,11 +12,11 @@ import java.io.OutputStream;
  * <p>taken from
  * https://stackoverflow.com/questions/7057342/how-to-get-a-progress-bar-for-a-file-upload-with-apache-httpclient-4#8475006
  */
-public class FileEntity extends org.apache.http.entity.FileEntity {
+public class JustTestLahFileEntity extends FileEntity {
 
   private OutputStreamProgress outstream;
 
-  public FileEntity(File file) {
+  public JustTestLahFileEntity(File file) {
     super(file);
   }
 
@@ -25,7 +26,7 @@ public class FileEntity extends org.apache.http.entity.FileEntity {
     super.writeTo(this.outstream);
   }
 
-  /** Progress: 0-100 */
+  /** @return the progress of the upload (0-100) */
   public int getProgress() {
     if (outstream == null) {
       return 0;

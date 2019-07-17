@@ -3,6 +3,7 @@ package io.github.martinschneider.justtestlah.mobile.tools;
 /** DTO to hold application meta information. */
 public class ApplicationInfo {
 
+  /** Return the full application information. */
   @Override
   public String toString() {
     return applicationName + " " + versionName + "_" + versionCode;

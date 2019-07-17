@@ -13,7 +13,7 @@ public class QuestionSteps extends BaseSteps {
 
   private QuestionsPage questionsPage;
 
-  @Given("^I select the first question$")
+  @Given("I select the first question")
   public void selectFirstQuestion() {
     questionsPage.openFirstQuestion();
   }
@@ -23,7 +23,7 @@ public class QuestionSteps extends BaseSteps {
    *
    * @param tagName name of the tag
    */
-  @Then("the question is tagged with \"([^\"]*)\"")
+  @Then("the question is tagged with {string}")
   public void isQuestionTaggedWith(String tagName) {
     assertThat(questionPage.hasTag(tagName))
         .as("Check that tag " + tagName + " is present")

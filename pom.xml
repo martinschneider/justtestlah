@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.5</version>
+  <version>1.6</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -60,50 +60,81 @@
     </repository>
   </repositories>
   <properties>
-    <spring.version>5.1.6.RELEASE</spring.version>
+    <!-- Version properties -->
+    <spring.version>5.1.8.RELEASE</spring.version>
     <appium.version>7.0.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.2.2</selenide.version>
-    <cucumber.version>4.3.0</cucumber.version>
+    <selenide.version>5.2.4</selenide.version>
+    <cucumber.version>4.5.4</cucumber.version>
     <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
-    <applitools.version>3.151.2</applitools.version>
+    <applitools.version>3.155.0</applitools.version>
     <galen.version>2.4.4</galen.version>
-    <junit.version>5.4.2</junit.version>
+    <junit.version>5.5.0</junit.version>
+    <junit4.version>4.12</junit4.version>
     <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
-    <slf4j.version>1.8.0-beta4</slf4j.version>
+    <slf4j.version>2.0.0-alpha0</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.12.2</assertj.version>
-    <mockito.version>2.27.0</mockito.version>
+    <mockito.version>3.0.0</mockito.version>
     <snakeyaml.version>1.24</snakeyaml.version>
     <dd.plist.version>1.21</dd.plist.version>
-    <apk.parser.version>2.6.6</apk.parser.version>
-    <zip4j.version>1.3.2</zip4j.version>
-    <bytebuddy.version>1.9.12</bytebuddy.version>
-    <apache.http.components.version>4.5.8</apache.http.components.version>
-    <commons.collections.version>4.3</commons.collections.version>
-    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <apk.parser.version>2.6.9</apk.parser.version>
+    <zip4j.version>2.1.1</zip4j.version>
+    <bytebuddy.version>1.9.14</bytebuddy.version>
+    <gson.version>2.8.5</gson.version>
+    <jersey.version>2.29</jersey.version>
+    <apache.http.components.version>4.5.9</apache.http.components.version>
+    <apache.http.components.core.version>4.4.11</apache.http.components.core.version>
+    <apache.commons.version>3.9</apache.commons.version>
+    <commons.collections.version>4.4</commons.collections.version>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
+    <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
+    <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+    <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+    <maven.source.plugin.version>3.1.0</maven.source.plugin.version>
     <maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
     <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
-    <maven.site.skin.version>1.4.0</maven.site.skin.version>
+    <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
     <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-    <maven.checkstyle.plugin.version>3.0.0</maven.checkstyle.plugin.version>
-    <maven.jacoco.plugin.version>0.8.3</maven.jacoco.plugin.version>
+    <maven.site.skin.version>1.4.2</maven.site.skin.version>
+    <maven.checkstyle.plugin.version>3.1.0</maven.checkstyle.plugin.version>
+    <maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
     <nexus.staging.maven.plugin.version>1.6.8</nexus.staging.maven.plugin.version>
+    <versions.maven.plugin.version>2.7</versions.maven.plugin.version>
+    <dependency.check.maven.plugin.version>5.0.0</dependency.check.maven.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M3</maven.surefire.report.plugin.version>
     <maven.invoker.version>3.0.1</maven.invoker.version>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
+    <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+    <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
-    <cluecumber.report.plugin.version>1.6.2</cluecumber.report.plugin.version>
-    <checkstyle.version>8.20</checkstyle.version>
-    <fmt.version>2.8</fmt.version>
-    <aws.sdk.version>1.11.543</aws.sdk.version>
+    <cluecumber.report.plugin.version>2.0.1</cluecumber.report.plugin.version>
+    <checkstyle.version>8.22</checkstyle.version>
+    <classgraph.version>4.8.43</classgraph.version>
+    <fmt.version>2.9</fmt.version>
+    <aws.sdk.version>1.11.592</aws.sdk.version>
+    <aopalliance.version>2.5.0</aopalliance.version>
+    <jackson.version>2.9.9.1</jackson.version>
+    <guava.version>28.0-jre</guava.version>
+    <jakarta.version>1.3.4</jakarta.version>
+    <commons.codec.version>1.12</commons.codec.version>
+    <aspectjweaver.version>1.9.4</aspectjweaver.version>
+
+    <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>10</maven.compiler.source>
     <maven.compiler.target>10</maven.compiler.target>
+    <minimum.maven.version>3.3.9</minimum.maven.version>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+    <version.rules.configuration>file:///${project.basedir}/maven-version-rules.xml</version.rules.configuration>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -129,10 +160,19 @@
         <version>${cucumber.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-gherkin</artifactId>
+        <version>${gherkin.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
         <version>${junit.version}</version>
-        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
       </dependency>
       <dependency>
         <groupId>io.cucumber</groupId>
@@ -177,6 +217,11 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
       </dependency>
       <dependency>
@@ -273,12 +318,126 @@
         <artifactId>byte-buddy</artifactId>
         <version>${bytebuddy.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>io.github.classgraph</groupId>
+        <artifactId>classgraph</artifactId>
+        <version>${classgraph.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${apache.commons.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-api</artifactId>
+        <version>${selenium.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpmime</artifactId>
+        <version>${apache.http.components.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${apache.http.components.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>${apache.http.components.core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-remote-driver</artifactId>
+        <version>${selenium.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-support</artifactId>
+        <version>${selenium.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-invoker</artifactId>
+        <version>${maven.invoker.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-devicefarm</artifactId>
+        <version>${aws.sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-core</artifactId>
+        <version>${aws.sdk.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-common</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.hk2.external</groupId>
+        <artifactId>aopalliance-repackaged</artifactId>
+        <version>${aopalliance.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons.codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.galenframework</groupId>
+        <artifactId>galen-core</artifactId>
+        <version>${galen.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectjweaver.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions.maven.plugin.version}</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -333,9 +492,110 @@
           <artifactId>cluecumber-report-plugin</artifactId>
           <version>${cluecumber.report.plugin.version}</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>${maven.assembly.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resources.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${maven.antrun.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven.jar.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven.deploy.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven.release.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven.gpg.plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>${minimum.maven.version}</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <goal>display-dependency-updates</goal>
+              <goal>display-property-updates</goal>
+              <goal>display-plugin-updates</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <rulesUri>${version.rules.configuration}</rulesUri>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>com.coveo</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
@@ -404,6 +664,21 @@
         <groupId>com.trivago.rta</groupId>
         <artifactId>cluecumber-report-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>analyze</id>
+            <goals>
+              <goal>analyze-only</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnWarning>true</failOnWarning>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <reporting>
@@ -438,6 +713,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>${maven.surefire.report.plugin.version}</version>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
         <reportSets>
           <reportSet>
             <inherited>false</inherited>
@@ -455,6 +733,38 @@
           <sonarHostURL>https://sonarcloud.io/</sonarHostURL>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${versions.maven.plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>dependency-updates-report</report>
+              <report>plugin-updates-report</report>
+              <report>property-updates-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <rulesUri>${version.rules.configuration}</rulesUri>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>${dependency.check.maven.plugin.version}</version>
+        <configuration>
+          <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
   <profiles>
@@ -465,7 +775,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven.gpg.plugin.version}</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>

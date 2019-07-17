@@ -8,15 +8,12 @@ import ch.qos.logback.core.Context;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.LifeCycle;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
-import io.github.martinschneider.justtestlah.junit.JustTestLahTest;
 import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfo;
 import io.github.martinschneider.justtestlah.mobile.tools.ApplicationInfoService;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 /** Enrich meta information about the application under test to the log file. */
-public class LogApplicationInfoEnricher extends ContextAwareBase
+public class ApplicationInfoEnricher extends ContextAwareBase
     implements LoggerContextListener, LifeCycle {
 
   private boolean started = false;
@@ -28,7 +25,7 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
     if (started) {
       return;
     }
-    Properties props = getProperties();
+    Properties props = new PropertiesHolder().getProperties();
     Context context = getContext();
     String platform = props.getProperty("platform");
     String appPath = props.getProperty(platform + ".appPath");
@@ -45,23 +42,10 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
     started = true;
   }
 
-  private Properties getProperties() {
-    Properties props = new Properties();
-    String propertiesLocation = System.getProperty(PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY);
-    try {
-      if (propertiesLocation != null && !propertiesLocation.isEmpty()) {
-        props.load(new FileInputStream(propertiesLocation));
-      } else {
-        propertiesLocation = PropertiesHolder.DEFAULT_JUST_TEST_LAH_PROPERTIES;
-        props.load(JustTestLahTest.class.getClassLoader().getResourceAsStream(propertiesLocation));
-      }
-    } catch (NullPointerException | IOException exception) {
-    }
-    return props;
-  }
-
   @Override
-  public void stop() {}
+  public void stop() {
+    // do nothing
+  }
 
   @Override
   public boolean isStarted() {
@@ -74,16 +58,24 @@ public class LogApplicationInfoEnricher extends ContextAwareBase
   }
 
   @Override
-  public void onStart(LoggerContext context) {}
+  public void onStart(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onReset(LoggerContext context) {}
+  public void onReset(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onStop(LoggerContext context) {}
+  public void onStop(LoggerContext context) {
+    // do nothing
+  }
 
   @Override
-  public void onLevelChange(Logger logger, Level level) {}
+  public void onLevelChange(Logger logger, Level level) {
+    // do nothing
+  }
 
   // package-private for unit testing
   void setApplicationInfoService(ApplicationInfoService applicationInfoService) {

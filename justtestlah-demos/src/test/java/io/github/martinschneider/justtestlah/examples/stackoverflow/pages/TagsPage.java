@@ -21,7 +21,7 @@ public class TagsPage extends BasePage<TagsPage> {
    */
   public TagsPage filterTags(String filter) {
     $("TAG_FILTER").sendKeys(filter);
-    sleep(5000);
+    sleep(5000); // TODO: explicitly check something
     return this;
   }
 

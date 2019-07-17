@@ -8,17 +8,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({Platform.ANDROID, Platform.IOS})
+@Profile({Platform.ANDROID, Platform.IOS, Platform.WEB})
 public class HomePage extends BasePage<HomePage> {
 
-  private LoginPage loginPage;
-
-  public LoginPage goToLogin() {
-    $("LOGIN_BUTTON").click();
-    return loginPage;
-  }
-
-  public boolean isUserMenuVisible() {
+  public boolean isSellButtonVisible() {
     return $("SELL_BUTTON").waitUntil(appear, 10000).isDisplayed();
   }
 }

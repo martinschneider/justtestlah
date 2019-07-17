@@ -24,7 +24,7 @@ public class LocatorMap {
 
   /** Default constructor. */
   public LocatorMap() {
-    this.map = new HashMap<String, Map<String, Map<String, String>>>();
+    this.map = new HashMap<>();
   }
 
   /**

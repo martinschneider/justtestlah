@@ -1,8 +1,36 @@
 # JustTestLah! 🇸🇬
 
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
 JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
+
+<!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
+
+- [Getting started](#getting-started)   
+- [Use in your own projects](#use-in-your-own-projects)   
+- [Page objects, steps and feature files](#page-objects-steps-and-feature-files)   
+- [Configuration](#configuration)   
+- [Test runner](#test-runner)   
+- [Locators](#locators)   
+   - [Placeholders](#placeholders)   
+- [Test data handling](#test-data-handling)   
+- [Cloud service integrations](#cloud-service-integrations)   
+   - [Browserstack](#browserstack)   
+   - [AWS Devicefarm](#aws-devicefarm)   
+- [Template matching](#template-matching)   
+   - [Matching threshold](#matching-threshold)   
+   - [Client and server-mode matching](#client-and-server-mode-matching)   
+- [Applitools](#applitools)   
+- [Galen](#galen)   
+- [Used libraries](#used-libraries)   
+- [Articles](#articles)   
+- [Presentations](#presentations)   
+- [Known issues & limitations](#known-issues-limitations)   
+- [Contact and support](#contact-and-support)   
+
+<!-- /MDTOC -->
+
 
 ## Getting started
 Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
@@ -26,6 +54,10 @@ Both parameters are optional; the default configuration files can be found under
 Add the following Maven dependency to your `pom.xml`.
 
 ```xml
+<properties>
+  <justtestlah.version>1.6</justtestlah.version>
+</properties>
+
 <dependency>
   <groupId>io.github.martinschneider</groupId>
   <artifactId>justtestlah-core</artifactId>
@@ -44,22 +76,22 @@ Steps and page objects are designed to be highly re-usable.
 
 Demo of a feature file:
 ```cucumber
-Feature: Search and tags 
+Feature: Search and tags
 
-@web 
-Scenario: Filter by tags 
-  Given I am on the homepage 
-  When I go to the tags page 
-  And I filter for "selenium" 
-  And I select the tag "selenium" 
-  And I select the first question 
-  Then the question is tagged with "selenium" 
-	
-@web @android 
-Scenario: Use the search function 
-  Given I am on the homepage 
-  When I search for "selenium" 
-  And I select the first question 
+@web
+Scenario: Filter by tags
+  Given I am on the homepage
+  When I go to the tags page
+  And I filter for "selenium"
+  And I select the tag "selenium"
+  And I select the first question
+  Then the question is tagged with "selenium"
+
+@web @android
+Scenario: Use the search function
+  Given I am on the homepage
+  When I search for "selenium"
+  And I select the first question
   Then the question is tagged with "selenium"
 ```
 
@@ -68,17 +100,17 @@ Demo of a step definition class:
 public class HomeSteps extends BaseSteps {
   private HomePage home;
 
-  @Given("^I am on the homepage$")
+  @Given("I am on the homepage")
   public void homepage() {
     home.load();
   }
 
-  @When("^I go to the tags page")
+  @When("I go to the tags page")
   public void goToTags() {
     home.navigateToTagsPage();
   }
 
-  @When("I search for \"([^\"]*)\"")
+  @When("I search for {string}")
   public void search(String query) {
     home.search(query);
   }
@@ -206,7 +238,7 @@ LOGIN_BUTTON:
 The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](https://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
 
 1. It is not possible to directly use elements in step definitions (only in page objects). This is by design as UI elements are meant to be encapsulated in the page objects.
-2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same. 
+2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same.
 
 If omitted the default type of locators is `css`.
 
@@ -222,141 +254,106 @@ POST_TAG:
 
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
-## Template matching
-JustTestLah! allows locating elements using a template image:
-
-```
-boolean isImagePresent = homePage.hasImage("questionIcon.png");
-
-Match image = homePage.findImage("questionIcon.png");
-```
-
-The images are expected under `/src/test/resources/images`.
-
-The `Match` object contains the x and y coordinate of the matched image (more precisely, the center of the rectangle representing the match). These can be used to interact with an element located this way. For example, we can tap on an element like this:
-
-```
-new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
-.tap(PointOption.point(questionIcon.getX(), questionIcon.getY()))
-.perform();
-```
-
-Note, that future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
-
-The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
-
-Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
-
-### Matching threshold
-Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
-
-### Client and server-mode matching
-There are two modes to use template matching which can be configured in `justtestlah.properties`:
-
-`opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires OpenCV which is imported as a Maven dependency (https://github.com/openpnp/opencv).
-
-`opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
-
-Note, that not all cloud providers (see below) support this.
-
-## Test user management
-JustTestLah! implements a basic test user configuration. Test users are stored in a properties file passed as a VM argument: `-Dtestusers.file=/absolute/path/to/testusers.properties`. The content of the file looks as follows:
-
-```ini
-key1=user1:pw1
-key2=user2:pw2
-...
-``` 
-
-You can then call `io.github.martinschneider.justtestlah.user.UserService.get(String)` with the key as a parameter to retrieve the test user data as an object of type `io.github.martinschneider.justtestlah.user.User`.
-
-For example:
+## Test data handling
+JustTestLah! supports loading testdata from YAML files. Each test data entity is represented by a Java class (the model) and one or many YAML files which contain the actual test data. For example:
 
 ```java
-public class LoginSteps extends BaseSteps {
-  @Autowired private UserService userService;
-  private HomePage homePage;
-  
-  /**
-   * Login the given user.
-   *
-   * @param userKey userKey of the user to log in
-   */
-  @When("^I login as \"([^\"]*)\"$")
-  public void loginAs(String userKey) {
-    homePage.login(userService.get(userKey))
+@TestData("user")
+public class User {
+  private String username;
+  private String password;
+
+  public User() {}
+
+  public User(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }
 ```
 
+```yaml
+user:
+  username: myUsername
+  password: myPassword
+```
+
+Note, that the top level key in the YAML file must match the value of the `@TestData` annotation.
+
+You can then load test data in your tests as easy as this:
+
 ```java
-@Component
-@Profile({Platform.ANDROID, Platform.WEB})
-public class LoginPage extends BasePage<LoginPage> {
-  private HomePage home;
-
-  /**
-   * Log in the given user.
-   *
-   * @param user the user to log in
-   * @return {@link HomePage}
-   */
-  public HomePage login(User user) {
-    $("USERNAME_FIELD").sendKeys(user.getUsername());
-    $("PASSWORD_FIELD").sendKeys(user.getPassword());
-    $("LOGIN_BUTTON").click();
-    return home;
-  }
-}
+User user = testdata(User.class);
+User user = testdata(User.class, "validUser");
+User user = testdata(User.class, "userWithInvalidPassword");
 ```
 
+The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
 
-## Galen
-JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
-
-Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
-
-Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
-
-```
-@objects
-  username_field  id  com.thecarousell.Carousell:id/login_page_username_text_field
-  password_field  id  com.thecarousell.Carousell:id/login_page_password_text_field
-  login_button    id  com.thecarousell.Carousell:id/login_page_login_button
-
-= Login =
-
-  username_field:
-      above password_field
-      aligned vertically all password_field
-      width 100 % of password_field/width
-      width 100 % of login_button/width
-	
-  password_field:
-      below username_field
-      aligned vertically all username_field
-      width 100 % of username_field/width
-      width 100 % of login_button/width
-        
-  login_button:
-      below password_field
-      below username_field
-      width 100 % of username_field/width
-      width 100 % of password_field/width
-      text is "Log In" 
+There are three configuration values for this feature:
+```model.package=
+testdata.filter=
+testdata.enabled=
 ```
 
-See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
+`model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`). `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
+
+Setting `testdata.enabled=true` enables the YAML test data resolution. The default is `false`!
 
 ## Cloud service integrations
 
-JustTestLah! supports integration with various cloud service provides. Most of them are in PoC state. Please feel free to contribute.
+JustTestLah! supports integration with various cloud service provides. Some of them are in PoC state. Please feel free to contribute.
 
-### Applitools
+### Browserstack
 
-There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
+You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
 
-Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
+```
+cloudprovider=browserstack
+
+# Browserstack username
+browserstack.username=
+# Browserstack access key
+browserstack.accessKey=
+
+# Optional settings, see https://www.browserstack.com/automate/capabilities
+browserstack.debug=true
+browserstack.appiumLogs=true
+browserstack.video=true
+browserstack.geoLocation=SG
+browserstack.networkProfile=
+browserstack.customNetwork=
+browserstack.timezone=SG
+browserstack.appium_version=1.8.0
+```
+
+Make sure `justtestlah-browserstack` is on your classpath:
+
+```
+<dependency>
+  <groupId>io.github.martinschneider</groupId>
+  <artifactId>justtestlah-browserstack</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+Please note that BrowserStack is a paid service.
 
 ### AWS Devicefarm
 
@@ -399,7 +396,7 @@ aws.bluetooth=
 aws.gps=
 aws.nfc=
 aws.wifi=
-# set this to true if you use device slots 
+# set this to true if you use device slots
 aws.runUnmetered=false
 
 # Additional AWS Devicefarm configuration
@@ -419,46 +416,92 @@ Make sure `justtestlah-awsdevicefarm` is on your classpath:
 </dependency>
 ```
 
+You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d) for a more detailled description of how to tweak AWS Devicefarm.
+
 Please note that AWS Devicefarm is a paid service.
 
-
-### Browserstack
-
-You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
+## Template matching
+JustTestLah! allows locating elements using a template image:
 
 ```
-cloudprovider=browserstack
+boolean isImagePresent = homePage.hasImage("questionIcon.png");
 
-# Browserstack username
-browserstack.username=
-# Browserstack access key
-browserstack.accessKey=
-
-# Optional settings, see https://www.browserstack.com/automate/capabilities
-browserstack.debug=true
-browserstack.appiumLogs=true
-browserstack.video=true
-browserstack.geoLocation=SG
-browserstack.networkProfile=
-browserstack.customNetwork=
-browserstack.timezone=SG
-browserstack.appium_version=1.8.0
+Match image = homePage.findImage("questionIcon.png");
 ```
 
-Make sure `justtestlah-browserstack` is on your classpath:
+The images are expected under `/src/test/resources/images`.
+
+The `Match` object contains the x and y coordinate of the matched image (more precisely, the center of the rectangle representing the match). These can be used to interact with an element located this way. For example, we can tap on an element like this:
 
 ```
-<dependency>
-  <groupId>io.github.martinschneider</groupId>
-  <artifactId>justtestlah-browserstack</artifactId>
-  <version>${project.version}</version>
-</dependency>
+new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
+.tap(PointOption.point(questionIcon.getX(), questionIcon.getY()))
+.perform();
 ```
 
-Please note that BrowserStack is a paid service.
+Note, that future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
+
+The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
+
+Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
+
+### Matching threshold
+Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
+
+### Client and server-mode matching
+There are two modes to use template matching which can be configured in `justtestlah.properties`:
+
+`opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires OpenCV which is imported as a Maven dependency (https://github.com/openpnp/opencv).
+
+`opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
+
+Note, that not all cloud providers (see below) support this.
+
+## Applitools
+
+There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
+
+Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
 
 
-## Used frameworks (selection)
+## Galen
+JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
+
+Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
+
+Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
+
+```
+@objects
+  username_field  id  com.thecarousell.Carousell:id/login_page_username_text_field
+  password_field  id  com.thecarousell.Carousell:id/login_page_password_text_field
+  login_button    id  com.thecarousell.Carousell:id/login_page_login_button
+
+= Login =
+
+  username_field:
+      above password_field
+      aligned vertically all password_field
+      width 100 % of password_field/width
+      width 100 % of login_button/width
+
+  password_field:
+      below username_field
+      aligned vertically all username_field
+      width 100 % of username_field/width
+      width 100 % of login_button/width
+
+  login_button:
+      below password_field
+      below username_field
+      width 100 % of username_field/width
+      width 100 % of password_field/width
+      text is "Log In"
+```
+
+See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
+
+## Used libraries
 
 JustTestLah! makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
 
@@ -474,44 +517,33 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
+## Articles
+
+* [How to read version and other information from Android and iOS apps using Java](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79)
+* [Mobile Test Automation Using AWS Device Farm](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d)
+* [Leveraging Spring dependency injection for UI automation](https://medium.com/@mart.schneider/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738)
+
 ## Presentations
 
 This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up.
 
 It has been showcased and mentioned in various presentations:
 
-* Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV. 2018-04-12, 2nd Singapore Appium Meet-up
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)
-  * [Video Part 1](https://www.youtube.com/watch?v=OyAMnBEbT20)
-  * [Video Part 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
-
-* Martin Schneider: A single framework for Android, IOS and Web testing. 2018-11-09, Testingmind Software Testing Symposium, Manila
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-
-* [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks. 2018-11-28, 6th Singapore Appium Meet-up
-  * [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
-  
-* Martin Schneider: Re-use automated test scenarios across different platforms. 2019-01-08, Testing Corner, Taipei
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
-  
-* Martin Schneider: testDevices.scaleUp(); Thoughts about mobile testing on the cloud. 2019-05-07, Testing Corner, Taipei
-  * [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)
-
-## Articles
-
-[This article](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79) explains how to use JustTestLah! (amongst other options) to query meta information from APK, IPA and APP packages.
-
-[This article](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d) describes how to utilize AWS Devicefarm with JustTestLah!
+| Date       | Event                                            | Location | Talk | Links
+| ---------- | -----------------------------------------------  | -------- | ---- | ------
+| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
+| 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
+| 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
+| 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
+| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11 and 12).
-
-* Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
+* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11 and 12). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
 
 * The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 yet](https://github.com/openpnp/opencv/issues/44).
 
-* The Galen PoC only works on Appium 1.7. Newer versions are not yet supported. Please feel free to contribute an update for this feature.
+* The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
 
 ## Contact and support
 

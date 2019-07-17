@@ -1,9 +1,14 @@
-package io.github.martinschneider.justtestlah.user;
+package io.github.martinschneider.justtestlah.examples.carousell.model;
+
+import io.github.martinschneider.justtestlah.testdata.TestData;
 
 /** DTO for test users. */
+@TestData("user")
 public class User {
   private String username;
   private String password;
+
+  public User() {}
 
   public User(String username, String password) {
     this.username = username;
@@ -62,5 +67,10 @@ public class User {
       return false;
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    return "User [username=" + username + ", password=" + password + "]";
   }
 }
