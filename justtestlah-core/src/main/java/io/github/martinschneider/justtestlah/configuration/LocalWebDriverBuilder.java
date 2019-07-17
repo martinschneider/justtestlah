@@ -8,6 +8,8 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
+import io.github.martinschneider.justtestlah.annotations.EntryExitLogging;
+import io.github.martinschneider.justtestlah.log.WebDriverLogEnricher;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +28,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   private static final String EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR =
       "exitOnWebDriverInitialisationError";
 
-  private Logger LOG = LoggerFactory.getLogger(LocalWebDriverBuilder.class);
+  private static final Logger LOG = LoggerFactory.getLogger(LocalWebDriverBuilder.class);
 
   @Value("${platform}")
   protected String platform;
@@ -54,10 +57,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
    * @see io.github.martinschneider.justtestlah.configuration.WebDriverBuilder#getAndroidDriver()
    */
   @Override
+  @EntryExitLogging
   public WebDriver getAndroidDriver() {
     try {
-      return new AndroidDriver<AndroidElement>(
-          new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities()));
+      return registerListener(
+          new AndroidDriver<AndroidElement>(
+              new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities())));
     } catch (MalformedURLException exception) {
       throw new RuntimeException(exception);
     } catch (WebDriverException exception) {
@@ -82,8 +87,9 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Override
   public WebDriver getIOsDriver() {
     try {
-      return new IOSDriver<IOSElement>(
-          new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()));
+      return registerListener(
+          new IOSDriver<IOSElement>(
+              new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities())));
     } catch (MalformedURLException exception) {
       throw new RuntimeException(exception);
     } catch (WebDriverException exception) {
@@ -139,6 +145,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   @Override
   public WebDriver getWebDriver() {
-    return WebDriverRunner.getWebDriver();
+    return registerListener(WebDriverRunner.getWebDriver());
+  }
+
+  private WebDriver registerListener(WebDriver driver) {
+    EventFiringWebDriver eventFiringDriver = new EventFiringWebDriver(driver);
+    eventFiringDriver.register(new WebDriverLogEnricher());
+    return eventFiringDriver;
   }
 }

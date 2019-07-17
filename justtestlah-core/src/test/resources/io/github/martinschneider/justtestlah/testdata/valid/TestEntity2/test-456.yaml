@@ -1,0 +1,5 @@
+testEntity2:
+  stringValue: "000"
+  intValue: 1
+  doubleValue: 2.0
+  booleanValue: true

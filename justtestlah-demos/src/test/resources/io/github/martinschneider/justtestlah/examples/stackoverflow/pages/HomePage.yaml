@@ -20,7 +20,12 @@ TOOLBAR:
   android:
     type: id
     value: com.stackexchange.stackoverflow:id/toolbar
-      
+
+MENU_TOGGLE:
+  web:
+    type: css
+    value: "a.left-sidebar-toggle"      
+
 MENU_TAGS:
   web: 
     type: css

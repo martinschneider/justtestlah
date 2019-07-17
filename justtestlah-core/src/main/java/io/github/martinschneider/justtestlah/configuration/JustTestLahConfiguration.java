@@ -2,8 +2,6 @@ package io.github.martinschneider.justtestlah.configuration;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
-import io.github.martinschneider.justtestlah.user.UserService;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -54,24 +52,16 @@ public class JustTestLahConfiguration {
 
   private WebDriverBuilder webDriverBuilder;
 
-  private UserService userService;
-
   @Autowired
-  public JustTestLahConfiguration(WebDriverBuilder webDriverBuilder, UserService userService) {
+  public JustTestLahConfiguration(WebDriverBuilder webDriverBuilder) {
     this.webDriverBuilder = webDriverBuilder;
-    this.userService = userService;
-  }
-
-  /** Initialise the user service. */
-  @PostConstruct
-  public void initCucumberConfig() {
-    userService.initialize();
   }
 
   /** Set the correct {@link org.openqa.selenium.WebDriver}. */
   public void initWebDriver() {
     // for web and local testing the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
+    // not thread-safe!
     Configuration.headless = headless;
     // for Android and IOS we construct the {@link WebDriver} ourselves
     if (platform.equals(Platform.ANDROID)) {

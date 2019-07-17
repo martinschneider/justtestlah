@@ -11,7 +11,7 @@ import com.amazonaws.services.devicefarm.model.GetUploadRequest;
 import com.amazonaws.services.devicefarm.model.GetUploadResult;
 import com.amazonaws.services.devicefarm.model.Upload;
 import com.amazonaws.services.devicefarm.model.UploadType;
-import io.github.martinschneider.justtestlah.utils.FileEntity;
+import io.github.martinschneider.justtestlah.utils.JustTestLahFileEntity;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -100,12 +100,8 @@ public class AWSService {
    * @param uploadType the {@link UploadType}
    * @param synchronous true, if the execution should wait for the download to succeed
    * @return {@link Upload}
-   * @throws InterruptedException {@link InterruptedException}
-   * @throws IOException {@link IOException}
-   * @throws AWSDeviceFarmException {@link AWSDeviceFarmException}
    */
-  public Upload upload(File file, String projectArn, UploadType uploadType, Boolean synchronous)
-      throws InterruptedException, IOException, AWSDeviceFarmException {
+  public Upload upload(File file, String projectArn, UploadType uploadType, Boolean synchronous) {
     CreateUploadRequest appUploadRequest =
         new CreateUploadRequest()
             .withName(UUID.randomUUID() + "_" + file.getName())
@@ -114,70 +110,84 @@ public class AWSService {
             .withType(uploadType.toString());
     Upload upload = aws.createUpload(appUploadRequest).getUpload();
 
-    CloseableHttpClient httpClient = HttpClients.createSystem();
-    HttpPut httpPut = new HttpPut(upload.getUrl());
-    httpPut.setHeader("Content-Type", upload.getContentType());
+    final CloseableHttpClient httpClient = HttpClients.createSystem();
+    try {
+      HttpPut httpPut = new HttpPut(upload.getUrl());
+      httpPut.setHeader("Content-Type", upload.getContentType());
 
-    FileEntity entity = new FileEntity(file);
-    httpPut.setEntity(entity);
+      JustTestLahFileEntity entity = new JustTestLahFileEntity(file);
+      httpPut.setEntity(entity);
 
-    LOG.debug("AWS S3 upload URL: {}", upload.getUrl());
+      LOG.debug("AWS S3 upload URL: {}", upload.getUrl());
 
-    Thread thread =
-        new Thread() {
-          public void run() {
-            HttpResponse response = null;
-            try {
-              response = httpClient.execute(httpPut);
-            } catch (IOException exception) {
-              throw new AWSDeviceFarmException(
-                  String.format("Error uploading file to AWS: %s", exception.getMessage()));
+      Thread thread =
+          new Thread() {
+            @Override
+            public void run() {
+              HttpResponse response = null;
+              try {
+                response = httpClient.execute(httpPut);
+              } catch (IOException exception) {
+                throw new AWSDeviceFarmException(
+                    String.format("Error uploading file to AWS: %s", exception.getMessage()));
+              }
+              if (response.getStatusLine().getStatusCode() != 200) {
+                throw new AWSDeviceFarmException(
+                    String.format(
+                        "Upload returned non-200 responses: %d",
+                        response.getStatusLine().getStatusCode()));
+              }
             }
-            if (response.getStatusLine().getStatusCode() != 200) {
-              throw new AWSDeviceFarmException(
-                  String.format(
-                      "Upload returned non-200 responses: %d",
-                      response.getStatusLine().getStatusCode()));
-            }
-          }
-        };
-    thread.start();
-    int progress = 0;
-    while (thread.isAlive()) {
-      int newProgress = entity.getProgress();
-      if (newProgress > progress) {
-        LOG.info("{}% completed {}", progress, file.getAbsolutePath());
-        progress = newProgress;
+          };
+      thread.start();
+      int progress = 0;
+      while (thread.isAlive()) {
+        int newProgress = entity.getProgress();
+        if (newProgress > progress) {
+          LOG.info("{}% completed {}", progress, file.getAbsolutePath());
+          progress = newProgress;
+        }
+        try {
+          Thread.sleep(500);
+        } catch (InterruptedException exception) {
+          LOG.error("Error during Thread.sleep", exception);
+          Thread.currentThread().interrupt();
+        }
       }
-      Thread.sleep(500);
-    }
 
-    if (synchronous) {
-      while (true) {
-        GetUploadRequest describeUploadRequest = new GetUploadRequest().withArn(upload.getArn());
-        GetUploadResult describeUploadResult = aws.getUpload(describeUploadRequest);
-        String status = describeUploadResult.getUpload().getStatus();
+      if (synchronous) {
+        while (true) {
+          GetUploadRequest describeUploadRequest = new GetUploadRequest().withArn(upload.getArn());
+          GetUploadResult describeUploadResult = aws.getUpload(describeUploadRequest);
+          String status = describeUploadResult.getUpload().getStatus();
 
-        if ("SUCCEEDED".equalsIgnoreCase(status)) {
-          LOG.info("Uploading {} succeeded: {}", file.getName(), describeUploadRequest.getArn());
-          break;
-        } else if ("FAILED".equalsIgnoreCase(status)) {
-          LOG.info(
-              "Error message from device farm: '{}'",
-              describeUploadResult.getUpload().getMetadata());
-          throw new AWSDeviceFarmException(String.format("Upload %s failed!", upload.getName()));
-        } else {
-          try {
+          if ("SUCCEEDED".equalsIgnoreCase(status)) {
+            LOG.info("Uploading {} succeeded: {}", file.getName(), describeUploadRequest.getArn());
+            break;
+          } else if ("FAILED".equalsIgnoreCase(status)) {
             LOG.info(
-                "Waiting for upload {} to be ready (current status: {})", file.getName(), status);
-            Thread.sleep(5000);
-          } catch (InterruptedException exception) {
-            LOG.info("Thread interrupted while waiting for the upload to complete");
-            throw exception;
+                "Error message from device farm: '{}'",
+                describeUploadResult.getUpload().getMetadata());
+            throw new AWSDeviceFarmException(String.format("Upload %s failed!", upload.getName()));
+          } else {
+            try {
+              LOG.info(
+                  "Waiting for upload {} to be ready (current status: {})", file.getName(), status);
+              Thread.sleep(5000);
+            } catch (InterruptedException exception) {
+              LOG.error("Thread interrupted while waiting for the upload to complete", exception);
+              Thread.currentThread().interrupt();
+            }
           }
         }
       }
+      return upload;
+    } finally {
+      try {
+        httpClient.close();
+      } catch (IOException exception) {
+        LOG.error("Error closing the HTTP client", exception);
+      }
     }
-    return upload;
   }
 }

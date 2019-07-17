@@ -4,7 +4,7 @@ import static com.codeborne.selenide.Condition.appear;
 
 import io.github.martinschneider.justtestlah.base.BasePage;
 import io.github.martinschneider.justtestlah.configuration.Platform;
-import io.github.martinschneider.justtestlah.user.User;
+import io.github.martinschneider.justtestlah.examples.carousell.model.User;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,7 @@ public class LoginPage extends BasePage<LoginPage> {
     return home;
   }
 
-  public boolean isErrorMessagePresent() {
+  public boolean isErrorMessageVisible() {
     return $("ERROR_MESSAGE").should(appear).isDisplayed();
   }
 }

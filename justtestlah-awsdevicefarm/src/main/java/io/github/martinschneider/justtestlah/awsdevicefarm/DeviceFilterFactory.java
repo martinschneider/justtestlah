@@ -15,18 +15,24 @@ import org.slf4j.LoggerFactory;
 /** Creates a device filter based on the configuration from {@link PropertiesHolder}. */
 public class DeviceFilterFactory {
 
-  private Logger LOG = LoggerFactory.getLogger(DeviceFilterFactory.class);
+  private static final String OS_VERSION = "OS_VERSION";
+
+  private static final Logger LOG = LoggerFactory.getLogger(DeviceFilterFactory.class);
 
   private PropertiesHolder properties;
   private AWSService awsService;
 
+  /**
+   * @param properties {@link PropertiesHolder}
+   * @param awsService {@link AWSService}
+   */
   public DeviceFilterFactory(PropertiesHolder properties, AWSService awsService) {
     this.properties = properties;
     this.awsService = awsService;
   }
 
   public List<DeviceFilter> getDeviceFilters() {
-    List<DeviceFilter> deviceFilters = new ArrayList<DeviceFilter>();
+    List<DeviceFilter> deviceFilters = new ArrayList<>();
     String platform = properties.getProperty("platform");
     // if device filters are used at least the platform must be specified
     if (platform == null || platform.isEmpty()) {
@@ -36,15 +42,15 @@ public class DeviceFilterFactory {
     addFilter(deviceFilters, "PLATFORM", platform);
     addFilter(
         deviceFilters,
-        "OS_VERSION",
+        OS_VERSION,
         RuleOperator.GREATER_THAN_OR_EQUALS,
         properties.getOptionalProperty("aws.minOsVersion"));
     addFilter(
         deviceFilters,
-        "OS_VERSION",
+        OS_VERSION,
         RuleOperator.LESS_THAN_OR_EQUALS,
         properties.getOptionalProperty("aws.maxOsVersion"));
-    addFilter(deviceFilters, "OS_VERSION", properties.getOptionalProperty("aws.osVersion"));
+    addFilter(deviceFilters, OS_VERSION, properties.getOptionalProperty("aws.osVersion"));
     addFilter(
         deviceFilters, "MODEL", RuleOperator.CONTAINS, properties.getOptionalProperty("aws.model"));
     addFilter(deviceFilters, "FORM_FACTOR", properties.getOptionalProperty("aws.formFactor"));
@@ -96,6 +102,7 @@ public class DeviceFilterFactory {
             .getAws()
             .listDevices(new ListDevicesRequest().withFilters(deviceFilters))
             .getDevices();
+    // TODO: use lambda expressions once SLF4j supports it
     LOG.info(
         "{} device(s) matching {}",
         devices.size(),

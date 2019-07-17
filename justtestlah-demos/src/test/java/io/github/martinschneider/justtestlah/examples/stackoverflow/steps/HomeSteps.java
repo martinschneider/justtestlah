@@ -14,22 +14,22 @@ public class HomeSteps extends BaseSteps {
   private HomePage home;
   private NewQuestionPage askQuestion;
 
-  @Given("^I am on the homepage$")
+  @Given("I am on the homepage")
   public void homepage() {
     home.load();
   }
 
-  @When("^I go to the tags page")
+  @When("I go to the tags page")
   public void goToTags() {
     home.navigateToTagsPage();
   }
 
-  @When("I search for \"([^\"]*)\"")
+  @When("I search for {string}")
   public void search(String query) {
     home.search(query);
   }
 
-  @Then("^I can see the question icon$")
+  @Then("I can see the question icon")
   public void matchQuestionIcon() {
     // The first assertion would be sufficient. We run some more checks to show-case the template
     // matching.
@@ -39,18 +39,18 @@ public class HomeSteps extends BaseSteps {
     assertThat(home.hasImage("questionIcon_rotated.png", 0.85)).isEqualTo(true);
   }
 
-  @Then("^I can't see a Facebook icon$")
+  @Then("I can't see a Facebook icon")
   public void noFacebook() {
     assertThat(home.hasImage("facebook.png")).isEqualTo(false);
   }
 
-  @When("^I click on the question icon$")
+  @When("I click on the question icon")
   public void questionIcon() {
     // this step is platform-dependent
     ((AndroidHomePage) home).tapOnQuestionIcon();
   }
 
-  @Then("^I can enter a new question$")
+  @Then("I can enter a new question")
   public void checkQuestionPage() {
     assertThat(askQuestion.isDisplayed()).as("check for ask question page").isEqualTo(true);
   }

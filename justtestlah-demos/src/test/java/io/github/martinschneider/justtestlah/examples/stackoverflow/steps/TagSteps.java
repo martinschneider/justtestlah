@@ -8,12 +8,12 @@ import io.github.martinschneider.justtestlah.examples.stackoverflow.pages.TagsPa
 public class TagSteps extends BaseSteps {
   private TagsPage tagsPage;
 
-  @Given("^I filter for \"([^\"]*)\"$")
+  @Given("I filter for {string}")
   public void filter(String filter) {
     tagsPage.filterTags(filter);
   }
 
-  @When("^I select the tag \"([^\"]*)\"$")
+  @When("I select the tag {string}")
   public void selectTag(String tagName) {
     tagsPage.selectTag(tagName);
   }

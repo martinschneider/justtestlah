@@ -2,8 +2,11 @@ package io.github.martinschneider.justtestlah.configuration;
 
 import com.applitools.eyes.selenium.Eyes;
 import com.galenframework.reports.GalenTestInfo;
+import io.github.martinschneider.justtestlah.aop.AopConfig;
 import io.github.martinschneider.justtestlah.locator.LocatorParser;
-import io.github.martinschneider.justtestlah.user.UserService;
+import io.github.martinschneider.justtestlah.testdata.TestDataMap;
+import io.github.martinschneider.justtestlah.testdata.TestDataObjectRegistry;
+import io.github.martinschneider.justtestlah.testdata.TestDataParser;
 import io.github.martinschneider.justtestlah.visual.AppiumTemplateMatcher;
 import io.github.martinschneider.justtestlah.visual.ImageUtils;
 import io.github.martinschneider.justtestlah.visual.OpenCVTemplateMatcher;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.yaml.snakeyaml.Yaml;
 
@@ -26,12 +30,13 @@ import org.yaml.snakeyaml.Yaml;
     value = {"file:${justtestlah.properties}", "justtestlah.properties"},
     ignoreResourceNotFound = true)
 @ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
-public class SpringContext {
+@Import(AopConfig.class)
+public class SpringConfig {
 
   private static final String BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS =
       "io.github.martinschneider.justtestlah.configuration.BrowserStackWebDriverBuilder";
 
-  private Logger LOG = LoggerFactory.getLogger(SpringContext.class);
+  private static final Logger LOG = LoggerFactory.getLogger(SpringConfig.class);
 
   @Value("${opencv.mode}")
   private String openCVmode;
@@ -46,7 +51,7 @@ public class SpringContext {
 
   @Bean
   public JustTestLahConfiguration config() {
-    return new JustTestLahConfiguration(webDriverBuilder(), userService());
+    return new JustTestLahConfiguration(webDriverBuilder());
   }
 
   @Bean
@@ -69,7 +74,8 @@ public class SpringContext {
     if (cloudProvider.equals("local")) {
       return new LocalWebDriverBuilder();
     }
-    // TODO: use Spring to contribute WebDriverBuilders from other modules instead of hard-coding
+    // TODO: use Spring to contribute WebDriverBuilders from other modules instead
+    // of hard-coding
     // the class names
     else if (cloudProvider.equals("browserstack")) {
       try {
@@ -105,8 +111,18 @@ public class SpringContext {
   }
 
   @Bean
-  public UserService userService() {
-    return new UserService();
+  public TestDataMap testDataMap() {
+    return new TestDataMap();
+  }
+
+  @Bean
+  public TestDataParser testDataParser() {
+    return new TestDataParser();
+  }
+
+  @Bean
+  public TestDataObjectRegistry testDataObjectRegistry() {
+    return new TestDataObjectRegistry();
   }
 
   /**

@@ -1,14 +1,3 @@
-LOGIN_BUTTON:
-  android:
-    type: id
-    value: com.thecarousell.Carousell:id/welcome_page_login_button
-  ios:
-    type: accesibilityId
-    value: welcome_page_login_button
-  web:
-    type: xpath
-    value: //button[text()='Login']
-   
 SELL_BUTTON:
   android:
     type: id
@@ -16,14 +5,3 @@ SELL_BUTTON:
   ios:
     type: accessibilityId
     value: header_page_sell_button
-
-USER_MENU:
-  android:
-    type: id
-    value: com.thecarousell.Carousell:id/text_tab
-  ios:
-    type: accesibilityId
-    value: header_page_me_tab
-  web:
-    type: css
-    value: div.navbar-avatar-wrapper

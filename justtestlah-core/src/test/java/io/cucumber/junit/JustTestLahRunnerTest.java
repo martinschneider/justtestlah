@@ -1,4 +1,4 @@
-package io.github.martinschneider.justtestlah.junit;
+package io.cucumber.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

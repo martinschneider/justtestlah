@@ -1,6 +1,5 @@
 package io.github.martinschneider.justtestlah.awsdevicefarm;
 
-import com.amazonaws.services.devicefarm.model.AWSDeviceFarmException;
 import com.amazonaws.services.devicefarm.model.DeviceFilter;
 import com.amazonaws.services.devicefarm.model.DeviceSelectionConfiguration;
 import com.amazonaws.services.devicefarm.model.GetRunRequest;
@@ -10,9 +9,9 @@ import com.amazonaws.services.devicefarm.model.ScheduleRunResult;
 import com.amazonaws.services.devicefarm.model.ScheduleRunTest;
 import com.amazonaws.services.devicefarm.model.TestType;
 import com.amazonaws.services.devicefarm.model.UploadType;
+import io.cucumber.junit.JustTestLahRunner;
 import io.github.martinschneider.justtestlah.awsdevicefarm.utils.FormattingUtils;
 import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
-import io.github.martinschneider.justtestlah.junit.JustTestLahRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -39,9 +38,10 @@ import org.slf4j.LoggerFactory;
  */
 public class AWSTestRunner extends Runner {
 
+  private static final Logger LOG = LoggerFactory.getLogger(AWSTestRunner.class);
   private static final int TIMEOUT = 60;
+
   private PropertiesHolder properties = new PropertiesHolder();
-  private Logger LOG = LoggerFactory.getLogger(AWSTestRunner.class);
   private AWSService awsService = new AWSService();
 
   public AWSTestRunner(Class<?> testClass) {}
@@ -60,21 +60,13 @@ public class AWSTestRunner extends Runner {
     }
     LOG.info("Uploading test spec file to AWS Devicefarm");
     String testSpecArn = null;
-    try {
-      testSpecArn = uploadTestSpec(projectArn, new File(testSpecFile));
-    } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
-      LOG.error("Error uploading test spec file", exception);
-    }
+    testSpecArn = uploadTestSpec(projectArn, new File(testSpecFile));
 
     /** APP PACKAGE */
     String appArn = properties.getOptionalProperty("aws.appPackageArn");
     if (appArn == null || appArn.isEmpty()) {
       LOG.info("Uploading app package to AWS Devicefarm");
-      try {
-        appArn = uploadAppPackage(projectArn, new File(properties.getProperty("android.appPath")));
-      } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
-        LOG.error("Error uploading app package", exception);
-      }
+      appArn = uploadAppPackage(projectArn, new File(properties.getProperty("android.appPath")));
     } else {
       LOG.info("Using existing app package {}", appArn);
     }
@@ -90,11 +82,7 @@ public class AWSTestRunner extends Runner {
         LOG.error("Error creating test package", exception);
       }
       LOG.info("Uploading test package to AWS Devicefarm");
-      try {
-        testArn = uploadTestPackage(projectArn, testPackage);
-      } catch (AWSDeviceFarmException | InterruptedException | IOException exception) {
-        LOG.error("Error uploading test package", exception);
-      }
+      testArn = uploadTestPackage(projectArn, testPackage);
     } else {
       LOG.info("Using existing test package {}", testArn);
     }
@@ -150,6 +138,7 @@ public class AWSTestRunner extends Runner {
       elapsedTime = System.currentTimeMillis() - startTime;
       run = awsService.getAws().getRun(getRunRequest).getRun();
       status = run.getStatus();
+      // TODO: use lambda expressions once SLF4j supports it
       LOG.info(
           "Test status: {} {} elapsed",
           String.format("%1$-15s", status),
@@ -166,20 +155,17 @@ public class AWSTestRunner extends Runner {
     return run.getResult();
   }
 
-  private String uploadAppPackage(String projectArn, File appPackage)
-      throws AWSDeviceFarmException, InterruptedException, IOException {
+  private String uploadAppPackage(String projectArn, File appPackage) {
     return awsService.upload(appPackage, projectArn, UploadType.ANDROID_APP, true).getArn();
   }
 
-  private String uploadTestPackage(String projectArn, File testPackage)
-      throws AWSDeviceFarmException, InterruptedException, IOException {
+  private String uploadTestPackage(String projectArn, File testPackage) {
     return awsService
         .upload(testPackage, projectArn, UploadType.APPIUM_JAVA_JUNIT_TEST_PACKAGE, true)
         .getArn();
   }
 
-  private String uploadTestSpec(String projectArn, File testSpecFile)
-      throws AWSDeviceFarmException, InterruptedException, IOException {
+  private String uploadTestSpec(String projectArn, File testSpecFile) {
     return awsService
         .upload(testSpecFile, projectArn, UploadType.APPIUM_JAVA_JUNIT_TEST_SPEC, true)
         .getArn();

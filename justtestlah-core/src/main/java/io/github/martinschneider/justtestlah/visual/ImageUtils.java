@@ -69,7 +69,7 @@ public class ImageUtils {
       ImageIO.write(image, "png", baos);
     } catch (IOException exception) {
       LOG.error("Error processing image");
-      return null;
+      return new byte[0];
     }
     return Base64.getEncoder().encode(baos.toByteArray());
   }

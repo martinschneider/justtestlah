@@ -9,18 +9,70 @@
   <parent>
     <groupId>io.github.martinschneider</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.5</version>
+    <version>1.6</version>
   </parent>
+  <properties>
+    <version.rules.configuration>file:///${project.basedir}/../maven-version-rules.xml</version.rules.configuration>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>io.github.martinschneider</groupId>
       <artifactId>justtestlah-core</artifactId>
       <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpmime</artifactId>
-      <version>${apache.http.components.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.appium</groupId>
+      <artifactId>java-client</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-remote-driver</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
     </dependency>
   </dependencies>
 </project>
