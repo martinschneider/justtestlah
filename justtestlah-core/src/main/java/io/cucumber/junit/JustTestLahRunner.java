@@ -24,8 +24,6 @@ import io.cucumber.core.options.CucumberOptionsAnnotationParser;
 import io.cucumber.core.options.EnvironmentOptionsParser;
 import io.cucumber.core.options.RuntimeOptions;
 import io.cucumber.junit.Cucumber.RunCucumber;
-import io.github.martinschneider.justtestlah.configuration.Platform;
-import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -42,6 +40,8 @@ import org.opencv.core.Core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import qa.justtestlah.configuration.Platform;
+import qa.justtestlah.configuration.PropertiesHolder;
 
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
@@ -95,7 +95,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     bridgeLogging();
 
     if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
-      LOG.info("Using io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner");
+      LOG.info("Using qa.justtestlah.awsdevicefarm.AWSTestRunner");
       awsRunner = getAWSRunner(clazz);
     } else {
       // load OpenCV library
@@ -259,7 +259,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     }
     if (Boolean.parseBoolean(
         properties.getProperty(JUSTTESTLAH_SPRING_CONTEXT_KEY, Boolean.toString(true)))) {
-      cucumberOptions.append(" --glue io.github.martinschneider.justtestlah.steps ");
+      cucumberOptions.append(" --glue qa.justtestlah.steps ");
     }
     cucumberOptions.append(" --glue ");
     cucumberOptions.append(properties.getProperty(STEPS_PACKAGE_KEY));
@@ -318,7 +318,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private Runner getAWSRunner(Class<?> clazz) {
     try {
       return (Runner)
-          Class.forName("io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner")
+          Class.forName("qa.justtestlah.awsdevicefarm.AWSTestRunner")
               .getConstructor(Class.class)
               .newInstance(clazz);
     } catch (InstantiationException
@@ -329,7 +329,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
         | SecurityException
         | ClassNotFoundException exception) {
       LOG.error(
-          "Unable to create an instance of io.github.martinschneider.justtestlah.awsdevicefarm.AWSTestRunner. Ensure justtestlah-aws is on your classpath (check your Maven pom.xml).",
+          "Unable to create an instance of qa.justtestlah.awsdevicefarm.AWSTestRunner. Ensure justtestlah-aws is on your classpath (check your Maven pom.xml).",
           exception);
     }
     return null;

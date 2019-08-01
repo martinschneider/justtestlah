@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import io.github.martinschneider.justtestlah.configuration.PropertiesHolder;
 import java.io.IOException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.InitializationError;
+import qa.justtestlah.configuration.PropertiesHolder;
 
 @RunWith(DataProviderRunner.class)
 public class JustTestLahRunnerTest {
@@ -49,11 +49,11 @@ public class JustTestLahRunnerTest {
     return new Object[][] {
       {
         "justtestlah_legacy.properties",
-        "--tags '@web and @regression' --glue io.github.martinschneider.justtestlah.steps  --glue com.test --plugin pretty --plugin html:report --plugin json:target/report/cucumber/cucumber.json src/test/resources/features --strict"
+        "--tags '@web and @regression' --glue qa.justtestlah.steps  --glue com.test --plugin pretty --plugin html:report --plugin json:target/report/cucumber/cucumber.json src/test/resources/features --strict"
       },
       {
         "justtestlah_tagexpression.properties",
-        "--tags '@web and (@regression or not @skip)' --glue io.github.martinschneider.justtestlah.steps  --glue com.test --plugin pretty --plugin html:report --plugin json:target/report/cucumber/cucumber.json src/test/resources/features --strict"
+        "--tags '@web and (@regression or not @skip)' --glue qa.justtestlah.steps  --glue com.test --plugin pretty --plugin html:report --plugin json:target/report/cucumber/cucumber.json src/test/resources/features --strict"
       }
     };
   }

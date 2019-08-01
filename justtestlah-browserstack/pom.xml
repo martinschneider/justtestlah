@@ -7,7 +7,7 @@
   <name>JustTestLah! Browserstack</name>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
-    <groupId>io.github.martinschneider</groupId>
+    <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
     <version>1.6</version>
   </parent>
@@ -16,7 +16,7 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>io.github.martinschneider</groupId>
+      <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-core</artifactId>
       <version>${project.version}</version>
       <exclusions>

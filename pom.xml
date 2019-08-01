@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
   <version>1.6</version>
   <name>JustTestLah!</name>
@@ -474,13 +474,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>${maven.site.plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>com.bernardomg.maven.skins</groupId>
-              <artifactId>docs-maven-skin</artifactId>
-              <version>${maven.site.skin.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -683,6 +676,13 @@
   </build>
   <reporting>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <show>public</show>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>

@@ -67,7 +67,7 @@ phases:
       
       - echo "Writing justtestlah.properties"
       # We base64 encode the run configuration (`justtestlah.properties`) into
-      # this template (see io.github.martinschneider.justtestlah.awsdevicefarm.TestSpecFactory).
+      # this template (see qa.justtestlah.awsdevicefarm.TestSpecFactory).
       # During the execution we decode it and write it back to a file which
       # is then passed to the test execution. The alternative would be to put
       # it into the test package but we don't want to re-upload it for

@@ -1,9 +1,10 @@
-# JustTestLah! 🇸🇬
+# JustTestLah! test framework 🇸🇬
 
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![Javadoc](https://www.javadoc.io/badge/io.github.martinschneider/justtestlah-core.svg)](https://www.javadoc.io/doc/io.github.martinschneider/justtestlah-core)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
-JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
+JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 <!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
 
@@ -47,7 +48,7 @@ The default platform is `web`. To test one of the mobile apps you need to setup 
 mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties -Dtestusers.file=/absolute/path/to/your/testusers.properties
 ```
 
-Both parameters are optional; the default configuration files can be found under `justtestlah-demos/src/test/resources`. The `testusers.properties` is only required for tests which make use of `io.github.martinschneider.justtestlah.user.UserService`.
+Both parameters are optional; the default configuration files can be found under `justtestlah-demos/src/test/resources`. The `testusers.properties` is only required for tests which make use of `qa.justtestlah.user.UserService`.
 
 ## Use in your own projects
 
@@ -75,7 +76,7 @@ There are three main ingredients for tests in JustTestLah!:
 Steps and page objects are designed to be highly re-usable.
 
 Demo of a feature file:
-```cucumber
+```gherkin
 Feature: Search and tags
 
 @web
@@ -150,7 +151,7 @@ You can inject page objects in steps by declaring a private field:
 private HomePage home;
 ```
 
-As long as the page object class extends `io.github.martinschneider.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
+As long as the page object class extends `qa.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
 
 ## Configuration
 All configuration goes in a file called `justtestlah.properties`.
@@ -158,8 +159,8 @@ All configuration goes in a file called `justtestlah.properties`.
 ```ini
 # GENERAL settings
 platform=web
-pages.package=io.github.martinschneider.justtestlah.examples.stackoverflow.pages
-steps.package=io.github.martinschneider.justtestlah.examples.stackoverflow.steps
+pages.package=qa.justtestlah.examples.stackoverflow.pages
+steps.package=qa.justtestlah.examples.stackoverflow.steps
 features.directory=src/test/resources/features/stackoverflow
 cucumber.report.directory=target/report/cucumber
 
@@ -203,7 +204,7 @@ browserstack.username=
 You can specify the location of `justtestlah.properties` on start-up by providing it as a system property: `-DjusttestlahProperties=/path/to/justtestlah.properties`. If no path is specified it will be loaded from the classpath.
 
 ## Test runner
-JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.justtestlah.JustTestLahTest`:
+JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `qa.justtestlah.JustTestLahTest`:
 
 ```java
 public class TestRunner extends JustTestLahTest {}
@@ -525,17 +526,16 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Presentations
 
-This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up.
-
-It has been showcased and mentioned in various presentations:
+JustTestLah! and its predecessors has been showcased and mentioned in various presentations:
 
 | Date       | Event                                            | Location | Talk | Links
 | ---------- | -----------------------------------------------  | -------- | ---- | ------
+| 2019-07-25 | Testingmind Test Automation & Digital QA Summit| Singapore 🇸🇬| Martin Schneider: Scaling your device lab using cloud solutions | [Slides]()<br />
 | 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
 | 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
 | 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
 | 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 

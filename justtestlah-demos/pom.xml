@@ -7,7 +7,7 @@
   <name>JustTestLah! Demos</name>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
-    <groupId>io.github.martinschneider</groupId>
+    <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
     <version>1.6</version>
   </parent>
@@ -16,17 +16,17 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>io.github.martinschneider</groupId>
+      <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.github.martinschneider</groupId>
+      <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-browserstack</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.github.martinschneider</groupId>
+      <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-awsdevicefarm</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -87,9 +87,9 @@
         <artifactId>maven-dependency-plugin</artifactId>
         <configuration>
           <ignoredUnusedDeclaredDependencies>
-            <ignoredUnusedDeclaredDependency>io.github.martinschneider:justtestlah-browserstack
+            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-browserstack
             </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>io.github.martinschneider:justtestlah-awsdevicefarm
+            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-awsdevicefarm
             </ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>

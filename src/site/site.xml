@@ -3,35 +3,15 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
 
-  <skin>
-    <groupId>com.bernardomg.maven.skins</groupId>
-    <artifactId>docs-maven-skin</artifactId>
-    <version>${maven.site.skin.version}</version>
-  </skin>
-
-  <custom>
-    <skinConfig>
-      <keywords>Testautomation, Selenium, Appium</keywords>
-      <topNav>
-        <menu>Info and reports</menu>
-        <menu>Documentation</menu>
-      </topNav>
-      <iconNav>
-        <menu>Icons</menu>
-      </iconNav>
-    </skinConfig>
-  </custom>
-
   <body>
-    <menu name="Info and reports" inherit="top">
-      <item name="Info" href="./project-info.html" />
-      <item name="Reports" href="./project-reports.html" />
-    </menu>
     <menu name="Documentation" inherit="top">
-      <item name="API docs" href="../apidocs/index.html" />
+      <item name="API docs" href="./apidocs/index.html" />
+      <item name="Project information" href="./project-info.html" />
+      <item name="Generated Reports" href="./project-reports.html" />
     </menu>
-    <menu name="Icons" inherit="bottom">
-      <item name="Github" img="github" href="${project.scm.url}" />
+    <menu name="Links" inherit="bottom">
+      <item name="Github" href="${project.scm.url}" />
+      <item name="Maven" href="http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core" />
     </menu>
   </body>
 </project>
