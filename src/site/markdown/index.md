@@ -1,12 +1,14 @@
-# JustTestLah! test framework 🇸🇬
-
-[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
-[![Javadoc](https://www.javadoc.io/badge/io.github.martinschneider/justtestlah-core.svg)](https://www.javadoc.io/doc/io.github.martinschneider/justtestlah-core)
+[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/qa.justtestlah/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
 JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 <!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
+<!--
+
+Disabling the TOC because anchors are rendered differently by Github and the Maven site plugin (leading to broken links):
+https://issues.apache.org/jira/browse/MSITE-834
 
 - [Getting started](#getting-started)   
 - [Use in your own projects](#use-in-your-own-projects)   
@@ -28,13 +30,13 @@ JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.c
 - [Articles](#articles)   
 - [Presentations](#presentations)   
 - [Known issues & limitations](#known-issues-limitations)   
-- [Contact and support](#contact-and-support)   
+- [Contact and support](#contact-and-support)   -->
 
 <!-- /MDTOC -->
 
 
 ## Getting started
-Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
+Pull the repo and run the example.
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
@@ -42,13 +44,13 @@ cd justtestlah-demos
 mvn test -Dtest=TestRunner
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `testusers.properties`.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `justtestlah-demos/src/test/resources/qa/justtestlah/examples/carousell/testdata/user/valid.yml`.
 
 ```bash
-mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties -Dtestusers.file=/absolute/path/to/your/testusers.properties
+mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties
 ```
 
-Both parameters are optional; the default configuration files can be found under `justtestlah-demos/src/test/resources`. The `testusers.properties` is only required for tests which make use of `qa.justtestlah.user.UserService`.
+The second parameter (`justtestlah.properties`) is optional; the default configuration can be found under `justtestlah-demos/src/test/resources`.
 
 ## Use in your own projects
 
@@ -56,11 +58,11 @@ Add the following Maven dependency to your `pom.xml`.
 
 ```xml
 <properties>
-  <justtestlah.version>1.6</justtestlah.version>
+  <justtestlah.version>1.7-RC1</justtestlah.version>
 </properties>
 
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
   <version>${justtestlah.version}</version>
 </dependency>
@@ -348,7 +350,7 @@ Make sure `justtestlah-browserstack` is on your classpath:
 
 ```
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
   <version>${project.version}</version>
 </dependency>
@@ -411,7 +413,7 @@ Make sure `justtestlah-awsdevicefarm` is on your classpath:
 
 ```
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
   <version>${project.version}</version>
 </dependency>
@@ -526,16 +528,15 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Presentations
 
-JustTestLah! and its predecessors has been showcased and mentioned in various presentations:
-
-| Date       | Event                                            | Location | Talk | Links
-| ---------- | -----------------------------------------------  | -------- | ---- | ------
-| 2019-07-25 | Testingmind Test Automation & Digital QA Summit| Singapore 🇸🇬| Martin Schneider: Scaling your device lab using cloud solutions | [Slides]()<br />
-| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
-| 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
-| 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
-| 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
+| Date       | Event                                            | Talk | Links
+| ---------- | -----------------------------------------------  | ---- | ------
+| 2019-07-25 | Testingmind Test Automation & Digital QA Summit| Martin Schneider: Scaling your device lab using cloud solutions | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-07-25%20Scaling%20your%20device%20lab%20using%20cloud%20solutions.pdf)
+| 2019-05-18 | Prathidhwani Technical Forum | Syam Sasi & Martin Schneider: Appium Workshop | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-18%20Appium%20Pro%20Workshop.pdf)
+| 2019-05-07 | Test Corner 21| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
+| 2019-01-08 | Test Corner 19| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
+| 2018-11-28 | 6th TAQELAH meet-up                              | [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
+| 2018-11-09 | Testingmind Software Testing Symposium | Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
+| 2018-04-12 | 2nd TAQELAH meet-up | Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 
