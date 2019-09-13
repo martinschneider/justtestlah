@@ -1,17 +1,17 @@
-package qa.justtestlah.steps;
+package qa.justtestlah.hooks;
 
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.WebDriverRunner;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import java.io.IOException;
+import io.cucumber.core.api.Scenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 
-/** Hook to restart the WebDriver before every test. */
-public class ApplitoolsHooks {
+/** Applitools hooks. */
+@Component
+public class ApplitoolsHooks extends AbstractCucumberHook {
 
   private static final Logger LOG = LoggerFactory.getLogger(ApplitoolsHooks.class);
 
@@ -19,25 +19,27 @@ public class ApplitoolsHooks {
 
   @Autowired private Eyes eyes;
 
-  /** Initialise Applitools. */
-  @Before
-  public void init() {
+  /**
+   * Initialise Applitools.
+   *
+   * @param scenario Cucumber scenario
+   */
+  public void before(Scenario scenario) {
     if (configuration.isEyesEnabled()) {
       LOG.info("Initializing Eyes");
       eyes.open(
           WebDriverRunner.getWebDriver(),
           configuration.getApplicationName(),
-          configuration.getPlatform());
+          configuration.getPlatform().name());
     }
   }
 
   /**
-   * Close the web driver and Applitools. Generate Galen reports.
+   * Close the web driver and Applitools.
    *
-   * @throws IOException {@link IOException}
+   * @param scenario Cucumber scenario
    */
-  @After
-  public void close() throws IOException {
+  public void after(Scenario scenario) {
     if (configuration.isEyesEnabled() && eyes.getIsOpen()) {
       LOG.info("Closing Eyes");
       eyes.close();

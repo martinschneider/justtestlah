@@ -1,8 +1,8 @@
-package qa.justtestlah.steps;
+package qa.justtestlah.hooks;
 
 import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.HtmlReportBuilder;
-import cucumber.api.java.After;
+import io.cucumber.core.api.Scenario;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,10 +10,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 
-/** Hook to restart the WebDriver before every test. */
-public class GalenHooks {
+/** Galen hooks. */
+@Component
+public class GalenHooks extends AbstractCucumberHook {
 
   private static final String GALEN_REPORT_FOLDER_DATE_PATTERN = "yyyy-MM-dd HH.mm.ss";
 
@@ -24,15 +26,18 @@ public class GalenHooks {
   @Autowired private List<GalenTestInfo> galenTests;
 
   /**
-   * Close the web driver and Applitools. Generate Galen reports.
+   * Generate Galen reports.
    *
-   * @throws IOException {@link IOException}
+   * @param scenario Cucumber scenario
    */
-  @After
-  public void createReports() throws IOException {
+  public void after(Scenario scenario) {
     if (configuration.isGalenEnabled()) {
       LOG.info("Generating {} Galen reports", galenTests.size());
-      new HtmlReportBuilder().build(galenTests, getGalenReportDirectory());
+      try {
+        new HtmlReportBuilder().build(galenTests, getGalenReportDirectory());
+      } catch (IOException exception) {
+        throw new RuntimeException("Error generating Galen reports.", exception);
+      }
     }
   }
 

@@ -1,27 +1,27 @@
-package qa.justtestlah.steps;
+package qa.justtestlah.hooks;
 
 import com.codeborne.selenide.WebDriverRunner;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import java.io.IOException;
+import io.cucumber.core.api.Scenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.stereotype.Component;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
-import qa.justtestlah.configuration.SpringConfig;
 
 /** Hook to restart the WebDriver before every test. */
-@ContextConfiguration(classes = SpringConfig.class)
-public class WebDriverHooks {
+@Component
+public class WebDriverHooks extends AbstractCucumberHook {
 
   private static final Logger LOG = LoggerFactory.getLogger(WebDriverHooks.class);
 
   @Autowired private JustTestLahConfiguration configuration;
 
-  /** Initialise the web driver. */
-  @Before(order = 1) // this needs to run before initialising Applitools
-  public void init() {
+  /**
+   * Initialise the web driver.
+   *
+   * @param scenario Cucumber scenario
+   */
+  public void before(Scenario scenario) {
     LOG.info("Initializing web driver");
     configuration.initWebDriver();
   }
@@ -29,10 +29,9 @@ public class WebDriverHooks {
   /**
    * Close the web driver.
    *
-   * @throws IOException {@link IOException}
+   * @param scenario Cucumber scenario
    */
-  @After(order = 1)
-  public void shutdown() throws IOException {
+  public void after(Scenario scenario) {
     LOG.info("Closing web driver");
     WebDriverRunner.closeWebDriver();
   }

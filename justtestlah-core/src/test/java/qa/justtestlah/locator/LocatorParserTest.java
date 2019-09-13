@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
+import qa.justtestlah.configuration.Platform;
 
 public class LocatorParserTest {
   private LocatorParser target = new LocatorParser();
@@ -19,14 +20,14 @@ public class LocatorParserTest {
         target.parse(baseFolder + "/LocatorParserTest.yaml");
 
     assertThat(locatorMap.get("SEARCH_FIELD")).as("verifying SEARCH_FIELD locator").isNotNull();
-    assertThat(locatorMap.get("SEARCH_FIELD").get("android"))
+    assertThat(locatorMap.get("SEARCH_FIELD").get(Platform.ANDROID.getPlatformName()))
         .as("verifying SEARCH_FIELD Android locator")
         .isNotNull();
-    assertThat(locatorMap.get("SEARCH_FIELD").get("android").get("type"))
+    assertThat(locatorMap.get("SEARCH_FIELD").get(Platform.ANDROID.getPlatformName()).get("type"))
         .as("verifying SEARCH_FIELD Android locator type")
         .isNotNull()
         .isEqualTo("id");
-    assertThat(locatorMap.get("SEARCH_FIELD").get("android").get("value"))
+    assertThat(locatorMap.get("SEARCH_FIELD").get(Platform.ANDROID.getPlatformName()).get("value"))
         .as("verifying SEARCH_FIELD Android locator type")
         .isNotNull()
         .isEqualTo("com.stackexchange.stackoverflow:id/search_src_text");

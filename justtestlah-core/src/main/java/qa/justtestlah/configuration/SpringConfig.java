@@ -29,7 +29,7 @@ import qa.justtestlah.visual.TemplateMatcher;
 @PropertySource(
     value = {"file:${justtestlah.properties}", "justtestlah.properties"},
     ignoreResourceNotFound = true)
-@ComponentScan(basePackages = {"${pages.package}", "${steps.package}"})
+@ComponentScan(basePackages = {"qa.justtestlah.hooks", "${pages.package}", "${steps.package}"})
 @Import(AopConfig.class)
 public class SpringConfig {
 

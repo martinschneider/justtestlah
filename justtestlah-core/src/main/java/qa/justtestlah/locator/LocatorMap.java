@@ -13,6 +13,7 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import qa.justtestlah.configuration.Platform;
 import qa.justtestlah.visual.ImageUtils;
 
 /** Map to hold element locators. */
@@ -51,8 +52,8 @@ public class LocatorMap {
    * @param params locator key parameters
    * @return {@link SelenideElement}
    */
-  public SelenideElement getLocator(String key, String platform, Object... params) {
-    Map<String, String> platformKey = map.get(key).get(platform);
+  public SelenideElement getLocator(String key, Platform platform, Object... params) {
+    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
     String type = platformKey.get("type");
     String rawValue = platformKey.get("value");
     LOG.debug("Getting locator {} of type {}", rawValue, type);
@@ -82,8 +83,8 @@ public class LocatorMap {
    * @param params locator key parameters
    * @return {@link ElementsCollection}
    */
-  public ElementsCollection getCollectionLocator(String key, String platform, Object... params) {
-    Map<String, String> platformKey = map.get(key).get(platform);
+  public ElementsCollection getCollectionLocator(String key, Platform platform, Object... params) {
+    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
     String type = platformKey.get("type");
     String rawValue = platformKey.get("value");
 

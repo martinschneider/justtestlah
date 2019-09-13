@@ -23,12 +23,10 @@ import cucumber.runtime.model.FeatureLoader;
 import io.cucumber.core.options.CucumberOptionsAnnotationParser;
 import io.cucumber.core.options.EnvironmentOptionsParser;
 import io.cucumber.core.options.RuntimeOptions;
-import io.cucumber.junit.Cucumber.RunCucumber;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import nu.pattern.OpenCV;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
@@ -36,7 +34,6 @@ import org.junit.runners.ParentRunner;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.RunnerScheduler;
 import org.junit.runners.model.Statement;
-import org.opencv.core.Core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -46,7 +43,6 @@ import qa.justtestlah.configuration.PropertiesHolder;
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
 
-  private static final String OPENCV_CLIENT = "client";
   private static final String CLOUDPROVIDER_AWS = "aws";
   private static final String CLOUDPROVIDER_LOCAL = "local";
   public static final String AWS_JUNIT_GROUP_DESCRIPTION = "Test results";
@@ -69,7 +65,6 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
   private static final String CUCUMBER_OPTIONS_KEY = "cucumber.options";
   private static final String FEATURES_DIRECTORY_KEY = "features.directory";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-  private static final String OPENCV_MODE_KEY = "opencv.mode";
   private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
   private static final String JUSTTESTLAH_SPRING_CONTEXT_KEY = "justtestlah.use.springcontext";
   private static final String DEFAULT_CUCUMBER_REPORT_DIRECTORY = "target/report/cucumber";
@@ -98,24 +93,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
       LOG.info("Using qa.justtestlah.awsdevicefarm.AWSTestRunner");
       awsRunner = getAWSRunner(clazz);
     } else {
-      // load OpenCV library
-      if (properties.getProperty(OPENCV_MODE_KEY, OPENCV_CLIENT).equals(OPENCV_CLIENT)) { // load
-        // the
-        // opencv
-        // library
-        try {
-          OpenCV.loadShared();
-          OpenCV.loadLocally();
-          System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        } catch (ExceptionInInitializerError exception) {
-          LOG.error("Error loading OpenCV libraries", exception);
-        }
-      }
-
       String cucumberOptions = buildCucumberOptions();
       LOG.info("Setting cucumber options ({}) to {}", CUCUMBER_OPTIONS_KEY, cucumberOptions);
       System.setProperty(CUCUMBER_OPTIONS_KEY, cucumberOptions);
-
       initCucumber(clazz);
     }
   }
@@ -282,15 +262,9 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     String platform = properties.getProperty(PLATFORM_KEY);
     if (platform == null || platform.isEmpty()) {
       LOG.info("No platform specified. Using default ({})", Platform.DEFAULT);
-      platform = Platform.DEFAULT;
+      platform = Platform.DEFAULT.getPlatformName();
       System.setProperty(PLATFORM_KEY, platform);
     }
-    String[] platforms = platform.split(",");
-    if (platforms.length > 1) {
-      throw new UnsupportedOperationException(
-          "Please specify exactly one spring profile (ANDROID, IOS or WEB).");
-    }
-    platform = platforms[0].trim();
     String springProfiles = System.getProperty(SPRING_PROFILES_ACTIVE);
     if (springProfiles != null && !springProfiles.isEmpty()) {
       springProfiles += "," + platform;

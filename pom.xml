@@ -66,30 +66,31 @@
   <properties>
     <!-- Version properties -->
     <spring.version>5.1.9.RELEASE</spring.version>
-    <appium.version>7.0.0</appium.version>
+    <appium.version>7.2.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.2.8</selenide.version>
-    <cucumber.version>4.7.1</cucumber.version>
+    <selenide.version>5.3.1</selenide.version>
+    <cucumber.version>4.7.2</cucumber.version>
+    <!-- The gherkin version needs to match transitive dependency from Cucumber -->
     <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
-    <applitools.version>3.157.0</applitools.version>
+    <applitools.version>3.157.10</applitools.version>
     <galen.version>2.4.4</galen.version>
-    <junit.version>5.5.1</junit.version>
+    <junit.version>5.5.2</junit.version>
     <junit4.version>4.12</junit4.version>
     <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
     <slf4j.version>2.0.0-alpha0</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.13.2</assertj.version>
     <mockito.version>3.0.0</mockito.version>
-    <snakeyaml.version>1.24</snakeyaml.version>
-    <dd.plist.version>1.21</dd.plist.version>
+    <snakeyaml.version>1.25</snakeyaml.version>
+    <dd.plist.version>1.22</dd.plist.version>
     <apk.parser.version>2.6.9</apk.parser.version>
-    <zip4j.version>2.1.1</zip4j.version>
-    <bytebuddy.version>1.10.0</bytebuddy.version>
+    <zip4j.version>2.1.4</zip4j.version>
+    <bytebuddy.version>1.10.1</bytebuddy.version>
     <gson.version>2.8.5</gson.version>
-    <jersey.version>2.29</jersey.version>
-    <apache.http.components.version>4.5.9</apache.http.components.version>
-    <apache.http.components.core.version>4.4.11</apache.http.components.core.version>
+    <jersey.version>2.29.1</jersey.version>
+    <apache.http.components.version>4.5.10</apache.http.components.version>
+    <apache.http.components.core.version>4.4.12</apache.http.components.core.version>
     <apache.commons.version>3.9</apache.commons.version>
     <commons.collections.version>4.4</commons.collections.version>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -120,15 +121,15 @@
     <wagon.ssh.version>3.3.3</wagon.ssh.version>
     <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <cluecumber.report.plugin.version>2.0.1</cluecumber.report.plugin.version>
-    <checkstyle.version>8.23</checkstyle.version>
-    <classgraph.version>4.8.43</classgraph.version>
+    <checkstyle.version>8.24</checkstyle.version>
+    <classgraph.version>4.8.47</classgraph.version>
     <fmt.version>2.9</fmt.version>
     <jsch.version>0.1.55</jsch.version>
-    <aws.sdk.version>1.11.604</aws.sdk.version>
-    <aopalliance.version>2.6.0</aopalliance.version>
-    <jackson.version>2.10.0.pr1</jackson.version>
-    <guava.version>28.0-jre</guava.version>
-    <jakarta.version>1.3.4</jakarta.version>
+    <aws.sdk.version>1.11.635</aws.sdk.version>
+    <aopalliance.version>2.6.1</aopalliance.version>
+    <jackson.version>2.10.0.pr3</jackson.version>
+    <guava.version>28.1-jre</guava.version>
+    <jakarta.version>1.3.5</jakarta.version>
     <commons.codec.version>1.13</commons.codec.version>
     <aspectjweaver.version>1.9.4</aspectjweaver.version>
 
@@ -643,6 +644,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <additionalOptions>-html5</additionalOptions>
+        </configuration>
         <executions>
           <execution>
             <id>attach-javadocs</id>

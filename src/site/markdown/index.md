@@ -2,6 +2,8 @@
 [![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
+> lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
+
 JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 <!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
@@ -26,9 +28,7 @@ https://issues.apache.org/jira/browse/MSITE-834
    - [Client and server-mode matching](#client-and-server-mode-matching)   
 - [Applitools](#applitools)   
 - [Galen](#galen)   
-- [Used libraries](#used-libraries)   
-- [Articles](#articles)   
-- [Presentations](#presentations)   
+- [Used libraries](#used-libraries) 
 - [Known issues & limitations](#known-issues-limitations)   
 - [Contact and support](#contact-and-support)   -->
 
@@ -519,24 +519,6 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 * [Applitools](https://applitools.com), used for visual regression testing
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
-
-## Articles
-
-* [How to read version and other information from Android and iOS apps using Java](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79)
-* [Mobile Test Automation Using AWS Device Farm](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d)
-* [Leveraging Spring dependency injection for UI automation](https://medium.com/@mart.schneider/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738)
-
-## Presentations
-
-| Date       | Event                                            | Talk | Links
-| ---------- | -----------------------------------------------  | ---- | ------
-| 2019-07-25 | Testingmind Test Automation & Digital QA Summit| Martin Schneider: Scaling your device lab using cloud solutions | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-07-25%20Scaling%20your%20device%20lab%20using%20cloud%20solutions.pdf)
-| 2019-05-18 | Prathidhwani Technical Forum | Syam Sasi & Martin Schneider: Appium Workshop | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-18%20Appium%20Pro%20Workshop.pdf)
-| 2019-05-07 | Test Corner 21| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
-| 2019-01-08 | Test Corner 19| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
-| 2018-11-28 | 6th TAQELAH meet-up                              | [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
-| 2018-11-09 | Testingmind Software Testing Symposium | Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-| 2018-04-12 | 2nd TAQELAH meet-up | Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 

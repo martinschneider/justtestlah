@@ -33,7 +33,7 @@ public class JustTestLahConfiguration {
   private String applicationName;
 
   @Value("${platform}")
-  private String platform;
+  private String platformString;
 
   @Value("${opencv.mode:client}")
   private String openCVMode;
@@ -64,6 +64,7 @@ public class JustTestLahConfiguration {
     // not thread-safe!
     Configuration.headless = headless;
     // for Android and IOS we construct the {@link WebDriver} ourselves
+    Platform platform = getPlatform();
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
     } else if (platform.equals(Platform.IOS)) {
@@ -90,8 +91,8 @@ public class JustTestLahConfiguration {
    *
    * @return the platform to test against
    */
-  public String getPlatform() {
-    return platform;
+  public Platform getPlatform() {
+    return Platform.valueOf(platformString.toUpperCase());
   }
 
   public String getApplicationName() {
@@ -116,5 +117,9 @@ public class JustTestLahConfiguration {
 
   public String getGalenReportDirectory() {
     return galenReportDirectory;
+  }
+
+  public ExecutionEnvironment getExecutionEnvironment() {
+    return ExecutionEnvironment.valueOf(cloudProvider.toUpperCase());
   }
 }

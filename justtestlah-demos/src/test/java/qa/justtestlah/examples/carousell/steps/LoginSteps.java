@@ -2,8 +2,8 @@ package qa.justtestlah.examples.carousell.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import qa.justtestlah.base.BaseSteps;
 import qa.justtestlah.examples.carousell.model.User;

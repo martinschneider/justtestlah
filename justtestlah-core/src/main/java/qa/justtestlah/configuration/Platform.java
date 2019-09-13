@@ -1,12 +1,25 @@
 package qa.justtestlah.configuration;
 
-/** Constants for platforms. */
-public class Platform {
+/** Enum for platforms. */
+public enum Platform {
+  ANDROID(Constants.ANDROID),
+  IOS(Constants.IOS),
+  WEB(Constants.WEB),
+  DEFAULT(Constants.WEB);
 
-  private Platform() {}
+  private String platformName;
 
-  public static final String ANDROID = "android";
-  public static final String IOS = "ios";
-  public static final String WEB = "web";
-  public static final String DEFAULT = "web";
+  Platform(String platformName) {
+    this.platformName = platformName;
+  }
+
+  public String getPlatformName() {
+    return platformName;
+  }
+
+  public static class Constants {
+    public static final String WEB = "web";
+    public static final String IOS = "ios";
+    public static final String ANDROID = "android";
+  }
 }
