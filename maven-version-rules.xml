@@ -10,8 +10,9 @@
     <rule groupId="io.cucumber" artifactId="gherkin"
       comparisonMethod="maven">
       <ignoreVersions>
-        <!-- Cucumber JVM doesn't support Gherkin 6 yet -->
+        <!-- Cucumber JVM doesn't support Gherkin 6+ yet -->
         <ignoreVersion type="regex">6.*</ignoreVersion>
+        <ignoreVersion type="regex">7.*</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="io.appium" artifactId="java-client"

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration>
   <contextListener
-    class="io.github.martinschneider.justtestlah.log.ApplicationInfoEnricher" />
+    class="qa.justtestlah.log.ApplicationInfoEnricher" />
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
@@ -36,6 +36,6 @@
     <appender-ref ref="entryExit" />
   </logger>
   
-  <logger name="io.github.martinschneider.justtestlah"
+  <logger name="qa.justtestlah"
     level="info" />
 </configuration>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <configuration>
-  <contextListener class="io.github.martinschneider.justtestlah.log.ApplicationInfoEnricher"/>
+  <contextListener class="qa.justtestlah.log.ApplicationInfoEnricher"/>
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
@@ -40,6 +40,6 @@
     <appender-ref ref="entryExit" />
   </logger>
   
-  <logger name="io.github.martinschneider.justtestlah"
+  <logger name="qa.justtestlah"
     level="info" />
 </configuration>

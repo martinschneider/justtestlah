@@ -1,11 +1,16 @@
-# JustTestLah! 🇸🇬
-
-[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/io.github.martinschneider/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.org/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/qa.justtestlah/justtestlah-core.svg)](http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core)
+[![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
-JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
+> lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
+
+JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
 
 <!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
+<!--
+
+Disabling the TOC because anchors are rendered differently by Github and the Maven site plugin (leading to broken links):
+https://issues.apache.org/jira/browse/MSITE-834
 
 - [Getting started](#getting-started)   
 - [Use in your own projects](#use-in-your-own-projects)   
@@ -23,17 +28,15 @@ JustTestLah! is a JAVA test framework targeting projects that support multiple p
    - [Client and server-mode matching](#client-and-server-mode-matching)   
 - [Applitools](#applitools)   
 - [Galen](#galen)   
-- [Used libraries](#used-libraries)   
-- [Articles](#articles)   
-- [Presentations](#presentations)   
+- [Used libraries](#used-libraries) 
 - [Known issues & limitations](#known-issues-limitations)   
-- [Contact and support](#contact-and-support)   
+- [Contact and support](#contact-and-support)   -->
 
 <!-- /MDTOC -->
 
 
 ## Getting started
-Pull the repo and run the example. It includes automated tests for [Stack Overflow](https://stackoverflow.com) and [Carousell](https://www.carousell.com).
+Pull the repo and run the example.
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
@@ -41,13 +44,13 @@ cd justtestlah-demos
 mvn test -Dtest=TestRunner
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `testusers.properties`.
+The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `justtestlah-demos/src/test/resources/qa/justtestlah/examples/carousell/testdata/user/valid.yml`.
 
 ```bash
-mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties -Dtestusers.file=/absolute/path/to/your/testusers.properties
+mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties
 ```
 
-Both parameters are optional; the default configuration files can be found under `justtestlah-demos/src/test/resources`. The `testusers.properties` is only required for tests which make use of `io.github.martinschneider.justtestlah.user.UserService`.
+The second parameter (`justtestlah.properties`) is optional; the default configuration can be found under `justtestlah-demos/src/test/resources`.
 
 ## Use in your own projects
 
@@ -55,11 +58,11 @@ Add the following Maven dependency to your `pom.xml`.
 
 ```xml
 <properties>
-  <justtestlah.version>1.6</justtestlah.version>
+  <justtestlah.version>1.7-RC1</justtestlah.version>
 </properties>
 
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
   <version>${justtestlah.version}</version>
 </dependency>
@@ -75,7 +78,7 @@ There are three main ingredients for tests in JustTestLah!:
 Steps and page objects are designed to be highly re-usable.
 
 Demo of a feature file:
-```cucumber
+```gherkin
 Feature: Search and tags
 
 @web
@@ -150,7 +153,7 @@ You can inject page objects in steps by declaring a private field:
 private HomePage home;
 ```
 
-As long as the page object class extends `io.github.martinschneider.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
+As long as the page object class extends `qa.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
 
 ## Configuration
 All configuration goes in a file called `justtestlah.properties`.
@@ -158,8 +161,8 @@ All configuration goes in a file called `justtestlah.properties`.
 ```ini
 # GENERAL settings
 platform=web
-pages.package=io.github.martinschneider.justtestlah.examples.stackoverflow.pages
-steps.package=io.github.martinschneider.justtestlah.examples.stackoverflow.steps
+pages.package=qa.justtestlah.examples.stackoverflow.pages
+steps.package=qa.justtestlah.examples.stackoverflow.steps
 features.directory=src/test/resources/features/stackoverflow
 cucumber.report.directory=target/report/cucumber
 
@@ -203,7 +206,7 @@ browserstack.username=
 You can specify the location of `justtestlah.properties` on start-up by providing it as a system property: `-DjusttestlahProperties=/path/to/justtestlah.properties`. If no path is specified it will be loaded from the classpath.
 
 ## Test runner
-JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `io.github.martinschneider.justtestlah.JustTestLahTest`:
+JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `qa.justtestlah.JustTestLahTest`:
 
 ```java
 public class TestRunner extends JustTestLahTest {}
@@ -347,7 +350,7 @@ Make sure `justtestlah-browserstack` is on your classpath:
 
 ```
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
   <version>${project.version}</version>
 </dependency>
@@ -410,7 +413,7 @@ Make sure `justtestlah-awsdevicefarm` is on your classpath:
 
 ```
 <dependency>
-  <groupId>io.github.martinschneider</groupId>
+  <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
   <version>${project.version}</version>
 </dependency>
@@ -516,26 +519,6 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 * [Applitools](https://applitools.com), used for visual regression testing
 * [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
 * [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
-
-## Articles
-
-* [How to read version and other information from Android and iOS apps using Java](https://medium.com/@mart.schneider/how-to-read-version-and-other-information-from-android-and-ios-apps-using-java-3be7cf067f79)
-* [Mobile Test Automation Using AWS Device Farm](https://medium.com/@mart.schneider/mobile-test-automation-using-aws-device-farm-6bcf825fa27d)
-* [Leveraging Spring dependency injection for UI automation](https://medium.com/@mart.schneider/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738)
-
-## Presentations
-
-This framework (under the name YaSeW) started as a PoC for the 2nd Singapore Appium Meet-up.
-
-It has been showcased and mentioned in various presentations:
-
-| Date       | Event                                            | Location | Talk | Links
-| ---------- | -----------------------------------------------  | -------- | ---- | ------
-| 2019-05-07 | Test Corner 21| Taipei 🇹🇼| Martin Schneider: testDevices.scaleUp(); Thoughts on mobile testing on the cloud | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-05-07%20Thoughts%20on%20mobile%20testing%20on%20the%20cloud%20(Test%20Corner).pdf)<br />[Video](https://youtu.be/g_RZmU-fpYU)
-| 2019-01-08 | Test Corner 19| Taipei 🇹🇼| Martin Schneider: Re-use automated test scenarios across different platforms | [Slides](https://github.com/martinschneider/presentations/blob/master/2019-01-08%20Re-use%20automated%20test%20scenarios%20across%20different%20platforms%20(Test%20Corner).pdf)
-| 2018-11-28 | 6th TAQELAH meet-up                              | Singapore 🇸🇬| [Abhijeet Vaikar](https://github.com/abhivaikar): Breaking free from static abuse in test automation frameworks | [Video](https://www.youtube.com/watch?v=SQAKDzjbBSo)
-| 2018-11-09 | Testingmind Software Testing Symposium | Manila 🇵🇭| Martin Schneider: A single framework for Android, IOS and Web testing | [Slides](https://github.com/martinschneider/presentations/blob/master/2018-11-09%20A%20single%20framework%20for%20Android%2C%20IOS%20and%20Web%20testing.pdf)
-| 2018-04-12 | 2nd TAQELAH meet-up | Singapore 🇸🇬| Martin Schneider: Android, iOS and Web testing in a single framework & Image-based testing with Appium and OpenCV | [Download](https://github.com/martinschneider/presentations/blob/master/2018-04-12%20Android%2C%20iOS%20and%20Web%20testing%20in%20a%20single%20framework%20%26%20Image-based%20testing.pdf)<br />[Video 1](https://www.youtube.com/watch?v=OyAMnBEbT20)<br />[Video 2](https://www.youtube.com/watch?v=maJkvP_qk4A)
 
 ## Known issues & limitations
 

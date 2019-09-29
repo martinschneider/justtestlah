@@ -7,10 +7,18 @@
   <name>JustTestLah! Mobile tools</name>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
-    <groupId>io.github.martinschneider</groupId>
+    <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.6</version>
+    <version>1.7-RC1</version>
   </parent>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
   <properties>
     <version.rules.configuration>file:///${project.basedir}/../maven-version-rules.xml</version.rules.configuration>
   </properties>
