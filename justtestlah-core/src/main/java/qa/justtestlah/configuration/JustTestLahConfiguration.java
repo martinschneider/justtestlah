@@ -72,6 +72,7 @@ public class JustTestLahConfiguration {
       WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
     } else if (platform.equals(Platform.WEB)) {
       open(baseUrl);
+      WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
     }
   }
 

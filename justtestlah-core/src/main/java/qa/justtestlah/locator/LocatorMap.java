@@ -58,7 +58,6 @@ public class LocatorMap {
     String type = platformKey.getLeft();
     String rawValue = platformKey.getRight();
     LOG.debug("Getting locator {} of type {}", rawValue, type);
-
     if (type.equalsIgnoreCase(CSS)) {
       return $(By.cssSelector(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(XPATH)) {
@@ -88,7 +87,6 @@ public class LocatorMap {
     Pair<String, String> platformKey = getRawLocator(key, platform, params);
     String type = platformKey.getLeft();
     String rawValue = platformKey.getRight();
-
     if (type.equalsIgnoreCase(CSS)) {
       return $$(By.cssSelector(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(XPATH)) {

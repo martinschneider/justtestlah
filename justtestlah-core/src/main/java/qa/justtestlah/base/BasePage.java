@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 import qa.justtestlah.exception.ScreenVerificationException;
+import qa.justtestlah.configuration.JustTestLahConfiguration;
 import qa.justtestlah.locator.LocatorMap;
 import qa.justtestlah.locator.LocatorParser;
 import qa.justtestlah.visual.AppiumTemplateMatcher;
