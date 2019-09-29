@@ -1,10 +1,13 @@
 package qa.justtestlah.base;
 
+import static com.codeborne.selenide.Condition.appear;
+
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.ex.ElementNotFound;
 import com.galenframework.api.Galen;
 import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.model.LayoutReport;
@@ -15,13 +18,16 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
+import qa.justtestlah.exception.ScreenVerificationException;
 import qa.justtestlah.locator.LocatorMap;
 import qa.justtestlah.locator.LocatorParser;
 import qa.justtestlah.visual.AppiumTemplateMatcher;
@@ -32,6 +38,7 @@ import qa.justtestlah.visual.TemplateMatcher;
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
+  private static final int DEFAULT_VERIFICATION_TIMEOUT = 2000; // milliseconds
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
 
@@ -150,7 +157,7 @@ public abstract class BasePage<T> extends Base {
       LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
       eyes.checkWindow();
     } else {
-      LOG.info(
+      LOG.debug(
           "Eyes disabled, skipping check on class {}. You can enable visual testing with "
               + "Applitools Eyes by setting eyes.enabled = true in justtestlah.properties.",
           this.getClass().getSimpleName());
@@ -185,7 +192,7 @@ public abstract class BasePage<T> extends Base {
         LOG.warn("Error checking layout", exception);
       }
     } else {
-      LOG.info(
+      LOG.debug(
           "Galen checks disabled, skipping checks for class {}. "
               + "You can enable Galen by setting galen.enabled = true in justtestlah.properties.",
           this.getClass().getSimpleName());
@@ -198,7 +205,49 @@ public abstract class BasePage<T> extends Base {
     this.configuration = configuration;
   }
 
-  public void verify() {
-    // overwrite in page classes
+  public T verify() throws ScreenVerificationException {
+    return verify(DEFAULT_VERIFICATION_TIMEOUT);
+  }
+
+  /**
+   * Verifies, that all UI elements defined for the given page object using {@link ScreenIdentifier}
+   * are displayed.
+   *
+   * @param timeout the timeout for identifying the first element. Note, that there is no timeout
+   *     for any subsequent checks!
+   * @throws ScreenVerificationException in case one of the screen identifiers is not displayed
+   */
+  @SuppressWarnings("unchecked")
+  public T verify(int timeout) throws ScreenVerificationException {
+    boolean initialCheck = true;
+    checkWindow();
+    checkLayout();
+    Class<?> clazz = this.getClass();
+    LOG.info("Verifying screen identifiers for {}", clazz.getSimpleName());
+    while (clazz != Base.class) {
+      for (ScreenIdentifier identifiers : clazz.getAnnotationsByType(ScreenIdentifier.class)) {
+        for (String identifier : identifiers.value()) {
+          Pair<String, String> rawLocator =
+              locators.getRawLocator(identifier, configuration.getPlatform());
+          try {
+            if (!initialCheck) {
+              timeout = 0;
+            }
+            $(identifier).waitUntil(appear, timeout).isDisplayed();
+            initialCheck = false;
+          } catch (ElementNotFound exception) {
+            throw new ScreenVerificationException(
+                identifier, rawLocator, this.getClass().getSimpleName(), timeout);
+          }
+          LOG.info(
+              "[OK] {} is displayed {}:{}",
+              identifier,
+              rawLocator.getLeft(),
+              rawLocator.getRight());
+        }
+      }
+      clazz = clazz.getSuperclass();
+    }
+    return (T) this;
   }
 }

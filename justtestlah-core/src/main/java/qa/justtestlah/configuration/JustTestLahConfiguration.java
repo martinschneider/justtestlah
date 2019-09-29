@@ -1,5 +1,7 @@
 package qa.justtestlah.configuration;
 
+import static com.codeborne.selenide.Selenide.open;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +65,13 @@ public class JustTestLahConfiguration {
     System.setProperty("browser", browser);
     // not thread-safe!
     Configuration.headless = headless;
-    // for Android and IOS we construct the {@link WebDriver} ourselves
     Platform platform = getPlatform();
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
     } else if (platform.equals(Platform.IOS)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
-    } else if (platform.equals(Platform.WEB) && cloudProvider.equals("browserstack")) {
-      WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
+    } else if (platform.equals(Platform.WEB)) {
+      open(baseUrl);
     }
   }
 

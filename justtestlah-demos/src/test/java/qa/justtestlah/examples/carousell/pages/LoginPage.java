@@ -6,11 +6,13 @@ import static qa.justtestlah.configuration.Platform.Constants.WEB;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.base.BasePage;
 import qa.justtestlah.examples.carousell.model.User;
 
 @Component
 @Profile({ANDROID, WEB})
+@ScreenIdentifier({"LOGIN_BUTTON", "USERNAME_FIELD", "PASSWORD_FIELD"})
 public class LoginPage extends BasePage<LoginPage> {
   private HomePage home;
 

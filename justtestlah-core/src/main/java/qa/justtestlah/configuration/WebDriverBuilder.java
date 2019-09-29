@@ -19,7 +19,7 @@ public interface WebDriverBuilder {
   WebDriver getIOsDriver();
 
   /**
-   * Get an iOS driver instance.
+   * Get a Web driver instance.
    *
    * @return {@link WebDriver} for Web
    */
