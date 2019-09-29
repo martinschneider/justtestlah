@@ -220,6 +220,7 @@ public abstract class BasePage<T> extends Base {
   @SuppressWarnings("unchecked")
   public T verify(int timeout) throws ScreenVerificationException {
     boolean initialCheck = true;
+    int initialTimeout = timeout;
     checkWindow();
     checkLayout();
     Class<?> clazz = this.getClass();
@@ -227,9 +228,11 @@ public abstract class BasePage<T> extends Base {
     while (clazz != Base.class) {
       for (ScreenIdentifier identifiers : clazz.getAnnotationsByType(ScreenIdentifier.class)) {
         for (String identifier : identifiers.value()) {
+          // rawLocator is only used for logging purposes
           Pair<String, String> rawLocator =
               locators.getRawLocator(identifier, configuration.getPlatform());
           try {
+            // only use the timeout for the first check
             if (!initialCheck) {
               timeout = 0;
             }
@@ -237,7 +240,7 @@ public abstract class BasePage<T> extends Base {
             initialCheck = false;
           } catch (ElementNotFound exception) {
             throw new ScreenVerificationException(
-                identifier, rawLocator, this.getClass().getSimpleName(), timeout);
+                identifier, rawLocator, this.getClass().getSimpleName(), initialTimeout);
           }
           LOG.info(
               "[OK] {} is displayed {}:{}",

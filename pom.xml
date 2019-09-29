@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.7-RC1</version>
+  <version>1.7-RC2</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>

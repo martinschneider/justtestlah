@@ -9,7 +9,8 @@ public class ScreenVerificationException extends RuntimeException {
   /**
    * @param identifier identifier which couldn't be located
    * @param rawLocator the raw locator (type and value) of the identifier element
-   * @param screen affected screen
+   * @param screenName screen affected screen
+   * @param timeout the timeout used for the verification
    */
   public ScreenVerificationException(
       String identifier, Pair<String, String> rawLocator, String screenName, int timeout) {
