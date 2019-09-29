@@ -38,7 +38,7 @@ import qa.justtestlah.visual.TemplateMatcher;
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
-  private static final int DEFAULT_VERIFICATION_TIMEOUT = 2000; // milliseconds
+  protected static final int DEFAULT_VERIFICATION_TIMEOUT = 2000; // milliseconds
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
 

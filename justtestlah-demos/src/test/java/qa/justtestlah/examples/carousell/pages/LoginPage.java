@@ -23,7 +23,7 @@ public class LoginPage extends BasePage<LoginPage> {
    * @return {@link HomePage}
    */
   public HomePage login(User user) {
-    $("USERNAME_FIELD").should(appear).sendKeys(user.getUsername());
+    $("USERNAME_FIELD").sendKeys(user.getUsername());
     $("PASSWORD_FIELD").sendKeys(user.getPassword());
     $("LOGIN_BUTTON").click();
     return home;

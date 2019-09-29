@@ -8,3 +8,8 @@ SELL_BUTTON:
   web:
     type: xpath
     value: //span[text()='Sell']
+
+USER_AVATAR:
+  web:
+    type: css
+    value: div[class*='avatar']
