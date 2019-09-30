@@ -33,7 +33,7 @@
     <menu name="Links" inherit="bottom">
       <item name="Github" href="${this.scm.url}" />
       <item name="Maven"
-        href="http://mvnrepository.com/artifact/io.github.martinschneider/justtestlah-core" />
+        href="http://mvnrepository.com/artifact/qa.justtestlah/justtestlah-core" />
     </menu>
     <footer></footer>
   </body>

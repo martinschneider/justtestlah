@@ -5,3 +5,11 @@ SELL_BUTTON:
   ios:
     type: accessibilityId
     value: header_page_sell_button
+  web:
+    type: xpath
+    value: //span[text()='Sell']
+
+USER_AVATAR:
+  web:
+    type: css
+    value: div[class*='avatar']

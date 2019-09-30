@@ -27,17 +27,15 @@ public class LoginSteps extends BaseSteps {
   @When("I login as {string}")
   public void loginAs(String userKey) {
     welcomePage
-        .checkWindow()
+        .verify(10000) // allow extra time for slow app start-up
         .goToLogin()
-        .checkWindow()
-        .checkLayout()
-        .login(testdata(User.class, userKey))
-        .checkWindow();
+        .verify()
+        .login(testdata(User.class, userKey));
   }
 
   @Then("I see the sell button")
   public void isSellButtonVisible() {
-    assertThat(homePage.isSellButtonVisible()).as("sell button is displayed").isTrue();
+    homePage.verify(10000); // allow extra time for slow login
   }
 
   @Then("I see an error message")

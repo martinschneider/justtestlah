@@ -10,6 +10,7 @@ import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,11 +54,10 @@ public class LocatorMap {
    * @return {@link SelenideElement}
    */
   public SelenideElement getLocator(String key, Platform platform, Object... params) {
-    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
-    String type = platformKey.get("type");
-    String rawValue = platformKey.get("value");
+    Pair<String, String> platformKey = getRawLocator(key, platform, params);
+    String type = platformKey.getLeft();
+    String rawValue = platformKey.getRight();
     LOG.debug("Getting locator {} of type {}", rawValue, type);
-
     if (type.equalsIgnoreCase(CSS)) {
       return $(By.cssSelector(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(XPATH)) {
@@ -84,10 +84,9 @@ public class LocatorMap {
    * @return {@link ElementsCollection}
    */
   public ElementsCollection getCollectionLocator(String key, Platform platform, Object... params) {
-    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
-    String type = platformKey.get("type");
-    String rawValue = platformKey.get("value");
-
+    Pair<String, String> platformKey = getRawLocator(key, platform, params);
+    String type = platformKey.getLeft();
+    String rawValue = platformKey.getRight();
     if (type.equalsIgnoreCase(CSS)) {
       return $$(By.cssSelector(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(XPATH)) {
@@ -103,6 +102,19 @@ public class LocatorMap {
     } else {
       return $$(formatValue(rawValue, params));
     }
+  }
+
+  /**
+   * Get the raw locator (type and value). This is exposed to be used for logging purposes.
+   *
+   * @param key locator key
+   * @param platform platform
+   * @param params locator key parameters
+   * @return {@link Pair}
+   */
+  public Pair<String, String> getRawLocator(String key, Platform platform, Object... params) {
+    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
+    return Pair.of(platformKey.get("type"), platformKey.get("value"));
   }
 
   private String formatValue(String rawValue, Object... params) {
