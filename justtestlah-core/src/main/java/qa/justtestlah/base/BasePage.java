@@ -1,6 +1,7 @@
 package qa.justtestlah.base;
 
 import static com.codeborne.selenide.Condition.appear;
+
 import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
@@ -45,20 +46,15 @@ public abstract class BasePage<T> extends Base {
     return locators;
   }
 
-  @Autowired
-  private LocatorParser locatorParser;
+  @Autowired private LocatorParser locatorParser;
 
-  @Autowired
-  private TemplateMatcher templateMatcher;
+  @Autowired private TemplateMatcher templateMatcher;
 
-  @Autowired
-  private Eyes eyes;
+  @Autowired private Eyes eyes;
 
-  @Autowired
-  private List<GalenTestInfo> galenTests;
+  @Autowired private List<GalenTestInfo> galenTests;
 
-  @Autowired
-  private ImageUtils imageUtils;
+  @Autowired private ImageUtils imageUtils;
 
   /**
    * Selenide style locator.
@@ -79,8 +75,8 @@ public abstract class BasePage<T> extends Base {
    * @return {@link ElementsCollection}
    */
   protected ElementsCollection $$(String locatorKey, Object... params) {
-    return Selenide
-        .$$(locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
+    return Selenide.$$(
+        locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
   }
 
   /**
@@ -121,12 +117,13 @@ public abstract class BasePage<T> extends Base {
         }
         ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
       }
-      return templateMatcher.match(screenshotFile.getAbsolutePath(),
-          imageUtils.getFullPath(imageName), threshold);
+      return templateMatcher.match(
+          screenshotFile.getAbsolutePath(), imageUtils.getFullPath(imageName), threshold);
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
-              + driver.getClass().getSimpleName() + ".");
+              + driver.getClass().getSimpleName()
+              + ".");
     }
   }
 
@@ -183,9 +180,11 @@ public abstract class BasePage<T> extends Base {
       String title = "Check layout " + specPath;
       LayoutReport layoutReport;
       try {
-        layoutReport = Galen.checkLayout(WebDriverRunner.getWebDriver(),
-            this.getClass().getClassLoader().getResource(specPath).getPath(),
-            Collections.singletonList(configuration.getPlatform().name()));
+        layoutReport =
+            Galen.checkLayout(
+                WebDriverRunner.getWebDriver(),
+                this.getClass().getClassLoader().getResource(specPath).getPath(),
+                Collections.singletonList(configuration.getPlatform().name()));
         GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
         test.getReport().layout(layoutReport, title);
         galenTests.add(test);
@@ -217,11 +216,11 @@ public abstract class BasePage<T> extends Base {
   /**
    * Verifies, that all UI elements defined for the given page object using {@link ScreenIdentifier}
    * are displayed.
-   * 
-   * Performs Galen and Applitools checks, if enabled.
+   *
+   * <p>Performs Galen and Applitools checks, if enabled.
    *
    * @param timeout the timeout for identifying the first element. Note, that there is no timeout
-   *        for any subsequent checks!
+   *     for any subsequent checks!
    * @throws ScreenVerificationException in case one of the screen identifiers is not displayed
    * @return this page object
    */
@@ -249,10 +248,13 @@ public abstract class BasePage<T> extends Base {
             $(identifier).waitUntil(appear, timeout).isDisplayed();
             initialCheck = false;
           } catch (ElementNotFound exception) {
-            throw new ScreenVerificationException(identifier, rawLocator,
-                this.getClass().getSimpleName(), initialTimeout);
+            throw new ScreenVerificationException(
+                identifier, rawLocator, this.getClass().getSimpleName(), initialTimeout);
           }
-          LOG.info("[OK] {} is displayed {}:{}", identifier, rawLocator.getLeft(),
+          LOG.info(
+              "[OK] {} is displayed {}:{}",
+              identifier,
+              rawLocator.getLeft(),
               rawLocator.getRight());
         }
       }
