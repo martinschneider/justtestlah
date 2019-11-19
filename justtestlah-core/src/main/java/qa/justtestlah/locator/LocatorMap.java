@@ -10,6 +10,9 @@ import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
@@ -24,6 +27,10 @@ public class LocatorMap {
 
   private Map<String, Map<String, Map<String, String>>> map;
 
+  private Properties globalPlaceholders;
+
+  private Pattern placeHolderPattern = Pattern.compile("\\$\\{(.*)\\}");
+
   /** Default constructor. */
   public LocatorMap() {
     this.map = new HashMap<>();
@@ -33,9 +40,12 @@ public class LocatorMap {
    * Construct a locator map from an existing {@link Map} object.
    *
    * @param map locator map
+   * @param globalPlaceholders global placeholders to be replaced in any locator
    */
-  public LocatorMap(Map<String, Map<String, Map<String, String>>> map) {
+  public LocatorMap(
+      Map<String, Map<String, Map<String, String>>> map, Properties globalPlaceholders) {
     this.map = map;
+    this.globalPlaceholders = globalPlaceholders;
   }
 
   private static final String CSS = "css";
@@ -118,6 +128,16 @@ public class LocatorMap {
   }
 
   private String formatValue(String rawValue, Object... params) {
-    return String.format(rawValue, params);
+    return String.format(replacePlaceholders(rawValue), params);
+  }
+
+  private String replacePlaceholders(String rawValue) {
+    Matcher matcher = placeHolderPattern.matcher(rawValue);
+    StringBuffer strBuffer = new StringBuffer();
+    while (matcher.find()) {
+      matcher.appendReplacement(strBuffer, globalPlaceholders.get(matcher.group(1)).toString());
+    }
+    matcher.appendTail(strBuffer);
+    return strBuffer.toString();
   }
 }

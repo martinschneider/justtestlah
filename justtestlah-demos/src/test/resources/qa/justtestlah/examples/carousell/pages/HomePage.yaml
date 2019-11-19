@@ -1,7 +1,7 @@
 SELL_BUTTON:
   android:
     type: id
-    value: com.thecarousell.Carousell:id/button_sell
+    value: ${PACKAGE_NAME}:id/icon
   ios:
     type: accessibilityId
     value: header_page_sell_button

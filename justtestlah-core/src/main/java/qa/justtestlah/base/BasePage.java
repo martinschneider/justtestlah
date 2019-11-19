@@ -30,6 +30,7 @@ import qa.justtestlah.configuration.JustTestLahConfiguration;
 import qa.justtestlah.exception.ScreenVerificationException;
 import qa.justtestlah.locator.LocatorMap;
 import qa.justtestlah.locator.LocatorParser;
+import qa.justtestlah.locator.LocatorPlaceholders;
 import qa.justtestlah.visual.AppiumTemplateMatcher;
 import qa.justtestlah.visual.ImageUtils;
 import qa.justtestlah.visual.Match;
@@ -49,6 +50,8 @@ public abstract class BasePage<T> extends Base {
   @Autowired private LocatorParser locatorParser;
 
   @Autowired private TemplateMatcher templateMatcher;
+
+  @Autowired private LocatorPlaceholders globalPlaceholders;
 
   @Autowired private Eyes eyes;
 
@@ -143,7 +146,7 @@ public abstract class BasePage<T> extends Base {
 
   private void loadLocators(String fileName) {
     LOG.info("Loading locators from {}", fileName);
-    locators = new LocatorMap(locatorParser.parse(fileName));
+    locators = new LocatorMap(locatorParser.parse(fileName), globalPlaceholders.getProps());
   }
 
   /**
@@ -152,7 +155,7 @@ public abstract class BasePage<T> extends Base {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public T checkWindow() {
+  private T checkWindow() {
     if (configuration.isEyesEnabled()) {
       LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
       eyes.checkWindow();
@@ -171,7 +174,7 @@ public abstract class BasePage<T> extends Base {
    * @return this
    */
   @SuppressWarnings("unchecked")
-  public T checkLayout() {
+  private T checkLayout() {
     if (configuration.isGalenEnabled()) {
       String baseName = this.getClass().getSimpleName();
       String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");
