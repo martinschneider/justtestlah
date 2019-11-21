@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    runs-on: $
     strategy:
       fail-fast: false
       matrix:
