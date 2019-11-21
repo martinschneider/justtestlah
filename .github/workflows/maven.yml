@@ -1,0 +1,19 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        java_version: [1.8, 9, 10, 11, 12, 13]
+        os: [windows-latest, macOS-latest, ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK $
+      uses: actions/setup-java@v1
+      with:
+        java-version: $
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
