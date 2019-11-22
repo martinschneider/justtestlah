@@ -12,7 +12,7 @@ public class LocatorParserTest {
   private LocatorParser target = new LocatorParser();
 
   @Test
-  public void test() throws IOException {
+  public void testLocatorParser() throws IOException {
 
     target.setYamlParser(new Yaml());
     String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");

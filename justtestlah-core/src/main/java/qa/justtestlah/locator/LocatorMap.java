@@ -27,9 +27,9 @@ public class LocatorMap {
 
   private Map<String, Map<String, Map<String, String>>> map;
 
-  private Properties globalPlaceholders;
+  private Properties staticPlaceholders;
 
-  private Pattern placeHolderPattern = Pattern.compile("\\$\\{(.*)\\}");
+  private Pattern placeHolderPattern = Pattern.compile("\\$\\{(\\w*)\\}");
 
   /** Default constructor. */
   public LocatorMap() {
@@ -40,12 +40,12 @@ public class LocatorMap {
    * Construct a locator map from an existing {@link Map} object.
    *
    * @param map locator map
-   * @param globalPlaceholders global placeholders to be replaced in any locator
+   * @param staticPlaceholders static placeholders to be replaced in any locator
    */
   public LocatorMap(
-      Map<String, Map<String, Map<String, String>>> map, Properties globalPlaceholders) {
+      Map<String, Map<String, Map<String, String>>> map, Properties staticPlaceholders) {
     this.map = map;
-    this.globalPlaceholders = globalPlaceholders;
+    this.staticPlaceholders = staticPlaceholders;
   }
 
   private static final String CSS = "css";
@@ -127,15 +127,21 @@ public class LocatorMap {
     return Pair.of(platformKey.get("type"), platformKey.get("value"));
   }
 
-  private String formatValue(String rawValue, Object... params) {
+  String formatValue(String rawValue, Object... params) {
+    if (rawValue == null) {
+      return null;
+    }
     return String.format(replacePlaceholders(rawValue), params);
   }
 
-  private String replacePlaceholders(String rawValue) {
+  String replacePlaceholders(String rawValue) {
+    if (rawValue == null) {
+      return null;
+    }
     Matcher matcher = placeHolderPattern.matcher(rawValue);
     StringBuffer strBuffer = new StringBuffer();
     while (matcher.find()) {
-      matcher.appendReplacement(strBuffer, globalPlaceholders.get(matcher.group(1)).toString());
+      matcher.appendReplacement(strBuffer, staticPlaceholders.get(matcher.group(1)).toString());
     }
     matcher.appendTail(strBuffer);
     return strBuffer.toString();
