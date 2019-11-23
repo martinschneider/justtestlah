@@ -7,7 +7,7 @@ USERNAME_FIELD:
     value: login_page_username_text_field
   android:
     type: xpath
-    value: //*[@text='email or username']
+    value: //*[@text='Username or Email address']
 
 PASSWORD_FIELD:
   web:
@@ -18,7 +18,7 @@ PASSWORD_FIELD:
     value: login_page_password_text_field
   android:
     type: xpath
-    value: //*[@text='password']
+    value: //*[@text='Password']
     
 LOGIN_BUTTON:
   web:
@@ -29,7 +29,7 @@ LOGIN_BUTTON:
     value: login_page_login_button
   android:
     type: id
-    value: com.thecarousell.Carousell:id/login_page_login_button
+    value: ${PACKAGE_NAME}:id/login_page_login_button
 
 ERROR_MESSAGE:
   web:
@@ -37,7 +37,7 @@ ERROR_MESSAGE:
     value: //p[text()='Wrong username or password.']
   android:
     type: id
-    value: com.thecarousell.Carousell:id/textinput_error
+    value: ${PACKAGE_NAME}:id/textinput_error
 
 CONFIRM_CHAT_ALERTS:
   ios:

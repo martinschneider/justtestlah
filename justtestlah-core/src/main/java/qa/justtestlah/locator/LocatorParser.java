@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 import qa.justtestlah.base.BasePage;
 
+/** Parser for UI locators from YAML files. */
 @Component
 public class LocatorParser {
 

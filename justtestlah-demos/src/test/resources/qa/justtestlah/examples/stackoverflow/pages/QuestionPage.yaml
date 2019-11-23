@@ -4,4 +4,4 @@ POST_TAG:
     value: "//A[contains(@class,'post-tag') and contains(text(),'%s')]"
   android:
     type: id
-    value: com.stackexchange.stackoverflow:id/question_view_item_tags
+    value: ${PACKAGE_NAME}:id/question_view_item_tags

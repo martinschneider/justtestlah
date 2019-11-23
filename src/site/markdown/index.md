@@ -246,7 +246,34 @@ The correct locator will be automatically resolved for the current platform. Tak
 If omitted the default type of locators is `css`.
 
 ### Placeholders
-Locators can include placeholders which will be replaced by variables passed to the `$` method. For example:
+Locators can include both dynamic and static placeholders which will be replaced by variables passed to the `$` method.
+
+#### Static placeholders
+You can think of static placeholders as variables. They can be defined in a file called `placeholder.properties` in the root of the pages package (specified as `pages.package` in `justtestlah.properties`). This is the same folder the locator YAML files are placed in.
+
+This file continues key/value pairs in the following format:
+
+```ini
+SOME_KEY=someValue
+PACKAGE_NAME=com.stackexchange.stackoverflow
+```
+
+One use-case, as shown above, can be to define the Android package name as a variable and use it in all `id`-based locators like this:
+
+```yaml
+POST_TAG:
+  android:
+    type: id
+    value: ${PACKAGE_NAME}:id/question_view_item_tags  
+```
+
+If you want to override static placeholders during runtime, you can pass an extra placeholder file by setting `locator.placeholders.file` to its absolute path in `justtestlah.properties`. For any placeholders which exist in both (the one under `pages.package` and `locator.placeholders.file`), the latter one will override the former.
+
+#### Dynamic placeholders
+
+Sometimes, you might require a locator which depends on some dynamic values defined only at runtime. You can achieve this by putting `%s` as a placeholder in the locator and use the `$(String locatorKey, Object... params)` and `$$(String locatorKey, Object... params)` methods in `BasePage` to pass the String which should be inserted at its place.
+
+Let's see an example: 
 
 ```yaml
 POST_TAG:
@@ -258,7 +285,7 @@ POST_TAG:
 Calling `$("POST_TAG", "selenium")` will return an element matching the following Xpath expression: `//A[contains(@class,'post-tag') and contains(text(),'selenium')`.
 
 ## Test data handling
-JustTestLah! supports loading testdata from YAML files. Each test data entity is represented by a Java class (the model) and one or many YAML files which contain the actual test data. For example:
+JustTestLah! supports loading test data from YAML files. Each test data entity is represented by a Java class (the model) and one or many YAML files which contain the actual test data. For example:
 
 ```java
 @TestData("user")
@@ -310,14 +337,16 @@ User user = testdata(User.class, "userWithInvalidPassword");
 The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
 
 There are three configuration values for this feature:
-```model.package=
+```testdata.enabled=
+model.package=
 testdata.filter=
-testdata.enabled=
 ```
 
-`model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`). `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
-
 Setting `testdata.enabled=true` enables the YAML test data resolution. The default is `false`!
+
+`model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`).
+
+`testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
 
 ## Cloud service integrations
 
@@ -442,7 +471,7 @@ new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
 .perform();
 ```
 
-Note, that future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
+Future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
 
 The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
 
@@ -458,13 +487,15 @@ There are two modes to use template matching which can be configured in `justtes
 
 `opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
 
-Note, that not all cloud providers (see below) support this.
+Note, that not all cloud providers support this.
 
 ## Applitools
 
 There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
-Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images). Please note that Applitools is a paid service.
+Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images).
+
+Please note that Applitools is a paid service.
 
 
 ## Galen
@@ -512,7 +543,7 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 * [Appium](https://appium.io), an extension of Selenium for native mobile app testing
 * [Cucumber](https://cucumber.io), the BDD framework
 * [JUnit](https://junit.org), the unit testing framework (mostly used as the runner for the tests)
-* [Selenide](https://selenide.org), a convenience mapper around Selenium
+* [Selenide](https://selenide.org), a convenience wrapper around Selenium
 * [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 * [OpenCV](https://opencv.org), used for image comparison
 * [Galen](https://galenframework.com), used for layout based testing
@@ -522,7 +553,7 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11 and 12). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
+* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12 and 13). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
 
 * The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 yet](https://github.com/openpnp/opencv/issues/44).
 

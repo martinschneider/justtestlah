@@ -1,7 +1,7 @@
 SEARCH_FIELD:
   android:
     type: id
-    value: com.stackexchange.stackoverflow:id/search_src_text
+    value: ${PACKAGE_NAME}:id/search_src_text
   web:
     type: css
     value: input[name=q]
@@ -14,12 +14,12 @@ SEARCH_BUTTON:
 ITEM_SCORE:
   android:
     type: id
-    value: com.stackexchange.stackoverflow:id/question_list_item_score
+    value: ${PACKAGE_NAME}:id/question_list_item_score
   
 TOOLBAR:
   android:
     type: id
-    value: com.stackexchange.stackoverflow:id/toolbar
+    value: ${PACKAGE_NAME}:id/toolbar
 
 MENU_TOGGLE:
   web:

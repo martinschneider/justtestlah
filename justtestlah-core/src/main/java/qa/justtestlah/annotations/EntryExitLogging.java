@@ -5,6 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation to mark methods for which entry/exit logging should be enabled.
+ *
+ * <p>See {@link qa.justtestlah.aop.EntryExitLoggingAspect}.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface EntryExitLogging {

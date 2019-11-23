@@ -16,6 +16,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.yaml.snakeyaml.Yaml;
 import qa.justtestlah.aop.AopConfig;
 import qa.justtestlah.locator.LocatorParser;
+import qa.justtestlah.locator.LocatorPlaceholders;
 import qa.justtestlah.testdata.TestDataMap;
 import qa.justtestlah.testdata.TestDataObjectRegistry;
 import qa.justtestlah.testdata.TestDataParser;
@@ -47,6 +48,12 @@ public class SpringConfig {
   @Value("${cloudprovider:local}")
   private String cloudProvider;
 
+  @Value("${pages.package}")
+  private String pagesPackage;
+
+  @Value("${locator.placeholders.file}")
+  private String locatorPlaceholdersFile;
+
   private List<GalenTestInfo> galenTests = new LinkedList<>();
 
   @Bean
@@ -62,6 +69,11 @@ public class SpringConfig {
   @Bean
   public LocatorParser locatorParser() {
     return new LocatorParser();
+  }
+
+  @Bean
+  public LocatorPlaceholders globalProperties() {
+    return new LocatorPlaceholders(pagesPackage, locatorPlaceholdersFile);
   }
 
   /**
