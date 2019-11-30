@@ -62,7 +62,7 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
         targetFile,
         templateFile,
         threshold,
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern(TemplateMatcher.DATE_PATTERN)));
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constants.DATE_PATTERN)));
   }
 
   private Match match(
@@ -122,7 +122,7 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
       return null;
     }
     if (driver instanceof AppiumDriver) {
-      while (!match.isFound() && targetImage.getWidth() > MIN_IMAGE_WIDTH) {
+      while (!match.isFound() && targetImage.getWidth() > Constants.MIN_IMAGE_WIDTH) {
         match =
             match(
                 originalImage, targetImage, targetFile, templateFile, target, template, threshold);
@@ -130,7 +130,7 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
         target = imageUtils.imageToBase64String(targetImage);
       }
       targetImage = originalImage;
-      while (!match.isFound() && targetImage.getWidth() < MAX_IMAGE_WIDTH) {
+      while (!match.isFound() && targetImage.getWidth() < Constants.MAX_IMAGE_WIDTH) {
         match =
             match(
                 originalImage, targetImage, targetFile, templateFile, target, template, threshold);
@@ -154,7 +154,13 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
           match.getY());
 
       String fileName =
-          System.getProperty("user.dir") + "/target/" + description + "." + FILE_EXTENSION;
+          System.getProperty("user.dir")
+              + File.pathSeparatorChar
+              + "target"
+              + File.separator
+              + description
+              + "."
+              + Constants.FILE_EXTENSION;
       LOG.info("Writing visualization of template matching to {}", fileName);
       try {
         Files.write(Paths.get(fileName), Base64.decodeBase64(match.getVisualization()));

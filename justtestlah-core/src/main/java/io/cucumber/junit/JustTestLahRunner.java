@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import qa.justtestlah.configuration.Platform;
 import qa.justtestlah.configuration.PropertiesHolder;
+import qa.justtestlah.exception.JustTestLahException;
 
 /** Custom JUnit runner to dynamically set cucumber.̰options. Based on {@link Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
@@ -220,7 +221,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     if (tags != null) {
       // Prevent injection attacks
       if (tags.contains("'")) {
-        throw new RuntimeException(
+        throw new JustTestLahException(
             String.format("Invalid character ' in tag expression: %s", tags));
       }
       // support legacy format (i.e. comma-separated list of tags without @)

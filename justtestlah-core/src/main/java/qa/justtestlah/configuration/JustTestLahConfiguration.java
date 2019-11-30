@@ -60,7 +60,7 @@ public class JustTestLahConfiguration {
   }
 
   /** Set the correct {@link org.openqa.selenium.WebDriver}. */
-  public void initWebDriver() {
+  public synchronized void initWebDriver() {
     // for web and local testing the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
     // not thread-safe!

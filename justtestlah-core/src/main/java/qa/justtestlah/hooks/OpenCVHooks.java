@@ -12,10 +12,11 @@ import qa.justtestlah.configuration.JustTestLahConfiguration;
 @Component
 public class OpenCVHooks extends AbstractCucumberHook {
 
-  private static final Logger LOG = LoggerFactory.getLogger(WebDriverHooks.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OpenCVHooks.class);
 
   @Autowired private JustTestLahConfiguration configuration;
 
+  @Override
   public void before(Scenario scenario) {
     if (configuration.isOpenCvEnabled()) {
       try {

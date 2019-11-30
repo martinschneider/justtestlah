@@ -21,6 +21,7 @@ public class WebDriverHooks extends AbstractCucumberHook {
    *
    * @param scenario Cucumber scenario
    */
+  @Override
   public void before(Scenario scenario) {
     LOG.info("Initializing web driver");
     configuration.initWebDriver();
@@ -31,6 +32,7 @@ public class WebDriverHooks extends AbstractCucumberHook {
    *
    * @param scenario Cucumber scenario
    */
+  @Override
   public void after(Scenario scenario) {
     LOG.info("Closing web driver");
     WebDriverRunner.closeWebDriver();

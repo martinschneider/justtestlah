@@ -24,6 +24,7 @@ public class Base implements ApplicationContextAware {
    * annotations)
    */
   @PostConstruct
+  @SuppressWarnings("squid:S3011")
   public void initPages() {
     LOG.info("Initializing page objects for class {}", this.getClass());
     Class<?> clazz = this.getClass();

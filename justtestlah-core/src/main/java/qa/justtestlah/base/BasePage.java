@@ -66,6 +66,7 @@ public abstract class BasePage<T> extends Base {
    * @param params parameters to replace the placeholders
    * @return {@link SelenideElement}
    */
+  @SuppressWarnings("squid:S00100")
   protected SelenideElement $(String locatorKey, Object... params) {
     return Selenide.$(locators.getLocator(locatorKey, configuration.getPlatform(), params));
   }
@@ -77,6 +78,7 @@ public abstract class BasePage<T> extends Base {
    * @param params parameters to replace the placeholders
    * @return {@link ElementsCollection}
    */
+  @SuppressWarnings("squid:S00100")
   protected ElementsCollection $$(String locatorKey, Object... params) {
     return Selenide.$$(
         locators.getCollectionLocator(locatorKey, configuration.getPlatform(), params));
@@ -137,8 +139,8 @@ public abstract class BasePage<T> extends Base {
     String fileName = null;
     do {
       String baseName = parent.getSimpleName();
-      String baseFolder = parent.getPackage().getName().replaceAll("\\.", "/");
-      fileName = baseFolder + "/" + baseName + ".yaml";
+      String baseFolder = parent.getPackage().getName().replaceAll("\\.", File.separator);
+      fileName = baseFolder + File.separator + baseName + ".yaml";
       parent = parent.getSuperclass();
     } while (!parent.equals(BasePage.class));
     loadLocators(fileName);
@@ -177,8 +179,14 @@ public abstract class BasePage<T> extends Base {
   private T checkLayout() {
     if (configuration.isGalenEnabled()) {
       String baseName = this.getClass().getSimpleName();
-      String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-      String specPath = baseFolder + "/" + configuration.getPlatform() + "/" + baseName + ".spec";
+      String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);
+      String specPath =
+          baseFolder
+              + File.separator
+              + configuration.getPlatform()
+              + File.separator
+              + baseName
+              + ".spec";
       LOG.info("Checking layout {}", specPath);
       String title = "Check layout " + specPath;
       LayoutReport layoutReport;
@@ -208,11 +216,8 @@ public abstract class BasePage<T> extends Base {
     this.configuration = configuration;
   }
 
-  /**
-   * @return this page object
-   * @throws ScreenVerificationException in case one of the screen identifiers is not displayed
-   */
-  public T verify() throws ScreenVerificationException {
+  /** @return this page object */
+  public T verify() {
     return verify(DEFAULT_VERIFICATION_TIMEOUT);
   }
 
@@ -224,11 +229,10 @@ public abstract class BasePage<T> extends Base {
    *
    * @param timeout the timeout for identifying the first element. Note, that there is no timeout
    *     for any subsequent checks!
-   * @throws ScreenVerificationException in case one of the screen identifiers is not displayed
    * @return this page object
    */
   @SuppressWarnings("unchecked")
-  public T verify(int timeout) throws ScreenVerificationException {
+  public T verify(int timeout) {
     boolean initialCheck = true;
     int initialTimeout = timeout;
     // Applitools

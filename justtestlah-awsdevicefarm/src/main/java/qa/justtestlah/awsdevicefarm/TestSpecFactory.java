@@ -47,7 +47,7 @@ public class TestSpecFactory {
 
     // encode the `justtestlah.properties` into the testSpec file
     testSpec =
-        testSpec.replaceAll(
+        testSpec.replace(
             "__JUSTTESTLAH_PROPERTIES_BASE64__",
             Base64.encodeAsString(justTestLahProperties.toString().getBytes()));
 

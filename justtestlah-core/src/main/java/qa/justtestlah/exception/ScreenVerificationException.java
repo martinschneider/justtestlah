@@ -2,8 +2,8 @@ package qa.justtestlah.exception;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-/** Mark-up exception for screen verification errors. */
-public class ScreenVerificationException extends RuntimeException {
+/** Exception class for screen verification errors. */
+public class ScreenVerificationException extends JustTestLahException {
   private static final long serialVersionUID = 1L;
 
   /**

@@ -47,5 +47,6 @@ public class Hooks {
     for (CucumberHook hook : hooksRegister.getRegisteredHooks()) {
       hook.after(scenario);
     }
+    hooksRegister.clear();
   }
 }

@@ -38,11 +38,9 @@ public class ApplicationInfoService {
     } else if (appPath.endsWith(".app")) {
       return getAPPAppInfo(appPath);
     } else {
-      // TODO: use lambda expressions once SLF4j supports it
       LOG.warn(
-          String.format(
-              "App package %s does not have any of the expected extensions: .apk, .ipa or .app",
-              appPath));
+          "App package {} does not have any of the expected extensions: .apk, .ipa or .app",
+          appPath);
       return null;
     }
   }
@@ -122,8 +120,9 @@ public class ApplicationInfoService {
         | ParseException
         | ParserConfigurationException
         | SAXException exception) {
-      LOG.error(String.format("Error reading dictionary from %s", path), exception);
-      throw new RuntimeException(exception);
+      String errorMessage = String.format("Error reading dictionary from %s", path);
+      LOG.error(errorMessage, exception);
+      throw new RuntimeException("errorMessage", exception);
     }
   }
 

@@ -24,6 +24,7 @@ public class ApplitoolsHooks extends AbstractCucumberHook {
    *
    * @param scenario Cucumber scenario
    */
+  @Override
   public void before(Scenario scenario) {
     if (configuration.isEyesEnabled()) {
       LOG.info("Initializing Eyes");
@@ -39,6 +40,7 @@ public class ApplitoolsHooks extends AbstractCucumberHook {
    *
    * @param scenario Cucumber scenario
    */
+  @Override
   public void after(Scenario scenario) {
     if (configuration.isEyesEnabled() && eyes.getIsOpen()) {
       LOG.info("Closing Eyes");

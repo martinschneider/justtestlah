@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.junit.JustTestLahTest;
 
 /** Loads and manages the test configuration from `justtestlah.properties` */
@@ -40,7 +41,8 @@ public class PropertiesHolder {
       LOG.info("Reading property {} = {}", key, value);
       return value;
     }
-    throw new RuntimeException("Mandatory property " + key + " not set in justtestlah.properties.");
+    throw new JustTestLahException(
+        "Mandatory property " + key + " not set in justtestlah.properties.");
   }
 
   public String getOptionalProperty(String key) {
