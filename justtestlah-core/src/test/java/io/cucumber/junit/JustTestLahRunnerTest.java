@@ -41,7 +41,7 @@ public class JustTestLahRunnerTest {
         PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY,
         JustTestLahRunnerTest.class.getResource("justtestlah_injection.properties").getFile());
     target = new JustTestLahRunner(this.getClass());
-    assertThat(target.buildCucumberOptions()).as("check cucumber options");
+    target.buildCucumberOptions();
   }
 
   @DataProvider

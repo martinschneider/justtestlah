@@ -101,7 +101,7 @@ public class AWSService {
    * @param synchronous true, if the execution should wait for the download to succeed
    * @return {@link Upload}
    */
-  public Upload upload(File file, String projectArn, UploadType uploadType, Boolean synchronous) {
+  public Upload upload(File file, String projectArn, UploadType uploadType, boolean synchronous) {
     CreateUploadRequest appUploadRequest =
         new CreateUploadRequest()
             .withName(UUID.randomUUID() + "_" + file.getName())

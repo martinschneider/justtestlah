@@ -138,11 +138,12 @@ public class AWSTestRunner extends Runner {
       elapsedTime = System.currentTimeMillis() - startTime;
       run = awsService.getAws().getRun(getRunRequest).getRun();
       status = run.getStatus();
-      // TODO: use lambda expressions once SLF4j supports it
-      LOG.info(
-          "Test status: {} {} elapsed",
-          String.format("%1$-15s", status),
-          FormattingUtils.formatMilliseconds(elapsedTime));
+      if (LOG.isInfoEnabled()) {
+        LOG.atInfo()
+            .addArgument(String.format("%1$-15s", status))
+            .addArgument(FormattingUtils.formatMilliseconds(elapsedTime))
+            .log("Test status: {} {} elapsed");
+      }
       if (elapsedTime > TIMEOUT * 60 * 1000) {
         LOG.error("The tests didn't complete within the {} minute timeout!", TIMEOUT);
         break;

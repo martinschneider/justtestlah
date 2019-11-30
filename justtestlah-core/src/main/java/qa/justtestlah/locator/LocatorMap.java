@@ -29,7 +29,7 @@ public class LocatorMap {
 
   private Properties staticPlaceholders;
 
-  private Pattern placeHolderPattern = Pattern.compile("\\$\\{(\\w*)\\}");
+  private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\$\\{(\\w*)\\}");
 
   /** Default constructor. */
   public LocatorMap() {
@@ -138,7 +138,7 @@ public class LocatorMap {
     if (rawValue == null) {
       return null;
     }
-    Matcher matcher = placeHolderPattern.matcher(rawValue);
+    Matcher matcher = PLACEHOLDER_PATTERN.matcher(rawValue);
     StringBuffer strBuffer = new StringBuffer();
     while (matcher.find()) {
       matcher.appendReplacement(strBuffer, staticPlaceholders.get(matcher.group(1)).toString());

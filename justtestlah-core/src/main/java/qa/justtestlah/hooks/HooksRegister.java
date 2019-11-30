@@ -9,7 +9,7 @@ import qa.justtestlah.configuration.JustTestLahConfiguration;
 /** Hooks are registered based on platform and execution environment. */
 @Component
 public class HooksRegister {
-  private List<CucumberHook> registeredHooks = new ArrayList<CucumberHook>();
+  private List<CucumberHook> registeredHooks = new ArrayList<>();
 
   @Autowired private JustTestLahConfiguration configuration;
 
@@ -22,5 +22,9 @@ public class HooksRegister {
 
   public List<CucumberHook> getRegisteredHooks() {
     return registeredHooks;
+  }
+
+  public void clear() {
+    registeredHooks.clear();
   }
 }

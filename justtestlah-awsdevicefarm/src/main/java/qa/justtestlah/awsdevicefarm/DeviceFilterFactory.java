@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qa.justtestlah.awsdevicefarm.devicefilter.DeviceFilterConstants;
 import qa.justtestlah.awsdevicefarm.devicefilter.DeviceFilterStringUtils;
+import qa.justtestlah.awsdevicefarm.exception.AWSDeviceFarmException;
 import qa.justtestlah.configuration.PropertiesHolder;
 
 /** Creates a device filter based on the configuration from {@link PropertiesHolder}. */
@@ -91,7 +92,7 @@ public class DeviceFilterFactory {
         adaptAvailabilityFilter(deviceFilters);
       } else {
         LOG.error("No matching devices available!");
-        throw new RuntimeException("No matching devices available!");
+        throw new AWSDeviceFarmException("No matching devices available!");
       }
     }
   }
@@ -102,11 +103,10 @@ public class DeviceFilterFactory {
             .getAws()
             .listDevices(new ListDevicesRequest().withFilters(deviceFilters))
             .getDevices();
-    // TODO: use lambda expressions once SLF4j supports it
-    LOG.info(
-        "{} device(s) matching {}",
-        devices.size(),
-        DeviceFilterStringUtils.prettyPrintDeviceFilterList(deviceFilters));
+    LOG.atInfo()
+        .addArgument(() -> devices.size())
+        .addArgument(DeviceFilterStringUtils.prettyPrintDeviceFilterList(deviceFilters))
+        .log("{} device(s) matching {}");
     return devices;
   }
 }

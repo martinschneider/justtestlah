@@ -49,7 +49,7 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
   }
 
   // log when entering a method
-  private long entry(Method method, Object methodArguments[]) {
+  private long entry(Method method, Object[] methodArguments) {
     StringBuilder logMessage = new StringBuilder("Entering ");
     Class<?> clazz = method.getDeclaringClass();
     logMessage.append(clazz.getSimpleName());

@@ -24,6 +24,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import qa.justtestlah.exception.BrowserstackException;
 
 /** Creates {@link WebDriver} instance for Browserstack. */
 public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
@@ -31,8 +32,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
 
   private static final Logger LOG = LoggerFactory.getLogger(BrowserStackWebDriverBuilder.class);
 
-  private static final String BS_UPLOAD_PATH =
-      "https://api-cloud.browserstack.com/app-automate/upload";
+  @Value("${browserstack.uploadPath:https://api-cloud.browserstack.com/app-automate/upload}")
+  private String uploadPath;
 
   @Value("${browserstack.accessKey}")
   private String accessKey;
@@ -94,7 +95,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     super.addCommonCapabilities(capabilities);
     Object app = capabilities.getCapability("app");
     if (app == null) {
-      throw new RuntimeException("Property app must bot be null");
+      throw new BrowserstackException("Property app must bot be null");
     }
     if (!app.toString().startsWith("bs://")) {
       uploadAppPackage(app.toString());
@@ -111,11 +112,12 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     return capabilities;
   }
 
+  @SuppressWarnings("squid:S2647") // Browserstack only supports Basic Authentication
   private String uploadAppPackage(String path) {
     LOG.info("Uploading app package {} to Browserstack", path);
     final CloseableHttpClient httpClient = HttpClients.createSystem();
     try {
-      HttpPost httpPost = new HttpPost(BS_UPLOAD_PATH);
+      HttpPost httpPost = new HttpPost(uploadPath);
       String encoding = Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
       httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoding);
       httpPost.setEntity(
@@ -126,11 +128,11 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
         response = httpClient.execute(httpPost);
         responseString = EntityUtils.toString(response.getEntity());
       } catch (IOException exception) {
-        throw new RuntimeException(
+        throw new BrowserstackException(
             String.format("Error uploading file to Browserstack: %s", exception.getMessage()));
       }
       if (response.getStatusLine().getStatusCode() != 200) {
-        throw new RuntimeException(
+        throw new BrowserstackException(
             String.format(
                 "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
                 response.getStatusLine().getStatusCode(), responseString));
@@ -142,7 +144,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
         this.appUrl = browserstackAppUrl;
         return browserstackAppUrl;
       } catch (JsonSyntaxException | ParseException exception) {
-        throw new RuntimeException("Error parsing response from Browserstack", exception);
+        throw new BrowserstackException("Error parsing response from Browserstack", exception);
       }
     } finally {
       try {
@@ -169,7 +171,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
       return new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub");
     } catch (MalformedURLException exception) {
       LOG.error("Can't create Browserstack connection URL", exception);
-      throw new RuntimeException(exception);
+      throw new BrowserstackException("Can't create Browserstack connection URL", exception);
     }
   }
 }

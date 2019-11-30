@@ -49,8 +49,11 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
         String message = log.getMessage();
         // filter out messages related to fetching the log
         if (!message.matches(REGEXP_FILTER)) {
-          // TODO: use lambda expressions once SLF4j supports it
-          LOG.info("{} {} {}", logType, formatter.format(log.getTimestamp()), log.getMessage());
+          LOG.atInfo()
+              .addArgument(() -> logType)
+              .addArgument(() -> formatter.format(log.getTimestamp()))
+              .addArgument(() -> log.getMessage())
+              .log("{} {} {}");
         }
       }
     }

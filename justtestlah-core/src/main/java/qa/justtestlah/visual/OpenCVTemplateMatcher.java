@@ -42,7 +42,9 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private JustTestLahConfiguration configuration;
 
-  /* (non-Javadoc)
+  /*
+   * (non-Javadoc)
+   *
    * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String, java.lang.String, double)
    */
   @Override
@@ -51,11 +53,14 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
         targetFile,
         templateFile,
         threshold,
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_PATTERN)));
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constants.DATE_PATTERN)));
   }
 
-  /* (non-Javadoc)
-   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String, java.lang.String, double, java.lang.String)
+  /*
+   * (non-Javadoc)
+   *
+   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String, java.lang.String, double,
+   * java.lang.String)
    */
   @Override
   public Match match(String targetFile, String templateFile, double threshold, String description) {
@@ -69,7 +74,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
      * then slightly smaller and larger images etc. instead of first scaling all the way down and
      * then scaling up (or by using a framework that performs size-invariant template matching).
      */
-    while (image.width() > MIN_IMAGE_WIDTH) {
+    while (image.width() > Constants.MIN_IMAGE_WIDTH) {
       int resultCols = image.cols() - templ.cols() + 1;
       int resultRows = image.rows() - templ.rows() + 1;
       if (resultCols < 0 || resultRows < 0) {
@@ -97,7 +102,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
     if (bestMatch.maxVal < threshold) {
       image = originalImage;
     }
-    while (bestMatch.maxVal < threshold && image.width() < MAX_IMAGE_WIDTH) {
+    while (bestMatch.maxVal < threshold && image.width() < Constants.MAX_IMAGE_WIDTH) {
       int resultCols = image.cols() - templ.cols() + 1;
       int resultRows = image.rows() - templ.rows() + 1;
       Mat result = new Mat(resultRows, resultCols, CvType.CV_32FC1);
@@ -152,7 +157,13 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
       Imgproc.rectangle(
           originalImage, new Point(x1, y1), new Point(x2, y2), new Scalar(255, 0, 0), 5);
       String fileName =
-          System.getProperty("user.dir") + "/target/" + description + "." + FILE_EXTENSION;
+          System.getProperty("user.dir")
+              + File.separator
+              + "target"
+              + File.separator
+              + description
+              + "."
+              + Constants.FILE_EXTENSION;
       LOG.info("Writing visualization of template matching to {}", fileName);
       Imgcodecs.imwrite(fileName, originalImage);
 

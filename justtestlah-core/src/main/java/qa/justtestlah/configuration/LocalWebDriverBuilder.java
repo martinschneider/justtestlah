@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import qa.justtestlah.annotations.EntryExitLogging;
+import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.log.WebDriverLogEnricher;
 
 /** Factory for {@link WebDriver}. */
@@ -64,7 +65,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
           new AndroidDriver<AndroidElement>(
               new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities())));
     } catch (MalformedURLException exception) {
-      throw new RuntimeException(exception);
+      throw new JustTestLahException("Error creating Android WebDriver", exception);
     } catch (WebDriverException exception) {
       LOG.error("Error creating web driver", exception);
       LOG.error("Appium server error: {}", getServerError(exception));
@@ -91,7 +92,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
           new IOSDriver<IOSElement>(
               new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities())));
     } catch (MalformedURLException exception) {
-      throw new RuntimeException(exception);
+      throw new JustTestLahException("Error creating iOS WebDriver", exception);
     } catch (WebDriverException exception) {
       LOG.error("Error creating web driver", exception);
       LOG.error("Appium server error: {}", getServerError(exception));
@@ -125,7 +126,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities.setCapability("deviceName", deviceName);
     capabilities.setCapability("app", appPath);
     capabilities.setCapability("platformName", platform);
-    capabilities.setCapability("deviceOrientation", deviceOrientation);
+    capabilities.setCapability("appium:deviceOrientation", deviceOrientation);
     return capabilities;
   }
 

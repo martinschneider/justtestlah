@@ -1,5 +1,6 @@
 package qa.justtestlah.locator;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +46,10 @@ public class LocatorPlaceholders {
    * @param locatorPlaceholdersFile path to locator properties file
    */
   public LocatorPlaceholders(String pagesPackage, String locatorPlaceholdersFile) {
-    String path = pagesPackage.replaceAll("\\.", "/") + "/" + PLACEHOLDER_PROPERTIES_FILENAME;
+    String path =
+        pagesPackage.replaceAll("\\.", File.separator)
+            + File.separator
+            + PLACEHOLDER_PROPERTIES_FILENAME;
     LOG.info("Loading placeholders from {}", path);
     placeholders = loadProperties(BasePage.class.getClassLoader().getResourceAsStream(path));
     if (locatorPlaceholdersFile != null && !locatorPlaceholdersFile.isEmpty()) {
