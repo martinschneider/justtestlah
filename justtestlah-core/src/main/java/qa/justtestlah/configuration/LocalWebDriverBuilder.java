@@ -122,11 +122,9 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   protected DesiredCapabilities addCommonCapabilities(DesiredCapabilities capabilities) {
     capabilities.setCapability("newCommandTimeout", 600);
-    capabilities.setCapability("launchTimeout", 90000);
     capabilities.setCapability("deviceName", deviceName);
     capabilities.setCapability("app", appPath);
     capabilities.setCapability("platformName", platform);
-    capabilities.setCapability("appium:deviceOrientation", deviceOrientation);
     return capabilities;
   }
 

@@ -70,6 +70,7 @@
     <selenium.version>3.141.59</selenium.version>
     <selenide.version>5.5.1</selenide.version>
     <cucumber.version>4.8.0</cucumber.version>
+    <wiremock.version>2.25.1</wiremock.version>
     <!-- The gherkin version needs to match transitive dependency from Cucumber -->
     <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
@@ -434,6 +435,11 @@
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjweaver</artifactId>
         <version>${aspectjweaver.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.tomakehurst</groupId>
+        <artifactId>wiremock-jre8-standalone</artifactId>
+        <version>${wiremock.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
