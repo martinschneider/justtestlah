@@ -47,7 +47,7 @@ public class LocatorPlaceholders {
    */
   public LocatorPlaceholders(String pagesPackage, String locatorPlaceholdersFile) {
     String path =
-        pagesPackage.replaceAll("\\.", File.separator)
+        pagesPackage.replace(".", File.separator)
             + File.separator
             + PLACEHOLDER_PROPERTIES_FILENAME;
     LOG.info("Loading placeholders from {}", path);

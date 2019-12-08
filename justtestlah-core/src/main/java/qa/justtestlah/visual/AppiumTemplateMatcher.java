@@ -155,7 +155,7 @@ public class AppiumTemplateMatcher implements TemplateMatcher {
 
       String fileName =
           System.getProperty("user.dir")
-              + File.pathSeparatorChar
+              + File.separator
               + "target"
               + File.separator
               + description
