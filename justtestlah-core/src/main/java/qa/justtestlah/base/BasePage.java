@@ -139,7 +139,7 @@ public abstract class BasePage<T> extends Base {
     String fileName = null;
     do {
       String baseName = parent.getSimpleName();
-      String baseFolder = parent.getPackage().getName().replaceAll("\\.", File.separator);
+      String baseFolder = parent.getPackage().getName().replace(".", File.separator);
       fileName = baseFolder + File.separator + baseName + ".yaml";
       parent = parent.getSuperclass();
     } while (!parent.equals(BasePage.class));
@@ -179,7 +179,7 @@ public abstract class BasePage<T> extends Base {
   private T checkLayout() {
     if (configuration.isGalenEnabled()) {
       String baseName = this.getClass().getSimpleName();
-      String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);
+      String baseFolder = this.getClass().getPackage().getName().replace("\\.", File.separator);
       String specPath =
           baseFolder
               + File.separator
