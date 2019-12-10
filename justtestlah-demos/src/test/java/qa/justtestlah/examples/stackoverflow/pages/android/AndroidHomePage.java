@@ -2,7 +2,6 @@ package qa.justtestlah.examples.stackoverflow.pages.android;
 
 import static com.codeborne.selenide.Selenide.sleep;
 import static qa.justtestlah.configuration.Platform.Constants.ANDROID;
-
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.examples.stackoverflow.pages.HomePage;

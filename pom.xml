@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.7-RC4</version>
+  <version>1.7-RC5</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -120,7 +120,6 @@
     <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
     <wagon.ssh.version>3.3.4</wagon.ssh.version>
-    <sonarqube.maven.plugin.version>0.2.2</sonarqube.maven.plugin.version>
     <cluecumber.report.plugin.version>2.3.1</cluecumber.report.plugin.version>
     <checkstyle.version>8.26</checkstyle.version>
     <classgraph.version>4.8.58</classgraph.version>
@@ -684,9 +683,14 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <executions>
           <execution>
+            <id>prepare</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-output/jacoco.exec</destFile>
+              <propertyName>surefire.jacoco.args</propertyName>
+            </configuration>
           </execution>
           <execution>
             <id>report</id>
@@ -694,15 +698,33 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-output/jacoco.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>check</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>CLASS</element>
+                </rule>
+              </rules>
+              <dataFile>${project.build.directory}/jacoco-output/jacoco.exec</dataFile>
+            </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <sessionId>${project.artifactId}</sessionId>
-          <destFile>${project.basedir}/../target/jacoco.exec</destFile>
-          <includes>
-            <include>qa.justtestlah.*</include>
-            <include>io.cucumber.junit.*</include>
-          </includes>
+          <argLine>${surefire.jacoco.args}</argLine>
         </configuration>
       </plugin>
       <plugin>
@@ -776,14 +798,6 @@
             </reports>
           </reportSet>
         </reportSets>
-      </plugin>
-      <plugin>
-        <groupId>nl.demon.shadowland.maven.plugins</groupId>
-        <artifactId>sonarqube-maven-report</artifactId>
-        <version>${sonarqube.maven.plugin.version}</version>
-        <configuration>
-          <sonarHostURL>https://sonarcloud.io/</sonarHostURL>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

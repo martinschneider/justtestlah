@@ -1,0 +1,4 @@
+SEARCH_FIELD:
+  web:
+    type: css
+    value: input[name=q]

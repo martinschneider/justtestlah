@@ -11,9 +11,9 @@ Scenario Outline: Filter by tags
 	Examples:
 		| tag |
 		| selenium |
-		| appium | 
+	#	| appium | 
 	
-@web @android @ios
+#@web @android @ios
 Scenario Outline: Use the search function 
 	Given I am on the homepage 
 	When I search for "<tag>"

@@ -9,7 +9,7 @@
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.7-RC4</version>
+    <version>1.7-RC5</version>
   </parent>
   <licenses>
     <license>
@@ -74,7 +74,7 @@
       <artifactId>wiremock-jre8-standalone</artifactId>
       <scope>test</scope>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
       <scope>test</scope>

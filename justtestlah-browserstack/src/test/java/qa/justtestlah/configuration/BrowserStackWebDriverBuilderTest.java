@@ -11,6 +11,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import java.io.IOException;
@@ -31,11 +32,9 @@ import qa.justtestlah.exception.BrowserstackException;
 /**
  * Test for {@link BrowserStackWebDriverBuilder}.
  *
- * <p>
- * Mocks Appium server and Browserstack app upload service.
+ * <p>Mocks Appium server and Browserstack app upload service.
  *
- * <p>
- * TODO: verify capabilities
+ * <p>TODO: verify capabilities
  */
 public class BrowserStackWebDriverBuilderTest {
 
@@ -57,17 +56,22 @@ public class BrowserStackWebDriverBuilderTest {
   @Before
   public void individualTestSetup() throws IOException {
     // Wiremock stubs
-    stubFor(post("/session").willReturn(ok(
-        "{\"value\":{\"capabilities\":{\"desired\":{\"platformName\":\"android\",\"app\":\"test.apk\",\"appActivity\":\"test\",\"appPackage\":\"test\"},\"platformName\":\"android\",\"app\":\"test.apk\",\"appActivity\":\"test\",\"appPackage\":\"test\",\"deviceName\":\"Google Pixel\"},\"sessionId\":\"sessionId\"}}")));
+    stubFor(
+        post("/session")
+            .willReturn(
+                ok(
+                    "{\"value\":{\"capabilities\":{\"desired\":{\"platformName\":\"android\",\"app\":\"test.apk\",\"appActivity\":\"test\",\"appPackage\":\"test\"},\"platformName\":\"android\",\"app\":\"test.apk\",\"appActivity\":\"test\",\"appPackage\":\"test\",\"deviceName\":\"Google Pixel\"},\"sessionId\":\"sessionId\"}}")));
     stubFor(post("/upload").willReturn(ok("{app_url : \"test.apk\"}")));
 
     // Spring config values
     ReflectionTestUtils.setField(target, "username", "user");
     ReflectionTestUtils.setField(target, "accessKey", "key");
-    ReflectionTestUtils.setField(target, "appPath",
+    ReflectionTestUtils.setField(
+        target,
+        "appPath",
         new DefaultResourceLoader().getResource("test.apk").getFile().getAbsolutePath());
-    ReflectionTestUtils.setField(target, "uploadPath",
-        "http://localhost:" + wireMockPort + "/upload");
+    ReflectionTestUtils.setField(
+        target, "uploadPath", "http://localhost:" + wireMockPort + "/upload");
 
     // Mock URL builder
     BrowserStackUrlBuilder mockUrlBuilder = mock(BrowserStackUrlBuilder.class);
@@ -75,10 +79,9 @@ public class BrowserStackWebDriverBuilderTest {
         .thenReturn(new URL("http://localhost:" + wireMockPort));
     ReflectionTestUtils.setField(target, "browserStackUrlBuilder", mockUrlBuilder);
   }
-  
+
   @After
-  public void resetMocks()
-  {
+  public void resetMocks() {
     WireMock.resetAllRequests();
   }
 
@@ -152,7 +155,7 @@ public class BrowserStackWebDriverBuilderTest {
   }
 
   private static int getAvailablePort() throws IOException {
-    try (ServerSocket socket = new ServerSocket(0);) {
+    try (ServerSocket socket = new ServerSocket(0); ) {
       int port = socket.getLocalPort();
       LOG.info("Using port {}", port);
       return port;

@@ -3,7 +3,6 @@ package qa.justtestlah.examples.stackoverflow.pages;
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selenide.open;
 import static qa.justtestlah.configuration.Platform.Constants.WEB;
-
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.springframework.context.annotation.Profile;
