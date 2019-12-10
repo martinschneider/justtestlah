@@ -1,7 +1,10 @@
 package qa.justtestlah.examples.stackoverflow.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+<<<<<<< HEAD
+=======
 
+>>>>>>> integration tests
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import qa.justtestlah.base.BaseSteps;

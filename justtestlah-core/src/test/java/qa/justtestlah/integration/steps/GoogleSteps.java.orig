@@ -4,10 +4,17 @@ import io.cucumber.java.en.Given;
 import qa.justtestlah.base.BaseSteps;
 import qa.justtestlah.integration.pages.GooglePage;
 
+<<<<<<< HEAD
+public class GoogleSteps extends BaseSteps{
+  
+  private GooglePage google;
+  
+=======
 public class GoogleSteps extends BaseSteps {
 
   private GooglePage google;
 
+>>>>>>> integration tests
   @Given("I am on the homepage")
   public void homepage() {
     google.verify();

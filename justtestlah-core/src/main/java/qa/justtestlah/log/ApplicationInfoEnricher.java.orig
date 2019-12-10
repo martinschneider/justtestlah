@@ -20,7 +20,11 @@ public class ApplicationInfoEnricher extends ContextAwareBase
   private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
 
   private PropertiesHolder props = new PropertiesHolder();
+<<<<<<< HEAD
+  
+=======
 
+>>>>>>> integration tests
   @Override
   public void start() {
     if (started) {

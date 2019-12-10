@@ -1,6 +1,7 @@
 package qa.justtestlah.examples.stackoverflow.pages;
 
 import static qa.justtestlah.configuration.Platform.Constants.WEB;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

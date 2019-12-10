@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.Context;
 import java.util.Properties;
@@ -21,9 +20,18 @@ public class ApplicationInfoEnricherTest {
 
   private ApplicationInfoEnricher target = new ApplicationInfoEnricher();
 
+<<<<<<< HEAD
+  @Mock
+  private Context mockContext;
+  @Mock
+  private ApplicationInfoService applicationInfoService;
+  @Mock
+  private PropertiesHolder propertiesHolder;
+=======
   @Mock private Context mockContext;
   @Mock private ApplicationInfoService applicationInfoService;
   @Mock private PropertiesHolder propertiesHolder;
+>>>>>>> integration tests
 
   @Before
   public void initMocks() {
@@ -31,8 +39,12 @@ public class ApplicationInfoEnricherTest {
     Properties props = new Properties();
     props.put("platform", "android");
     when(propertiesHolder.getProperty("platform")).thenReturn("android");
+<<<<<<< HEAD
+    when(propertiesHolder.getProperty("android.appPath")).thenReturn("/road/to/nowhere/android.apk");
+=======
     when(propertiesHolder.getProperty("android.appPath"))
         .thenReturn("/road/to/nowhere/android.apk");
+>>>>>>> integration tests
     ReflectionTestUtils.setField(target, "props", propertiesHolder);
   }
 
