@@ -1,6 +1,6 @@
 Feature: Search and tags 
 
-@web @integration
+@web
 Scenario Outline: Filter by tags 
 	Given I am on the homepage 
 	When I go to the tags page 
