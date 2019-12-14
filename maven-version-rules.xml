@@ -13,6 +13,8 @@
         <!-- Cucumber JVM doesn't support Gherkin 6+ yet -->
         <ignoreVersion type="regex">6.*</ignoreVersion>
         <ignoreVersion type="regex">7.*</ignoreVersion>
+        <ignoreVersion type="regex">8.*</ignoreVersion>
+        <ignoreVersion type="regex">9.*</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="io.appium" artifactId="java-client"

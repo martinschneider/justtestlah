@@ -65,7 +65,7 @@
   </repositories>
   <properties>
     <!-- Version properties -->
-    <spring.version>5.2.1.RELEASE</spring.version>
+    <spring.version>5.2.2.RELEASE</spring.version>
     <appium.version>7.3.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
     <selenide.version>5.5.1</selenide.version>
@@ -74,7 +74,7 @@
     <!-- The gherkin version needs to match transitive dependency from Cucumber -->
     <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
-    <applitools.version>3.158.8</applitools.version>
+    <applitools.version>3.158.9</applitools.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.6.0-M1</junit.version>
     <junit4.version>4.12</junit4.version>
@@ -86,8 +86,8 @@
     <snakeyaml.version>1.25</snakeyaml.version>
     <dd.plist.version>1.23</dd.plist.version>
     <apk.parser.version>2.6.10</apk.parser.version>
-    <zip4j.version>2.2.6</zip4j.version>
-    <bytebuddy.version>1.10.4</bytebuddy.version>
+    <zip4j.version>2.2.7</zip4j.version>
+    <bytebuddy.version>1.10.5</bytebuddy.version>
     <gson.version>2.8.6</gson.version>
     <jersey.version>2.29.1</jersey.version>
     <apache.http.components.version>4.5.10</apache.http.components.version>
@@ -98,7 +98,7 @@
     <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
     <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
     <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
-    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
     <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -121,11 +121,11 @@
     <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
     <wagon.ssh.version>3.3.4</wagon.ssh.version>
     <cluecumber.report.plugin.version>2.3.1</cluecumber.report.plugin.version>
-    <checkstyle.version>8.26</checkstyle.version>
+    <checkstyle.version>8.27</checkstyle.version>
     <classgraph.version>4.8.58</classgraph.version>
     <fmt.version>2.9</fmt.version>
     <jsch.version>0.1.55</jsch.version>
-    <aws.sdk.version>1.11.683</aws.sdk.version>
+    <aws.sdk.version>1.11.693</aws.sdk.version>
     <aopalliance.version>2.6.1</aopalliance.version>
     <jackson.version>2.10.1</jackson.version>
     <guava.version>28.1-jre</guava.version>
@@ -740,6 +740,7 @@
             <goals>
               <goal>analyze-only</goal>
             </goals>
+            <phase>package</phase>
           </execution>
         </executions>
         <configuration>

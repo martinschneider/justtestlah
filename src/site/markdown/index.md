@@ -553,9 +553,9 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12 and 13). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
+* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12, 13 and 14). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
 
-* The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 yet](https://github.com/openpnp/opencv/issues/44).
+* The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
 
 * The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
 

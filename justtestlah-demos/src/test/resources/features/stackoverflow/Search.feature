@@ -11,7 +11,7 @@ Scenario Outline: Filter by tags
 	Examples:
 		| tag |
 		| selenium |
-	#	| appium | 
+		| appium | 
 	
 #@web @android @ios
 Scenario Outline: Use the search function 

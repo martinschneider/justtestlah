@@ -29,10 +29,10 @@ public class ApplicationInfoEnricher extends ContextAwareBase
     props.getProperties();
     Context context = getContext();
     String platform = props.getProperty("platform");
-    String appPath = props.getProperty(platform + ".appPath");
 
     StringBuilder strBuilder = new StringBuilder(platform.toUpperCase());
     if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios")) {
+      String appPath = props.getProperty(platform + ".appPath");
       ApplicationInfo appInfo = applicationInfoService.getAppInfo(appPath);
       if (appInfo != null && !appInfo.toString().isEmpty()) {
         strBuilder.append(" ");
