@@ -7,8 +7,6 @@ import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.ios.IOSElement;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Base64;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -67,6 +65,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
 
   private String appUrl;
 
+  private BrowserStackUrlBuilder browserStackUrlBuilder = new BrowserStackUrlBuilder();
+
   /*
    * (non-Javadoc)
    *
@@ -75,7 +75,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   @Override
   public WebDriver getAndroidDriver() {
     return new AppiumDriver<AndroidElement>(
-        buildBrowserStackUrl(accessKey, username),
+        browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
         addAndroidCapabilities(new DesiredCapabilities()));
   }
 
@@ -87,7 +87,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   @Override
   public WebDriver getIOsDriver() {
     return new AppiumDriver<IOSElement>(
-        buildBrowserStackUrl(accessKey, username), addIOsCapabilities(new DesiredCapabilities()));
+        browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
+        addIOsCapabilities(new DesiredCapabilities()));
   }
 
   @Override
@@ -143,7 +144,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
         LOG.info("Successfully uploaded app package to {}", browserstackAppUrl);
         this.appUrl = browserstackAppUrl;
         return browserstackAppUrl;
-      } catch (JsonSyntaxException | ParseException exception) {
+      } catch (IllegalStateException | JsonSyntaxException | ParseException exception) {
         throw new BrowserstackException("Error parsing response from Browserstack", exception);
       }
     } finally {
@@ -164,14 +165,5 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
   public WebDriver getWebDriver() {
     throw new UnsupportedOperationException(
         "For Browserstack only mobile testing is supported at the moment.");
-  }
-
-  private URL buildBrowserStackUrl(String accessKey, String username) {
-    try {
-      return new URL("http://" + username + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub");
-    } catch (MalformedURLException exception) {
-      LOG.error("Can't create Browserstack connection URL", exception);
-      throw new BrowserstackException("Can't create Browserstack connection URL", exception);
-    }
   }
 }

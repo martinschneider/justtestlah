@@ -1,5 +1,6 @@
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/qa.justtestlah/justtestlah-core.svg)](http://mvnrepository.com/artifact/qa.justtestlah/justtestlah-core)
 [![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
+[![Coverage Status](https://coveralls.io/repos/github/martinschneider/justtestlah/badge.svg)](https://coveralls.io/github/martinschneider/justtestlah)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
@@ -58,7 +59,7 @@ Add the following Maven dependency to your `pom.xml`.
 
 ```xml
 <properties>
-  <justtestlah.version>1.7-RC2</justtestlah.version>
+  <justtestlah.version>1.7-RC5</justtestlah.version>
 </properties>
 
 <dependency>
@@ -553,9 +554,9 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12 and 13). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
+* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12, 13 and 14). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
 
-* The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 yet](https://github.com/openpnp/opencv/issues/44).
+* The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
 
 * The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
 

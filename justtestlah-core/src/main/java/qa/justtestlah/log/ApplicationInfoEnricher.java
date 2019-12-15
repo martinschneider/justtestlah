@@ -7,7 +7,6 @@ import ch.qos.logback.classic.spi.LoggerContextListener;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.LifeCycle;
-import java.util.Properties;
 import qa.justtestlah.configuration.PropertiesHolder;
 import qa.justtestlah.mobile.tools.ApplicationInfo;
 import qa.justtestlah.mobile.tools.ApplicationInfoService;
@@ -20,18 +19,20 @@ public class ApplicationInfoEnricher extends ContextAwareBase
 
   private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
 
+  private PropertiesHolder props = new PropertiesHolder();
+
   @Override
   public void start() {
     if (started) {
       return;
     }
-    Properties props = new PropertiesHolder().getProperties();
+    props.getProperties();
     Context context = getContext();
     String platform = props.getProperty("platform");
-    String appPath = props.getProperty(platform + ".appPath");
 
     StringBuilder strBuilder = new StringBuilder(platform.toUpperCase());
     if (platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios")) {
+      String appPath = props.getProperty(platform + ".appPath");
       ApplicationInfo appInfo = applicationInfoService.getAppInfo(appPath);
       if (appInfo != null && !appInfo.toString().isEmpty()) {
         strBuilder.append(" ");

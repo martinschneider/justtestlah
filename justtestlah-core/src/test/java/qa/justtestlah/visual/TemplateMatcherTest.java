@@ -110,7 +110,7 @@ public class TemplateMatcherTest {
   private static boolean javaVersionLessThan12() {
     String version = System.getProperty("java.version");
     LOG.info("Java version is {}", version);
-    if (version.startsWith("12") || version.startsWith("13")) {
+    if (version.startsWith("12") || version.startsWith("13") || version.startsWith("14")) {
       LOG.warn(
           "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/44). Skipping tests!",
           version);
