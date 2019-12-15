@@ -62,7 +62,29 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
   </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>sonatype-nexus-snapshot</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   <properties>
     <!-- Version properties -->
     <spring.version>5.2.2.RELEASE</spring.version>
@@ -72,7 +94,7 @@
     <cucumber.version>4.8.0</cucumber.version>
     <wiremock.version>2.25.1</wiremock.version>
     <!-- The gherkin version needs to match transitive dependency from Cucumber -->
-    <gherkin.version>5.1.0</gherkin.version>
+    <gherkin.version>5.2.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
     <applitools.version>3.158.9</applitools.version>
     <galen.version>2.4.4</galen.version>
@@ -677,6 +699,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.4.0-SNAPSHOT</version>
+        <configuration>
+          <repoToken>${coveralls.token}</repoToken>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>

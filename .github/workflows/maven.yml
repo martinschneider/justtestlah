@@ -20,13 +20,3 @@ jobs:
         architecture: x64
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-    - name: npm install, make test-coverage
-      run: |
-        npm install
-        make test-coverage
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
