@@ -94,7 +94,7 @@
     <cucumber.version>4.8.0</cucumber.version>
     <wiremock.version>2.25.1</wiremock.version>
     <!-- The gherkin version needs to match transitive dependency from Cucumber -->
-    <gherkin.version>5.2.0</gherkin.version>
+    <gherkin.version>5.1.0</gherkin.version>
     <opencv.version>3.4.2-1</opencv.version>
     <applitools.version>3.158.9</applitools.version>
     <galen.version>2.4.4</galen.version>

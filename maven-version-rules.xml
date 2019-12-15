@@ -10,7 +10,7 @@
     <rule groupId="io.cucumber" artifactId="gherkin"
       comparisonMethod="maven">
       <ignoreVersions>
-        <!-- Cucumber JVM doesn't support Gherkin 6+ yet -->
+        <ignoreVersion type="regex">5.2.*</ignoreVersion>
         <ignoreVersion type="regex">6.*</ignoreVersion>
         <ignoreVersion type="regex">7.*</ignoreVersion>
         <ignoreVersion type="regex">8.*</ignoreVersion>
