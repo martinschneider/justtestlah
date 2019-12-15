@@ -5,13 +5,7 @@
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern><logger name="webdriver" level="info" additivity="false">
-    <appender-ref ref="webdriver" />
-  </logger>
-  
-  <logger name="entryExit" level="info" additivity="false">
-    <appender-ref ref="entryExit" />
-  </logger>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
+      <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
       </pattern>
     </encoder>
   </appender>
