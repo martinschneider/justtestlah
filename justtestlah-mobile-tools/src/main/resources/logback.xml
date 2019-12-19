@@ -10,9 +10,6 @@
     </encoder>
   </appender>
 
-  <!-- Turning down the wiremock logging -->
-  <logger name="org.apache.http.wire" level="WARN" />
-    
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
