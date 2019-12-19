@@ -27,15 +27,11 @@ public class TestPackagerTest {
   @Test
   public void testMavenPackaging() throws MavenInvocationException, MalformedURLException,
       IOException, ReflectiveOperationException {
-
     String currentPath = Paths.get("").toFile().getAbsolutePath();
-
     MockitoAnnotations.initMocks(this);
     when(properties.getProperty("aws.demo.path")).thenReturn(currentPath);
     when(properties.getProperty("aws.testpackage.name")).thenReturn("justtestlah-awsdevicefarm");
-
     target = new TestPackager(properties);
-
     LOG.info("AWS Test package created: {}", target.packageProjectForDeviceFarm(false));
     assertThat(Files.exists(Paths.get(currentPath + File.separator + "target" + File.separator
         + "justtestlah-awsdevicefarm.zip"))).isTrue();
