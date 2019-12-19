@@ -1,11 +1,12 @@
 package qa.justtestlah.awsdevicefarm.utils;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class FormattingUtilsTest {
 

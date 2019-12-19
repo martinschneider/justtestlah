@@ -22,12 +22,9 @@ public class TestPackager {
     request.setPomFile(
         new File(properties.getProperty("aws.demo.path") + File.separator + "pom.xml"));
     request.setProfiles(List.of("aws"));
-    if (clean)
-    {
+    if (clean) {
       request.setGoals(List.of("clean", "package"));
-    }
-    else
-    {
+    } else {
       request.setGoals(List.of("package"));
     }
     request.setUpdateSnapshots(true);

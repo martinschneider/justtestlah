@@ -3,6 +3,7 @@ package qa.justtestlah.awsdevicefarm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
 import com.amazonaws.services.devicefarm.AWSDeviceFarm;
 import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.ListDevicesResult;
@@ -12,28 +13,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.util.ReflectionTestUtils;
 import qa.justtestlah.configuration.PropertiesHolder;
 
 public class DeviceFilterFactoryTest {
 
   private DeviceFilterFactory target;
 
-  @Mock
-  private PropertiesHolder properties;
+  @Mock private PropertiesHolder properties;
 
-  @Mock
-  private AWSDeviceFarm awsDeviceFarm;
+  @Mock private AWSService awsService;
 
-  @Mock
-  private ListDevicesResult listDevicesResult;
+  @Mock private AWSDeviceFarm awsDeviceFarm;
+
+  @Mock private ListDevicesResult listDevicesResult;
 
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
-    AWSService awsService = new AWSService();
-    ReflectionTestUtils.setField(awsService, "aws", awsDeviceFarm);
-
+    when(awsService.getAws()).thenReturn(awsDeviceFarm);
     when(properties.getProperty("platform")).thenReturn("android");
     when(awsDeviceFarm.listDevices(any())).thenReturn(listDevicesResult);
 

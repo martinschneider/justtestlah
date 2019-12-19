@@ -16,11 +16,15 @@ public class FormattingUtils {
   static Clock clock = Clock.systemDefaultZone();
 
   public static String formatMilliseconds(long millis) {
-    return String.format(DURATION_FORMAT, TimeUnit.MILLISECONDS.toHours(millis),
-        Math.abs(TimeUnit.MILLISECONDS.toMinutes(millis)
-            - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))),
-        Math.abs(TimeUnit.MILLISECONDS.toSeconds(millis)
-            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
+    return String.format(
+        DURATION_FORMAT,
+        TimeUnit.MILLISECONDS.toHours(millis),
+        Math.abs(
+            TimeUnit.MILLISECONDS.toMinutes(millis)
+                - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))),
+        Math.abs(
+            TimeUnit.MILLISECONDS.toSeconds(millis)
+                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))));
   }
 
   public static String getCurrentTimestamp() {
