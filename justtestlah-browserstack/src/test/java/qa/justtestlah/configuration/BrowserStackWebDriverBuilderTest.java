@@ -11,7 +11,8 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.joran.util.ConfigurationWatchListUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import java.io.IOException;
@@ -46,6 +47,14 @@ public class BrowserStackWebDriverBuilderTest {
 
   @BeforeClass
   public static void setup() throws IOException {
+    
+    LoggerContext loggerContext = ((ch.qos.logback.classic.Logger)LOG).getLoggerContext();
+    URL mainURL = ConfigurationWatchListUtil.getMainWatchURL(loggerContext);
+    System.out.println(mainURL);
+    // or even
+    LOG.info("Logback used '{}' as the configuration file.", mainURL);
+    
+    
     // Wiremock setup
     wireMockPort = getAvailablePort();
     wireMockServer = new WireMockServer(options().port(wireMockPort));
