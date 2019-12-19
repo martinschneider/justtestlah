@@ -774,7 +774,7 @@
           </execution>
         </executions>
         <configuration>
-          <failOnWarning>false</failOnWarning>
+          <failOnWarning>true</failOnWarning>
         </configuration>
       </plugin>
     </plugins>
