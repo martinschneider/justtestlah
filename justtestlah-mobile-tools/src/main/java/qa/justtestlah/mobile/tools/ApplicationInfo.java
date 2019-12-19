@@ -43,4 +43,43 @@ public class ApplicationInfo {
     this.versionName = versionName;
     this.versionCode = versionCode;
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((applicationName == null) ? 0 : applicationName.hashCode());
+    result = prime * result + ((versionCode == null) ? 0 : versionCode.hashCode());
+    result = prime * result + ((versionName == null) ? 0 : versionName.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    ApplicationInfo other = (ApplicationInfo) obj;
+    if (applicationName == null) {
+      if (other.applicationName != null)
+        return false;
+    } else if (!applicationName.equals(other.applicationName))
+      return false;
+    if (versionCode == null) {
+      if (other.versionCode != null)
+        return false;
+    } else if (!versionCode.equals(other.versionCode))
+      return false;
+    if (versionName == null) {
+      if (other.versionName != null)
+        return false;
+    } else if (!versionName.equals(other.versionName))
+      return false;
+    return true;
+  }
+
+
 }

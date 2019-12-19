@@ -58,6 +58,7 @@ public class ApplicationInfoService {
       zipFile.extractAll(tmpFolder);
     } catch (ZipException exception) {
       LOG.error(String.format("Error extracting files from %s", appPath), exception);
+      return null;
     }
 
     // retrieve application info
@@ -112,7 +113,7 @@ public class ApplicationInfoService {
     return new ApplicationInfo(applicationName, versionName, versionCode);
   }
 
-  private NSDictionary getDictionary(File path) {
+  NSDictionary getDictionary(File path) {
     try {
       return (NSDictionary) PropertyListParser.parse(path);
     } catch (IOException
