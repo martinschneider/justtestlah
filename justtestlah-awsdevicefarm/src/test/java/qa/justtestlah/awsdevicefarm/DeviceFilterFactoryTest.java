@@ -3,7 +3,6 @@ package qa.justtestlah.awsdevicefarm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
 import com.amazonaws.services.devicefarm.AWSDeviceFarm;
 import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.ListDevicesResult;
