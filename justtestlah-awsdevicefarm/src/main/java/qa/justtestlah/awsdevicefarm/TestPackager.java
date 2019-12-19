@@ -17,6 +17,13 @@ public class TestPackager {
     this.properties = properties;
   }
 
+  /**
+   * Creates a test package for AWS Devicefarm.
+   * 
+   * @param clean true, if the target directory should be cleaned (forcing recompilation)
+   * @return {@link File} of the ZIP package to be used by AWS Devicefarm
+   * @throws MavenInvocationException
+   */
   public File packageProjectForDeviceFarm(boolean clean) throws MavenInvocationException {
     InvocationRequest request = new DefaultInvocationRequest();
     request.setPomFile(
