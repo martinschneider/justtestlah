@@ -1,6 +1,7 @@
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/qa.justtestlah/justtestlah-core.svg)](http://mvnrepository.com/artifact/qa.justtestlah/justtestlah-core)
 [![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
 [![Coverage Status](https://codecov.io/gh/martinschneider/justtestlah/branch/master/graph/badge.svg)](https://codecov.io/gh/martinschneider/justtestlah)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6be39f81b7341769e8c67ed26b29b19)](https://www.codacy.com/manual/martinschneider/justtestlah?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=martinschneider/justtestlah&amp;utm_campaign=Badge_Grade)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
 
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
