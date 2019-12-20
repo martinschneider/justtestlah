@@ -49,7 +49,7 @@ public class TestSpecFactory {
     testSpec =
         testSpec.replace(
             "__JUSTTESTLAH_PROPERTIES_BASE64__",
-            Base64.encodeAsString(justTestLahProperties.toString().getBytes()));
+            Base64.encodeAsString(justTestLahProperties.toString().replaceAll("(?m)^#.*", "").getBytes()));
 
     LOG.info("Test spec file: \n{}", testSpec);
     String path = System.getProperty("java.io.tmpdir") + "aws-devicefarm-testspec.yml";
