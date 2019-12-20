@@ -2,6 +2,7 @@ package qa.justtestlah.awsdevicefarm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,19 +22,26 @@ public class TestPackagerTest {
 
   private TestPackager target;
 
-  @Mock
-  private PropertiesHolder properties;
+  @Mock private PropertiesHolder properties;
 
   @Test
-  public void testMavenPackaging() throws MavenInvocationException, MalformedURLException,
-      IOException, ReflectiveOperationException {
+  public void testMavenPackaging()
+      throws MavenInvocationException, MalformedURLException, IOException,
+          ReflectiveOperationException {
     String currentPath = Paths.get("").toFile().getAbsolutePath();
     MockitoAnnotations.initMocks(this);
     when(properties.getProperty("aws.demo.path")).thenReturn(currentPath);
     when(properties.getProperty("aws.testpackage.name")).thenReturn("justtestlah-awsdevicefarm");
     target = new TestPackager(properties);
     LOG.info("AWS Test package created: {}", target.packageProjectForDeviceFarm(false));
-    assertThat(Files.exists(Paths.get(currentPath + File.separator + "target" + File.separator
-        + "justtestlah-awsdevicefarm.zip"))).isTrue();
+    assertThat(
+            Files.exists(
+                Paths.get(
+                    currentPath
+                        + File.separator
+                        + "target"
+                        + File.separator
+                        + "justtestlah-awsdevicefarm.zip")))
+        .isTrue();
   }
 }

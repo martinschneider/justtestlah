@@ -1,6 +1,7 @@
 package qa.justtestlah.integration.pages;
 
 import static qa.justtestlah.configuration.Platform.Constants.WEB;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.ScreenIdentifier;

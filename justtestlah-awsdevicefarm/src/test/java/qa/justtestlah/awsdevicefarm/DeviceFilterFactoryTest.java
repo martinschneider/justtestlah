@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
+
 import com.amazonaws.services.devicefarm.AWSDeviceFarm;
 import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.ListDevicesResult;
@@ -21,35 +22,39 @@ public class DeviceFilterFactoryTest {
 
   private DeviceFilterFactory target;
 
-  @Mock
-  private PropertiesHolder properties;
+  @Mock private PropertiesHolder properties;
 
-  @Mock
-  private AWSService awsService;
+  @Mock private AWSService awsService;
 
-  @Mock
-  private AWSDeviceFarm awsDeviceFarm;
+  @Mock private AWSDeviceFarm awsDeviceFarm;
 
-  @Mock
-  private ListDevicesResult resultHighlyAvailable;
+  @Mock private ListDevicesResult resultHighlyAvailable;
 
-  @Mock
-  private ListDevicesResult resultAvailable;
+  @Mock private ListDevicesResult resultAvailable;
 
-  @Mock
-  private ListDevicesResult resultBusy;
+  @Mock private ListDevicesResult resultBusy;
 
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
     when(awsService.getAws()).thenReturn(awsDeviceFarm);
     when(properties.getProperty("platform")).thenReturn("android");
-    doReturn(resultHighlyAvailable).when(awsDeviceFarm).listDevices(argThat(
-        argument -> argument.getFilters().contains(DeviceFilterConstants.HIGHLY_AVAILABLE_FILTER)));
-    doReturn(resultAvailable).when(awsDeviceFarm).listDevices(argThat(
-        argument -> argument.getFilters().contains(DeviceFilterConstants.AVAILABLE_FILTER)));
-    doReturn(resultBusy).when(awsDeviceFarm).listDevices(
-        argThat(argument -> argument.getFilters().contains(DeviceFilterConstants.BUSY_FILTER)));
+    doReturn(resultHighlyAvailable)
+        .when(awsDeviceFarm)
+        .listDevices(
+            argThat(
+                argument ->
+                    argument.getFilters().contains(DeviceFilterConstants.HIGHLY_AVAILABLE_FILTER)));
+    doReturn(resultAvailable)
+        .when(awsDeviceFarm)
+        .listDevices(
+            argThat(
+                argument ->
+                    argument.getFilters().contains(DeviceFilterConstants.AVAILABLE_FILTER)));
+    doReturn(resultBusy)
+        .when(awsDeviceFarm)
+        .listDevices(
+            argThat(argument -> argument.getFilters().contains(DeviceFilterConstants.BUSY_FILTER)));
     target = new DeviceFilterFactory(properties, awsService);
   }
 
@@ -83,5 +88,4 @@ public class DeviceFilterFactoryTest {
     when(properties.getProperty("aws.waitForDevice")).thenReturn("false");
     assertThat(target.getDeviceFilters()).isNotNull().isNotEmpty();
   }
-
 }

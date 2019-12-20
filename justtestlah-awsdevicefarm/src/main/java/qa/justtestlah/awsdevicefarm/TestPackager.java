@@ -19,7 +19,7 @@ public class TestPackager {
 
   /**
    * Creates a test package for AWS Devicefarm.
-   * 
+   *
    * @param clean true, if the target directory should be cleaned (forcing recompilation)
    * @return {@link File} of the ZIP package to be used by AWS Devicefarm
    * @throws MavenInvocationException

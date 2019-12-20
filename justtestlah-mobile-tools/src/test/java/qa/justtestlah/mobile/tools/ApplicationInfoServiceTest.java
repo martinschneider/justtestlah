@@ -1,6 +1,7 @@
 package qa.justtestlah.mobile.tools;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -45,10 +46,11 @@ public class ApplicationInfoServiceTest {
 
   @Test
   @UseDataProvider("testData")
-  public void testApplicationMetaInfo(String fileName, String applicationName, String versionName,
-      String versionCode) {
-    ApplicationInfo appInfo = target.getAppInfo(
-        ApplicationInfoServiceTest.class.getClassLoader().getResource(fileName).getFile());
+  public void testApplicationMetaInfo(
+      String fileName, String applicationName, String versionName, String versionCode) {
+    ApplicationInfo appInfo =
+        target.getAppInfo(
+            ApplicationInfoServiceTest.class.getClassLoader().getResource(fileName).getFile());
     assertThat(appInfo.getApplicationName()).isEqualTo(applicationName);
     assertThat(appInfo.getVersionName()).isEqualTo(versionName);
     assertThat(appInfo.getVersionCode()).isEqualTo(versionCode);
@@ -56,7 +58,10 @@ public class ApplicationInfoServiceTest {
 
   @DataProvider
   public static Object[][] testData() {
-    return new Object[][] {{"test.apk", "Uncrackable1", "1.0", "1"},
-        {"test.ipa", "UnCrackable1", "1.0", "1"}, {"test.app", "UnCrackable1", "1.0", "1"}};
+    return new Object[][] {
+      {"test.apk", "Uncrackable1", "1.0", "1"},
+      {"test.ipa", "UnCrackable1", "1.0", "1"},
+      {"test.app", "UnCrackable1", "1.0", "1"}
+    };
   }
 }
