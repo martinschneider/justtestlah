@@ -29,8 +29,8 @@ public class ApplicationInfoServiceTest {
 
   @Test
   public void testNonExistingApkFile() {
-    assertThat(target.getAppInfo("doesnotexist.apk"))
-        .isEqualTo(new ApplicationInfo("unknown", "unknown", "unknown"));
+    assertThat(target.getAppInfo("doesnotexist.apk").toString())
+        .isEqualTo("unknown unknown_unknown");
   }
 
   @Test
