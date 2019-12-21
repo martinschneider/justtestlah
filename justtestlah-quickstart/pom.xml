@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>qa.justtestlah</groupId>
+    <artifactId>justtestlah-parent</artifactId>
+    <version>1.7-RC5</version>
+  </parent>
+  <artifactId>justtestlah-quickstart</artifactId>
+  <packaging>maven-archetype</packaging>
+  <properties>
+    <version.rules.configuration>file:///${project.basedir}/../maven-version-rules.xml</version.rules.configuration>
+  </properties>
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>3.1.1</version>
+      </extension>
+    </extensions>
+  </build>
+</project>

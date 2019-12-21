@@ -6,34 +6,6 @@
 
 JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
 
-<!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
-<!--
-
-Disabling the TOC because anchors are rendered differently by Github and the Maven site plugin (leading to broken links):
-https://issues.apache.org/jira/browse/MSITE-834
-
-- [Getting started](#getting-started)   
-- [Use in your own projects](#use-in-your-own-projects)   
-- [Page objects, steps and feature files](#page-objects-steps-and-feature-files)   
-- [Configuration](#configuration)   
-- [Test runner](#test-runner)   
-- [Locators](#locators)   
-   - [Placeholders](#placeholders)   
-- [Test data handling](#test-data-handling)   
-- [Cloud service integrations](#cloud-service-integrations)   
-   - [Browserstack](#browserstack)   
-   - [AWS Devicefarm](#aws-devicefarm)   
-- [Template matching](#template-matching)   
-   - [Matching threshold](#matching-threshold)   
-   - [Client and server-mode matching](#client-and-server-mode-matching)   
-- [Applitools](#applitools)   
-- [Galen](#galen)   
-- [Used libraries](#used-libraries)
-- [Known issues & limitations](#known-issues-limitations)   
-- [Contact and support](#contact-and-support)   -->
-
-<!-- /MDTOC -->
-
 ## Getting started
 Pull the repo and run the example.
 
@@ -77,19 +49,33 @@ Both demos are very simple, please [create a pull request](https://github.com/ma
 
 ## Use in your own projects
 
-Add the following Maven dependency to your `pom.xml`.
+### Option 1: Using Maven archetype
+
+A fast way to get a working template project is using the JustTestLah! [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html):
+```bash
+mvn archetype:generate -DarchetypeGroupId=qa.justtestlah -DarchetypeArtifactId=justtestlah-quickstart
+```
+
+### Option 2: Manual setup using Maven
+Add the following to your `pom.xml`:
 
 ```xml
-<properties>
-  <justtestlah.version>1.7</justtestlah.version>
-</properties>
-
 <dependency>
-  <groupId>qa.justtestlah</groupId>
-  <artifactId>justtestlah-core</artifactId>
-  <version>${justtestlah.version}</version>
+    <groupId>qa.justtestlah</groupId>
+    <artifactId>justtestlah-core</artifactId>
+    <version>1.7</version>
 </dependency>
 ```
+
+### Option 3: Manual setup using Gradle
+Add the following to your `build.gradle`:
+
+```yaml
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.7'
+```
+
+### Option 4: Manual setup
+Add [`justtestlah-core-1.7.jar`](https://repo1.maven.org/maven2/qa/justtestlah/justtestlah-core/1.7/justtestlah-core-1.7.jar) to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:

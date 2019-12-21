@@ -1,0 +1,9 @@
+SEARCH_FIELD:
+  web:
+    type: css
+    value: input[name=q]
+    
+SEARCH_RESULT:
+  web:
+    type: id
+    value: search
