@@ -8,13 +8,13 @@ import java.util.concurrent.TimeUnit;
 /** Formatting helper methods. */
 public class FormattingUtils {
 
-  private FormattingUtils() {}
-
   private static final String DURATION_FORMAT = "%02d:%02d:%02d";
   private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd_HH:mm";
 
-  static Clock clock = Clock.systemDefaultZone();
+  protected static Clock clock = Clock.systemDefaultZone();
 
+  private FormattingUtils() {}
+  
   public static String formatMilliseconds(long millis) {
     return String.format(
         DURATION_FORMAT,

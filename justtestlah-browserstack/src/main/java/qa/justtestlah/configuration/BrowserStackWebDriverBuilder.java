@@ -140,7 +140,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
       }
       try {
         String browserstackAppUrl =
-            new JsonParser().parse(responseString).getAsJsonObject().get("app_url").getAsString();
+            JsonParser.parseString(responseString).getAsJsonObject().get("app_url").getAsString();
         LOG.info("Successfully uploaded app package to {}", browserstackAppUrl);
         this.appUrl = browserstackAppUrl;
         return browserstackAppUrl;

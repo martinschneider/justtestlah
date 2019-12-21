@@ -151,7 +151,7 @@ public class AWSTestRunner extends Runner {
       do {
         elapsedTime = System.currentTimeMillis() - currentStartTime;
       } while (elapsedTime < 10000);
-    } while (!status.equals("COMPLETED"));
+    } while (!"COMPLETED".equals(status));
     LOG.info("{} device minutes used", run.getDeviceMinutes().getTotal());
     return run.getResult();
   }

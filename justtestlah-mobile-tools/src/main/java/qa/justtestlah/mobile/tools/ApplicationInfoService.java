@@ -123,7 +123,7 @@ public class ApplicationInfoService {
         | SAXException exception) {
       String errorMessage = String.format("Error reading dictionary from %s", path);
       LOG.error(errorMessage, exception);
-      throw new RuntimeException("errorMessage", exception);
+      throw new MobileToolsException("errorMessage", exception);
     }
   }
 

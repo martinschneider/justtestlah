@@ -8,8 +8,6 @@ import com.amazonaws.services.devicefarm.model.RuleOperator;
 /** Pre-defined device filters for {@link DeviceAvailability}. */
 public class DeviceFilterConstants {
 
-  private DeviceFilterConstants() {}
-
   public static final DeviceFilter AVAILABLE_FILTER =
       new DeviceFilter()
           .withAttribute(DeviceFilterAttribute.AVAILABILITY)
@@ -27,4 +25,7 @@ public class DeviceFilterConstants {
           .withAttribute(DeviceFilterAttribute.AVAILABILITY)
           .withOperator(RuleOperator.EQUALS)
           .withValues(DeviceAvailability.BUSY.toString());
+
+  private DeviceFilterConstants() {}
+  
 }

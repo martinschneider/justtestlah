@@ -214,7 +214,7 @@ public class JustTestLahRunner extends ParentRunner<FeatureRunner> {
     multiThreadingAssumed = true;
   }
 
-  String buildCucumberOptions() {
+  protected String buildCucumberOptions() {
     StringBuilder cucumberOptions = new StringBuilder();
     cucumberOptions.append("--tags '@" + properties.getProperty(PLATFORM_KEY, DEFAULT_PLATFORM));
     String tags = properties.getProperty(TAGS_KEY, null);

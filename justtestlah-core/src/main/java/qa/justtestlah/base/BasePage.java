@@ -43,10 +43,6 @@ public abstract class BasePage<T> extends Base {
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
 
-  protected LocatorMap getLocators() {
-    return locators;
-  }
-
   @Autowired private LocatorParser locatorParser;
 
   @Autowired private TemplateMatcher templateMatcher;
@@ -58,6 +54,10 @@ public abstract class BasePage<T> extends Base {
   @Autowired private List<GalenTestInfo> galenTests;
 
   @Autowired private ImageUtils imageUtils;
+  
+  protected LocatorMap getLocators() {
+	    return locators;
+	  }
 
   /**
    * Selenide style locator.
@@ -234,7 +234,6 @@ public abstract class BasePage<T> extends Base {
   @SuppressWarnings("unchecked")
   public T verify(int timeout) {
     boolean initialCheck = true;
-    int initialTimeout = timeout;
     // Applitools
     checkWindow();
     // Galen
@@ -249,14 +248,17 @@ public abstract class BasePage<T> extends Base {
               locators.getRawLocator(identifier, configuration.getPlatform());
           try {
             // only use the timeout for the first check
-            if (!initialCheck) {
-              timeout = 0;
+            if (initialCheck) {
+            	$(identifier).waitUntil(appear, timeout).isDisplayed();
             }
-            $(identifier).waitUntil(appear, timeout).isDisplayed();
+            else
+            {
+            	$(identifier).waitUntil(appear, 0).isDisplayed();
+            }
             initialCheck = false;
           } catch (ElementNotFound exception) {
             throw new ScreenVerificationException(
-                identifier, rawLocator, this.getClass().getSimpleName(), initialTimeout);
+                identifier, rawLocator, this.getClass().getSimpleName(), timeout);
           }
           LOG.info(
               "[OK] {} is displayed {}:{}",
