@@ -17,7 +17,7 @@ import qa.justtestlah.configuration.PropertiesHolder;
 public class JustTestLahRunnerTest {
 
   private JustTestLahRunner target;
-  
+
   @Rule public ExpectedException exceptionRule = ExpectedException.none();
 
   @Test

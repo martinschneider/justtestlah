@@ -37,7 +37,7 @@ public class LocatorMap {
   private static final String ACCESIBILITY_ID = "accesibilityId";
   private static final String UIAUTOMATOR = "uiAutomator";
   private static final String IMAGE = "image";
-  
+
   /** Default constructor. */
   public LocatorMap() {
     this.map = new HashMap<>();

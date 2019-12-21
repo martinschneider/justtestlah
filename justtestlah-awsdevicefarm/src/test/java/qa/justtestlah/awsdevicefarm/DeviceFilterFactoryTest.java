@@ -35,7 +35,7 @@ public class DeviceFilterFactoryTest {
   @Mock private ListDevicesResult resultBusy;
 
   @Before
-  public void setup() {
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
     when(awsService.getAws()).thenReturn(awsDeviceFarm);
     when(properties.getProperty("platform")).thenReturn("android");

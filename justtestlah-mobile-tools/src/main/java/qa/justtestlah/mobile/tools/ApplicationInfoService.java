@@ -113,7 +113,7 @@ public class ApplicationInfoService {
     return new ApplicationInfo(applicationName, versionName, versionCode);
   }
 
-  NSDictionary getDictionary(File path) {
+  protected NSDictionary getDictionary(File path) {
     try {
       return (NSDictionary) PropertyListParser.parse(path);
     } catch (IOException

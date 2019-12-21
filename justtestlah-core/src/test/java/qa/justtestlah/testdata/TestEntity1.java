@@ -3,8 +3,8 @@ package qa.justtestlah.testdata;
 @TestData("entity1")
 public class TestEntity1 {
 
-	  private String value;
-	
+  private String value;
+
   public TestEntity1() {}
 
   public TestEntity1(String value) {

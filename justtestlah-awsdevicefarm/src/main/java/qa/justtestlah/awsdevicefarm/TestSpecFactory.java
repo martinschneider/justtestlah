@@ -1,7 +1,6 @@
 package qa.justtestlah.awsdevicefarm;
 
 import com.amazonaws.util.Base64;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -51,10 +50,12 @@ public class TestSpecFactory {
     testSpec =
         testSpec.replace(
             "__JUSTTESTLAH_PROPERTIES_BASE64__",
-            Base64.encodeAsString(justTestLahProperties.toString().replaceAll("(?m)^#.*", "").getBytes()));
+            Base64.encodeAsString(
+                justTestLahProperties.toString().replaceAll("(?m)^#.*", "").getBytes()));
 
     LOG.info("Test spec file: \n{}", testSpec);
-    String path = System.getProperty("java.io.tmpdir") + File.separator + "aws-devicefarm-testspec.yml";
+    String path =
+        System.getProperty("java.io.tmpdir") + File.separator + "aws-devicefarm-testspec.yml";
     Files.write(Paths.get(path), testSpec.getBytes());
     return path;
   }

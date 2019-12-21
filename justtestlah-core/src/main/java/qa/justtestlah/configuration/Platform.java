@@ -21,7 +21,7 @@ public enum Platform {
     public static final String WEB = "web";
     public static final String IOS = "ios";
     public static final String ANDROID = "android";
-  
+
     private Constants() {}
   }
 }

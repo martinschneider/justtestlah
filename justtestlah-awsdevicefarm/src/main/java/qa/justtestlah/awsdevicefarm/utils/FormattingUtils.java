@@ -14,7 +14,7 @@ public class FormattingUtils {
   protected static Clock clock = Clock.systemDefaultZone();
 
   private FormattingUtils() {}
-  
+
   public static String formatMilliseconds(long millis) {
     return String.format(
         DURATION_FORMAT,

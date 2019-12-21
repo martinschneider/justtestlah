@@ -27,5 +27,4 @@ public class DeviceFilterConstants {
           .withValues(DeviceAvailability.BUSY.toString());
 
   private DeviceFilterConstants() {}
-  
 }

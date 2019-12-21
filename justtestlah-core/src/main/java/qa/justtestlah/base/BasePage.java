@@ -54,10 +54,10 @@ public abstract class BasePage<T> extends Base {
   @Autowired private List<GalenTestInfo> galenTests;
 
   @Autowired private ImageUtils imageUtils;
-  
+
   protected LocatorMap getLocators() {
-	    return locators;
-	  }
+    return locators;
+  }
 
   /**
    * Selenide style locator.
@@ -249,11 +249,9 @@ public abstract class BasePage<T> extends Base {
           try {
             // only use the timeout for the first check
             if (initialCheck) {
-            	$(identifier).waitUntil(appear, timeout).isDisplayed();
-            }
-            else
-            {
-            	$(identifier).waitUntil(appear, 0).isDisplayed();
+              $(identifier).waitUntil(appear, timeout).isDisplayed();
+            } else {
+              $(identifier).waitUntil(appear, 0).isDisplayed();
             }
             initialCheck = false;
           } catch (ElementNotFound exception) {

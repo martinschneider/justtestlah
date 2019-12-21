@@ -3,10 +3,10 @@ package qa.justtestlah.mobile.tools;
 /** DTO to hold application meta information. */
 public class ApplicationInfo {
 
-	  private String applicationName;
-	  private String versionName;
-	  private String versionCode;
-	
+  private String applicationName;
+  private String versionName;
+  private String versionCode;
+
   /** Return the full application information. */
   @Override
   public String toString() {

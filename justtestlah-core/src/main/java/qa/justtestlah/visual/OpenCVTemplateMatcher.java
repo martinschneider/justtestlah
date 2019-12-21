@@ -31,7 +31,7 @@ import qa.justtestlah.configuration.JustTestLahConfiguration;
 public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(OpenCVTemplateMatcher.class);
-  
+
   private JustTestLahConfiguration configuration;
 
   @Autowired private ImageUtils imageUtils;

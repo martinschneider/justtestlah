@@ -10,12 +10,12 @@ public abstract class AbstractCucumberHook implements CucumberHook {
 
   @Override
   public void before(Scenario scenario) {
-	  // do nothing
+    // do nothing
   }
 
   @Override
   public void after(Scenario scenario) {
-	  // do nothing
+    // do nothing
   }
 
   @Override

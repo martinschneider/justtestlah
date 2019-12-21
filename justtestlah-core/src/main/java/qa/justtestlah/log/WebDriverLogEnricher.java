@@ -26,14 +26,14 @@ import qa.justtestlah.configuration.PropertiesHolder;
  */
 public class WebDriverLogEnricher implements WebDriverEventListener {
 
-	  // filter to match log lines related to fetching the log
-	  private static final String REGEXP_FILTER =
-	      ".*Retrieving .* log.*|.*Calling AppiumDriver.getLog.*|Responding to client with driver.getLog.*|.*POST.*log.*|.*\\{\"type\":\"server\"\\}.*";
+  // filter to match log lines related to fetching the log
+  private static final String REGEXP_FILTER =
+      ".*Retrieving .* log.*|.*Calling AppiumDriver.getLog.*|Responding to client with driver.getLog.*|.*POST.*log.*|.*\\{\"type\":\"server\"\\}.*";
 
-	  private static final Logger LOG = LoggerFactory.getLogger("webdriver");
+  private static final Logger LOG = LoggerFactory.getLogger("webdriver");
 
-	  private List<String> logTypes = new ArrayList<>();
-	
+  private List<String> logTypes = new ArrayList<>();
+
   public WebDriverLogEnricher() {
     String property = new PropertiesHolder().getOptionalProperty("additionalLogTypes");
     if (property != null && !property.isEmpty()) {

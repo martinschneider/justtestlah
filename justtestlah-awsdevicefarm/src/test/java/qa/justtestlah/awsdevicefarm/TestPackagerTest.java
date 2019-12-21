@@ -20,8 +20,6 @@ public class TestPackagerTest {
 
   private Logger LOG = LoggerFactory.getLogger(TestPackagerTest.class);
 
-  private TestPackager target;
-
   @Mock private PropertiesHolder properties;
 
   @Test
@@ -32,8 +30,9 @@ public class TestPackagerTest {
     MockitoAnnotations.initMocks(this);
     when(properties.getProperty("aws.demo.path")).thenReturn(currentPath);
     when(properties.getProperty("aws.testpackage.name")).thenReturn("justtestlah-awsdevicefarm");
-    target = new TestPackager(properties);
-    LOG.info("AWS Test package created: {}", target.packageProjectForDeviceFarm(false));
+    LOG.info(
+        "AWS Test package created: {}",
+        new TestPackager(properties).packageProjectForDeviceFarm(false));
     assertThat(
             Files.exists(
                 Paths.get(
