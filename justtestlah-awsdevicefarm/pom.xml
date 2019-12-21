@@ -21,12 +21,13 @@
   </licenses>
   <properties>
     <version.rules.configuration>file:///${project.basedir}/../maven-version-rules.xml</version.rules.configuration>
+    <justtestlah.version>${project.version}</justtestlah.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-core</artifactId>
-      <version>${project.version}</version>
+      <version>${justtestlah.version}</version>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
@@ -72,6 +73,9 @@
   <profiles>
     <profile>
       <id>aws</id>
+      <properties>
+        <justtestlah.version>1.7-RC5</justtestlah.version>
+      </properties>
       <build>
         <plugins>
           <plugin>
