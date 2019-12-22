@@ -12,11 +12,11 @@ import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
  */
 public class Match {
 
-  private boolean found;
-  private int matchX;
-  private int matchY;
-  private byte[] visualization;
-
+	  private boolean found;
+	  private int matchX;
+	  private int matchY;
+	  private byte[] visualization;
+	
   /**
    * Constructor.
    *

@@ -1,10 +1,11 @@
 package qa.justtestlah.steps;
 
-import io.cucumber.core.api.Scenario;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import qa.justtestlah.configuration.SpringConfig;
 import qa.justtestlah.hooks.ApplitoolsHooks;
 import qa.justtestlah.hooks.CucumberHook;
