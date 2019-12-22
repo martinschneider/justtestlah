@@ -58,6 +58,7 @@ public class ApplicationInfoService {
       zipFile.extractAll(tmpFolder);
     } catch (ZipException exception) {
       LOG.error(String.format("Error extracting files from %s", appPath), exception);
+      return null;
     }
 
     // retrieve application info
@@ -112,7 +113,7 @@ public class ApplicationInfoService {
     return new ApplicationInfo(applicationName, versionName, versionCode);
   }
 
-  private NSDictionary getDictionary(File path) {
+  protected NSDictionary getDictionary(File path) {
     try {
       return (NSDictionary) PropertyListParser.parse(path);
     } catch (IOException
@@ -122,7 +123,7 @@ public class ApplicationInfoService {
         | SAXException exception) {
       String errorMessage = String.format("Error reading dictionary from %s", path);
       LOG.error(errorMessage, exception);
-      throw new RuntimeException("errorMessage", exception);
+      throw new MobileToolsException("errorMessage", exception);
     }
   }
 

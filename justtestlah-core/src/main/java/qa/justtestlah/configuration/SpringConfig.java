@@ -83,13 +83,13 @@ public class SpringConfig {
    */
   @Bean
   public WebDriverBuilder webDriverBuilder() {
-    if (cloudProvider.equals("local")) {
+    if ("local".equals(cloudProvider)) {
       return new LocalWebDriverBuilder();
     }
     // TODO: use Spring to contribute WebDriverBuilders from other modules instead
     // of hard-coding
     // the class names
-    else if (cloudProvider.equals("browserstack")) {
+    else if ("browserstack".equals(cloudProvider)) {
       try {
         return getWebDriverBuilder(BROWSER_STACK_WEB_DRIVER_BUILDER_CLASS);
       } catch (Exception exception) {
@@ -115,7 +115,7 @@ public class SpringConfig {
   @Bean
   public TemplateMatcher templateMatcher() {
     ImageUtils imageUtils = new ImageUtils();
-    if (openCVmode.equals("server")) {
+    if ("server".equals(openCVmode)) {
       return new AppiumTemplateMatcher(imageUtils);
     } else {
       return new OpenCVTemplateMatcher(imageUtils);

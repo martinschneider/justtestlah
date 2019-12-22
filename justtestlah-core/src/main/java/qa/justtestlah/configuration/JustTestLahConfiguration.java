@@ -113,7 +113,7 @@ public class JustTestLahConfiguration {
   }
 
   public boolean isOpenCvEnabled() {
-    return openCVMode.equals("client");
+    return "client".equals(openCVMode);
   }
 
   public String getGalenReportDirectory() {

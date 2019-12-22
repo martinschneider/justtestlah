@@ -117,6 +117,7 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
         break;
       default:
         logger.debug(message);
+        break;
     }
   }
 

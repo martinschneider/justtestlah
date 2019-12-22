@@ -18,6 +18,8 @@ public class JustTestLahRunnerTest {
 
   private JustTestLahRunner target;
 
+  @Rule public ExpectedException exceptionRule = ExpectedException.none();
+
   @Test
   @UseDataProvider("testData")
   public void testBuildCucumberOptions(String propertiesFile, String expectedCucumberOptions)
@@ -30,8 +32,6 @@ public class JustTestLahRunnerTest {
         .as("check cucumber options")
         .isEqualTo(expectedCucumberOptions);
   }
-
-  @Rule public ExpectedException exceptionRule = ExpectedException.none();
 
   @Test
   public void testInvalidCharactersInCucumberOptions() throws InitializationError, IOException {

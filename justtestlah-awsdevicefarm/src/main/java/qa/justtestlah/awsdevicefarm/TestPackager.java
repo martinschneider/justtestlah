@@ -17,12 +17,23 @@ public class TestPackager {
     this.properties = properties;
   }
 
-  public File packageProjectForDeviceFarm() throws MavenInvocationException {
+  /**
+   * Creates a test package for AWS Devicefarm.
+   *
+   * @param clean true, if the target directory should be cleaned (forcing recompilation)
+   * @return {@link File} of the ZIP package to be used by AWS Devicefarm
+   * @throws MavenInvocationException
+   */
+  public File packageProjectForDeviceFarm(boolean clean) throws MavenInvocationException {
     InvocationRequest request = new DefaultInvocationRequest();
     request.setPomFile(
         new File(properties.getProperty("aws.demo.path") + File.separator + "pom.xml"));
     request.setProfiles(List.of("aws"));
-    request.setGoals(List.of("clean", "package"));
+    if (clean) {
+      request.setGoals(List.of("clean", "package"));
+    } else {
+      request.setGoals(List.of("package"));
+    }
     request.setUpdateSnapshots(true);
     new DefaultInvoker().execute(request);
     return new File(

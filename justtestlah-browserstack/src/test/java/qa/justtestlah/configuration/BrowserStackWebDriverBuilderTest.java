@@ -45,7 +45,7 @@ public class BrowserStackWebDriverBuilderTest {
   private static int wireMockPort;
 
   @BeforeClass
-  public static void setup() throws IOException {
+  public static void setUp() throws IOException {
     // Wiremock setup
     wireMockPort = getAvailablePort();
     wireMockServer = new WireMockServer(options().port(wireMockPort));
@@ -86,7 +86,7 @@ public class BrowserStackWebDriverBuilderTest {
   }
 
   @AfterClass
-  public static void teardown() {
+  public static void tearDown() {
     wireMockServer.stop();
   }
 

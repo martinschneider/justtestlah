@@ -117,23 +117,23 @@ public class TestDataMap {
   }
 
   // for unit testing
-  void setRegistry(TestDataObjectRegistry registry) {
+  protected void setRegistry(TestDataObjectRegistry registry) {
     this.registry = registry;
   }
 
-  void setFilter(String filter) {
+  protected void setFilter(String filter) {
     this.filter = filter;
   }
 
-  void setParser(TestDataParser parser) {
+  protected void setParser(TestDataParser parser) {
     this.parser = parser;
   }
 
-  void setModelPackage(String modelPackage) {
+  protected void setModelPackage(String modelPackage) {
     this.modelPackage = modelPackage;
   }
 
-  void setTestDataEnabled(boolean testDataEnabled) {
+  protected void setTestDataEnabled(boolean testDataEnabled) {
     this.testDataEnabled = testDataEnabled;
   }
 }

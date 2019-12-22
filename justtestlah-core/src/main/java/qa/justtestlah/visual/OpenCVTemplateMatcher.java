@@ -32,6 +32,8 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(OpenCVTemplateMatcher.class);
 
+  private JustTestLahConfiguration configuration;
+
   @Autowired private ImageUtils imageUtils;
 
   /** @param imageUtils {@link ImageUtils} */
@@ -39,8 +41,6 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
   public OpenCVTemplateMatcher(ImageUtils imageUtils) {
     this.imageUtils = imageUtils;
   }
-
-  private JustTestLahConfiguration configuration;
 
   /*
    * (non-Javadoc)

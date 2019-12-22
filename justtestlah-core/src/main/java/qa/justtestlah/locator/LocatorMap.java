@@ -31,6 +31,13 @@ public class LocatorMap {
 
   private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\$\\{(\\w*)\\}");
 
+  private static final String CSS = "css";
+  private static final String XPATH = "xpath";
+  private static final String ID = "id";
+  private static final String ACCESIBILITY_ID = "accesibilityId";
+  private static final String UIAUTOMATOR = "uiAutomator";
+  private static final String IMAGE = "image";
+
   /** Default constructor. */
   public LocatorMap() {
     this.map = new HashMap<>();
@@ -47,13 +54,6 @@ public class LocatorMap {
     this.map = map;
     this.staticPlaceholders = staticPlaceholders;
   }
-
-  private static final String CSS = "css";
-  private static final String XPATH = "xpath";
-  private static final String ID = "id";
-  private static final String ACCESIBILITY_ID = "accesibilityId";
-  private static final String UIAUTOMATOR = "uiAutomator";
-  private static final String IMAGE = "image";
 
   /**
    * Get a Selenide locator.
@@ -127,14 +127,14 @@ public class LocatorMap {
     return Pair.of(platformKey.get("type"), platformKey.get("value"));
   }
 
-  String formatValue(String rawValue, Object... params) {
+  protected String formatValue(String rawValue, Object... params) {
     if (rawValue == null) {
       return null;
     }
     return String.format(replacePlaceholders(rawValue), params);
   }
 
-  String replacePlaceholders(String rawValue) {
+  protected String replacePlaceholders(String rawValue) {
     if (rawValue == null) {
       return null;
     }

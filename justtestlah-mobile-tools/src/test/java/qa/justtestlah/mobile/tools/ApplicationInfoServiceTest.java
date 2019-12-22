@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import java.io.File;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,6 +17,32 @@ import org.junit.runner.RunWith;
 public class ApplicationInfoServiceTest {
 
   private ApplicationInfoService target = new ApplicationInfoService();
+
+  @Test
+  public void testNull() {
+    assertThat(target.getAppInfo(null)).isNull();
+  }
+
+  @Test
+  public void testInvalidExtension() {
+    assertThat(target.getAppInfo("app.abc")).isNull();
+  }
+
+  @Test
+  public void testNonExistingApkFile() {
+    assertThat(target.getAppInfo("doesnotexist.apk").toString())
+        .isEqualTo("unknown unknown_unknown");
+  }
+
+  @Test
+  public void testCorruptedIpaFile() {
+    assertThat(target.getAppInfo("test_corrupt.ipa")).isNull();
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void testCorruptedPlist() {
+    target.getDictionary(new File("doesnotexist"));
+  }
 
   @Test
   @UseDataProvider("testData")

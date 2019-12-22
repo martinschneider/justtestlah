@@ -78,8 +78,7 @@ public class ApplicationInfoEnricher extends ContextAwareBase
     // do nothing
   }
 
-  // package-private for unit testing
-  void setApplicationInfoService(ApplicationInfoService applicationInfoService) {
+  protected void setApplicationInfoService(ApplicationInfoService applicationInfoService) {
     this.applicationInfoService = applicationInfoService;
   }
 }

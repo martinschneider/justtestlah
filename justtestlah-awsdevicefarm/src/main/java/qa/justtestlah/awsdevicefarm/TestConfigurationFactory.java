@@ -51,7 +51,7 @@ public class TestConfigurationFactory {
   public ExecutionConfiguration getExecutionConfiguration() {
     ExecutionConfiguration executionConfiguration = new ExecutionConfiguration();
     executionConfiguration.setAccountsCleanup(
-        Boolean.parseBoolean(properties.getProperty("aws.accountsCleanup", "true")));
+        Boolean.parseBoolean(properties.getProperty("aws.accountsCleanUp", "true")));
     executionConfiguration.setAppPackagesCleanup(
         Boolean.parseBoolean(properties.getProperty("aws.appPackagesCleanUp", "true")));
     executionConfiguration.setJobTimeoutMinutes(

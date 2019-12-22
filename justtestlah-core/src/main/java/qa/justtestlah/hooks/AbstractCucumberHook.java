@@ -9,10 +9,14 @@ import qa.justtestlah.configuration.Platform;
 public abstract class AbstractCucumberHook implements CucumberHook {
 
   @Override
-  public void before(Scenario scenario) {}
+  public void before(Scenario scenario) {
+    // do nothing
+  }
 
   @Override
-  public void after(Scenario scenario) {}
+  public void after(Scenario scenario) {
+    // do nothing
+  }
 
   @Override
   public Set<Platform> getPlatforms() {
