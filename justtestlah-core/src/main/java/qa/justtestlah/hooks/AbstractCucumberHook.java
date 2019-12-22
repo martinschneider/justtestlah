@@ -1,8 +1,7 @@
 package qa.justtestlah.hooks;
 
-import java.util.Set;
-
 import io.cucumber.java.Scenario;
+import java.util.Set;
 import qa.justtestlah.configuration.ExecutionEnvironment;
 import qa.justtestlah.configuration.Platform;
 
@@ -11,12 +10,12 @@ public abstract class AbstractCucumberHook implements CucumberHook {
 
   @Override
   public void before(Scenario scenario) {
-	  // do nothing
+    // do nothing
   }
 
   @Override
   public void after(Scenario scenario) {
-	  // do nothing
+    // do nothing
   }
 
   @Override

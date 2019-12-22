@@ -1,8 +1,7 @@
 package qa.justtestlah.hooks;
 
-import java.util.Set;
-
 import io.cucumber.java.Scenario;
+import java.util.Set;
 import qa.justtestlah.configuration.ExecutionEnvironment;
 import qa.justtestlah.configuration.Platform;
 
