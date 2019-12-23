@@ -124,11 +124,6 @@
       <artifactId>snakeyaml</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.tngtech.java</groupId>
-      <artifactId>junit-dataprovider</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.github.classgraph</groupId>
       <artifactId>classgraph</artifactId>
     </dependency>
