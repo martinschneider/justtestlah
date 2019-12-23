@@ -192,6 +192,11 @@
         <version>${cucumber.version}</version>
       </dependency>
       <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-plugin</artifactId>
+        <version>${cucumber.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
         <version>${junit.version}</version>
