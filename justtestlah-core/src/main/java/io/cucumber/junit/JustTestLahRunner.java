@@ -45,9 +45,9 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import qa.justtestlah.configuration.CucumberOptionsBuilder;
 import qa.justtestlah.configuration.Platform;
 import qa.justtestlah.configuration.PropertiesHolder;
-import qa.justtestlah.exception.JustTestLahException;
 
 /** Custom JUnit runner to dynamically set Cucumber options. Based on {@link io.junit.Cucumber}. */
 public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
@@ -66,17 +66,9 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   private PropertiesHolder properties = new PropertiesHolder();
   private boolean multiThreadingAssumed = false;
 
-  private static final String STEPS_PACKAGE_KEY = "steps.package";
   private static final String CLOUD_PROVIDER = "cloudprovider";
   private static final String PLATFORM_KEY = "platform";
-  private static final String TAGS_KEY = "tags";
-  private static final String FEATURES_DIRECTORY_KEY = "features.directory";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-  private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
-  private static final String JUSTTESTLAH_SPRING_CONTEXT_KEY = "justtestlah.use.springcontext";
-  private static final String DEFAULT_CUCUMBER_REPORT_DIRECTORY = "target/report/cucumber";
-  private static final String DEFAULT_PLATFORM = "web";
-  private static final String DELIMITER = ",";
 
   private Runner awsRunner;
 
@@ -100,7 +92,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
       LOG.info("Using qa.justtestlah.awsdevicefarm.AWSTestRunner");
       awsRunner = getAWSRunner(clazz);
     } else {
-      setCucumberOptions();
+      CucumberOptionsBuilder.setCucumberOptions(properties);
       initCucumber(clazz);
     }
   }
@@ -195,10 +187,10 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
 
-    LOG.debug(
+    LOG.warn(
         "Found {} feature(s) in {}: {}",
         features.size(),
-        properties.getProperty(FEATURES_DIRECTORY_KEY),
+        System.getProperty("cucumber.features"),
         features);
   }
 
@@ -251,68 +243,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
       runFeatures.evaluate();
       bus.send(new TestRunFinished(bus.getInstant()));
     }
-  }
-
-  protected void setCucumberOptions() {
-    setCucumberProperty("cucumber.features", properties.getProperty(FEATURES_DIRECTORY_KEY));
-    setCucumberProperty("cucumber.filter.tags", buildTagsProperty());
-    setCucumberProperty("cucumber.glue", buildGlueProperty());
-    setCucumberProperty("cucumber.plugin", buildPluginProperty());
-    setCucumberProperty("cucumber.execution.strict", "true");
-  }
-
-  private void setCucumberProperty(String key, String value) {
-    LOG.info("Setting {} = {}", key, value);
-    System.setProperty(key, value);
-  }
-
-  private String buildPluginProperty() {
-    StringBuilder pluginProperty = new StringBuilder("pretty");
-    pluginProperty.append(',');
-    pluginProperty.append("html:report");
-    pluginProperty.append(',');
-    pluginProperty.append("json:");
-    pluginProperty.append(
-        properties.getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY));
-    pluginProperty.append("/cucumber.json");
-    return pluginProperty.toString();
-  }
-
-  protected String buildTagsProperty() {
-    StringBuilder tagsBuilder = new StringBuilder("@");
-    tagsBuilder.append(properties.getProperty(PLATFORM_KEY, DEFAULT_PLATFORM));
-    String tags = properties.getProperty(TAGS_KEY, null);
-    if (tags != null) {
-      // Prevent injection attacks
-      if (tags.contains("'")) {
-        throw new JustTestLahException(
-            String.format("Invalid character ' in tag expression: %s", tags));
-      }
-      // support legacy format (i.e. comma-separated list of tags without @)
-      if (!tags.contains("@")) {
-        for (String tag : tags.split(DELIMITER)) {
-          tagsBuilder.append(" and @");
-          tagsBuilder.append(tag);
-        }
-      } else // no format (tag expressions)
-      {
-        tagsBuilder.append(" and (");
-        tagsBuilder.append(tags);
-        tagsBuilder.append(")");
-      }
-    }
-    return tagsBuilder.toString();
-  }
-
-  protected String buildGlueProperty() {
-    StringBuilder glueProperty = new StringBuilder();
-    if (Boolean.parseBoolean(
-        properties.getProperty(JUSTTESTLAH_SPRING_CONTEXT_KEY, Boolean.toString(true)))) {
-      glueProperty.append("qa.justtestlah.steps ");
-    }
-    glueProperty.append(",");
-    glueProperty.append(properties.getProperty(STEPS_PACKAGE_KEY));
-    return glueProperty.toString();
   }
 
   private void bridgeLogging() {
