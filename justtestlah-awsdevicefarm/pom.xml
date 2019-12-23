@@ -89,8 +89,10 @@
     <profile>
       <id>aws</id>
       <properties>
-        <!-- SNAPSHOT versions won't work here -->
-        <justtestlah.version>1.7</justtestlah.version>
+        <!-- This is only used for the integration test. We use an old version 
+          here to ensure it is in the Maven repository (the old version will definitely be 
+          on Maven central). -->
+        <justtestlah.version>1.7-RC5</justtestlah.version>
       </properties>
       <build>
         <plugins>
