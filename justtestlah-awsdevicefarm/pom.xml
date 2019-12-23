@@ -89,7 +89,8 @@
     <profile>
       <id>aws</id>
       <properties>
-        <justtestlah.version>1.7-RC5</justtestlah.version>
+        <!-- SNAPSHOT versions won't work here -->
+        <justtestlah.version>1.7</justtestlah.version>
       </properties>
       <build>
         <plugins>

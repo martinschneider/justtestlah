@@ -60,7 +60,7 @@ Add the following Maven dependency to your `pom.xml`.
 
 ```xml
 <properties>
-  <justtestlah.version>1.7-RC5</justtestlah.version>
+  <justtestlah.version>1.7</justtestlah.version>
 </properties>
 
 <dependency>
