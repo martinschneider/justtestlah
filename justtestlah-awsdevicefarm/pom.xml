@@ -9,7 +9,7 @@
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
   </parent>
   <licenses>
     <license>
@@ -89,6 +89,9 @@
     <profile>
       <id>aws</id>
       <properties>
+        <!-- This is only used for the integration test. We use an old version 
+          here to ensure it is in the Maven repository (the old version will definitely be 
+          on Maven central). -->
         <justtestlah.version>1.7-RC5</justtestlah.version>
       </properties>
       <build>
