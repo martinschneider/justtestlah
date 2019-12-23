@@ -1,9 +1,11 @@
 package qa.justtestlah.configuration;
 
+import io.cucumber.core.options.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qa.justtestlah.exception.JustTestLahException;
 
+/** Builds Cucumber options based on `justtestlah.properties` and sets them as System properties. */
 public class CucumberOptionsBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(CucumberOptionsBuilder.class);
@@ -19,11 +21,12 @@ public class CucumberOptionsBuilder {
   private static final String STEPS_PACKAGE_KEY = "steps.package";
 
   public static void setCucumberOptions(PropertiesHolder properties) {
-    setCucumberProperty("cucumber.features", properties.getProperty(FEATURES_DIRECTORY_KEY));
-    setCucumberProperty("cucumber.filter.tags", buildTagsProperty(properties));
-    setCucumberProperty("cucumber.glue", buildGlueProperty(properties));
-    setCucumberProperty("cucumber.plugin", buildPluginProperty(properties));
-    setCucumberProperty("cucumber.execution.strict", "true");
+    setCucumberProperty(
+        Constants.FEATURES_PROPERTY_NAME, properties.getProperty(FEATURES_DIRECTORY_KEY));
+    setCucumberProperty(Constants.FILTER_TAGS_PROPERTY_NAME, buildTagsProperty(properties));
+    setCucumberProperty(Constants.GLUE_PROPERTY_NAME, buildGlueProperty(properties));
+    setCucumberProperty(Constants.PLUGIN_PROPERTY_NAME, buildPluginProperty(properties));
+    setCucumberProperty(Constants.EXECUTION_STRICT_PROPERTY_NAME, "true");
   }
 
   private static void setCucumberProperty(String key, String value) {

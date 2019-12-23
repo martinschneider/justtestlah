@@ -73,4 +73,15 @@ public class CucumberOptionsBuilderTest {
         .as("check cucumber plugin")
         .isEqualTo("pretty,html:report,json:target/report/cucumber/cucumber.json");
   }
+
+  @Test
+  public void testStrict() {
+    System.setProperty(
+        PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY,
+        CucumberOptionsBuilder.class.getResource("justtestlah.properties").getFile());
+    CucumberOptionsBuilder.setCucumberOptions(new PropertiesHolder());
+    assertThat(System.getProperty("cucumber.execution.strict"))
+        .as("check cucumber strict")
+        .isEqualTo("true");
+  }
 }
