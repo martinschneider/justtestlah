@@ -2,7 +2,7 @@ package qa.justtestlah.hooks;
 
 import com.galenframework.reports.GalenTestInfo;
 import com.galenframework.reports.HtmlReportBuilder;
-import io.cucumber.core.api.Scenario;
+import io.cucumber.java.Scenario;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
