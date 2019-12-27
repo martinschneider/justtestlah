@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TestData {
   /**
-   * The identifier used in the testdata yaml file. If not specified the simple name of the
-   * annotated class will be used.
+   * The identifier used in the testdata yaml file. If not specified the (lower camel case) simple
+   * name of the annotated class will be used.
    *
    * @return key to identify this test data class
    */

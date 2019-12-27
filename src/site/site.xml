@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd"
   name="JustTestLah! test framework">
   <bannerLeft>
-    <name>JustTestLah! test framework</name>
+    <name>JustTestLah! (JTL) test framework</name>
     <href>#</href>
   </bannerLeft>
   <skin>

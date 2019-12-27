@@ -1,81 +1,118 @@
-[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah) [![Maven Central](https://img.shields.io/maven-central/v/qa.justtestlah/justtestlah-core.svg)](http://mvnrepository.com/artifact/qa.justtestlah/justtestlah-core)
-[![Javadoc](https://www.javadoc.io/badge/qa.justtestlah/justtestlah-core.svg)](https://www.javadoc.io/doc/qa.justtestlah/justtestlah-core)
-[![Coverage Status](https://codecov.io/gh/martinschneider/justtestlah/branch/master/graph/badge.svg)](https://codecov.io/gh/martinschneider/justtestlah)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6be39f81b7341769e8c67ed26b29b19)](https://www.codacy.com/manual/martinschneider/justtestlah?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=martinschneider/justtestlah&amp;utm_campaign=Badge_Grade)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmartinschneider%2Fjusttestlah?ref=badge_shield)
-
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
 
-JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple and readable as possible.
+[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah)
+[![Coverage Status](https://codecov.io/gh/martinschneider/justtestlah/branch/master/graph/badge.svg)](https://codecov.io/gh/martinschneider/justtestlah)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6be39f81b7341769e8c67ed26b29b19)](https://www.codacy.com/manual/martinschneider/justtestlah?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=martinschneider/justtestlah&amp;utm_campaign=Badge_Grade)
 
-<!-- MDTOC maxdepth:6 firsth1:2 numbering:0 flatten:0 bullets:1 updateOnSave:1 -->
-<!--
-
-Disabling the TOC because anchors are rendered differently by Github and the Maven site plugin (leading to broken links):
-https://issues.apache.org/jira/browse/MSITE-834
-
-- [Getting started](#getting-started)   
-- [Use in your own projects](#use-in-your-own-projects)   
-- [Page objects, steps and feature files](#page-objects-steps-and-feature-files)   
-- [Configuration](#configuration)   
-- [Test runner](#test-runner)   
-- [Locators](#locators)   
-   - [Placeholders](#placeholders)   
-- [Test data handling](#test-data-handling)   
-- [Cloud service integrations](#cloud-service-integrations)   
-   - [Browserstack](#browserstack)   
-   - [AWS Devicefarm](#aws-devicefarm)   
-- [Template matching](#template-matching)   
-   - [Matching threshold](#matching-threshold)   
-   - [Client and server-mode matching](#client-and-server-mode-matching)   
-- [Applitools](#applitools)   
-- [Galen](#galen)   
-- [Used libraries](#used-libraries) 
-- [Known issues & limitations](#known-issues-limitations)   
-- [Contact and support](#contact-and-support)   -->
-
-<!-- /MDTOC -->
-
+JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
 
 ## Getting started
-Pull the repo and run the example.
+Pull the repo and run the demo (a set of simple "tests" for Stackoverflow):
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
-cd justtestlah-demos
-mvn test -Dtest=TestRunner
+mvn -pl justtestlah-demos test
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and start an Appium server. You also need at least one physical or emulated device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah.properties`. Please note that the Stackoverflow demo is only available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help change this). For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `justtestlah-demos/src/test/resources/qa/justtestlah/examples/carousell/testdata/user/valid.yml`.
+This runs the JustTestLah! demo using Chrome in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Set `web.headless=false` in `justtestlah-demos/src/test/resources` to change this.
+
+### justtestlah.properties
+The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but it is recommended to explicitly pass its path as a system property:
 
 ```bash
-mvn test -Dtest=TestRunner -Djusttestlah.properties=/absolute/path/to/your/justtestlah.properties
+mvn test -DjtlProps=/absolute/path/to/your/testabc.properties
 ```
 
-The second parameter (`justtestlah.properties`) is optional; the default configuration can be found under `justtestlah-demos/src/test/resources`.
+This way, you can easily maintain different configurations for different test setups.
 
-## Use in your own projects
+The most important properties are:
 
-Add the following Maven dependency to your `pom.xml`.
+```ini
+# Platform to test on (Android, iOS, Web)
+platform=
+
+# The path to the Cucumber feature files
+features.directory=
+
+# Java package containing the Cucumber steps
+steps.package=
+
+# Java package containing the Page objects
+pages.package=
+```
+
+Each run will execute tests for one platform only. Let's see how we can run the Android demo next.
+
+### Android demo
+
+To test a mobile app you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure that there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for Web.
+
+### iOS demo
+
+There is currently no public demo for iOS available. This is mostly because app packages (builds for the iPhone simulator) for any interesting real-world application are not readily available and [ipa builds need to be resigned to play nicely with Appium](http://appium.io/docs/en/drivers/ios-xcuitest-real-devices). If you want to contribute a demo, [please conatct me](mart.schneider@gmail.com).
+
+That said, using JustTestLah! can be (and has been) used to automate iOS apps. 
+
+### Available demos
+There are a couple of demos available under the `justtestlah-demos` module. The default one uses [Stackoverflow](https://stackoverflow.com) and comes in flavours for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version.
+
+Which tests are executed depends on the `features.dierctory` property:
+
+```ini
+# The path to the Cucumber feature files
+features.directory=
+```
+
+On top of that, we need to specify where the corresponding steps classes and page objects can be found:
+
+```ini
+# Java package containing the Cucumber steps
+steps.package=
+
+# Java package containing the Page objects
+pages.package=
+```
+
+All demos are rather simple proofs of concept, please [create a pull request](https://github.com/martinschneider/JustTestLah/pulls) if you want to contribute more.
+
+## Use JustTestLah! in your own projects
+
+It's simple!
+
+### Option 1: Using Maven archetype
+
+A fast way to get a working template project is using the JustTestLah! [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html):
+```bash
+mvn archetype:generate -DarchetypeGroupId=qa.justtestlah -DarchetypeArtifactId=justtestlah-quickstart
+```
+
+### Option 2: Manual setup using Maven
+Add the following to your `pom.xml`:
 
 ```xml
-<properties>
-  <justtestlah.version>1.7</justtestlah.version>
-</properties>
-
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>${justtestlah.version}</version>
+  <version>1.7</version>
 </dependency>
 ```
+
+### Option 3: Manual setup using Gradle
+Add the following to your `build.gradle`:
+
+```yaml
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.7'
+```
+
+### Option 4: Manual setup
+Add [`justtestlah-core-1.7.jar`](https://repo1.maven.org/maven2/qa/justtestlah/justtestlah-core/1.7/justtestlah-core-1.7.jar) to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
 
-* Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
-* Step definitions use page objects to define the actions of a test.  They form the building blocks to write
-* feature files which represent the test cases.
+- Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
+- Step definitions use page objects to define the actions of a test.  They form the building blocks to write
+- feature files which represent the test scenarios.
 
 Steps and page objects are designed to be highly re-usable.
 
@@ -157,8 +194,32 @@ private HomePage home;
 
 As long as the page object class extends `qa.justtestlah.base.BasePage` JustTestLah! (and [Spring](https://spring.io)) will take care of the rest. In the same way you can also use page objects inside other page objects.
 
+### Platform-(in)dependent page objects
+
+[Spring profiles](https://www.baeldung.com/spring-profiles) are used to identify for which platforms (Android, iOS, Web) a page object shoulde be used. Simply annotate the page object class with `@Profile` and pass an array of platforms as its argument:
+
+```java
+@Component
+@Profile({ANDROID, WEB})
+public class LoginPage extends BasePage<LoginPage>
+```
+
+Ideally, the same Java object can represent a page for all platforms. This is the case when the only differences are the UI locators (as their keys are platform-independent; their platform-dependent values are only resolved at runtime).
+
+When the above approach is not sufficient, you can use different page object classes for different platforms. In this case, it can be useful to have a base class containing common methods and subclass it for any platform-specific changes.
+
+Make sure that there is exactly one page object class for each page/platform combination. Otherwise, Spring will throw an error during start-up.
+
 ## Configuration
-All configuration goes in a file called `justtestlah.properties`.
+As mentioned before, all configuration goes in a file called `justtestlah.properties`. Its path can be passed using the `jtlProps` system property:
+
+```bash
+-DjtlProps=/path/to/justtestlah.properties
+```
+
+If no path is specified, configuration will be loaded from the classpath (in this case the file must be named `justtestlah.properties`).
+
+The following is a complete list of available properties. You don't need to specify all as most of them are optional.
 
 ```ini
 # GENERAL settings
@@ -176,16 +237,14 @@ opencv.enabled=false
 eyes.apiKey=
 cloudprovider=local
 
-
 # WEB settings
 web.baseUrl=https://www.stackoverflow.com
 web.browser=chrome
 web.headless=true
 
-
 # MOBILE settings
 mobile.appiumUrl=http://127.0.0.1:4723/wd/hub
-
+mobile.deviceOrientation=portrait
 
 # ANDROID settings
 android.appPackage=com.stackexchange.stackoverflow
@@ -193,22 +252,72 @@ android.appActivity=com.stackexchange.stackoverflow.MainActivity
 android.appPath=/Users/martinschneider/stackoverflow.apk
 android.deviceName=Google Nexus 6
 
-
 # IOS settings
 ios.appPath=
 ios.deviceName=iPhone 6
 
+# BROWSERSTACK settings (requires cloudprovider=browserstack and `justtestlah-browserstack` on the classpath)
 
-# BROWSERSTACK settings (requires cloudprovider=browserstack)
-browserstack.debug=true
-browserstack.accessKey=
+# Browserstack username
 browserstack.username=
+# Browserstack access key
+browserstack.accessKey=
+
+# Optional settings, see https://www.browserstack.com/automate/capabilities
+browserstack.debug=true
+browserstack.appiumLogs=true
+browserstack.video=true
+browserstack.geoLocation=SG
+browserstack.timezone=SG
+browserstack.appium_version=1.8.0
+
+# AWS DEVICEFARM settings (requires `justtestlah-awsdevicefarm` on the classpath)
+# The arn of your AWS Devicefarm project (mandatory)
+aws.projectArn=
+
+# App package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+aws.appPackageArn=
+
+# Test package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+aws.testPackageArn=
+
+# Optional extra data
+aws.extraDataArn=
+
+# Fully-qualified path to the justtestlah-demos project (required to build the test package)
+aws.demo.path=/Users/martinschneider/git/justtestlah/justtestlah-demos
+
+# Name for the test package (must match <finalName> in the justtestlah-demos pom.xml)
+aws.testpackage.name=justtestlah-awsdevicefarm
+
+# Device filters (optional)
+aws.minOsVersion=9.0
+aws.maxOsVersion=
+aws.osVersion=
+aws.model=
+aws.manufacturer=
+aws.formFactor=PHONE
+aws.waitForDevice=true
+
+# Device configuration (optional)
+aws.deviceLatitude=
+aws.deviceLongitude=
+aws.bluetooth=
+aws.gps=
+aws.nfc=
+aws.wifi=
+# set this to true if you use device slots
+aws.runUnmetered=false
+
+# Additional AWS Devicefarm configuration
+aws.accountsCleanup=
+aws.appPackagesCleanup=
+aws.jobTimeOut=
+aws.skipAppResign=
 ```
 
-You can specify the location of `justtestlah.properties` on start-up by providing it as a system property: `-DjusttestlahProperties=/path/to/justtestlah.properties`. If no path is specified it will be loaded from the classpath.
-
 ## Test runner
-JustTestLah! uses [JUnit](https://junit.org) to run the tests. All you need to do is add an empty class which extends `qa.justtestlah.JustTestLahTest`:
+JustTestLah! uses [JUnit](https://junit.org) to execute the tests. All you need to do is add an empty class which extends `qa.justtestlah.JustTestLahTest`:
 
 ```java
 public class TestRunner extends JustTestLahTest {}
@@ -225,6 +334,8 @@ The feature files and steps are automatically picked up from the locations provi
 ## Locators
 Elements can be identified by a unique `id`, a `css` or an `xpath` expression. `AccesibilityId` (for iOS) and `UIAutomator` (for Android) are supported as well. Each element has a unique key (e.g. `SEARCH_FIELD`) which is mapped to its corresponding locator expression in a .`yaml` file.
 For example, let's say the page object for the home page is `demoproject.pages.HomePage` (under `/src/main/java`). Then the corresponding locators are expected in `/demoproject/pages/HomePage.yaml` (under `/src/main/resources`).
+
+Locators for different platforms "live" side by side in the same yaml file. Locators are grouped by page object rather than by platform.
 
 Example of a locator YAML file:
 ```yaml
@@ -243,7 +354,7 @@ LOGIN_BUTTON:
 The correct locator will be automatically resolved for the current platform. Taking the above example, the search field can be accessed in the `HomePage` page object by calling `$("SEARCH_BUTTON")`. This will return an instance of `com.codeborne.selenide.SelenideElement`. See the [Selenide quick start](https://selenide.org/quick-start.html) to learn about all the cool ways you can interact with it. Two caveats to take note of:
 
 1. It is not possible to directly use elements in step definitions (only in page objects). This is by design as UI elements are meant to be encapsulated in the page objects.
-2. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same.
+1. While we wrap Selenide's `$` method for the locator handling the methods you can call on the returned `SelenideElement` instances remains the same.
 
 If omitted the default type of locators is `css`.
 
@@ -269,13 +380,13 @@ POST_TAG:
     value: ${PACKAGE_NAME}:id/question_view_item_tags  
 ```
 
-If you want to override static placeholders during runtime, you can pass an extra placeholder file by setting `locator.placeholders.file` to its absolute path in `justtestlah.properties`. For any placeholders which exist in both (the one under `pages.package` and `locator.placeholders.file`), the latter one will override the former.
+If you want to override static placeholders during runtime, you can pass an extra placeholder file by setting `locator.placeholders.file` to its absolute path in `justtestlah.properties`. In this case, for any placeholders which occur in both files (the one under `pages.package` and `locator.placeholders.file`), the latter one will override the former.
 
 #### Dynamic placeholders
 
 Sometimes, you might require a locator which depends on some dynamic values defined only at runtime. You can achieve this by putting `%s` as a placeholder in the locator and use the `$(String locatorKey, Object... params)` and `$$(String locatorKey, Object... params)` methods in `BasePage` to pass the String which should be inserted at its place.
 
-Let's see an example: 
+Let's see an example:
 
 ```yaml
 POST_TAG:
@@ -290,7 +401,7 @@ Calling `$("POST_TAG", "selenium")` will return an element matching the followin
 JustTestLah! supports loading test data from YAML files. Each test data entity is represented by a Java class (the model) and one or many YAML files which contain the actual test data. For example:
 
 ```java
-@TestData("user")
+@TestData
 public class User {
   private String username;
   private String password;
@@ -326,17 +437,17 @@ user:
   password: myPassword
 ```
 
-Note, that the top level key in the YAML file must match the value of the `@TestData` annotation.
+Note, that the top level key in the YAML file must match the name of the corresponding test data class. This is specified as the value of its `@TestData` annotation. If this is ommited, the (lower camel case) name of the class will be used instead.
 
 You can then load test data in your tests as easy as this:
 
 ```java
-User user = testdata(User.class);
-User user = testdata(User.class, "validUser");
-User user = testdata(User.class, "userWithInvalidPassword");
+User defaultUser = testdata(User.class);
+User validUser = testdata(User.class, "validUser");
+User invalidUser = testdata(User.class, "userWithInvalidPassword");
 ```
 
-The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
+The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited, it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
 
 There are three configuration values for this feature:
 ```testdata.enabled=
@@ -344,21 +455,25 @@ model.package=
 testdata.filter=
 ```
 
-Setting `testdata.enabled=true` enables the YAML test data resolution. The default is `false`!
+Setting `testdata.enabled=true` enables the YAML test data resolution. The default is `false` so don't forget to set this if you use this feature in your projects.
 
-`model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (those need to be marked with `@TestData`).
+`model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (these classes need to be annotated with `@TestData`).
 
 `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
 
+## Test reports
+
+After the run, [Cluecumber](https://github.com/trivago/cluecumber-report-plugin) test results will be available under `target/report/cucumber`.
+
 ## Cloud service integrations
 
-JustTestLah! supports integration with various cloud service provides. Some of them are in PoC state. Please feel free to contribute.
+JustTestLah! supports integrating with various cloud service provides. Some of them are in PoC state. Please feel free to contribute.
 
 ### Browserstack
 
 You can run tests against [BrowserStack](https://www.browserstack.com) by adding the following configuration in `justtestlah.properties`:
 
-```
+```properties
 cloudprovider=browserstack
 
 # Browserstack username
@@ -379,7 +494,7 @@ browserstack.appium_version=1.8.0
 
 Make sure `justtestlah-browserstack` is on your classpath:
 
-```
+```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
@@ -393,7 +508,7 @@ Please note that BrowserStack is a paid service.
 
 You can run tests against [AWS Devicefarm](https://us-west-2.console.aws.amazon.com/devicefarm/) by adding the following configuration in `justtestlah.properties`:
 
-```
+```properties
 cloudprovider=aws
 
 # The arn of your AWS Devicefarm project (mandatory)
@@ -442,7 +557,7 @@ aws.skipAppResign=
 
 Make sure `justtestlah-awsdevicefarm` is on your classpath:
 
-```
+```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
@@ -457,7 +572,7 @@ Please note that AWS Devicefarm is a paid service.
 ## Template matching
 JustTestLah! allows locating elements using a template image:
 
-```
+```java
 boolean isImagePresent = homePage.hasImage("questionIcon.png");
 
 Match image = homePage.findImage("questionIcon.png");
@@ -467,7 +582,7 @@ The images are expected under `/src/test/resources/images`.
 
 The `Match` object contains the x and y coordinate of the matched image (more precisely, the center of the rectangle representing the match). These can be used to interact with an element located this way. For example, we can tap on an element like this:
 
-```
+```java
 new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
 .tap(PointOption.point(questionIcon.getX(), questionIcon.getY()))
 .perform();
@@ -485,7 +600,7 @@ Both the `hasImage` and `findImage` method take an optional `threshold` paramete
 ### Client and server-mode matching
 There are two modes to use template matching which can be configured in `justtestlah.properties`:
 
-`opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires OpenCV which is imported as a Maven dependency (https://github.com/openpnp/opencv).
+`opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires [OpenCV](https://github.com/openpnp/opencv) which is imported as a Maven dependency.
 
 `opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
 
@@ -499,7 +614,6 @@ Checks can then be triggered by calling `checkWindow()` on any page object class
 
 Please note that Applitools is a paid service.
 
-
 ## Galen
 JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
@@ -507,7 +621,7 @@ Similar to properties-file holding the locator information, there is an (optiona
 
 Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
 
-```
+```yaml
 @objects
   username_field  id  com.thecarousell.Carousell:id/login_page_username_text_field
   password_field  id  com.thecarousell.Carousell:id/login_page_password_text_field
@@ -539,27 +653,22 @@ See the [Galen documentation](https://galenframework.com/docs/reference-galen-sp
 
 ## Used libraries
 
-JustTestLah! makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
+JustTestLah! makes use of a variety of frameworks to make writing and executing tests as simple and enjoyable as possible.
 
-* [Selenium](https://www.seleniumhq.org), the main test framework used by JustTestLah!
-* [Appium](https://appium.io), an extension of Selenium for native mobile app testing
-* [Cucumber](https://cucumber.io), the BDD framework
-* [JUnit](https://junit.org), the unit testing framework (mostly used as the runner for the tests)
-* [Selenide](https://selenide.org), a convenience wrapper around Selenium
-* [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
-* [OpenCV](https://opencv.org), used for image comparison
-* [Galen](https://galenframework.com), used for layout based testing
-* [Applitools](https://applitools.com), used for visual regression testing
-* [BrowserStack](https://www.browserstack.com), cloud provider for automated tests
-* [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
+- [Selenium](https://www.seleniumhq.org), the main test framework used by JustTestLah!
+- [Appium](https://appium.io), an extension of Selenium for native mobile app testing
+- [Cucumber](https://cucumber.io), the BDD framework
+- [JUnit](https://junit.org), the unit testing framework (mostly used as the runner for the tests)
+- [Selenide](https://selenide.org), a convenience wrapper around Selenium
+- [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
+- [OpenCV](https://opencv.org), used for image comparison
+- [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 
 ## Known issues & limitations
 
-* JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12, 13 and 14). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
-
-* The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
-
-* The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
+- JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12, 13 and 14). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
+- The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
+- The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
 
 ## Contact and support
 

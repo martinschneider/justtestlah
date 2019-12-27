@@ -12,7 +12,11 @@ import qa.justtestlah.junit.JustTestLahTest;
 public class PropertiesHolder {
   private static final Logger LOG = LoggerFactory.getLogger(PropertiesHolder.class);
   public static final String DEFAULT_JUST_TEST_LAH_PROPERTIES = "justtestlah.properties";
-  public static final String JUST_TEST_LAH_LOCATION_KEY = "justtestlah.properties";
+  public static final String JUST_TEST_LAH_LOCATION_KEY = "jtlProps";
+
+  @Deprecated(forRemoval = true)
+  public static final String JUST_TEST_LAH_LEGACY_LOCATION_KEY = "justtestlah.properties";
+
   private static final String EXPOSE_SYSTEM_PROPERTIES_KEY = "expose.system.properties";
 
   private Properties props;
@@ -51,6 +55,9 @@ public class PropertiesHolder {
 
   private void loadProperties() {
     String propertiesLocation = System.getProperty(JUST_TEST_LAH_LOCATION_KEY);
+    if (propertiesLocation == null || propertiesLocation.isEmpty()) {
+      propertiesLocation = System.getProperty(JUST_TEST_LAH_LEGACY_LOCATION_KEY);
+    }
     try {
       if (propertiesLocation != null && !propertiesLocation.isEmpty()) {
         LOG.info("Loading JustTestLah properties from {}", propertiesLocation);
