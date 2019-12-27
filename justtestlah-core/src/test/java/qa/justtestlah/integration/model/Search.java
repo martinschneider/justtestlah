@@ -2,8 +2,8 @@ package qa.justtestlah.integration.model;
 
 import qa.justtestlah.testdata.TestData;
 
-@TestData("searchTerm")
-public class SearchTerm {
+@TestData
+public class Search {
   private String searchTerm;
 
   public String getSearchTerm() {

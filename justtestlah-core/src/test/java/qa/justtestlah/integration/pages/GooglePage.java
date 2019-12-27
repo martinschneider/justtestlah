@@ -6,14 +6,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.base.BasePage;
-import qa.justtestlah.integration.model.SearchTerm;
+import qa.justtestlah.integration.model.Search;
 
 @Component
 @Profile(WEB)
 @ScreenIdentifier("SEARCH_FIELD")
 public class GooglePage extends BasePage<GooglePage> {
 
-  public GooglePage enterSearchTerm(SearchTerm searchTerm) {
+  public GooglePage enterSearchTerm(Search searchTerm) {
     $("SEARCH_FIELD").sendKeys(searchTerm.getSearchTerm());
     return this;
   }

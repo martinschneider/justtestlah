@@ -101,7 +101,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   }
 
   /**
-   * This is the code taken from {@link Cucumber}
+   * This is the code taken from {@link io.cucumber.junit.Cucumber}
    *
    * @param clazz {@link Class}
    * @throws InitializationError {@link InitializationError}

@@ -7,20 +7,17 @@
 JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
 
 ## Getting started
-Pull the repo and run the example.
+Pull the repo and run the demo (a set of simple "tests" for Stackoverflow):
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
-cd justtestlah-demos
-mvn test
+mvn -pl justtestlah-demos test
 ```
 
-The default platform is `web`. To test one of the mobile apps you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). You also need at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` or `platform=ios` in `justtestlah-demos/src/test/resources` and calling `mvn test`.
-
-By default, JustTestLah! runs the Chrome browser in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome) (which makes for a somewhat boring demo). Set `web.headless=false` to change this.
+This runs the JustTestLah! demo using Chrome in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Set `web.headless=false` in `justtestlah-demos/src/test/resources` to change this.
 
 ### justtestlah.properties
-The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but is recommended to explicitly pass its path as a system property:
+The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but it is recommended to explicitly pass its path as a system property:
 
 ```bash
 mvn test -DjtlProps=/absolute/path/to/your/testabc.properties
@@ -28,9 +25,15 @@ mvn test -DjtlProps=/absolute/path/to/your/testabc.properties
 
 This way, you can easily maintain different configurations for different test setups.
 
-Besides the platform, the most important properties are:
+The most important properties are:
 
-```yaml
+```ini
+# Platform to test on (Android, iOS, Web)
+platform=
+
+# The path to the Cucumber feature files
+features.directory=
+
 # Java package containing the Cucumber steps
 steps.package=
 
@@ -38,16 +41,43 @@ steps.package=
 pages.package=
 ```
 
-We will cover additional properties later.
+Each run will execute tests for one platform only. Let's see how we can run the Android demo next.
+
+### Android demo
+
+To test a mobile app you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure that there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for Web.
+
+### iOS demo
+
+There is currently no public demo for iOS available. This is mostly because app packages (builds for the iPhone simulator) for any interesting real-world application are not readily available and [ipa builds need to be resigned to play nicely with Appium](http://appium.io/docs/en/drivers/ios-xcuitest-real-devices). If you want to contribute a demo, [please conatct me](mart.schneider@gmail.com).
+
+That said, using JustTestLah! can be (and has been) used to automate iOS apps. 
 
 ### Available demos
-The [Stackoverflow](https://stackoverflow.com) demo is available for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version).
+There are a couple of demos available under the `justtestlah-demos` module. The default one uses [Stackoverflow](https://stackoverflow.com) and comes in flavours for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version.
 
-For the Carousell demo, you need to have a [Carousell](https://www.carousell.com) account (it's free). Configure username and password in `justtestlah-demos/src/test/resources/qa/justtestlah/examples/carousell/testdata/user/valid.yml`.
+Which tests are executed depends on the `features.dierctory` property:
 
-Both demos are very simple, please [create a pull request](https://github.com/martinschneider/JustTestLah/pulls) if you want to contribute more.
+```ini
+# The path to the Cucumber feature files
+features.directory=
+```
 
-## Use in your own projects
+On top of that, we need to specify where the corresponding steps classes and page objects can be found:
+
+```ini
+# Java package containing the Cucumber steps
+steps.package=
+
+# Java package containing the Page objects
+pages.package=
+```
+
+All demos are rather simple proofs of concept, please [create a pull request](https://github.com/martinschneider/JustTestLah/pulls) if you want to contribute more.
+
+## Use JustTestLah! in your own projects
+
+It's simple!
 
 ### Option 1: Using Maven archetype
 
@@ -61,9 +91,9 @@ Add the following to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>qa.justtestlah</groupId>
-    <artifactId>justtestlah-core</artifactId>
-    <version>1.7</version>
+  <groupId>qa.justtestlah</groupId>
+  <artifactId>justtestlah-core</artifactId>
+  <version>1.7</version>
 </dependency>
 ```
 
@@ -82,7 +112,7 @@ There are three main ingredients for tests in JustTestLah!:
 
 - Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
 - Step definitions use page objects to define the actions of a test.  They form the building blocks to write
-- feature files which represent the test cases.
+- feature files which represent the test scenarios.
 
 Steps and page objects are designed to be highly re-usable.
 
@@ -166,7 +196,7 @@ As long as the page object class extends `qa.justtestlah.base.BasePage` JustTest
 
 ### Platform-(in)dependent page objects
 
-[Spring profiles](https://www.baeldung.com/spring-profiles) are used to identify for which platforms (Android, iOS, Web) a page object can be used. Simply annotate the page object class with `@Profile` and pass an array of platforms as its argument:
+[Spring profiles](https://www.baeldung.com/spring-profiles) are used to identify for which platforms (Android, iOS, Web) a page object shoulde be used. Simply annotate the page object class with `@Profile` and pass an array of platforms as its argument:
 
 ```java
 @Component
@@ -174,18 +204,20 @@ As long as the page object class extends `qa.justtestlah.base.BasePage` JustTest
 public class LoginPage extends BasePage<LoginPage>
 ```
 
-Ideally, the same Java object can represent a page for all platforms. This is the case when the only differences are the UI locators. When this is not sufficient, you can use different page object classes for different platforms. In this case, it can be useful to have a base class containing common methods and subclass it for any platform-specific changes.
+Ideally, the same Java object can represent a page for all platforms. This is the case when the only differences are the UI locators (as their keys are platform-independent; their platform-dependent values are only resolved at runtime).
 
-Make sure that there is exactly one page object class for each page/platform combination. Otherwise, Spring will throw an error.
+When the above approach is not sufficient, you can use different page object classes for different platforms. In this case, it can be useful to have a base class containing common methods and subclass it for any platform-specific changes.
+
+Make sure that there is exactly one page object class for each page/platform combination. Otherwise, Spring will throw an error during start-up.
 
 ## Configuration
-All configuration goes in a file called `justtestlah.properties`. Its path needs to be passed using the `jtlProps` system property:
+As mentioned before, all configuration goes in a file called `justtestlah.properties`. Its path can be passed using the `jtlProps` system property:
 
 ```bash
 -DjtlProps=/path/to/justtestlah.properties
 ```
 
-If no path is specified it will be loaded from the classpath (in this case it must be named `justtestlah.properties`).
+If no path is specified, configuration will be loaded from the classpath (in this case the file must be named `justtestlah.properties`).
 
 The following is a complete list of available properties. You don't need to specify all as most of them are optional.
 
@@ -369,7 +401,7 @@ Calling `$("POST_TAG", "selenium")` will return an element matching the followin
 JustTestLah! supports loading test data from YAML files. Each test data entity is represented by a Java class (the model) and one or many YAML files which contain the actual test data. For example:
 
 ```java
-@TestData("user")
+@TestData
 public class User {
   private String username;
   private String password;
@@ -405,7 +437,7 @@ user:
   password: myPassword
 ```
 
-Note, that the top level key in the YAML file must match the value of the `@TestData` annotation.
+Note, that the top level key in the YAML file must match the name of the corresponding test data class. This is specified as the value of its `@TestData` annotation. If this is ommited, the (lower camel case) name of the class will be used instead.
 
 You can then load test data in your tests as easy as this:
 
@@ -428,6 +460,10 @@ Setting `testdata.enabled=true` enables the YAML test data resolution. The defau
 `model.package` is mandatory and specifies the root package to scan for Java objects representing test entities (these classes need to be annotated with `@TestData`).
 
 `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
+
+## Test reports
+
+After the run, [Cluecumber](https://github.com/trivago/cluecumber-report-plugin) test results will be available under `target/report/cucumber`.
 
 ## Cloud service integrations
 
@@ -617,7 +653,7 @@ See the [Galen documentation](https://galenframework.com/docs/reference-galen-sp
 
 ## Used libraries
 
-JustTestLah! makes use of a variety of frameworks to make writing and executing tests as transparent and simple as possible.
+JustTestLah! makes use of a variety of frameworks to make writing and executing tests as simple and enjoyable as possible.
 
 - [Selenium](https://www.seleniumhq.org), the main test framework used by JustTestLah!
 - [Appium](https://appium.io), an extension of Selenium for native mobile app testing
