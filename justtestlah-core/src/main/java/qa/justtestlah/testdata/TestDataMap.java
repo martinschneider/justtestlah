@@ -65,17 +65,20 @@ public class TestDataMap {
       }
       LOG.info("Scanning for test data files using the pattern {}", pattern);
       for (Resource resource : new PathMatchingResourcePatternResolver().getResources(pattern)) {
-        Pair<Object, String> result = parser.parse(resource);
-        Object entity = result.getLeft();
-        String entityName = result.getRight();
-        Class<?> type = entity.getClass();
-        LOG.info("Adding {}, {} to test data map for type {}", entityName, entity, type.getName());
-        if (!testData.containsKey(type)) {
-          Map<String, Object> map = new HashMap<>();
-          map.put(entityName, entity);
-          testData.put(type, map);
-        } else {
-          testData.get(type).put(entityName, entity);
+        if (resource.getFile().getPath().contains("testdata")) {
+          Pair<Object, String> result = parser.parse(resource);
+          Object entity = result.getLeft();
+          String entityName = result.getRight();
+          Class<?> type = entity.getClass();
+          LOG.info(
+              "Adding {}, {} to test data map for type {}", entityName, entity, type.getName());
+          if (!testData.containsKey(type)) {
+            Map<String, Object> map = new HashMap<>();
+            map.put(entityName, entity);
+            testData.put(type, map);
+          } else {
+            testData.get(type).put(entityName, entity);
+          }
         }
       }
     }

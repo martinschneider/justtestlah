@@ -19,11 +19,15 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.EntryExitLogging;
 import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.log.WebDriverLogEnricher;
 
 /** Factory for {@link WebDriver}. */
+@Component
+@ConditionalOnProperty(value = "cloudprovider", havingValue = "local", matchIfMissing = true)
 public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   private static final String EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR =

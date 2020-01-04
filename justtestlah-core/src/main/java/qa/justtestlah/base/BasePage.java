@@ -2,21 +2,14 @@ package qa.justtestlah.base;
 
 import static com.codeborne.selenide.Condition.appear;
 
-import com.applitools.eyes.selenium.Eyes;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.ex.ElementNotFound;
-import com.galenframework.api.Galen;
-import com.galenframework.reports.GalenTestInfo;
-import com.galenframework.reports.model.LayoutReport;
 import io.appium.java_client.HasSettings;
 import io.appium.java_client.Setting;
 import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.OutputType;
@@ -31,10 +24,12 @@ import qa.justtestlah.exception.ScreenVerificationException;
 import qa.justtestlah.locator.LocatorMap;
 import qa.justtestlah.locator.LocatorParser;
 import qa.justtestlah.locator.LocatorPlaceholders;
-import qa.justtestlah.visual.AppiumTemplateMatcher;
-import qa.justtestlah.visual.ImageUtils;
-import qa.justtestlah.visual.Match;
-import qa.justtestlah.visual.TemplateMatcher;
+import qa.justtestlah.stubs.AppiumTemplateMatcher;
+import qa.justtestlah.stubs.Applitools;
+import qa.justtestlah.stubs.Galen;
+import qa.justtestlah.stubs.Match;
+import qa.justtestlah.stubs.TemplateMatcher;
+import qa.justtestlah.utils.ImageUtils;
 
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
@@ -49,11 +44,11 @@ public abstract class BasePage<T> extends Base {
 
   @Autowired private LocatorPlaceholders globalPlaceholders;
 
-  @Autowired private Eyes eyes;
-
-  @Autowired private List<GalenTestInfo> galenTests;
+  @Autowired private Applitools applitools;
 
   @Autowired private ImageUtils imageUtils;
+
+  @Autowired private Galen galen;
 
   protected LocatorMap getLocators() {
     return locators;
@@ -123,7 +118,7 @@ public abstract class BasePage<T> extends Base {
         ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
       }
       return templateMatcher.match(
-          screenshotFile.getAbsolutePath(), imageUtils.getFullPath(imageName), threshold);
+          screenshotFile.getAbsolutePath(), ImageUtils.getFullPath(imageName), threshold);
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
@@ -160,7 +155,7 @@ public abstract class BasePage<T> extends Base {
   private T checkWindow() {
     if (configuration.isEyesEnabled()) {
       LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
-      eyes.checkWindow();
+      applitools.checkWindow();
     } else {
       LOG.debug(
           "Eyes disabled, skipping check on class {}. You can enable visual testing with "
@@ -187,21 +182,7 @@ public abstract class BasePage<T> extends Base {
               + File.separator
               + baseName
               + ".spec";
-      LOG.info("Checking layout {}", specPath);
-      String title = "Check layout " + specPath;
-      LayoutReport layoutReport;
-      try {
-        layoutReport =
-            Galen.checkLayout(
-                WebDriverRunner.getWebDriver(),
-                this.getClass().getClassLoader().getResource(specPath).getPath(),
-                Collections.singletonList(configuration.getPlatform().name()));
-        GalenTestInfo test = GalenTestInfo.fromString(this.getClass().getSimpleName());
-        test.getReport().layout(layoutReport, title);
-        galenTests.add(test);
-      } catch (IOException exception) {
-        LOG.warn("Error checking layout", exception);
-      }
+      galen.checkLayout(specPath, configuration.getPlatform());
     } else {
       LOG.debug(
           "Galen checks disabled, skipping checks for class {}. "

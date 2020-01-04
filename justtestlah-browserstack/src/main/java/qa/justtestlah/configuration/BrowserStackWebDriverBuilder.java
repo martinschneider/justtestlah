@@ -22,9 +22,11 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import qa.justtestlah.exception.BrowserstackException;
 
 /** Creates {@link WebDriver} instance for Browserstack. */
+@ConditionalOnProperty(value = "cloudprovider", havingValue = "browserstack")
 public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     implements WebDriverBuilder {
 

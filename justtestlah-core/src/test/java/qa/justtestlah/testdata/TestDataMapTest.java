@@ -18,7 +18,7 @@ public class TestDataMapTest {
     parser.setYamlParser(new Yaml());
     parser.setTestDataObjectRegistry(registry);
     target.setParser(parser);
-    target.setFilter("qa/justtestlah/testdata/valid");
+    target.setFilter("valid");
     target.setTestDataEnabled(true);
   }
 

@@ -18,7 +18,7 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qa.justtestlah.configuration.Platform;
-import qa.justtestlah.visual.ImageUtils;
+import qa.justtestlah.utils.ImageUtils;
 
 /** Map to hold element locators. */
 public class LocatorMap {
@@ -79,7 +79,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
+      return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -108,7 +108,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $$(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $$(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
+      return $$(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $$(formatValue(rawValue, params));
     }

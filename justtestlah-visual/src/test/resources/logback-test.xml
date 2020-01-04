@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<configuration>
+  <appender name="STDOUT"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+  <logger name="qa.justtestlah" level="info" />
+</configuration>

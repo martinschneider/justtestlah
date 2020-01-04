@@ -30,6 +30,11 @@
     </dependency>
     <dependency>
       <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-visual</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-browserstack</artifactId>
       <version>${project.version}</version>
     </dependency>

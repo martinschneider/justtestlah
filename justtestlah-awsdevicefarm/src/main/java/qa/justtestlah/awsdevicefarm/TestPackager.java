@@ -22,7 +22,7 @@ public class TestPackager {
    *
    * @param clean true, if the target directory should be cleaned (forcing recompilation)
    * @return {@link File} of the ZIP package to be used by AWS Devicefarm
-   * @throws MavenInvocationException
+   * @throws MavenInvocationException error during Maven build
    */
   public File packageProjectForDeviceFarm(boolean clean) throws MavenInvocationException {
     InvocationRequest request = new DefaultInvocationRequest();

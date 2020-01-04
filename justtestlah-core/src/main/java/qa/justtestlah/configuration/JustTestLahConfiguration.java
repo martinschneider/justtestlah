@@ -4,9 +4,12 @@ import static com.codeborne.selenide.Selenide.open;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import qa.justtestlah.stubs.OCR;
 
 /** Main configuration class for JustTestLah!. */
 @Component
@@ -54,6 +57,8 @@ public class JustTestLahConfiguration {
 
   private WebDriverBuilder webDriverBuilder;
 
+  @Autowired private OCR ocr;
+
   @Autowired
   public JustTestLahConfiguration(WebDriverBuilder webDriverBuilder) {
     this.webDriverBuilder = webDriverBuilder;
@@ -72,6 +77,10 @@ public class JustTestLahConfiguration {
       WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
     } else if (platform.equals(Platform.WEB)) {
       open(baseUrl);
+    }
+    WebDriver driver = WebDriverRunner.getWebDriver();
+    if (driver instanceof TakesScreenshot) {
+      ocr.setDriver(driver);
     }
   }
 
