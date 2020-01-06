@@ -1,10 +1,10 @@
-package qa.justtestlah.configuration;
+package qa.justtestlah.browserstack.configuration;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import qa.justtestlah.exception.BrowserstackException;
+import qa.justtestlah.browserstack.exception.BrowserstackException;
 
 /** Builder for the Browserstack URL. */
 public class BrowserStackUrlBuilder {

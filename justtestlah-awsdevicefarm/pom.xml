@@ -54,8 +54,14 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
@@ -90,8 +96,8 @@
       <id>aws</id>
       <properties>
         <!-- This is only used for the integration test. We use an old version 
-          here to ensure it is in the Maven repository (the old version will definitely be 
-          on Maven central). -->
+          here to ensure it is in the Maven repository (the old version will definitely 
+          be on Maven central). -->
         <justtestlah.version>1.7-RC5</justtestlah.version>
       </properties>
       <build>

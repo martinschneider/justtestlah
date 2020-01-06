@@ -4,8 +4,17 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import qa.justtestlah.configuration.Platform;
+import qa.justtestlah.locator.LocatorMap;
 
+/**
+ * Placeholder implementations for beans from other modules
+ *
+ * <p>These stubs satisfy compile-time dependencies between justtestlah-core and its submodules.
+ *
+ * <p>If a sub-module is on the classpath, its bean definitions will take precedence over this
+ * class. This is achieved by annotating the beans with {@link
+ * org.springframework.context.annotation.Primary}).
+ */
 @Component
 public class Stubs implements Applitools, Galen, TemplateMatcher, OCR {
 
@@ -17,7 +26,7 @@ public class Stubs implements Applitools, Galen, TemplateMatcher, OCR {
   }
 
   @Override
-  public void checkLayout(String specPath, Platform platform) {
+  public void checkLayout(String specPath, LocatorMap locators) {
     throw new UnsupportedOperationException(
         "Galen requires justtestlah-galen.jar on the classpath.");
   }

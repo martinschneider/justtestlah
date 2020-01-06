@@ -5,13 +5,13 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import qa.justtestlah.configuration.JustTestLahConfig;
+import qa.justtestlah.configuration.JustTestLahSpringConfig;
 import qa.justtestlah.hooks.CucumberHook;
 import qa.justtestlah.hooks.HooksRegister;
 import qa.justtestlah.hooks.WebDriverHooks;
 
 /** This class registers Cucumber hooks with {@link HooksRegister}. */
-@ContextConfiguration(classes = JustTestLahConfig.class)
+@ContextConfiguration(classes = JustTestLahSpringConfig.class)
 public class Hooks {
 
   @Autowired private HooksRegister hooksRegister;

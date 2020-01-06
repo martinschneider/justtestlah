@@ -42,17 +42,13 @@ public class OCR implements qa.justtestlah.stubs.OCR {
 
   /** @return all text recognised on the screen */
   public String getText() {
-    try {
-      return ocr.doOCR(getScreenshot());
-    } catch (TesseractException exception) {
-      LOG.warn("Error performing OCR", exception);
-      return null;
-    }
+    return getText(getScreenshot());
   }
 
   private String getText(File file) {
+    LOG.info("Peforming OCR on file {}", file);
     try {
-      return ocr.doOCR(file);
+      return ocr.doOCR(file).trim();
     } catch (TesseractException exception) {
       LOG.warn("Error performing OCR", exception);
       return null;

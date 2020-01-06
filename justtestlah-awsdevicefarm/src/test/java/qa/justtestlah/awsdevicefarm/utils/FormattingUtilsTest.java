@@ -6,7 +6,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FormattingUtilsTest {
 

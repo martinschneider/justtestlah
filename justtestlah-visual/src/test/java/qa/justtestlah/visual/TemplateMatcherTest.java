@@ -6,8 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import nu.pattern.OpenCV;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.opencv.core.Core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class TemplateMatcherTest {
   private static OpenCVTemplateMatcher target = new OpenCVTemplateMatcher();
 
   /** Initialise mocks and configuration. */
-  @BeforeClass
+  @BeforeAll
   public static void init() {
     assumeTrue(javaVersionLessThan12());
     OpenCV.loadShared();

@@ -1,4 +1,6 @@
-package qa.justtestlah.exception;
+package qa.justtestlah.browserstack.exception;
+
+import qa.justtestlah.exception.JustTestLahException;
 
 /** Exception class for Browserstack-related errors. */
 public class BrowserstackException extends JustTestLahException {

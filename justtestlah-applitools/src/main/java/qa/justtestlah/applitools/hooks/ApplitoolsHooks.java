@@ -39,7 +39,7 @@ public class ApplitoolsHooks extends AbstractCucumberHook {
     if (configuration.isEyesEnabled()) {
       LOG.info("Initializing Eyes");
       eyes.open(
-          WebDriverRunner.getWebDriver(),
+          WebDriverRunner.getAndCheckWebDriver(),
           configuration.getApplicationName(),
           configuration.getPlatform().name());
     }

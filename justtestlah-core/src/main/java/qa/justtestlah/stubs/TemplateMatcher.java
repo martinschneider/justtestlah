@@ -1,5 +1,6 @@
 package qa.justtestlah.stubs;
 
+/** Functionality for image template matching */
 public interface TemplateMatcher {
   /**
    * Check whether the template appears anywhere within the target image.

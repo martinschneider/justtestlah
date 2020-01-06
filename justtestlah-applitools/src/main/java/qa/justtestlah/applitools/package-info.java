@@ -1,2 +1,2 @@
-/** Applitools integration. */
+/** Applitools integration */
 package qa.justtestlah.applitools;

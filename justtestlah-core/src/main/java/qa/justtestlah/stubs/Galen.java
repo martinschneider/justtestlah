@@ -1,7 +1,7 @@
 package qa.justtestlah.stubs;
 
-import qa.justtestlah.configuration.Platform;
+import qa.justtestlah.locator.LocatorMap;
 
 public interface Galen {
-  void checkLayout(String specPath, Platform platform);
+  void checkLayout(String specPath, LocatorMap locators);
 }

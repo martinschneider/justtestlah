@@ -1,19 +1,15 @@
 package qa.justtestlah.applitools;
 
 import com.applitools.eyes.selenium.Eyes;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
+@Component
+@Primary
 public class Applitools implements qa.justtestlah.stubs.Applitools {
 
-  @Value("${eyes.apiKey}")
-  private String eyesApiKey;
-
-  private Eyes eyes;
-
-  public Applitools() {
-    Eyes eyes = new Eyes();
-    eyes.setApiKey(eyesApiKey);
-  }
+  @Autowired private Eyes eyes;
 
   @Override
   public void checkWindow() {

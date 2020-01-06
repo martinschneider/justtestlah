@@ -2,7 +2,7 @@ package qa.justtestlah.mobile.tools;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ApplicationInfoTest {
 
@@ -12,6 +12,8 @@ public class ApplicationInfoTest {
     target.setApplicationName("appName");
     target.setVersionCode("versionCode");
     target.setVersionName("versionName");
-    assertThat(target.toString()).isEqualTo("appName versionName_versionCode");
+    assertThat(target.toString())
+        .as("check application info string")
+        .isEqualTo("appName versionName_versionCode");
   }
 }

@@ -1,2 +1,2 @@
-/** Galen integration. */
+/** Galen integration */
 package qa.justtestlah.galen;

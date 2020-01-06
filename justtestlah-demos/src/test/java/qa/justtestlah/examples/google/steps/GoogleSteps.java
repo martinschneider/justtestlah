@@ -18,6 +18,6 @@ public class GoogleSteps extends BaseSteps {
 
   @Then("the Google logo shows the correct text")
   public void checkLogo() {
-    assertThat(google.getLogoText().trim()).isEqualTo("Google");
+    assertThat(google.getLogoText()).isEqualTo("Google");
   }
 }

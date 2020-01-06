@@ -1,4 +1,4 @@
-package qa.justtestlah.configuration;
+package qa.justtestlah.browserstack.configuration;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -23,7 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import qa.justtestlah.exception.BrowserstackException;
+import qa.justtestlah.browserstack.exception.BrowserstackException;
+import qa.justtestlah.configuration.LocalWebDriverBuilder;
+import qa.justtestlah.configuration.WebDriverBuilder;
 
 /** Creates {@link WebDriver} instance for Browserstack. */
 @ConditionalOnProperty(value = "cloudprovider", havingValue = "browserstack")

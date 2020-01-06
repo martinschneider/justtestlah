@@ -27,7 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.test.util.ReflectionTestUtils;
-import qa.justtestlah.exception.BrowserstackException;
+import qa.justtestlah.browserstack.configuration.BrowserStackUrlBuilder;
+import qa.justtestlah.browserstack.configuration.BrowserStackWebDriverBuilder;
+import qa.justtestlah.browserstack.exception.BrowserstackException;
 
 /**
  * Test for {@link BrowserStackWebDriverBuilder}.

@@ -1,4 +1,4 @@
-package qa.justtestlah.mobile.tools;
+package qa.justtestlah.mobile.tools.exception;
 
 /** Exception class for JustTestLah runtime exceptions. */
 public class MobileToolsException extends RuntimeException {

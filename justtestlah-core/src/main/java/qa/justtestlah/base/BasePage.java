@@ -174,7 +174,7 @@ public abstract class BasePage<T> extends Base {
   private T checkLayout() {
     if (configuration.isGalenEnabled()) {
       String baseName = this.getClass().getSimpleName();
-      String baseFolder = this.getClass().getPackage().getName().replace("\\.", File.separator);
+      String baseFolder = this.getClass().getPackage().getName().replaceAll("\\.", File.separator);
       String specPath =
           baseFolder
               + File.separator
@@ -182,7 +182,7 @@ public abstract class BasePage<T> extends Base {
               + File.separator
               + baseName
               + ".spec";
-      galen.checkLayout(specPath, configuration.getPlatform());
+      galen.checkLayout(specPath, locators);
     } else {
       LOG.debug(
           "Galen checks disabled, skipping checks for class {}. "

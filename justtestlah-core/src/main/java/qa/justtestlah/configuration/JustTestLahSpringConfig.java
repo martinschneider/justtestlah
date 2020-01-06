@@ -17,7 +17,7 @@ import qa.justtestlah.locator.LocatorPlaceholders;
     ignoreResourceNotFound = true)
 @ComponentScan(basePackages = {"qa.justtestlah", "${pages.package}", "${steps.package}"})
 @Import(AopConfig.class)
-public class JustTestLahConfig {
+public class JustTestLahSpringConfig {
 
   @Value("${pages.package}")
   private String pagesPackage;

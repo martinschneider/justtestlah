@@ -190,7 +190,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
 
-    LOG.warn(
+    LOG.info(
         "Found {} feature(s) in {}: {}",
         features.size(),
         System.getProperty("cucumber.features"),

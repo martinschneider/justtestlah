@@ -99,12 +99,11 @@
     <cucumber.version>5.0.0-RC3</cucumber.version>
     <wiremock.version>2.25.1</wiremock.version>
     <opencv.version>3.4.2-1</opencv.version>
-    <tess4j.version>4.5.1</tess4j.version>
+    <tess4j.version>4.1.1</tess4j.version>
     <applitools.version>3.158.9</applitools.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.6.0-M1</junit.version>
-    <junit4.version>4.12</junit4.version>
-    <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
+    <junit.vintage.version>4.12</junit.vintage.version>
     <slf4j.version>2.0.0-alpha1</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.14.0</assertj.version>
@@ -153,7 +152,7 @@
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.11.700</aws.sdk.version>
     <aopalliance.version>2.6.1</aopalliance.version>
-    <jackson.version>2.10.1</jackson.version>
+    <jackson.version>2.10.2</jackson.version>
     <guava.version>28.2-jre</guava.version>
     <jakarta.version>1.3.5</jakarta.version>
     <commons.codec.version>1.14</commons.codec.version>
@@ -203,6 +202,11 @@
         <version>${cucumber.version}</version>
       </dependency>
       <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.vintage.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
         <version>${junit.version}</version>
@@ -210,6 +214,16 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
         <version>${junit.version}</version>
       </dependency>
       <dependency>
@@ -326,12 +340,6 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>com.tngtech.java</groupId>
-        <artifactId>junit-dataprovider</artifactId>
-        <version>${junit.dataprovider.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>${snakeyaml.version}</version>
@@ -420,11 +428,6 @@
         <groupId>org.glassfish.jersey.core</groupId>
         <artifactId>jersey-common</artifactId>
         <version>${jersey.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit4.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -584,13 +587,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>${maven.surefire.plugin.version}</version>
-            </dependency>
-          </dependencies>
           <configuration>
             <excludes>
               <exclude>**/JustTestLahTest.java</exclude>
@@ -788,7 +784,19 @@
           </execution>
         </executions>
         <configuration>
-          <failOnWarning>true</failOnWarning>
+          <ignoredUnusedDeclaredDependencies>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jul-to-slf4j
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>io.cucumber:cucumber-spring
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+          <ignoredUsedUndeclaredDependencies>
+            <ignoredUsedUndeclaredDependency>junit:junit</ignoredUsedUndeclaredDependency>
+          </ignoredUsedUndeclaredDependencies>
         </configuration>
       </plugin>
     </plugins>
