@@ -27,7 +27,7 @@ public abstract class AbstractCucumberHook implements CucumberHook {
   public Set<ExecutionEnvironment> getExecutionEnvironments() {
     return Set.of(
         ExecutionEnvironment.BROWSERSTACK,
-        ExecutionEnvironment.AWS_DEVICEFARM,
+        ExecutionEnvironment.AWSDEVICEFARM,
         ExecutionEnvironment.LOCAL);
   }
 }

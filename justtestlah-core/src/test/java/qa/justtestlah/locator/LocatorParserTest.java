@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 import qa.justtestlah.configuration.Platform;
 
@@ -14,7 +14,6 @@ public class LocatorParserTest {
 
   @Test
   public void testLocatorParser() throws IOException {
-
     target.setYamlParser(new Yaml());
     String baseFolder = this.getClass().getPackage().getName().replace(".", File.separator);
     Map<String, Map<String, Map<String, String>>> locatorMap =

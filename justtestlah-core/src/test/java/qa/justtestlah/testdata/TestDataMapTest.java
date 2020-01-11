@@ -3,14 +3,14 @@ package qa.justtestlah.testdata;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 public class TestDataMapTest {
   private static TestDataMap target = new TestDataMap();
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() {
     TestDataObjectRegistry registry = new TestDataObjectRegistry();
     target.setRegistry(registry);
@@ -18,7 +18,7 @@ public class TestDataMapTest {
     parser.setYamlParser(new Yaml());
     parser.setTestDataObjectRegistry(registry);
     target.setParser(parser);
-    target.setFilter("qa/justtestlah/testdata/valid");
+    target.setFilter("valid");
     target.setTestDataEnabled(true);
   }
 

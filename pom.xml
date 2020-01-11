@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8-RC1</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -57,6 +57,9 @@
     <module>justtestlah-awsdevicefarm</module>
     <module>justtestlah-browserstack</module>
     <module>justtestlah-quickstart</module>
+    <module>justtestlah-applitools</module>
+    <module>justtestlah-galen</module>
+    <module>justtestlah-visual</module>
   </modules>
   <repositories>
     <repository>
@@ -89,26 +92,27 @@
   <properties>
     <!-- Version properties -->
     <spring.version>5.2.2.RELEASE</spring.version>
+    <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
     <appium.version>7.3.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.5.1</selenide.version>
+    <selenide.version>5.6.0</selenide.version>
     <cucumber.version>5.0.0-RC3</cucumber.version>
     <wiremock.version>2.25.1</wiremock.version>
     <opencv.version>3.4.2-1</opencv.version>
+    <tess4j.version>4.1.1</tess4j.version>
     <applitools.version>3.158.9</applitools.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.6.0-M1</junit.version>
-    <junit4.version>4.12</junit4.version>
-    <junit.dataprovider.version>1.13.1</junit.dataprovider.version>
+    <junit.vintage.version>4.12</junit.vintage.version>
     <slf4j.version>2.0.0-alpha1</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.14.0</assertj.version>
-    <mockito.version>3.2.0</mockito.version>
+    <mockito.version>3.2.4</mockito.version>
     <snakeyaml.version>1.25</snakeyaml.version>
     <dd.plist.version>1.23</dd.plist.version>
     <apk.parser.version>2.6.10</apk.parser.version>
-    <zip4j.version>2.2.7</zip4j.version>
-    <bytebuddy.version>1.10.5</bytebuddy.version>
+    <zip4j.version>2.2.8</zip4j.version>
+    <bytebuddy.version>1.10.6</bytebuddy.version>
     <gson.version>2.8.6</gson.version>
     <jersey.version>2.29.1</jersey.version>
     <apache.http.components.version>4.5.10</apache.http.components.version>
@@ -142,16 +146,16 @@
     <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
     <wagon.ssh.version>3.3.4</wagon.ssh.version>
     <cluecumber.report.plugin.version>2.3.1</cluecumber.report.plugin.version>
-    <checkstyle.version>8.27</checkstyle.version>
-    <classgraph.version>4.8.58</classgraph.version>
+    <checkstyle.version>8.28</checkstyle.version>
+    <classgraph.version>4.8.59</classgraph.version>
     <fmt.version>2.9</fmt.version>
     <jsch.version>0.1.55</jsch.version>
-    <aws.sdk.version>1.11.693</aws.sdk.version>
+    <aws.sdk.version>1.11.700</aws.sdk.version>
     <aopalliance.version>2.6.1</aopalliance.version>
-    <jackson.version>2.10.1</jackson.version>
-    <guava.version>28.1-jre</guava.version>
+    <jackson.version>2.10.2</jackson.version>
+    <guava.version>28.2-jre</guava.version>
     <jakarta.version>1.3.5</jakarta.version>
-    <commons.codec.version>1.13</commons.codec.version>
+    <commons.codec.version>1.14</commons.codec.version>
     <aspectjweaver.version>1.9.5</aspectjweaver.version>
 
     <!-- Other properties -->
@@ -198,6 +202,11 @@
         <version>${cucumber.version}</version>
       </dependency>
       <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.vintage.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.junit.vintage</groupId>
         <artifactId>junit-vintage-engine</artifactId>
         <version>${junit.version}</version>
@@ -205,6 +214,16 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
         <version>${junit.version}</version>
       </dependency>
       <dependency>
@@ -278,6 +297,11 @@
         <version>${spring.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring.boot.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
         <version>${assertj.version}</version>
@@ -314,12 +338,6 @@
             <artifactId>testng</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.tngtech.java</groupId>
-        <artifactId>junit-dataprovider</artifactId>
-        <version>${junit.dataprovider.version}</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.yaml</groupId>
@@ -412,11 +430,6 @@
         <version>${jersey.version}</version>
       </dependency>
       <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${junit4.version}</version>
-      </dependency>
-      <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-aop</artifactId>
         <version>${spring.version}</version>
@@ -460,6 +473,11 @@
         <groupId>com.github.tomakehurst</groupId>
         <artifactId>wiremock-jre8-standalone</artifactId>
         <version>${wiremock.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.sourceforge.tess4j</groupId>
+        <artifactId>tess4j</artifactId>
+        <version>${tess4j.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -569,13 +587,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.surefire</groupId>
-              <artifactId>surefire-junit47</artifactId>
-              <version>${maven.surefire.plugin.version}</version>
-            </dependency>
-          </dependencies>
           <configuration>
             <excludes>
               <exclude>**/JustTestLahTest.java</exclude>
@@ -773,7 +784,19 @@
           </execution>
         </executions>
         <configuration>
-          <failOnWarning>true</failOnWarning>
+          <ignoredUnusedDeclaredDependencies>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jul-to-slf4j
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>io.cucumber:cucumber-spring
+            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+          <ignoredUsedUndeclaredDependencies>
+            <ignoredUsedUndeclaredDependency>junit:junit</ignoredUsedUndeclaredDependency>
+          </ignoredUsedUndeclaredDependencies>
         </configuration>
       </plugin>
     </plugins>

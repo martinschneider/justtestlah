@@ -8,6 +8,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,7 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.test.util.ReflectionTestUtils;
-import qa.justtestlah.exception.BrowserstackException;
+import qa.justtestlah.browserstack.configuration.BrowserStackUrlBuilder;
+import qa.justtestlah.browserstack.configuration.BrowserStackWebDriverBuilder;
+import qa.justtestlah.browserstack.exception.BrowserstackException;
 
 /**
  * Test for {@link BrowserStackWebDriverBuilder}.
@@ -102,10 +106,10 @@ public class BrowserStackWebDriverBuilderTest {
     verify(1, postRequestedFor(urlEqualTo("/session")));
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void testWebDriver() {
     target.getWebDriver();
-    verify(0, postRequestedFor(urlEqualTo("/session")));
+    verify(1, postRequestedFor(urlEqualTo("/session")));
   }
 
   @Test
@@ -124,34 +128,66 @@ public class BrowserStackWebDriverBuilderTest {
     verify(0, postRequestedFor(urlEqualTo("/upload")));
   }
 
-  @Test(expected = BrowserstackException.class)
+  @Test
   public void testAppNull() {
     ReflectionTestUtils.setField(target, "appPath", null);
-    target.getAndroidDriver();
+    Throwable exception =
+        assertThrows(
+            BrowserstackException.class,
+            () -> {
+              target.getAndroidDriver();
+            });
     verify(0, postRequestedFor(urlEqualTo("/session")));
     verify(0, postRequestedFor(urlEqualTo("/upload")));
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .isEqualTo("Property app must not be null");
   }
 
-  @Test(expected = BrowserstackException.class)
+  @Test
   public void testInvalidFileUploadResponseFromBrowserstack() {
     stubFor(post("/upload").willReturn(ok("")));
-    target.getAndroidDriver();
+    Throwable exception =
+        assertThrows(
+            BrowserstackException.class,
+            () -> {
+              target.getAndroidDriver();
+            });
     verify(1, postRequestedFor(urlEqualTo("/upload")));
     verify(0, postRequestedFor(urlEqualTo("/session")));
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .isEqualTo("Error parsing response from Browserstack");
   }
 
-  @Test(expected = BrowserstackException.class)
+  @Test
   public void testUnableToUpload() throws MalformedURLException {
     ReflectionTestUtils.setField(target, "uploadPath", "http://localhost_invalid/upload");
-    target.getIOsDriver();
+    Throwable exception =
+        assertThrows(
+            BrowserstackException.class,
+            () -> {
+              target.getIOsDriver();
+            });
     verify(0, postRequestedFor(urlEqualTo("/session")));
     verify(0, postRequestedFor(urlEqualTo("/upload")));
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .startsWith("Error uploading file to Browserstack");
   }
 
-  @Test(expected = BrowserstackException.class)
+  @Test
   public void testUploadReturnsNon200() {
     stubFor(post("/upload").willReturn(notFound()));
-    target.getIOsDriver();
+    Throwable exception =
+        assertThrows(
+            BrowserstackException.class,
+            () -> {
+              target.getIOsDriver();
+            });
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .startsWith("Upload returned non-200 response");
   }
 
   private static int getAvailablePort() throws IOException {

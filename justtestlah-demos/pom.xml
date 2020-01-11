@@ -9,7 +9,7 @@
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8-RC1</version>
   </parent>
   <licenses>
     <license>
@@ -26,6 +26,21 @@
     <dependency>
       <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-visual</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-applitools</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+        <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-galen</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import qa.justtestlah.base.BasePage;
 
 /**
@@ -22,7 +22,6 @@ import qa.justtestlah.base.BasePage;
  *
  * <p>In case a placeholder exists in both the latter will be used.
  */
-@Component
 public class LocatorPlaceholders {
 
   private static final String PLACEHOLDER_PROPERTIES_FILENAME = "placeholder.properties";
@@ -30,6 +29,12 @@ public class LocatorPlaceholders {
   private static final Logger LOG = LoggerFactory.getLogger(LocatorPlaceholders.class);
 
   private Properties placeholders;
+
+  @Value("${pages.package}")
+  private String pagesPackage;
+
+  @Value("${locator.placeholders.file}")
+  private String locatorPlaceholdersFile;
 
   /**
    * Initialises {@link LocatorPlaceholders} from the following two sources:

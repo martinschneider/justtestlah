@@ -5,33 +5,21 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import qa.justtestlah.configuration.SpringConfig;
-import qa.justtestlah.hooks.ApplitoolsHooks;
+import qa.justtestlah.configuration.JustTestLahSpringConfig;
 import qa.justtestlah.hooks.CucumberHook;
-import qa.justtestlah.hooks.GalenHooks;
 import qa.justtestlah.hooks.HooksRegister;
-import qa.justtestlah.hooks.OpenCVHooks;
 import qa.justtestlah.hooks.WebDriverHooks;
 
 /** This class registers Cucumber hooks with {@link HooksRegister}. */
-@ContextConfiguration(classes = SpringConfig.class)
+@ContextConfiguration(classes = JustTestLahSpringConfig.class)
 public class Hooks {
 
   @Autowired private HooksRegister hooksRegister;
 
   @Autowired private WebDriverHooks webDriver;
 
-  @Autowired private ApplitoolsHooks applitools;
-
-  @Autowired private GalenHooks galen;
-
-  @Autowired private OpenCVHooks openCV;
-
   private void initHooks() {
     hooksRegister.addHooks(webDriver);
-    hooksRegister.addHooks(openCV);
-    hooksRegister.addHooks(galen);
-    hooksRegister.addHooks(applitools);
   }
 
   @Before

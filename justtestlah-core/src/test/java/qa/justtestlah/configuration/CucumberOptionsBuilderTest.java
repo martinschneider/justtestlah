@@ -1,15 +1,12 @@
 package qa.justtestlah.configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import qa.justtestlah.exception.JustTestLahException;
 
 public class CucumberOptionsBuilderTest {
-
-  @Rule public ExpectedException exceptionRule = ExpectedException.none();
 
   @Test
   public void testLegacyTags() {
@@ -33,12 +30,20 @@ public class CucumberOptionsBuilderTest {
         .isEqualTo("@web and (@regression or not @skip)");
   }
 
-  @Test(expected = JustTestLahException.class)
+  @Test
   public void testInvalidTags() {
     System.setProperty(
         PropertiesHolder.JUST_TEST_LAH_LOCATION_KEY,
         CucumberOptionsBuilder.class.getResource("justtestlah_injection.properties").getFile());
-    CucumberOptionsBuilder.setCucumberOptions(new PropertiesHolder());
+    Throwable exception =
+        assertThrows(
+            JustTestLahException.class,
+            () -> {
+              CucumberOptionsBuilder.setCucumberOptions(new PropertiesHolder());
+            });
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .isEqualTo("Invalid character ' in tag expression: ' -- do something nasty ;-)");
   }
 
   @Test

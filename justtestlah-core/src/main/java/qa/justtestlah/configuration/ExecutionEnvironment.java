@@ -4,7 +4,7 @@ package qa.justtestlah.configuration;
 public enum ExecutionEnvironment {
   LOCAL("local"),
   BROWSERSTACK("browserstack"),
-  AWS_DEVICEFARM("awsdevicefarm"),
+  AWSDEVICEFARM("aws"),
   DEFAULT("local");
 
   private String executionEnvironmentName;

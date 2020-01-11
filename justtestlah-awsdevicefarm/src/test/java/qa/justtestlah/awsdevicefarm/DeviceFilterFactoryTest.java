@@ -1,6 +1,7 @@
 package qa.justtestlah.awsdevicefarm;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -10,8 +11,8 @@ import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.ListDevicesResult;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import qa.justtestlah.awsdevicefarm.devicefilter.DeviceFilterConstants;
@@ -34,7 +35,7 @@ public class DeviceFilterFactoryTest {
 
   @Mock private ListDevicesResult resultBusy;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     MockitoAnnotations.initMocks(this);
     when(awsService.getAws()).thenReturn(awsDeviceFarm);
@@ -80,12 +81,22 @@ public class DeviceFilterFactoryTest {
     assertThat(target.getDeviceFilters()).isNotNull().isNotEmpty();
   }
 
-  @Test(expected = AWSDeviceFarmException.class)
+  @Test
   public void testGetDeviceFiltersNoAvailableDevicesAndWaitIsFalse() {
     when(resultHighlyAvailable.getDevices()).thenReturn(Collections.emptyList());
     when(resultAvailable.getDevices()).thenReturn(Collections.emptyList());
     when(resultBusy.getDevices()).thenReturn(List.of(new Device().withName("test1")));
     when(properties.getProperty("aws.waitForDevice")).thenReturn("false");
-    assertThat(target.getDeviceFilters()).isNotNull().isNotEmpty();
+
+    Throwable exception =
+        assertThrows(
+            AWSDeviceFarmException.class,
+            () -> {
+              target.getDeviceFilters();
+            });
+
+    assertThat(exception.getMessage())
+        .as("check exception message")
+        .isEqualTo("No matching devices available!");
   }
 }

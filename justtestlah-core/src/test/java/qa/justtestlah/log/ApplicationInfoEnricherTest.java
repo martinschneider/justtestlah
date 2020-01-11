@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.Context;
 import java.util.Properties;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -25,7 +25,7 @@ public class ApplicationInfoEnricherTest {
   @Mock private ApplicationInfoService applicationInfoService;
   @Mock private PropertiesHolder propertiesHolder;
 
-  @Before
+  @BeforeAll
   public void initMocks() {
     MockitoAnnotations.initMocks(this);
     Properties props = new Properties();

@@ -38,4 +38,5 @@
   
   <logger name="qa.justtestlah"
     level="info" />
+    
 </configuration>

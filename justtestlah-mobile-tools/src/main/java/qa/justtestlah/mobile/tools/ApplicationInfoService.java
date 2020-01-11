@@ -20,6 +20,7 @@ import net.lingala.zip4j.exception.ZipException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+import qa.justtestlah.mobile.tools.exception.MobileToolsException;
 
 /** Read metadata from APK, IPA and APP files. */
 public class ApplicationInfoService {
@@ -123,7 +124,7 @@ public class ApplicationInfoService {
         | SAXException exception) {
       String errorMessage = String.format("Error reading dictionary from %s", path);
       LOG.error(errorMessage, exception);
-      throw new MobileToolsException("errorMessage", exception);
+      throw new MobileToolsException(errorMessage, exception);
     }
   }
 

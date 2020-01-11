@@ -3,7 +3,8 @@ package qa.justtestlah.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-import qa.justtestlah.exception.BrowserstackException;
+import qa.justtestlah.browserstack.configuration.BrowserStackUrlBuilder;
+import qa.justtestlah.browserstack.exception.BrowserstackException;
 
 /** Test for {@link BrowserStackUrlBuilder}. */
 public class BrowserStackURLBuilderTest {

@@ -8,7 +8,7 @@ import com.amazonaws.services.devicefarm.model.ScheduleRunConfiguration;
 import java.util.Properties;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import qa.justtestlah.configuration.PropertiesHolder;
 

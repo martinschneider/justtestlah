@@ -56,7 +56,7 @@ That said, using JustTestLah! can be (and has been) used to automate iOS apps.
 ### Available demos
 There are a couple of demos available under the `justtestlah-demos` module. The default one uses [Stackoverflow](https://stackoverflow.com) and comes in flavours for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version.
 
-Which tests are executed depends on the `features.dierctory` property:
+Which tests get executed depends on the `features.dierctory` property:
 
 ```ini
 # The path to the Cucumber feature files
@@ -229,12 +229,22 @@ steps.package=qa.justtestlah.examples.stackoverflow.steps
 features.directory=src/test/resources/features/stackoverflow
 cucumber.report.directory=target/report/cucumber
 
-# optional
-galen.report.directory=target/report/galen
+# Galen
 galen.enabled=false
+galen.inject.locators
+galen.report.directory=target/report/galen
+
+# Applitools
 eyes.enabled=false
-opencv.enabled=false
 eyes.apiKey=
+
+# Template matching
+opencv.enabled=false
+
+# OCR
+tesseract.datapath=
+
+# Cloudprovider (`aws` or `browserstack`, the default is `local`)
 cloudprovider=local
 
 # WEB settings
@@ -256,7 +266,7 @@ android.deviceName=Google Nexus 6
 ios.appPath=
 ios.deviceName=iPhone 6
 
-# BROWSERSTACK settings (requires cloudprovider=browserstack and `justtestlah-browserstack` on the classpath)
+# BROWSERSTACK settings (requires `cloudprovider=browserstack` and `justtestlah-browserstack` on the classpath)
 
 # Browserstack username
 browserstack.username=
@@ -264,14 +274,17 @@ browserstack.username=
 browserstack.accessKey=
 
 # Optional settings, see https://www.browserstack.com/automate/capabilities
+browserstack.project=
+browserstack.build=
 browserstack.debug=true
 browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
 browserstack.appium_version=1.8.0
+browserstack.acceptSslCerts=true
 
-# AWS DEVICEFARM settings (requires `justtestlah-awsdevicefarm` on the classpath)
+# AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
 # The arn of your AWS Devicefarm project (mandatory)
 aws.projectArn=
 
@@ -461,6 +474,8 @@ Setting `testdata.enabled=true` enables the YAML test data resolution. The defau
 
 `testdata.filter` allows restricting the path to scan for test data YAML files. If left empty everything matching `**/testdata/**/*.y*ml` (under `src/test/resources`) will be considered.
 
+Please note, that there is an additional check for the string `testdata` in the path of any testdata YAML files. Make sure that all testdata files are in a folder of that name or use `testdata` as a prefix or suffix in the filename.
+
 ## Test reports
 
 After the run, [Cluecumber](https://github.com/trivago/cluecumber-report-plugin) test results will be available under `target/report/cucumber`.
@@ -492,7 +507,7 @@ browserstack.timezone=SG
 browserstack.appium_version=1.8.0
 ```
 
-Make sure `justtestlah-browserstack` is on your classpath:
+Make sure `justtestlah-browserstack.jar` is on your classpath:
 
 ```xml
 <dependency>
@@ -555,7 +570,7 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm` is on your classpath:
+Make sure `justtestlah-awsdevicefarm.jar` is on your classpath:
 
 ```xml
 <dependency>
@@ -570,6 +585,16 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 Please note that AWS Devicefarm is a paid service.
 
 ## Template matching
+Make sure `justtestlah-visual.jar` is on your classpath:
+
+```xml
+<dependency>
+  <groupId>qa.justtestlah</groupId>
+  <artifactId>justtestlah-visual</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
 JustTestLah! allows locating elements using a template image:
 
 ```java
@@ -606,7 +631,64 @@ There are two modes to use template matching which can be configured in `justtes
 
 Note, that not all cloud providers support this.
 
+## OCR
+
+JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
+
+This requires `justtestlah-visual.jar` on the classpath:
+
+```xml
+<dependency>
+  <groupId>qa.justtestlah</groupId>
+  <artifactId>justtestlah-visual</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
+JustTestLah! uses [Tess4J](http://tess4j.sourceforge.net/), a Java wrapper for Tesseract. You still need to [install native binaries on your machine](https://github.com/tesseract-ocr/tesseract/wiki#installation) and set the [tesseract datapath](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files) in the `justtestlah.properties`:
+
+On a Mac, this might look something like this:
+
+```ini
+tesseract.datapath=/usr/local/Cellar/tesseract/4.1.1/share/tessdata
+``` 
+
+To use this feature, simply autowire an instance of the `OCR` class and pass a `WebElement` to its `getText` method. If you don't pass an argument, OCR will be performed on a screenshot of the entire viewport.
+
+Here is a demo where we get the text of the main logo on the Google search page:
+
+```java
+@Component
+@Profile(WEB)
+@ScreenIdentifier("SEARCH_FIELD")
+public class GooglePage extends BasePage<GooglePage> {
+
+  @Autowired private OCR ocr;
+
+  public String getLogoText() {
+    return ocr.getText($("LOGO"));
+  }
+}
+
+```
+
+In the step class, we can then perform a check like this:
+
+```java
+assertThat(googlePage.getLogoText()).isEqualTo("Google");
+``` 
+
 ## Applitools
+
+Make sure `justtestlah-applitools.jar` is on your classpath:
+
+```xml
+<dependency>
+  <groupId>qa.justtestlah</groupId>
+  <artifactId>justtestlah-applitools</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
 
 There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
 
@@ -615,6 +697,17 @@ Checks can then be triggered by calling `checkWindow()` on any page object class
 Please note that Applitools is a paid service.
 
 ## Galen
+
+Make sure `justtestlah-galen` is on your classpath:
+
+```xml
+<dependency>
+  <groupId>qa.justtestlah</groupId>
+  <artifactId>justtestlah-galen</artifactId>
+  <version>${project.version}</version>
+</dependency>
+```
+
 JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
 Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
@@ -622,32 +715,21 @@ Similar to properties-file holding the locator information, there is an (optiona
 Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
 
 ```yaml
-@objects
-  username_field  id  com.thecarousell.Carousell:id/login_page_username_text_field
-  password_field  id  com.thecarousell.Carousell:id/login_page_password_text_field
-  login_button    id  com.thecarousell.Carousell:id/login_page_login_button
-
 = Login =
 
-  username_field:
-      above password_field
-      aligned vertically all password_field
-      width 100 % of password_field/width
-      width 100 % of login_button/width
+  SEARCH_FIELD:
+    below LOGO
+    centered horizontally inside viewport
+    visible
 
-  password_field:
-      below username_field
-      aligned vertically all username_field
-      width 100 % of username_field/width
-      width 100 % of login_button/width
-
-  login_button:
-      below password_field
-      below username_field
-      width 100 % of username_field/width
-      width 100 % of password_field/width
-      text is "Log In"
+  LOGO:
+    above SEARCH_FIELD
+    centered horizontally inside viewport
+    width < 100% of SEARCH_FIELD/width
+    visible 
 ```
+
+Note, that you do not need to specify the @objects section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key. 
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
@@ -663,12 +745,14 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 - [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 - [OpenCV](https://opencv.org), used for image comparison
 - [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
+- [Galen](http://galenframework.com), used for layout based testing
+- [Tesseract](https://github.com/tesseract-ocr/tesseract), used for Optical Charatcer Recognition (OCR)
+- [Applitools](https://applitools.com), used for visual regression testing
 
 ## Known issues & limitations
 
 - JustTestLah! requires Java 10 or higher (and has been tested on Java 10, 11, 12, 13 and 14). Java 9 support has been dropped because of [JDK-8193802](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=8193802) which isn't fixed on Java below 10.
 - The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
-- The Galen PoC has only been tested against Appium 1.7. Please feel free to contribute an update for this feature.
 
 ## Contact and support
 

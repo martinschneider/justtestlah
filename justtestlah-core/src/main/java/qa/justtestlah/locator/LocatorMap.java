@@ -18,7 +18,7 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qa.justtestlah.configuration.Platform;
-import qa.justtestlah.visual.ImageUtils;
+import qa.justtestlah.utils.ImageUtils;
 
 /** Map to hold element locators. */
 public class LocatorMap {
@@ -79,7 +79,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
+      return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -108,7 +108,7 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $$(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $$(MobileBy.image(new ImageUtils().getImageAsBase64String(rawValue)));
+      return $$(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $$(formatValue(rawValue, params));
     }
@@ -123,8 +123,24 @@ public class LocatorMap {
    * @return {@link Pair}
    */
   public Pair<String, String> getRawLocator(String key, Platform platform, Object... params) {
-    Map<String, String> platformKey = map.get(key).get(platform.getPlatformName());
-    return Pair.of(platformKey.get("type"), platformKey.get("value"));
+    Map<String, String> tuple = map.get(key).get(platform.getPlatformName());
+    return Pair.of(tuple.get("type"), tuple.get("value"));
+  }
+
+  /**
+   * @param platform {@link Platform}
+   * @return a map of all UI locators specified for the given platform
+   */
+  public Map<String, Pair<String, String>> getLocatorsForPlatform(Platform platform) {
+    Map<String, Pair<String, String>> result = new HashMap<>();
+    for (Map.Entry<String, Map<String, Map<String, String>>> entry : map.entrySet()) {
+      Map<String, String> tuple = entry.getValue().get(platform.getPlatformName());
+      if (tuple != null) {
+        result.put(
+            entry.getKey(), Pair.of(tuple.get("type"), replacePlaceholders(tuple.get("value"))));
+      }
+    }
+    return result;
   }
 
   protected String formatValue(String rawValue, Object... params) {
