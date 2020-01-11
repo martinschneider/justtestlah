@@ -10,9 +10,8 @@ import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.apache.maven.shared.invoker.InvokerLogger;
 import org.apache.maven.shared.invoker.MavenInvocationException;
-import org.apache.maven.shared.invoker.PrintStreamLogger;
+import org.apache.maven.shared.invoker.PrintStreamHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -36,10 +35,11 @@ public class TestPackagerTest {
     when(properties.getProperty("aws.testpackage.name")).thenReturn("justtestlah-awsdevicefarm");
     ByteArrayOutputStream logOutput = new ByteArrayOutputStream();
     LOG.info(
-        "AWS Test package created: {}",
+        "Building AWS test package at {}",
         new TestPackager(properties)
             .packageProjectForDeviceFarm(
-                new PrintStreamLogger(new PrintStream(logOutput), InvokerLogger.WARN), true));
+                new PrintStreamHandler(new PrintStream(logOutput), false), false));
+    LOG.info("Maven build log: {}", logOutput.toString());
     assertThat(
             Files.exists(
                 Paths.get(
@@ -49,7 +49,11 @@ public class TestPackagerTest {
                         + File.separator
                         + "justtestlah-awsdevicefarm.zip")))
         .isTrue();
-    //    assertThat(logOutput.toString()).contains("BUILD SUCCESS");
-    //    assertThat(logOutput.toString()).doesNotContain("BUILD FAILURE");
+    assertThat(logOutput.toString())
+        .as("Build success message is present")
+        .contains("BUILD SUCCESS");
+    assertThat(logOutput.toString())
+        .as("Build failure message is not present")
+        .doesNotContain("BUILD FAILURE");
   }
 }
