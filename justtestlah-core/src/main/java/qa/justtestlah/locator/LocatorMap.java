@@ -2,6 +2,7 @@ package qa.justtestlah.locator;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.appium.java_client.MobileBy;
@@ -48,8 +49,8 @@ public class LocatorMap {
    * @param map locator map
    * @param staticPlaceholders static placeholders to be replaced in any locator
    */
-  public LocatorMap(Map<String, Map<String, Map<String, String>>> map,
-      Properties staticPlaceholders) {
+  public LocatorMap(
+      Map<String, Map<String, Map<String, String>>> map, Properties staticPlaceholders) {
     this.map = map;
     this.staticPlaceholders = staticPlaceholders;
   }
@@ -135,8 +136,8 @@ public class LocatorMap {
     for (Map.Entry<String, Map<String, Map<String, String>>> entry : map.entrySet()) {
       Map<String, String> tuple = entry.getValue().get(platform.getPlatformName());
       if (tuple != null) {
-        result.put(entry.getKey(),
-            Pair.of(tuple.get("type"), replacePlaceholders(tuple.get("value"))));
+        result.put(
+            entry.getKey(), Pair.of(tuple.get("type"), replacePlaceholders(tuple.get("value"))));
       }
     }
     return result;
