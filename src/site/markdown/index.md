@@ -274,12 +274,15 @@ browserstack.username=
 browserstack.accessKey=
 
 # Optional settings, see https://www.browserstack.com/automate/capabilities
+browserstack.project=
+browserstack.build=
 browserstack.debug=true
 browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
 browserstack.appium_version=1.8.0
+browserstack.acceptSslCerts=true
 
 # AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
 # The arn of your AWS Devicefarm project (mandatory)

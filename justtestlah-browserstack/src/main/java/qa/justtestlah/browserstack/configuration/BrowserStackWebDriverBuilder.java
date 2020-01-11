@@ -19,21 +19,30 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 import qa.justtestlah.browserstack.exception.BrowserstackException;
 import qa.justtestlah.configuration.LocalWebDriverBuilder;
 import qa.justtestlah.configuration.WebDriverBuilder;
 
 /** Creates {@link WebDriver} instance for Browserstack. */
+@Component
 @ConditionalOnProperty(value = "cloudprovider", havingValue = "browserstack")
 public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     implements WebDriverBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(BrowserStackWebDriverBuilder.class);
-
+  
+  @Value("${browserstack.project}")
+  private String project;
+  
+  @Value("${browserstack.build}")
+  private String build;
+  
   @Value("${browserstack.uploadPath:https://api-cloud.browserstack.com/app-automate/upload}")
   private String uploadPath;
 
@@ -66,6 +75,12 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
 
   @Value("${browserstack.appium_version}")
   private String appiumVersion;
+  
+  @Value("${web.browser:chrome}")
+  private String browserName;
+  
+  @Value("${browserstack.acceptSslCerts:true}")
+  private String acceptSslCerts;
 
   private String appUrl;
 
@@ -108,12 +123,24 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     } else {
       LOG.info("Using previously uploaded app package {}", app);
     }
+    capabilities.setCapability("project", project);
+    capabilities.setCapability("build", build);
+    capabilities.setCapability("acceptSslCerts", acceptSslCerts);
     capabilities.setCapability("browserstack.debug", debug);
-    capabilities.setCapability("browserstack.appiumLogs", appiumLogs);
     capabilities.setCapability("browserstack.video", video);
     capabilities.setCapability("browserstack.geoLocation", geoLocation);
     capabilities.setCapability("browserstack.timezone", timezone);
+    return capabilities;
+  }
+
+  protected DesiredCapabilities addMobileCapabilities(DesiredCapabilities capabilities) {
+    capabilities.setCapability("browserstack.appiumLogs", appiumLogs);
     capabilities.setCapability("browserstack.appium_version", appiumVersion);
+    return capabilities;
+  }
+  
+  protected DesiredCapabilities addWebCapabilities(DesiredCapabilities capabilities) {
+    capabilities.setBrowserName(browserName);
     return capabilities;
   }
 
@@ -137,10 +164,9 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
             String.format("Error uploading file to Browserstack: %s", exception.getMessage()));
       }
       if (response.getStatusLine().getStatusCode() != 200) {
-        throw new BrowserstackException(
-            String.format(
-                "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
-                response.getStatusLine().getStatusCode(), responseString));
+        throw new BrowserstackException(String.format(
+            "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
+            response.getStatusLine().getStatusCode(), responseString));
       }
       try {
         String browserstackAppUrl =
@@ -167,7 +193,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getWebDriver() {
-    throw new UnsupportedOperationException(
-        "For Browserstack only mobile testing is supported at the moment.");
+    return new RemoteWebDriver(browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
+        addWebCapabilities(new DesiredCapabilities()));
   }
 }

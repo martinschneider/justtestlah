@@ -1,7 +1,6 @@
 package qa.justtestlah.configuration;
 
 import static com.codeborne.selenide.Selenide.open;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.openqa.selenium.TakesScreenshot;
@@ -57,7 +56,8 @@ public class JustTestLahConfiguration {
 
   private WebDriverBuilder webDriverBuilder;
 
-  @Autowired private OCR ocr;
+  @Autowired
+  private OCR ocr;
 
   @Autowired
   public JustTestLahConfiguration(WebDriverBuilder webDriverBuilder) {
@@ -76,6 +76,9 @@ public class JustTestLahConfiguration {
     } else if (platform.equals(Platform.IOS)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getIOsDriver());
     } else if (platform.equals(Platform.WEB)) {
+      if (cloudProvider.equals("browserstack")) {
+        WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
+      }
       open(baseUrl);
     }
     WebDriver driver = WebDriverRunner.getWebDriver();

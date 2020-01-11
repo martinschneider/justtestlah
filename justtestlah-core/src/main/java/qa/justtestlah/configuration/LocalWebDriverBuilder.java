@@ -2,7 +2,6 @@ package qa.justtestlah.configuration;
 
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIVITY;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
-
 import com.codeborne.selenide.WebDriverRunner;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -19,6 +18,7 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.EntryExitLogging;
 import qa.justtestlah.exception.JustTestLahException;
@@ -26,7 +26,7 @@ import qa.justtestlah.log.WebDriverLogEnricher;
 
 /** Factory for {@link WebDriver}. */
 @Component
-// @ConditionalOnProperty(value = "cloudprovider", havingValue = "local", matchIfMissing = true)
+@ConditionalOnProperty(value = "cloudprovider", havingValue = "local", matchIfMissing = true)
 public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   private static final String EXIT_ON_WEB_DRIVER_INITIALISATION_ERROR =
@@ -133,6 +133,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   protected DesiredCapabilities addIOsCapabilities(DesiredCapabilities capabilities) {
     capabilities = addCommonCapabilities(capabilities);
+    capabilities = addMobileCapabilities(capabilities);
     capabilities.setCapability("automationName", "XCUITest");
     capabilities.setCapability("showXcodeLog", true);
     return capabilities;
@@ -140,8 +141,13 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   protected DesiredCapabilities addAndroidCapabilities(DesiredCapabilities capabilities) {
     capabilities = addCommonCapabilities(capabilities);
+    capabilities = addMobileCapabilities(capabilities);
     capabilities.setCapability(APP_PACKAGE, appPackage);
     capabilities.setCapability(APP_ACTIVITY, appActivity);
+    return capabilities;
+  }
+  
+  protected DesiredCapabilities addMobileCapabilities(DesiredCapabilities capabilities) {
     return capabilities;
   }
 
