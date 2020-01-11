@@ -37,6 +37,7 @@ public class Galen implements qa.justtestlah.stubs.Galen {
     if (specURL == null) {
       LOG.warn(
           String.format("Missing Galen specification %s. Skipping checks for this page.", specURL));
+      return;
     }
     String specPath = specURL.getPath();
     if (injectLocators) {

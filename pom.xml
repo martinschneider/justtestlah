@@ -101,7 +101,7 @@
     <opencv.version>3.4.2-1</opencv.version>
     <tess4j.version>4.1.1</tess4j.version>
     <applitools.version>3.158.9</applitools.version>
-    <galen.version>2.4.4</galen.version>
+    <galen.version>2.4.5-SNAPSHOT</galen.version>
     <junit.version>5.6.0-M1</junit.version>
     <junit.vintage.version>4.12</junit.vintage.version>
     <slf4j.version>2.0.0-alpha1</slf4j.version>
