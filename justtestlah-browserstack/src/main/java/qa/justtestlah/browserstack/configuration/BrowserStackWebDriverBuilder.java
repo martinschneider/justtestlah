@@ -36,13 +36,13 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     implements WebDriverBuilder {
 
   private static final Logger LOG = LoggerFactory.getLogger(BrowserStackWebDriverBuilder.class);
-  
+
   @Value("${browserstack.project}")
   private String project;
-  
+
   @Value("${browserstack.build}")
   private String build;
-  
+
   @Value("${browserstack.uploadPath:https://api-cloud.browserstack.com/app-automate/upload}")
   private String uploadPath;
 
@@ -75,10 +75,10 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
 
   @Value("${browserstack.appium_version}")
   private String appiumVersion;
-  
+
   @Value("${web.browser:chrome}")
   private String browserName;
-  
+
   @Value("${browserstack.acceptSslCerts:true}")
   private String acceptSslCerts;
 
@@ -138,7 +138,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     capabilities.setCapability("browserstack.appium_version", appiumVersion);
     return capabilities;
   }
-  
+
   protected DesiredCapabilities addWebCapabilities(DesiredCapabilities capabilities) {
     capabilities.setBrowserName(browserName);
     return capabilities;
@@ -164,9 +164,10 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
             String.format("Error uploading file to Browserstack: %s", exception.getMessage()));
       }
       if (response.getStatusLine().getStatusCode() != 200) {
-        throw new BrowserstackException(String.format(
-            "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
-            response.getStatusLine().getStatusCode(), responseString));
+        throw new BrowserstackException(
+            String.format(
+                "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
+                response.getStatusLine().getStatusCode(), responseString));
       }
       try {
         String browserstackAppUrl =
@@ -193,7 +194,8 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getWebDriver() {
-    return new RemoteWebDriver(browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
+    return new RemoteWebDriver(
+        browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
         addWebCapabilities(new DesiredCapabilities()));
   }
 }

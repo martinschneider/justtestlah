@@ -2,6 +2,7 @@ package qa.justtestlah.configuration;
 
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIVITY;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
+
 import com.codeborne.selenide.WebDriverRunner;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -146,7 +147,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities.setCapability(APP_ACTIVITY, appActivity);
     return capabilities;
   }
-  
+
   protected DesiredCapabilities addMobileCapabilities(DesiredCapabilities capabilities) {
     return capabilities;
   }
