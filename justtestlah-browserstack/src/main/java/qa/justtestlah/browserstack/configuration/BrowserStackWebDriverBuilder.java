@@ -115,7 +115,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
     super.addCommonCapabilities(capabilities);
     Object app = capabilities.getCapability("app");
     if (app == null) {
-      throw new BrowserstackException("Property app must bot be null");
+      throw new BrowserstackException("Property app must not be null");
     }
     if (!app.toString().startsWith("bs://")) {
       uploadAppPackage(app.toString());
@@ -166,7 +166,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
       if (response.getStatusLine().getStatusCode() != 200) {
         throw new BrowserstackException(
             String.format(
-                "Upload returned non-200 responses: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
+                "Upload returned non-200 response: %d. Check browserstack.username and browserstack.accessKey! Message: %s",
                 response.getStatusLine().getStatusCode(), responseString));
       }
       try {

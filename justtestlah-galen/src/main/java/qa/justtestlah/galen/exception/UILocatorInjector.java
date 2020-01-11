@@ -32,6 +32,7 @@ public class UILocatorInjector {
 
   /**
    * @param templatePath path to the Galen template spec
+   * @param locators the {@link LocatorMap}
    * @return path to the full specification (including the UI locators)
    */
   public String injectUILocators(String templatePath, LocatorMap locators) {

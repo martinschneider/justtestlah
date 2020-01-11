@@ -14,7 +14,6 @@ public class LocatorParserTest {
 
   @Test
   public void testLocatorParser() throws IOException {
-
     target.setYamlParser(new Yaml());
     String baseFolder = this.getClass().getPackage().getName().replace(".", File.separator);
     Map<String, Map<String, Map<String, String>>> locatorMap =
