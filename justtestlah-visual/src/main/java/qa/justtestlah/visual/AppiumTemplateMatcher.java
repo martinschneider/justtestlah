@@ -134,7 +134,6 @@ public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplat
       targetImage = ImageUtils.scaleImage(targetImage, 1.1);
       target = ImageUtils.imageToBase64String(targetImage);
     }
-
     if (match.isFound()) {
       LOG.info(
           "Original image {} with size {}x{} contains image {} at coordinates ({},{})",
