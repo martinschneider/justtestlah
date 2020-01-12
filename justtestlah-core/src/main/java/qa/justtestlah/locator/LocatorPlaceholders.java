@@ -2,7 +2,6 @@ package qa.justtestlah.locator;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -59,11 +58,21 @@ public class LocatorPlaceholders {
     placeholders = loadProperties(BasePage.class.getClassLoader().getResourceAsStream(path));
     if (locatorPlaceholdersFile != null && !locatorPlaceholdersFile.isEmpty()) {
       LOG.info("Loading placeholders from {}", locatorPlaceholdersFile);
+      FileInputStream fileInputStream = null;
       try {
-        placeholders.putAll(loadProperties(new FileInputStream(locatorPlaceholdersFile)));
-      } catch (FileNotFoundException exception) {
+        fileInputStream = new FileInputStream(locatorPlaceholdersFile);
+        placeholders.putAll(loadProperties(fileInputStream));
+        fileInputStream.close();
+      } catch (IOException exception) {
         LOG.warn(
             "Could not load placeholders. The file {} does not exist.", locatorPlaceholdersFile);
+      } finally {
+        if (fileInputStream != null) {
+          try {
+            fileInputStream.close();
+          } catch (IOException e) {
+          }
+        }
       }
     }
   }
