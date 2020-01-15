@@ -1,3 +1,34 @@
+  - [Use JustTestLah! in your own projects](#use-justtestlah-in-your-own-projects)
+  - [Option 1: Using Maven archetype](#option-1-using-maven-archetype)
+  - [Option 2: Manual setup using Maven](#option-2-manual-setup-using-maven)
+  - [Option 3: Manual setup using Gradle](#option-3-manual-setup-using-gradle)
+  - [Option 4: Manual setup](#option-4-manual-setup)
+- [Page objects, steps and feature files](#page-objects-steps-and-feature-files)
+  - [Platform-(in)dependent page objects](#platform-independent-page-objects)
+- [Configuration](#configuration)
+- [Test runner](#test-runner)
+- [Locators](#locators)
+  - [Placeholders](#placeholders)
+    - [Static placeholders](#static-placeholders)
+    - [Dynamic placeholders](#dynamic-placeholders)
+- [Test data handling](#test-data-handling)
+- [Test reports](#test-reports)
+- [Cloud service integrations](#cloud-service-integrations)
+  - [Browserstack](#browserstack)
+  - [AWS Devicefarm](#aws-devicefarm)
+- [Visual and layout testing](#visual-and-layout-testing)
+  - [Template matching](#template-matching)
+    - [Matching threshold](#matching-threshold)
+    - [Client and server-side integration](#client-and-server-side-integration)
+  - [OCR](#ocr)
+  - [Applitools](#applitools)
+  - [Galen](#galen)
+- [Used libraries](#used-libraries)
+- [Known issues & limitations](#known-issues--limitations)
+- [Contact and support](#contact-and-support)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
 
 [![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah)
@@ -93,7 +124,7 @@ Add the following to your `pom.xml`:
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.7</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -101,11 +132,11 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```yaml
-compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.7'
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.8-SNAPSHOT'
 ```
 
 ### Option 4: Manual setup
-Add [`justtestlah-core-1.7.jar`](https://repo1.maven.org/maven2/qa/justtestlah/justtestlah-core/1.7/justtestlah-core-1.7.jar) to your classpath.
+Add [`justtestlah-core-1.8-SNAPSHOT.jar`](https://repo1.maven.org/maven2/qa/justtestlah/justtestlah-core/1.7/justtestlah-core-1.8-SNAPSHOT.jar) to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
@@ -507,13 +538,13 @@ browserstack.timezone=SG
 browserstack.appium_version=1.8.0
 ```
 
-Make sure `justtestlah-browserstack.jar` is on your classpath:
+Make sure `justtestlah-browserstack-1.8-SNAPSHOT.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -570,13 +601,13 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm.jar` is on your classpath:
+Make sure `justtestlah-awsdevicefarm-1.8-SNAPSHOT.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -584,16 +615,18 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 
 Please note that AWS Devicefarm is a paid service.
 
-## Template matching
-Make sure `justtestlah-visual.jar` is on your classpath:
+## Visual and layout testing
+Make sure `justtestlah-visual-1.8-SNAPSHOT.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
+
+### Template matching
 
 JustTestLah! allows locating elements using a template image:
 
@@ -619,10 +652,10 @@ The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to
 
 Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
 
-### Matching threshold
+#### Matching threshold
 Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
 
-### Client and server-mode matching
+#### Client and server-side integration
 There are two modes to use template matching which can be configured in `justtestlah.properties`:
 
 `opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires [OpenCV](https://github.com/openpnp/opencv) which is imported as a Maven dependency.
@@ -631,17 +664,17 @@ There are two modes to use template matching which can be configured in `justtes
 
 Note, that not all cloud providers support this.
 
-## OCR
+### OCR
 
 JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
 
-This requires `justtestlah-visual.jar` on the classpath:
+This requires `justtestlah-visual-1.8-SNAPSHOT.jar` on the classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -678,15 +711,15 @@ In the step class, we can then perform a check like this:
 assertThat(googlePage.getLogoText()).isEqualTo("Google");
 ``` 
 
-## Applitools
+### Applitools
 
-Make sure `justtestlah-applitools.jar` is on your classpath:
+Make sure `justtestlah-applitools-1.8-SNAPSHOT.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-applitools</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -696,15 +729,15 @@ Checks can then be triggered by calling `checkWindow()` on any page object class
 
 Please note that Applitools is a paid service.
 
-## Galen
+### Galen
 
-Make sure `justtestlah-galen` is on your classpath:
+Make sure `justtestlah-galen-1.8-SNAPSHOT.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-galen</artifactId>
-  <version>${project.version}</version>
+  <version>1.8-SNAPSHOT</version>
 </dependency>
 ```
 
