@@ -46,7 +46,7 @@ public class UILocatorInjector {
     } catch (IOException exception) {
       LOG.error("Error writing Galen spec", exception);
     }
-    return file.getPath();
+    return (file == null) ? null : file.getPath();
   }
 
   private List<String> formatUILocators(Map<String, Pair<String, String>> locatorMap) {

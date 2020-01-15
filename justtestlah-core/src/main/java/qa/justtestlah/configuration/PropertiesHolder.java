@@ -58,10 +58,13 @@ public class PropertiesHolder {
     if (propertiesLocation == null || propertiesLocation.isEmpty()) {
       propertiesLocation = System.getProperty(JUST_TEST_LAH_LEGACY_LOCATION_KEY);
     }
+    FileInputStream fileInputStream = null;
     try {
       if (propertiesLocation != null && !propertiesLocation.isEmpty()) {
         LOG.info("Loading JustTestLah properties from {}", propertiesLocation);
-        props.load(new FileInputStream(propertiesLocation));
+        fileInputStream = new FileInputStream(propertiesLocation);
+        props.load(fileInputStream);
+        fileInputStream.close();
       } else {
         propertiesLocation = DEFAULT_JUST_TEST_LAH_PROPERTIES;
         LOG.info("Loading JustTestLah properties from classpath ({})", propertiesLocation);
@@ -73,6 +76,13 @@ public class PropertiesHolder {
       }
     } catch (NullPointerException | IOException exception) {
       LOG.warn("Error loading settings from {}", propertiesLocation);
+    } finally {
+      if (fileInputStream != null) {
+        try {
+          fileInputStream.close();
+        } catch (IOException e) {
+        }
+      }
     }
     props.forEach((key, value) -> LOG.debug("{}={}", key, value));
   }

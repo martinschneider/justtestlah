@@ -121,27 +121,18 @@ public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplat
       LOG.error("Error processing target and/or template file", exception);
       return null;
     }
-    if (driver instanceof AppiumDriver) {
-      while (!match.isFound() && targetImage.getWidth() > Constants.MIN_IMAGE_WIDTH) {
-        match =
-            match(
-                originalImage, targetImage, targetFile, templateFile, target, template, threshold);
-        targetImage = ImageUtils.scaleImage(targetImage, 0.9);
-        target = ImageUtils.imageToBase64String(targetImage);
-      }
-      targetImage = originalImage;
-      while (!match.isFound() && targetImage.getWidth() < Constants.MAX_IMAGE_WIDTH) {
-        match =
-            match(
-                originalImage, targetImage, targetFile, templateFile, target, template, threshold);
-        targetImage = ImageUtils.scaleImage(targetImage, 1.1);
-        target = ImageUtils.imageToBase64String(targetImage);
-      }
-    } else {
-      throw new UnsupportedOperationException(
-          "This operation is not supported for the current WebDriver: "
-              + driver.getClass().getSimpleName()
-              + ".");
+    while (!match.isFound() && targetImage.getWidth() > Constants.MIN_IMAGE_WIDTH) {
+      match =
+          match(originalImage, targetImage, targetFile, templateFile, target, template, threshold);
+      targetImage = ImageUtils.scaleImage(targetImage, 0.9);
+      target = ImageUtils.imageToBase64String(targetImage);
+    }
+    targetImage = originalImage;
+    while (!match.isFound() && targetImage.getWidth() < Constants.MAX_IMAGE_WIDTH) {
+      match =
+          match(originalImage, targetImage, targetFile, templateFile, target, template, threshold);
+      targetImage = ImageUtils.scaleImage(targetImage, 1.1);
+      target = ImageUtils.imageToBase64String(targetImage);
     }
     if (match.isFound()) {
       LOG.info(
