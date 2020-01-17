@@ -1,9 +1,5 @@
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
 
-[![Build status](https://travis-ci.com/martinschneider/justtestlah.svg?branch=master)](https://travis-ci.com/martinschneider/justtestlah)
-[![Coverage Status](https://codecov.io/gh/martinschneider/justtestlah/branch/master/graph/badge.svg)](https://codecov.io/gh/martinschneider/justtestlah)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d6be39f81b7341769e8c67ed26b29b19)](https://www.codacy.com/manual/martinschneider/justtestlah?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=martinschneider/justtestlah&amp;utm_campaign=Badge_Grade)
-
 JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
