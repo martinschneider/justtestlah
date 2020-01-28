@@ -1,6 +1,8 @@
 > 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
 
-JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
+JustTestLah! is an end-to-end UI testing framework for mobile and web applications. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
+
+JustTestLah! is based on [Selenium](https://www.seleniumhq.org) and [Appium](https://www.appium.io).
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -42,14 +44,13 @@ JustTestLah! is a JAVA test framework. It follows a [BDD](https://martinfowler.c
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Getting started
-Pull the repo and run the demo (a set of simple "tests" for Stackoverflow):
+Pull the repo and run the demo (a set of simple tests for Stackoverflow):
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
-mvn -pl justtestlah-demos test
+cd justtestlah-demos
+mvn test
 ```
-
-This runs the JustTestLah! demo using Chrome in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome). Set `web.headless=false` in `justtestlah-demos/src/test/resources` to change this.
 
 ### justtestlah.properties
 The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but it is recommended to explicitly pass its path as a system property:
@@ -76,22 +77,22 @@ steps.package=
 pages.package=
 ```
 
-Each run will execute tests for one platform only. Let's see how we can run the Android demo next.
+Each run will execute tests for a single platform. Let's see how we can run the Android demo next.
 
 ### Android demo
 
-To test a mobile app you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure that there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for Web.
+To test a mobile app you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for the web test. The Stackoverflow APK file can be found [here](https://apkpure.com/stackoverflow/com.app.infytechnics.stackoverflow).
 
 ### iOS demo
 
-There is currently no public demo for iOS available. This is mostly because app packages (builds for the iPhone simulator) for any interesting real-world application are not readily available and [ipa builds need to be resigned to play nicely with Appium](http://appium.io/docs/en/drivers/ios-xcuitest-real-devices). If you want to contribute a demo, [please conatct me](mart.schneider@gmail.com).
+There is currently no public demo for iOS. This is mostly because app packages (builds for the iPhone simulator) for any interesting real-world application are not readily available and [ipa builds need to be re-signed to play nicely with Appium](http://appium.io/docs/en/drivers/ios-xcuitest-real-devices). If you want to contribute a demo, [please conatct me](mart.schneider@gmail.com).
 
-That said, using JustTestLah! can be (and has been) used to automate iOS apps. 
+That said, JustTestLah! can be ([and has been](https://www.youtube.com/watch?v=maJkvP_qk4A)) used to automate iOS apps. 
 
 ### Available demos
 There are a couple of demos available under the `justtestlah-demos` module. The default one uses [Stackoverflow](https://stackoverflow.com) and comes in flavours for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version.
 
-Which tests get executed depends on the `features.dierctory` property:
+Which tests get executed depends on the `features.directory` property:
 
 ```ini
 # The path to the Cucumber feature files

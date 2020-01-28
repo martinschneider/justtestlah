@@ -9,7 +9,7 @@
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.8-RC1</version>
+    <version>1.8-SNAPSHOT</version>
   </parent>
   <licenses>
     <license>

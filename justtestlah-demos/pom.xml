@@ -38,7 +38,7 @@
       <artifactId>justtestlah-applitools</artifactId>
       <version>${project.version}</version>
     </dependency>
-        <dependency>
+    <dependency>
       <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-galen</artifactId>
       <version>${project.version}</version>
