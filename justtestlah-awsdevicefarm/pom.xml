@@ -9,7 +9,7 @@
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.8-RC2</version>
   </parent>
   <licenses>
     <license>
@@ -98,7 +98,7 @@
         <!-- This is only used for the integration test. We use an old version 
           here to ensure it is in the Maven repository (the old version will definitely 
           be on Maven central). -->
-        <justtestlah.version>1.7-RC5</justtestlah.version>
+        <justtestlah.version>1.8-RC1</justtestlah.version>
       </properties>
       <build>
         <plugins>
