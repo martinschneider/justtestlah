@@ -37,7 +37,9 @@ public class TestSpecFactoryTest {
             new File(new TestSpecFactory(properties).createTestSpec()), StandardCharsets.UTF_8);
 
     for (int i = 0; i < expected.size(); i++) {
-      assertThat(expected.get(i)).isEqualTo(actual.get(i));
+      assertThat(expected.get(i))
+          .as(String.format("check line %d", i + 1))
+          .isEqualTo(actual.get(i));
     }
   }
 }

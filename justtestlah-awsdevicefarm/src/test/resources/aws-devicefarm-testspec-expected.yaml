@@ -49,8 +49,6 @@ phases:
             fi;
         done;
 
-  test:
-    commands:
       # Prepare the test code
       - cd $DEVICEFARM_TEST_PACKAGE_PATH
       - echo "Extracting JAR files"
@@ -85,9 +83,11 @@ phases:
       - echo "cloudprovider=local" >> justtestlah.properties
       - cat justtestlah.properties
 
+  test:
+    commands:
       # Finally...
       - echo "Executing test scenarios"
-      - java -Dappium.screenshots.dir=$DEVICEFARM_SCREENSHOT_PATH -Djusttestlah.properties=$(pwd)/justtestlah.properties -Dlogback.configurationFile=classes/logback-aws.xml -cp classes:dependency-jars/* org.junit.runner.JUnitCore TestRunner
+      - java -Dappium.screenshots.dir=$DEVICEFARM_SCREENSHOT_PATH -DjtlProps=$(pwd)/justtestlah.properties -Dlogback.configurationFile=classes/logback-aws.xml -cp classes:dependency-jars/* org.junit.runner.JUnitCore TestRunner
 
   post_test:
     commands:
