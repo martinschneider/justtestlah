@@ -1,14 +1,68 @@
 package qa.justtestlah.log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.events.WebDriverEventListener;
-import qa.justtestlah.utils.SpringContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import qa.justtestlah.configuration.PropertiesHolder;
 
-/** {@link WebDriver}-based log handling. */
-public class WebDriverLogEnricher implements WebDriverEventListener {
+/**
+ *
+ *
+ * <h2>WebDriver specific log handling</h2>
+ *
+ * <p>Fetches logs from the WebDriver (server) and attaches them to the current (client) log.
+ *
+ * <p>logTypes can be configured in justtestlah.properties:
+ *
+ * <p>e.g. additionalLogTypes=server,logcat
+ *
+ * <p>For Appium, this requires the server to be started with `appium --relaxed-security`.
+ */
+public class WebDriverServerLogEnricher implements WebDriverEventListener {
+
+  // filter to match log lines related to fetching the log
+  private static final String REGEXP_FILTER =
+      ".*Retrieving .* log.*|.*Calling AppiumDriver.getLog.*|Responding to client with driver.getLog.*|.*POST.*log.*|.*\\{\"type\":\"server\"\\}.*";
+
+  private static final Logger SERVER_LOG = LoggerFactory.getLogger("server");
+
+  private List<String> logTypes = new ArrayList<>();
+
+  public WebDriverServerLogEnricher() {
+    String property = new PropertiesHolder().getOptionalProperty("additionalLogTypes");
+    if (property != null && !property.isEmpty()) {
+      logTypes.addAll(Arrays.asList(property.split(",")));
+    }
+  }
+
+  @SuppressWarnings("squid:S4784")
+  private void appendWebDriverLog(WebDriver driver) {
+    for (String logType : logTypes) {
+      for (LogEntry log : driver.manage().logs().get(logType)) {
+        DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS");
+        String message = log.getMessage();
+        // filter out messages related to fetching the log
+        if (!message.matches(REGEXP_FILTER)) {
+          SERVER_LOG
+              .atInfo()
+              .addArgument(() -> logType)
+              .addArgument(() -> formatter.format(log.getTimestamp()))
+              .addArgument(() -> log.getMessage())
+              .log("{} {} {}");
+        }
+      }
+    }
+  }
 
   @Override
   public void beforeAlertAccept(WebDriver driver) {
@@ -17,12 +71,13 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterAlertAccept(WebDriver driver) {
-    // do nothing
+
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void afterAlertDismiss(WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -37,8 +92,7 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterNavigateTo(String url, WebDriver driver) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(LogLevel.INFO, TestLogWriter.WEBDRIVER_INDENTATION, "Navigating to {}", url);
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -48,7 +102,7 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterNavigateBack(WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -58,7 +112,7 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterNavigateForward(WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -68,61 +122,47 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterNavigateRefresh(WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void beforeFindBy(By by, WebElement element, WebDriver driver) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(LogLevel.INFO, TestLogWriter.WEBDRIVER_INDENTATION, "Finding element {}", by);
+    // do nothing
   }
 
   @Override
   public void afterFindBy(By by, WebElement element, WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void beforeClickOn(WebElement element, WebDriver driver) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(LogLevel.INFO, TestLogWriter.WEBDRIVER_INDENTATION, "Clicking on {}", element);
+    // do nothing
   }
 
   @Override
   public void afterClickOn(WebElement element, WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-    StringBuilder strBuilder = new StringBuilder();
-    for (CharSequence charSequence : keysToSend) {
-      // replace new lines with ⏎ (for more clarity and to prevent multi-line log outputs)
-      strBuilder.append(charSequence.toString().replaceAll("[\\n\\r]+", "⏎"));
-    }
-    SpringContext.getBean(TestLogWriter.class)
-        .log(
-            LogLevel.INFO,
-            TestLogWriter.WEBDRIVER_INDENTATION,
-            "Typing {} in {}",
-            strBuilder.toString(),
-            element);
+    // do nothing
   }
 
   @Override
   public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void beforeScript(String script, WebDriver driver) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(LogLevel.INFO, TestLogWriter.WEBDRIVER_INDENTATION, "Executing script {}", script);
+    // do nothing
   }
 
   @Override
   public void afterScript(String script, WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -132,12 +172,12 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void afterSwitchToWindow(String windowName, WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
   public void onException(Throwable throwable, WebDriver driver) {
-    // do nothing
+    appendWebDriverLog(driver);
   }
 
   @Override
@@ -152,18 +192,11 @@ public class WebDriverLogEnricher implements WebDriverEventListener {
 
   @Override
   public void beforeGetText(WebElement element, WebDriver driver) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(LogLevel.INFO, TestLogWriter.WEBDRIVER_INDENTATION, "Fetching text from {}", element);
+    // do nothing
   }
 
   @Override
   public void afterGetText(WebElement element, WebDriver driver, String text) {
-    SpringContext.getBean(TestLogWriter.class)
-        .log(
-            LogLevel.INFO,
-            TestLogWriter.WEBDRIVER_INDENTATION,
-            "Fetched text {} from {}",
-            text,
-            element);
+    appendWebDriverLog(driver);
   }
 }

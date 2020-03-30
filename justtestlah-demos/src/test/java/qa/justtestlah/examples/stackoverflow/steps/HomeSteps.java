@@ -1,7 +1,6 @@
 package qa.justtestlah.examples.stackoverflow.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,10 +32,13 @@ public class HomeSteps extends BaseSteps {
   public void matchQuestionIcon() {
     // The first assertion would be sufficient. We run some more checks to show-case the template
     // matching.
-    assertThat(home.hasImage("questionIcon.png")).isEqualTo(true);
-    assertThat(home.hasImage("questionIcon_blurred.png")).isEqualTo(true);
-    assertThat(home.hasImage("questionIcon_distorted.png", 0.75)).isEqualTo(true);
-    assertThat(home.hasImage("questionIcon_rotated.png", 0.85)).isEqualTo(true);
+    assertThat(home.hasImage("questionIcon.png")).as("Question icon is visible").isEqualTo(true);
+    assertThat(home.hasImage("questionIcon_blurred.png")).as("Question icon is visible (blurred)")
+        .isEqualTo(true);
+    assertThat(home.hasImage("questionIcon_distorted.png", 0.75))
+        .as("Question icon is visible (distorted)").isEqualTo(true);
+    assertThat(home.hasImage("questionIcon_rotated.png", 0.85))
+        .as("Question icon is visible (rotated)").isEqualTo(true);
   }
 
   @Then("I can't see a Facebook icon")

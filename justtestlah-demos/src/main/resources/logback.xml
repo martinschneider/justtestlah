@@ -1,42 +1,36 @@
 <?xml version="1.0"?>
 <configuration>
-  <contextListener
-    class="qa.justtestlah.log.ApplicationInfoEnricher" />
-  <appender name="STDOUT"
-    class="ch.qos.logback.core.ConsoleAppender">
+  <contextListener class="qa.justtestlah.log.ApplicationInfoEnricher" />
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%cyan(${appInfo}) %cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
-      </pattern>
+      <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n</pattern>
     </encoder>
   </appender>
 
-  <appender name="webdriver"
-    class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="server" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%yellow(%msg) %n</pattern>
-    </encoder>
-  </appender>
-  
-  <appender name="entryExit"
-    class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%magenta(${appInfo} %d{HH:mm:ss.SSS} %.-1level %msg) %n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} %yellow(%msg) %n</pattern>
     </encoder>
   </appender>
 
-  <root level="info">
+  <appender name="testlog" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%magenta(%d{HH:mm:ss.SSS} %msg) %n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="error">
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="webdriver" level="info" additivity="false">
-    <appender-ref ref="webdriver" />
+  <logger name="server" level="info" additivity="false">
+    <appender-ref ref="server" />
   </logger>
-  
-  <logger name="entryExit" level="info" additivity="false">
-    <appender-ref ref="entryExit" />
+
+  <logger name="testlog" level="info" additivity="false">
+    <appender-ref ref="testlog" />
   </logger>
-  
-  <logger name="qa.justtestlah"
-    level="info" />
-    
+
+  <logger name="qa.justtestlah" level="error" />
+
 </configuration>

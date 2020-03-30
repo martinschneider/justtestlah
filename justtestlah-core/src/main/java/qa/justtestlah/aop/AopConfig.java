@@ -14,6 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class AopConfig {
 
+  // placeholder for steps and page object packages
   private static final String POINTCUT_TEMPLATE = "execution(public * __package__..*.*(..))";
 
   @Value("${pages.package}")

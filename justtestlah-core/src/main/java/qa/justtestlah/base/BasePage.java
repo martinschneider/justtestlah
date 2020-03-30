@@ -24,6 +24,8 @@ import qa.justtestlah.exception.ScreenVerificationException;
 import qa.justtestlah.locator.LocatorMap;
 import qa.justtestlah.locator.LocatorParser;
 import qa.justtestlah.locator.LocatorPlaceholders;
+import qa.justtestlah.log.LogLevel;
+import qa.justtestlah.log.TestLogWriter;
 import qa.justtestlah.stubs.AppiumTemplateMatcher;
 import qa.justtestlah.stubs.Applitools;
 import qa.justtestlah.stubs.Galen;
@@ -34,6 +36,8 @@ import qa.justtestlah.utils.ImageUtils;
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
+  protected static final Logger TESTLOG =
+      LoggerFactory.getLogger(TestLogWriter.TESTLOG_LOGGER_NAME);
   protected static final int DEFAULT_VERIFICATION_TIMEOUT = 2000; // milliseconds
   protected JustTestLahConfiguration configuration;
   private LocatorMap locators;
@@ -46,9 +50,9 @@ public abstract class BasePage<T> extends Base {
 
   @Autowired private Applitools applitools;
 
-  @Autowired private ImageUtils imageUtils;
-
   @Autowired private Galen galen;
+
+  @Autowired private TestLogWriter logWriter;
 
   protected LocatorMap getLocators() {
     return locators;
@@ -154,7 +158,11 @@ public abstract class BasePage<T> extends Base {
   @SuppressWarnings("unchecked")
   private T checkWindow() {
     if (configuration.isEyesEnabled()) {
-      LOG.info("Eyes enabled, performing check on class {}", this.getClass().getSimpleName());
+      logWriter.log(
+          LogLevel.INFO,
+          TestLogWriter.WEBDRIVER_INDENTATION,
+          "Performing visual checks on class {}",
+          this.getClass().getSimpleName());
       applitools.checkWindow();
     } else {
       LOG.debug(
@@ -220,7 +228,11 @@ public abstract class BasePage<T> extends Base {
     // Galen
     checkLayout();
     Class<?> clazz = this.getClass();
-    LOG.info("Verifying screen identifiers for {}", clazz.getSimpleName());
+    logWriter.log(
+        LogLevel.INFO,
+        TestLogWriter.WEBDRIVER_INDENTATION,
+        "Verifying screen identifiers for {}",
+        clazz.getSimpleName());
     while (clazz != Base.class) {
       for (ScreenIdentifier identifiers : clazz.getAnnotationsByType(ScreenIdentifier.class)) {
         for (String identifier : identifiers.value()) {
@@ -239,7 +251,9 @@ public abstract class BasePage<T> extends Base {
             throw new ScreenVerificationException(
                 identifier, rawLocator, this.getClass().getSimpleName(), timeout);
           }
-          LOG.info(
+          logWriter.log(
+              LogLevel.INFO,
+              TestLogWriter.WEBDRIVER_INDENTATION,
               "[OK] {} is displayed {}:{}",
               identifier,
               rawLocator.getLeft(),

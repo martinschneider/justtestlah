@@ -13,4 +13,9 @@ public class Search {
   public void setSearchTerm(String searchTerm) {
     this.searchTerm = searchTerm;
   }
+
+  @Override
+  public String toString() {
+    return "Search [searchTerm=" + searchTerm + "]";
+  }
 }

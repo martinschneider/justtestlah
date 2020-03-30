@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <configuration>
-  <contextListener
-    class="qa.justtestlah.log.ApplicationInfoEnricher" />
-  <appender name="STDOUT"
-    class="ch.qos.logback.core.ConsoleAppender">
+  <contextListener class="qa.justtestlah.log.ApplicationInfoEnricher" />
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
       </pattern>

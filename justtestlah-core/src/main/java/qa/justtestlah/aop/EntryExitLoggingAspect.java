@@ -7,23 +7,24 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.EntryExitLogging;
+import qa.justtestlah.log.LogLevel;
+import qa.justtestlah.log.TestLogWriter;
 
 /** Aspect to create SLF4J logging entries when entering and exiting a method. */
 @Aspect
 @Component
 public class EntryExitLoggingAspect implements MethodInterceptor {
 
-  private static final Logger LOG = LoggerFactory.getLogger("entryExit");
+  @Autowired private TestLogWriter logWriter;
 
-  @Value("${entryexit.loglevel:DEBUG}")
+  @Value("${entryexit.loglevel:INFO}")
   private String entryExitLogLevel;
 
-  @Value("${summary.loglevel:INFO}")
+  @Value("${summary.loglevel:OFF}")
   private String summaryLogLevel;
 
   @Around("@annotation(loggable)")
@@ -31,26 +32,27 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
       throws Throwable {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
     Method method = signature.getMethod();
-    long start = entry(method, joinPoint.getArgs());
+    long start = entry(method, joinPoint.getArgs(), loggable.entryExitLogLevel());
     Object returnValue = joinPoint.proceed();
     long finish = System.currentTimeMillis();
-    exit(method, finish - start);
+    exit(method, finish - start, loggable.entryExitLogLevel(), loggable.summaryLogLevel());
     return returnValue;
   }
 
   /** this is the entry point for advices configured in {@link qa.justtestlah.aop.AopConfig} */
   public Object invoke(final MethodInvocation invocation) throws Throwable {
     Method method = invocation.getMethod();
-    long start = entry(method, invocation.getArguments());
+    long start = entry(method, invocation.getArguments(), getLogLevel(entryExitLogLevel));
     Object returnValue = invocation.proceed();
     long finish = System.currentTimeMillis();
-    exit(method, finish - start);
+    exit(method, finish - start, getLogLevel(entryExitLogLevel), getLogLevel(summaryLogLevel));
     return returnValue;
   }
 
   // log when entering a method
-  private long entry(Method method, Object[] methodArguments) {
-    StringBuilder logMessage = new StringBuilder("Entering ");
+  private long entry(Method method, Object[] methodArguments, int logLevel) {
+    StringBuilder logMessage = new StringBuilder();
+    logMessage.append("Entering ");
     Class<?> clazz = method.getDeclaringClass();
     logMessage.append(clazz.getSimpleName());
     logMessage.append(":");
@@ -67,13 +69,14 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
       }
       logMessage.append("]");
     }
-    logMessage(LOG, getLogLevel(entryExitLogLevel), logMessage.toString());
+    logWriter.log(logLevel, TestLogWriter.ENTRY_EXIT_INDENTATION, logMessage.toString());
     return System.currentTimeMillis();
   }
 
   // log before exiting a method
-  private void exit(Method method, long duration) {
-    StringBuilder logMessage = new StringBuilder("Exiting ");
+  private void exit(Method method, long duration, int entryExitLogLevel, int summaryLogLevel) {
+    StringBuilder logMessage = new StringBuilder();
+    logMessage.append("Exiting ");
     Class<?> clazz = method.getDeclaringClass();
     logMessage.append(clazz.getSimpleName());
     logMessage.append(":");
@@ -83,9 +86,10 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
     logMessage.append(" ms");
 
     // exit logging
-    logMessage(LOG, getLogLevel(entryExitLogLevel), logMessage.toString());
+    logWriter.log(entryExitLogLevel, TestLogWriter.ENTRY_EXIT_INDENTATION, logMessage.toString());
 
-    logMessage = new StringBuilder(clazz.getSimpleName());
+    logMessage = new StringBuilder();
+    logMessage.append(clazz.getSimpleName());
     logMessage.append(":");
     logMessage.append(method.getName());
     logMessage.append(" took ");
@@ -93,50 +97,25 @@ public class EntryExitLoggingAspect implements MethodInterceptor {
     logMessage.append(" ms");
 
     // summary logging
-    logMessage(LOG, getLogLevel(summaryLogLevel), logMessage.toString());
-  }
-
-  private void logMessage(Logger logger, int logLevel, String message) {
-    switch (logLevel) {
-      case EntryExitLogging.OFF:
-        break;
-      case EntryExitLogging.TRACE:
-        logger.trace(message);
-        break;
-      case EntryExitLogging.DEBUG:
-        logger.debug(message);
-        break;
-      case EntryExitLogging.INFO:
-        logger.info(message);
-        break;
-      case EntryExitLogging.WARN:
-        logger.warn(message);
-        break;
-      case EntryExitLogging.ERROR:
-        logger.error(message);
-        break;
-      default:
-        logger.debug(message);
-        break;
-    }
+    logWriter.log(summaryLogLevel, TestLogWriter.ENTRY_EXIT_INDENTATION, logMessage.toString());
   }
 
   private int getLogLevel(String parameter) {
     switch (parameter.toLowerCase()) {
       case "off":
-        return EntryExitLogging.OFF;
+        return LogLevel.OFF;
       case "trace":
-        return EntryExitLogging.TRACE;
+        return LogLevel.TRACE;
       case "debug":
-        return EntryExitLogging.DEBUG;
+        return LogLevel.DEBUG;
       case "info":
-        return EntryExitLogging.INFO;
+        return LogLevel.INFO;
       case "warn":
-        return EntryExitLogging.WARN;
+        return LogLevel.WARN;
       case "error":
-        return EntryExitLogging.ERROR;
+        return LogLevel.ERROR;
       default:
-        return EntryExitLogging.DEBUG;
+        return LogLevel.DEBUG;
     }
   }
 }

@@ -12,7 +12,7 @@
     </encoder>
   </appender>
 
-  <appender name="webdriver"
+  <appender name="server"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <!-- no colours for AWS Devicefarm log -->
@@ -20,11 +20,11 @@
     </encoder>
   </appender>
   
-  <appender name="entryExit"
+  <appender name="testlog"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <!-- no colours for AWS Devicefarm log -->
-      <pattern>${appInfo} %d{HH:mm:ss.SSS} %.-1level %msg %n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} %msg %n</pattern>
     </encoder>
   </appender>
 
@@ -32,12 +32,12 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="webdriver" level="info" additivity="false">
-    <appender-ref ref="webdriver" />
+  <logger name="server" level="info" additivity="false">
+    <appender-ref ref="server" />
   </logger>
   
-  <logger name="entryExit" level="info" additivity="false">
-    <appender-ref ref="entryExit" />
+  <logger name="testlog" level="info" additivity="false">
+    <appender-ref ref="teststeps" />
   </logger>
   
   <logger name="qa.justtestlah"

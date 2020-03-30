@@ -4,6 +4,7 @@ import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIV
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
 
 import com.codeborne.selenide.WebDriverRunner;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.ios.IOSDriver;
@@ -14,16 +15,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.annotations.EntryExitLogging;
 import qa.justtestlah.exception.JustTestLahException;
+import qa.justtestlah.log.LogLevel;
+import qa.justtestlah.log.TestLogWriter;
 import qa.justtestlah.log.WebDriverLogEnricher;
+import qa.justtestlah.log.WebDriverServerLogEnricher;
+import qa.justtestlah.mobile.tools.ApplicationInfoService;
 
 /** Factory for {@link WebDriver}. */
 @Component
@@ -56,18 +63,23 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   @Value("${mobile.deviceOrientation}")
   protected String deviceOrientation;
 
+  @Autowired private TestLogWriter testLog;
+
+  private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
+
   /*
    * (non-Javadoc)
    *
    * @see qa.justtestlah.configuration.WebDriverBuilder#getAndroidDriver()
    */
   @Override
-  @EntryExitLogging
+  @EntryExitLogging(entryExitLogLevel = LogLevel.DEBUG, summaryLogLevel = LogLevel.INFO)
   public WebDriver getAndroidDriver() {
     try {
       return registerListener(
-          new AndroidDriver<AndroidElement>(
-              new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities())));
+          logTestDetails(
+              new AndroidDriver<AndroidElement>(
+                  new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities()))));
     } catch (MalformedURLException exception) {
       throw new JustTestLahException("Error creating Android WebDriver", exception);
     } catch (WebDriverException exception) {
@@ -90,11 +102,13 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
    * @see qa.justtestlah.configuration.WebDriverBuilder#getIOSDriver()
    */
   @Override
+  @EntryExitLogging(entryExitLogLevel = LogLevel.DEBUG, summaryLogLevel = LogLevel.INFO)
   public WebDriver getIOsDriver() {
     try {
       return registerListener(
-          new IOSDriver<IOSElement>(
-              new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities())));
+          logTestDetails(
+              new IOSDriver<IOSElement>(
+                  new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()))));
     } catch (MalformedURLException exception) {
       throw new JustTestLahException("Error creating iOS WebDriver", exception);
     } catch (WebDriverException exception) {
@@ -109,6 +123,28 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
       }
       return null;
     }
+  }
+
+  private WebDriver logTestDetails(AppiumDriver<? extends WebElement> driver) {
+    testLog.log(
+        LogLevel.INFO, TestLogWriter.CUCUMBER_SCENARIO_INDENTATION, "Platform: {}", platform);
+    String appPath = driver.getSessionDetail("app").toString();
+    if (appPath != null) {
+      testLog.log(
+          LogLevel.INFO,
+          TestLogWriter.CUCUMBER_SCENARIO_INDENTATION,
+          "Application: {}",
+          applicationInfoService.getAppInfo(appPath));
+    }
+    testLog.log(
+        LogLevel.INFO,
+        TestLogWriter.CUCUMBER_SCENARIO_INDENTATION,
+        "Device: {}, manufacturer: {}, OS version: {}, screen size: {}",
+        driver.getSessionDetail("deviceName"),
+        driver.getSessionDetail("deviceManufacturer"),
+        driver.getSessionDetail("platformVersion"),
+        driver.getSessionDetail("deviceScreenSize"));
+    return driver;
   }
 
   private String getServerError(Throwable exception) {
@@ -153,6 +189,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   }
 
   @Override
+  @EntryExitLogging(entryExitLogLevel = LogLevel.DEBUG, summaryLogLevel = LogLevel.INFO)
   public WebDriver getWebDriver() {
     return registerListener(WebDriverRunner.getWebDriver());
   }
@@ -160,6 +197,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   private WebDriver registerListener(WebDriver driver) {
     EventFiringWebDriver eventFiringDriver = new EventFiringWebDriver(driver);
     eventFiringDriver.register(new WebDriverLogEnricher());
+    eventFiringDriver.register(new WebDriverServerLogEnricher());
     return eventFiringDriver;
   }
 }
