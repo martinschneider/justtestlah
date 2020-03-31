@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import qa.justtestlah.mobile.tools.ApplicationInfo;
+import qa.justtestlah.mobile.tools.ApplicationInfoService;
 import qa.justtestlah.stubs.OCR;
 
 /** Main configuration class for JustTestLah!. */
@@ -40,6 +42,12 @@ public class JustTestLahConfiguration {
   @Value("${platform}")
   private String platformString;
 
+  @Value("${android.appPath}")
+  private String androidAppPath;
+
+  @Value("${ios.appPath}")
+  private String iosAppPath;
+
   @Value("${opencv.mode:client}")
   private String openCVMode;
 
@@ -55,9 +63,13 @@ public class JustTestLahConfiguration {
   @Value("${cloudprovider:local}")
   private String cloudProvider;
 
+  private String applicationInfo;
+
   private WebDriverBuilder webDriverBuilder;
 
   @Autowired private OCR ocr;
+
+  private ApplicationInfoService applicationInfoService = new ApplicationInfoService();
 
   @Autowired
   public JustTestLahConfiguration(WebDriverBuilder webDriverBuilder) {
@@ -78,8 +90,11 @@ public class JustTestLahConfiguration {
     } else if (platform.equals(Platform.WEB)) {
       if (cloudProvider.equals("browserstack")) {
         WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
+        open(baseUrl);
+      } else {
+        open(baseUrl);
+        WebDriverRunner.setWebDriver(webDriverBuilder.getWebDriver());
       }
-      open(baseUrl);
     }
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
@@ -134,5 +149,26 @@ public class JustTestLahConfiguration {
 
   public ExecutionEnvironment getExecutionEnvironment() {
     return ExecutionEnvironment.valueOf(cloudProvider.toUpperCase());
+  }
+
+  /** @return application info String */
+  public String getApplicationInfo() {
+    if (applicationInfo != null) {
+      return applicationInfo;
+    }
+    StringBuilder strBuilder = new StringBuilder(platformString.toUpperCase());
+    String appPath = null;
+    if (platformString.equalsIgnoreCase("android")) {
+      appPath = androidAppPath;
+    } else if (platformString.equalsIgnoreCase("ios")) {
+      appPath = iosAppPath;
+    }
+    ApplicationInfo appInfo = applicationInfoService.getAppInfo(appPath);
+    if (appInfo != null && !appInfo.toString().isEmpty()) {
+      strBuilder.append(" ");
+      strBuilder.append(appInfo);
+    }
+    applicationInfo = strBuilder.toString();
+    return applicationInfo;
   }
 }

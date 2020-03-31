@@ -4,6 +4,7 @@ import io.cucumber.core.options.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qa.justtestlah.exception.JustTestLahException;
+import qa.justtestlah.log.CucumberLoggingPlugin;
 
 /** Builds Cucumber options based on `justtestlah.properties` and sets them as System properties. */
 public class CucumberOptionsBuilder {
@@ -35,7 +36,7 @@ public class CucumberOptionsBuilder {
   }
 
   private static String buildPluginProperty(PropertiesHolder properties) {
-    StringBuilder pluginProperty = new StringBuilder("pretty");
+    StringBuilder pluginProperty = new StringBuilder(CucumberLoggingPlugin.class.getName());
     pluginProperty.append(DELIMITER);
     pluginProperty.append("html:report");
     pluginProperty.append(DELIMITER);

@@ -1,16 +1,25 @@
 <?xml version="1.0"?>
 <configuration>
-  <appender name="STDOUT"
-    class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%cyan(%d{HH:mm:ss.SSS}) %highlight(%.-1level) %cyan(%C{0}:%M:%L) %highlight(%msg) %n
       </pattern>
     </encoder>
   </appender>
-
+  
+  <appender name="testlog" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%magenta(%d{HH:mm:ss.SSS} %msg) %n</pattern>
+    </encoder>
+  </appender>
+  
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
 
   <logger name="qa.justtestlah" level="info" />
+  
+  <logger name="testlog" level="debug" additivity="false">
+    <appender-ref ref="testlog" />
+  </logger>  
 </configuration>

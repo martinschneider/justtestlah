@@ -11,10 +11,7 @@
       comparisonMethod="maven">
       <ignoreVersions>
         <ignoreVersion type="regex">5.2.*</ignoreVersion>
-        <ignoreVersion type="regex">6.*</ignoreVersion>
-        <ignoreVersion type="regex">7.*</ignoreVersion>
-        <ignoreVersion type="regex">8.*</ignoreVersion>
-        <ignoreVersion type="regex">9.*</ignoreVersion>
+        <ignoreVersion type="regex">[6-9].*</ignoreVersion>
       </ignoreVersions>
     </rule>
     <rule groupId="io.appium" artifactId="java-client"
@@ -29,6 +26,12 @@
       <ignoreVersions>
         <!-- Not supported by AWS Devicefarm -->
         <ignoreVersion type="regex">4.13.*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="net.sourceforge.tess4j" artifactId="tess4j"
+      comparisonMethod="maven">
+      <ignoreVersions>
+        <ignoreVersion type="regex">4.[2-9].*</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>

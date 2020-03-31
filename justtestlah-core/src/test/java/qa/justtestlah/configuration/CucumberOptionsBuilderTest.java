@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 import qa.justtestlah.exception.JustTestLahException;
+import qa.justtestlah.log.CucumberLoggingPlugin;
 
 public class CucumberOptionsBuilderTest {
 
@@ -76,7 +77,9 @@ public class CucumberOptionsBuilderTest {
     CucumberOptionsBuilder.setCucumberOptions(new PropertiesHolder());
     assertThat(System.getProperty("cucumber.plugin"))
         .as("check cucumber plugin")
-        .isEqualTo("pretty,html:report,json:target/report/cucumber/cucumber.json");
+        .isEqualTo(
+            CucumberLoggingPlugin.class.getName()
+                + ",html:report,json:target/report/cucumber/cucumber.json");
   }
 
   @Test

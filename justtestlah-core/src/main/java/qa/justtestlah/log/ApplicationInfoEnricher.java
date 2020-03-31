@@ -12,6 +12,7 @@ import qa.justtestlah.mobile.tools.ApplicationInfo;
 import qa.justtestlah.mobile.tools.ApplicationInfoService;
 
 /** Enrich meta information about the application under test to the log file. */
+@Deprecated(forRemoval = true)
 public class ApplicationInfoEnricher extends ContextAwareBase
     implements LoggerContextListener, LifeCycle {
 
