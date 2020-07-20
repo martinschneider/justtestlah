@@ -87,7 +87,7 @@ To test a mobile app you need to setup [Appium](https://appium.io) and [start an
 
 There is currently no public demo for iOS. This is mostly because app packages (builds for the iPhone simulator) for any interesting real-world application are not readily available and [ipa builds need to be re-signed to play nicely with Appium](http://appium.io/docs/en/drivers/ios-xcuitest-real-devices). If you want to contribute a demo, [please conatct me](mart.schneider@gmail.com).
 
-That said, JustTestLah! can be ([and has been](https://www.youtube.com/watch?v=maJkvP_qk4A)) used to automate iOS apps. 
+That said, JustTestLah! can be ([and has been](https://www.youtube.com/watch?v=maJkvP_qk4A)) used to automate iOS apps.
 
 ### Available demos
 There are a couple of demos available under the `justtestlah-demos` module. The default one uses [Stackoverflow](https://stackoverflow.com) and comes in flavours for `web` and `android` (upvote [this question](https://meta.stackoverflow.com/questions/365573/is-there-a-version-of-the-stack-overflow-app-for-the-ios-simulator) to help us get access to an iOS version.
@@ -129,7 +129,7 @@ Add the following to your `pom.xml`:
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -137,11 +137,11 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```yaml
-compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.8-SNAPSHOT'
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.8'
 ```
 
 ### Option 4: Manual setup
-Add `justtestlah-core-1.8-SNAPSHOT.jar` to your classpath.
+Add `justtestlah-core-1.8.jar` to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
@@ -426,7 +426,7 @@ One use-case, as shown above, can be to define the Android package name as a var
 POST_TAG:
   android:
     type: id
-    value: ${PACKAGE_NAME}:id/question_view_item_tags  
+    value: ${PACKAGE_NAME}:id/question_view_item_tags
 ```
 
 If you want to override static placeholders during runtime, you can pass an extra placeholder file by setting `locator.placeholders.file` to its absolute path in `justtestlah.properties`. In this case, for any placeholders which occur in both files (the one under `pages.package` and `locator.placeholders.file`), the latter one will override the former.
@@ -543,13 +543,13 @@ browserstack.timezone=SG
 browserstack.appium_version=1.8.0
 ```
 
-Make sure `justtestlah-browserstack-1.8-SNAPSHOT.jar` is on your classpath:
+Make sure `justtestlah-browserstack-1.8.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -606,13 +606,13 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm-1.8-SNAPSHOT.jar` is on your classpath:
+Make sure `justtestlah-awsdevicefarm-1.8.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -621,13 +621,13 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 Please note that AWS Devicefarm is a paid service.
 
 ## Visual and layout testing
-Make sure `justtestlah-visual-1.8-SNAPSHOT.jar` is on your classpath:
+Make sure `justtestlah-visual-1.8.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -673,13 +673,13 @@ Note, that not all cloud providers support this.
 
 JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
 
-This requires `justtestlah-visual-1.8-SNAPSHOT.jar` on the classpath:
+This requires `justtestlah-visual-1.8.jar` on the classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -689,7 +689,7 @@ On a Mac, this might look something like this:
 
 ```ini
 tesseract.datapath=/usr/local/Cellar/tesseract/4.1.1/share/tessdata
-``` 
+```
 
 To use this feature, simply autowire an instance of the `OCR` class and pass a `WebElement` to its `getText` method. If you don't pass an argument, OCR will be performed on a screenshot of the entire viewport.
 
@@ -714,17 +714,17 @@ In the step class, we can then perform a check like this:
 
 ```java
 assertThat(googlePage.getLogoText()).isEqualTo("Google");
-``` 
+```
 
 ### Applitools
 
-Make sure `justtestlah-applitools-1.8-SNAPSHOT.jar` is on your classpath:
+Make sure `justtestlah-applitools-1.8.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-applitools</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -736,13 +736,13 @@ Please note that Applitools is a paid service.
 
 ### Galen
 
-Make sure `justtestlah-galen-1.8-SNAPSHOT.jar` is on your classpath:
+Make sure `justtestlah-galen-1.8.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-galen</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
 </dependency>
 ```
 
@@ -764,10 +764,10 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
     above SEARCH_FIELD
     centered horizontally inside viewport
     width < 100% of SEARCH_FIELD/width
-    visible 
+    visible
 ```
 
-Note, that you do not need to specify the @objects section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key. 
+Note, that you do not need to specify the @objects section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key.
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
