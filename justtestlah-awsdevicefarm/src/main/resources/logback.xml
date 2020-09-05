@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 <configuration>
-  <contextListener
-    class="qa.justtestlah.log.ApplicationInfoEnricher" />
   <appender name="STDOUT"
     class="ch.qos.logback.core.ConsoleAppender">
     <encoder>

@@ -13,11 +13,16 @@ public class GoogleSteps extends BaseSteps {
 
   @Given("I am on the homepage")
   public void homepage() {
-    google.verify().enterSearchTerm(testdata(Search.class));
+    google.verify();
+  }
+  
+  @Then("the Google logo is displayed")
+  public void checkLogo() {
+    assertThat(google.hasImage("google.png"));
   }
 
   @Then("the Google logo shows the correct text")
-  public void checkLogo() {
+  public void checkLogoText() {
     assertThat(google.getLogoText()).isEqualTo("Google");
   }
 }

@@ -225,3 +225,5 @@ $RECYCLE.BIN/
 
 **/report/**
 **/build/**
+
+node_modules/
