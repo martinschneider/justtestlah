@@ -801,3 +801,4 @@ Please let me know about any feedback, questions or ideas for improvement.
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)
+[![Maintainers Wanted](https://img.shields.io/badge/maintainers-wanted-red.svg)](https://github.com/pickhardt/maintainers-wanted)
