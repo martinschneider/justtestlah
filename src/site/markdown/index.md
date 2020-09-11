@@ -753,8 +753,6 @@ Similar to properties-file holding the locator information, there is an (optiona
 Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
 
 ```yaml
-= Login =
-
   SEARCH_FIELD:
     below LOGO
     centered horizontally inside viewport
@@ -801,4 +799,3 @@ Please let me know about any feedback, questions or ideas for improvement.
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)
-[![Maintainers Wanted](https://img.shields.io/badge/maintainers-wanted-red.svg)](https://github.com/pickhardt/maintainers-wanted)
