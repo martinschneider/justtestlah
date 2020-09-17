@@ -1,0 +1,8 @@
+SEARCH_RESULT:
+  web:
+    type: css
+    value: .g
+RESULT_STATS:
+  web:
+    type: id
+    value: result-stats

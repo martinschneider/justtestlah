@@ -1,5 +1,7 @@
 package io.cucumber.junit;
 
+import static io.cucumber.junit.FileNameCompatibleNames.uniqueSuffix;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 import io.cucumber.core.eventbus.EventBus;
@@ -16,6 +18,8 @@ import io.cucumber.core.plugin.Plugins;
 import io.cucumber.core.resource.ClassLoaders;
 import io.cucumber.core.runtime.BackendServiceLoader;
 import io.cucumber.core.runtime.BackendSupplier;
+import io.cucumber.core.runtime.CucumberExecutionContext;
+import io.cucumber.core.runtime.ExitStatus;
 import io.cucumber.core.runtime.FeaturePathFeatureSupplier;
 import io.cucumber.core.runtime.ObjectFactoryServiceLoader;
 import io.cucumber.core.runtime.ObjectFactorySupplier;
@@ -24,14 +28,13 @@ import io.cucumber.core.runtime.ThreadLocalObjectFactorySupplier;
 import io.cucumber.core.runtime.ThreadLocalRunnerSupplier;
 import io.cucumber.core.runtime.TimeServiceEventBus;
 import io.cucumber.core.runtime.TypeRegistryConfigurerSupplier;
-import io.cucumber.plugin.event.TestRunFinished;
-import io.cucumber.plugin.event.TestRunStarted;
-import io.cucumber.plugin.event.TestSourceRead;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -68,6 +71,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   private EventBus bus = null;
   private PropertiesHolder properties = new PropertiesHolder();
   private boolean multiThreadingAssumed = false;
+  private CucumberExecutionContext context = null;
 
   private static final String CLOUD_PROVIDER = "cloudprovider";
   private static final String PLATFORM_KEY = "platform";
@@ -109,7 +113,8 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   private void initCucumber(Class<?> clazz) throws InitializationError {
     Assertions.assertNoCucumberAnnotatedMethods(clazz);
 
-    // Parse the options early to provide fast feedback about invalid options
+    // Parse the options early to provide fast feedback about invalid
+    // options
     RuntimeOptions propertiesFileOptions =
         new CucumberPropertiesParser().parse(CucumberProperties.fromPropertiesFile()).build();
 
@@ -127,15 +132,8 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     RuntimeOptions runtimeOptions =
         new CucumberPropertiesParser()
             .parse(CucumberProperties.fromSystemProperties())
-            .addDefaultSummaryPrinterIfAbsent()
+            .enablePublishPlugin()
             .build(environmentOptions);
-
-    if (!runtimeOptions.isStrict()) {
-      LOG.warn(
-          "By default Cucumber is running in --non-strict mode.\n"
-              + "This default will change to --strict and --non-strict will be removed.\n"
-              + "You can use --strict or @CucumberOptions(strict = true) to suppress this warning");
-    }
 
     // Next parse the junit options
     JUnitOptions junitPropertiesFileOptions =
@@ -152,7 +150,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     JUnitOptions junitOptions =
         new JUnitOptionsParser()
             .parse(CucumberProperties.fromSystemProperties())
-            .setStrict(runtimeOptions.isStrict())
             .build(junitEnvironmentOptions);
 
     this.bus = new TimeServiceEventBus(Clock.systemUTC(), UUID::randomUUID);
@@ -164,9 +161,11 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
         new FeaturePathFeatureSupplier(classLoader, runtimeOptions, parser);
     this.features = featureSupplier.get();
 
-    // Create plugins after feature parsing to avoid the creation of empty files on
-    // lexer errors.
+    // Create plugins after feature parsing to avoid the creation of empty
+    // files on lexer errors.
     this.plugins = new Plugins(new PluginFactory(), runtimeOptions);
+    ExitStatus exitStatus = new ExitStatus(runtimeOptions);
+    this.plugins.addPlugin(exitStatus);
 
     ObjectFactoryServiceLoader objectFactoryServiceLoader =
         new ObjectFactoryServiceLoader(runtimeOptions);
@@ -183,10 +182,19 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
             backendSupplier,
             objectFactorySupplier,
             typeRegistryConfigurerSupplier);
+    this.context = new CucumberExecutionContext(bus, exitStatus, runnerSupplier);
     Predicate<Pickle> filters = new Filters(runtimeOptions);
+
+    Map<Optional<String>, List<Feature>> groupedByName =
+        features.stream().collect(groupingBy(Feature::getName));
     this.children =
         features.stream()
-            .map(feature -> FeatureRunner.create(feature, filters, runnerSupplier, junitOptions))
+            .map(
+                feature -> {
+                  Integer uniqueSuffix = uniqueSuffix(groupedByName, feature, Feature::getName);
+                  return FeatureRunner.create(
+                      feature, uniqueSuffix, filters, runnerSupplier, junitOptions);
+                })
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
 
@@ -225,6 +233,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   }
 
   class RunCucumber extends Statement {
+
     private final Statement runFeatures;
 
     RunCucumber(Statement runFeatures) {
@@ -239,12 +248,14 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
         plugins.setEventBusOnEventListenerPlugins(bus);
       }
 
-      bus.send(new TestRunStarted(bus.getInstant()));
-      for (Feature feature : features) {
-        bus.send(new TestSourceRead(bus.getInstant(), feature.getUri(), feature.getSource()));
+      context.startTestRun();
+      features.forEach(context::beforeFeature);
+
+      try {
+        runFeatures.evaluate();
+      } finally {
+        context.finishTestRun();
       }
-      runFeatures.evaluate();
-      bus.send(new TestRunFinished(bus.getInstant()));
     }
   }
 

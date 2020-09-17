@@ -11,6 +11,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.openqa.selenium.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import qa.justtestlah.stubs.TemplateMatcher;
  */
 @Component
 @Primary
-@ConditionalOnProperty(value = "opencv.mode", havingValue = "client")
+@ConditionalOnProperty(value = "opencv.mode", havingValue = "client", matchIfMissing = true)
 public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(OpenCVTemplateMatcher.class);
@@ -43,7 +44,8 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
   /*
    * (non-Javadoc)
    *
-   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String, java.lang.String, double)
+   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String,
+   * java.lang.String, double)
    */
   @Override
   public Match match(String targetFile, String templateFile, double threshold) {
@@ -57,8 +59,8 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
   /*
    * (non-Javadoc)
    *
-   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String, java.lang.String, double,
-   * java.lang.String)
+   * @see qa.justtestlah.visual.TemplateMatcherI#match(java.lang.String,
+   * java.lang.String, double, java.lang.String)
    */
   @Override
   public Match match(String targetFile, String templateFile, double threshold, String description) {
@@ -165,11 +167,12 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
       LOG.info("Writing visualization of template matching to {}", fileName);
       Imgcodecs.imwrite(fileName, originalImage);
 
-      // returning the match (center of the matched rectangle)
       return new qa.justtestlah.visual.Match(
-          true,
-          (int) Math.round((bestMatch.maxLoc.x + templ.cols() / 2.0) * scalingFactor),
-          (int) Math.round((bestMatch.maxLoc.y + templ.rows() / 2.0) * scalingFactor));
+          new Rectangle(
+              (int) Math.round(bestMatch.maxLoc.y * scalingFactor),
+              (int) Math.round(bestMatch.maxLoc.x * scalingFactor),
+              (int) Math.round(templ.rows() * scalingFactor),
+              (int) Math.round(templ.cols() * scalingFactor)));
     }
     // else
     LOG.info(
@@ -178,7 +181,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
         new File(templateFile).getName(),
         threshold,
         bestMatch.maxVal);
-    return new qa.justtestlah.visual.Match(false);
+    return new qa.justtestlah.visual.Match(null);
   }
 
   @Autowired

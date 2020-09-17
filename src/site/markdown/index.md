@@ -7,6 +7,7 @@ JustTestLah! is based on [Selenium](https://www.seleniumhq.org) and [Appium](htt
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Getting started](#getting-started)
   - [justtestlah.properties](#justtestlahproperties)
   - [Android demo](#android-demo)
@@ -37,8 +38,9 @@ JustTestLah! is based on [Selenium](https://www.seleniumhq.org) and [Appium](htt
   - [OCR](#ocr)
   - [Applitools](#applitools)
   - [Galen](#galen)
+- [Build from source](#build-from-source)
 - [Used libraries](#used-libraries)
-- [Known issues & limitations](#known-issues--limitations)
+- [Requirements and known-issues](#requirements-and-known-issues)
 - [Contact and support](#contact-and-support)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -122,6 +124,15 @@ A fast way to get a working template project is using the JustTestLah! [Maven ar
 mvn archetype:generate -DarchetypeGroupId=qa.justtestlah -DarchetypeArtifactId=justtestlah-quickstart
 ```
 
+![Getting started](images/mvn-archetype.gif)
+
+This will create a new directory (based on the `artifactId` you selected). Change to this directory and run `mvn test` to execute the sample tests.
+
+By default, the sample project will only include the core functionality of JustTestLah! You can add additional modules by passing any of the following arguments:
+```bash
+-Dapplitools=true -Dawsdevicefarm=true -Dbrowserstack=true -Dgalen=true -Dmobile=true -Dvisual=true
+```
+
 ### Option 2: Manual setup using Maven
 Add the following to your `pom.xml`:
 
@@ -129,7 +140,7 @@ Add the following to your `pom.xml`:
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -137,11 +148,11 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```yaml
-compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.8'
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.9-RC2'
 ```
 
 ### Option 4: Manual setup
-Add `justtestlah-core-1.8.jar` to your classpath.
+Add `justtestlah-core-1.9-RC2.jar` to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
@@ -267,7 +278,7 @@ cucumber.report.directory=target/report/cucumber
 
 # Galen
 galen.enabled=false
-galen.inject.locators
+galen.inject.locators=true
 galen.report.directory=target/report/galen
 
 # Applitools
@@ -317,7 +328,7 @@ browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
-browserstack.appium_version=1.8.0
+browserstack.appium_version=1.9-RC2.0
 browserstack.acceptSslCerts=true
 
 # AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
@@ -540,16 +551,16 @@ browserstack.geoLocation=SG
 browserstack.networkProfile=
 browserstack.customNetwork=
 browserstack.timezone=SG
-browserstack.appium_version=1.8.0
+browserstack.appium_version=1.9-RC2.0
 ```
 
-Make sure `justtestlah-browserstack-1.8.jar` is on your classpath:
+Make sure `justtestlah-browserstack-1.9-RC2.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -606,13 +617,13 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm-1.8.jar` is on your classpath:
+Make sure `justtestlah-awsdevicefarm-1.9-RC2.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -621,13 +632,13 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 Please note that AWS Devicefarm is a paid service.
 
 ## Visual and layout testing
-Make sure `justtestlah-visual-1.8.jar` is on your classpath:
+Make sure `justtestlah-visual-1.9-RC2.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -665,7 +676,7 @@ There are two modes to use template matching which can be configured in `justtes
 
 `opencv.mode=client` performs the image matching on the client (i.e. the machine running the test code). It requires [OpenCV](https://github.com/openpnp/opencv) which is imported as a Maven dependency.
 
-`opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server.
+`opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server. This mode is deprecated, please use Appium's `findByImage` functionality directly or switch to the client-mode.
 
 Note, that not all cloud providers support this.
 
@@ -673,21 +684,28 @@ Note, that not all cloud providers support this.
 
 JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
 
-This requires `justtestlah-visual-1.8.jar` on the classpath:
+This requires `justtestlah-visual-1.9-RC2.jar` on the classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
 JustTestLah! uses [Tess4J](http://tess4j.sourceforge.net/), a Java wrapper for Tesseract. You still need to [install native binaries on your machine](https://github.com/tesseract-ocr/tesseract/wiki#installation) and set the [tesseract datapath](https://github.com/tesseract-ocr/tesseract/wiki/Data-Files) in the `justtestlah.properties`:
 
-On a Mac, this might look something like this:
+Depending on your operating system, Tesseract version and installation details, this might look something like this:
 
+#### Linux
 ```ini
+tesseract.datapath=/usr/share/tesseract-ocr/4.00/tessdata
+```
+
+#### Mac OS
+```ini
+# Mac OS
 tesseract.datapath=/usr/local/Cellar/tesseract/4.1.1/share/tessdata
 ```
 
@@ -718,13 +736,13 @@ assertThat(googlePage.getLogoText()).isEqualTo("Google");
 
 ### Applitools
 
-Make sure `justtestlah-applitools-1.8.jar` is on your classpath:
+Make sure `justtestlah-applitools-1.9-RC2.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-applitools</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -736,13 +754,13 @@ Please note that Applitools is a paid service.
 
 ### Galen
 
-Make sure `justtestlah-galen-1.8.jar` is on your classpath:
+Make sure `justtestlah-galen-1.9-RC2.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-galen</artifactId>
-  <version>1.8</version>
+  <version>1.9-RC2</version>
 </dependency>
 ```
 
@@ -770,6 +788,24 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
 Note, that you do not need to specify the @objects section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key.
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
+
+## Build from source
+
+JustTestLah! uses [Maven](https://maven.apache.org/).
+
+Make sure JAVA_HOME is set correctly. Then run:
+
+```bash
+mvn clean install -Dmaven.home=...
+```
+
+To build JustTestLah! without executing its tests, you can run:
+
+```bash
+mvn clean install -DskipTests=true
+```
+
+Both commands will build JustTestLah! and install it into your local Maven repository.
 
 ## Used libraries
 
@@ -801,4 +837,3 @@ Please let me know about any feedback, questions or ideas for improvement.
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
 
 [![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mschneider)
-[![Maintainers Wanted](https://img.shields.io/badge/maintainers-wanted-red.svg)](https://github.com/pickhardt/maintainers-wanted)

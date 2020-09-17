@@ -1,11 +1,11 @@
-package pages;
+package ${groupId}.pages;
 
 import static qa.justtestlah.configuration.Platform.Constants.WEB;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import model.Search;
+import ${groupId}.model.Search;
 import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.base.BasePage;
 

@@ -12,20 +12,6 @@ import qa.justtestlah.visual.OCR;
 
 @Component
 @Profile(WEB)
-@ScreenIdentifier("SEARCH_FIELD")
-public class GooglePage extends BasePage<GooglePage> {
-
-  @Autowired private OCR ocr;
-  
-  private ResultsPage results;
-
-  public ResultsPage search(Search searchTerm) {
-    $("SEARCH_FIELD").sendKeys(searchTerm.getSearchTerm());
-    $("SEARCH_FIELD").pressEnter();
-    return results;
-  }
-
-  public String getLogoText() {
-    return ocr.getText($("LOGO"));
-  }
+@ScreenIdentifier({"SEARCH_RESULT", "RESULT_STATS"})
+public class ResultsPage extends BasePage<ResultsPage> {
 }

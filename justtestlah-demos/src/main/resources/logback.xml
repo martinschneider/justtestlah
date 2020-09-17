@@ -30,6 +30,5 @@
     <appender-ref ref="testlog" />
   </logger>
 
-  <logger name="qa.justtestlah" level="error" />
-
+  <logger name="qa.justtestlah" level="info" />
 </configuration>

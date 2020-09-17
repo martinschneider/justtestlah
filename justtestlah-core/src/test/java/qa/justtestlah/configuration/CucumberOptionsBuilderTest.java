@@ -77,9 +77,7 @@ public class CucumberOptionsBuilderTest {
     CucumberOptionsBuilder.setCucumberOptions(new PropertiesHolder());
     assertThat(System.getProperty("cucumber.plugin"))
         .as("check cucumber plugin")
-        .isEqualTo(
-            CucumberLoggingPlugin.class.getName()
-                + ",html:report,json:target/report/cucumber/cucumber.json");
+        .isEqualTo(CucumberLoggingPlugin.class.getName());
   }
 
   @Test

@@ -36,6 +36,7 @@ public class OCR implements qa.justtestlah.stubs.OCR {
    * @param element {@link WebElement} element to perform OCR on
    * @return recognised text of the element
    */
+  @Override
   public String getText(WebElement element) {
     return getText(element.getScreenshotAs(OutputType.FILE));
   }
@@ -48,7 +49,9 @@ public class OCR implements qa.justtestlah.stubs.OCR {
   private String getText(File file) {
     LOG.info("Peforming OCR on file {}", file);
     try {
-      return ocr.doOCR(file).trim();
+      String text = ocr.doOCR(file).trim();
+      LOG.info("Found text: {}", text);
+      return text;
     } catch (TesseractException exception) {
       LOG.warn("Error performing OCR", exception);
       return null;

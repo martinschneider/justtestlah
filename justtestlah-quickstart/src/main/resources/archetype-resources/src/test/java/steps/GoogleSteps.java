@@ -1,12 +1,12 @@
-package steps;
+package ${groupId}.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import model.Search;
-import pages.GooglePage;
+import ${groupId}.model.Search;
+import ${groupId}.pages.GooglePage;
 import qa.justtestlah.base.BaseSteps;
 
 public class GoogleSteps extends BaseSteps {

@@ -36,7 +36,8 @@ public class LocatorMap {
   private static final String ID = "id";
   private static final String ACCESIBILITY_ID = "accesibilityId";
   private static final String UIAUTOMATOR = "uiAutomator";
-  private static final String IMAGE = "image";
+  private static final String IMAGE = "image"; // Appium
+  private static final String OPENCV = "opencv";
 
   /** Default constructor. */
   public LocatorMap() {
@@ -79,6 +80,8 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
       return $(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
+      return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+    } else if (type.equalsIgnoreCase(OPENCV)) {
       return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $(formatValue(rawValue, params));
