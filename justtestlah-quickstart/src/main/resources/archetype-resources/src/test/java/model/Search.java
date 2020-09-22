@@ -1,4 +1,4 @@
-package model;
+package ${groupId}.model;
 
 import qa.justtestlah.testdata.TestData;
 

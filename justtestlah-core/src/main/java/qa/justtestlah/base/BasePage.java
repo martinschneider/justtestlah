@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import qa.justtestlah.stubs.AppiumTemplateMatcher;
 import qa.justtestlah.stubs.Applitools;
 import qa.justtestlah.stubs.Galen;
 import qa.justtestlah.stubs.Match;
+import qa.justtestlah.stubs.OCR;
 import qa.justtestlah.stubs.TemplateMatcher;
 import qa.justtestlah.utils.ImageUtils;
 
@@ -51,6 +53,8 @@ public abstract class BasePage<T> extends Base {
   @Autowired private Applitools applitools;
 
   @Autowired private Galen galen;
+
+  @Autowired private OCR ocr;
 
   @Autowired private TestLogWriter logWriter;
 
@@ -99,7 +103,11 @@ public abstract class BasePage<T> extends Base {
    * @return true, if the image has been found on the current screen
    */
   public boolean hasImage(String imageName, double threshold) {
-    return findImage(imageName, threshold).isFound();
+    return findImage(imageName, threshold).isDisplayed();
+  }
+
+  public WebElement findImage(String imageName) {
+    return findImage(imageName, 0.9);
   }
 
   /**
@@ -109,7 +117,7 @@ public abstract class BasePage<T> extends Base {
    * @param threshold matching threshold
    * @return {@link Match}
    */
-  public Match findImage(String imageName, double threshold) {
+  public WebElement findImage(String imageName, double threshold) {
     WebDriver driver = WebDriverRunner.getWebDriver();
     if (driver instanceof TakesScreenshot) {
       File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
@@ -121,8 +129,12 @@ public abstract class BasePage<T> extends Base {
         }
         ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
       }
-      return templateMatcher.match(
-          screenshotFile.getAbsolutePath(), ImageUtils.getFullPath(imageName), threshold);
+      String path = ImageUtils.getFullPath(imageName);
+      return new ImageWebElement(
+          driver,
+          templateMatcher.match(screenshotFile.getAbsolutePath(), path, threshold).getRect(),
+          ocr,
+          path);
     } else {
       throw new UnsupportedOperationException(
           "This operation is not supported for the current WebDriver: "
@@ -186,7 +198,7 @@ public abstract class BasePage<T> extends Base {
       String specPath =
           baseFolder
               + File.separator
-              + configuration.getPlatform()
+              + configuration.getPlatform().toString().toLowerCase()
               + File.separator
               + baseName
               + ".spec";

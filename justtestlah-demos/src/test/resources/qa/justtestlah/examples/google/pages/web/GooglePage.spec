@@ -13,7 +13,3 @@
     centered horizontally inside viewport
     width < 100% of SEARCH_FIELD/width
     visible 
-    
-  SEARCH_BUTTON:
-    near LUCKY_BUTTON 20px left
-    visible

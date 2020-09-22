@@ -1,15 +1,49 @@
 <archetype-descriptor
-  xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0
             http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
-  xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  name="justtestlah-quickstart">
-  <fileSets>
-    <fileSet filtered="true" packaged="true">
-      <directory>src/test/java</directory>
-    </fileSet>
-    <fileSet>
-      <directory>src/test/resources</directory>
-    </fileSet>
-  </fileSets>
+	xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	name="justtestlah-quickstart">
+	<fileSets>
+		<fileSet filtered="true" packaged="true">
+			<directory>src/test/java</directory>
+		</fileSet>
+		<fileSet filtered="true" packaged="true">
+			<directory>src/test/resources</directory>
+			<excludes>
+				<exclude>features/**</exclude>
+				<exclude>justtestlah.properties</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet filtered="true">
+			<directory>src/test/resources</directory>
+			<includes>
+				<include>features/**</include>
+				<include>justtestlah.properties</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<requiredProperties>
+		<requiredProperty key="jtlVersion">
+			<defaultValue>1.9-RC2</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="awsdevicefarm">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="applitools">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="browserstack">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="galen">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="mobile">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="visual">
+			<defaultValue>false</defaultValue>
+		</requiredProperty>
+	</requiredProperties>
 </archetype-descriptor>

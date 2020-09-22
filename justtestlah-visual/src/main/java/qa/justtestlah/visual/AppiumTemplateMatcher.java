@@ -26,7 +26,7 @@ import qa.justtestlah.stubs.TemplateMatcher;
 
 /**
  * Implementation of {@link TemplateMatcher} using Appium's image locator (which uses OpenCV on the
- * appium server)
+ * Appium server)
  *
  * <p>This class provides methods to check whether a given image (template) is part of another one
  * (target). We use a simple (yet effective) way to detect the template image in various sizes by
@@ -34,7 +34,8 @@ import qa.justtestlah.stubs.TemplateMatcher;
  */
 @Component
 @Primary
-@ConditionalOnProperty(value = "opencv.mode", havingValue = "server", matchIfMissing = true)
+@ConditionalOnProperty(value = "opencv.mode", havingValue = "server")
+@Deprecated
 public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AppiumTemplateMatcher.class);
@@ -108,7 +109,7 @@ public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplat
 
   @Override
   public Match match(String targetFile, String templateFile, double threshold, String description) {
-    Match match = new Match(false, 0, 0);
+    Match match = new Match(null);
     byte[] template;
     byte[] target;
     BufferedImage targetImage;
@@ -141,8 +142,8 @@ public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplat
           originalImage.getWidth(),
           originalImage.getHeight(),
           new File(templateFile).getName(),
-          match.getX(),
-          match.getY());
+          match.getRect().getX(),
+          match.getRect().getY());
 
       String fileName =
           System.getProperty("user.dir")

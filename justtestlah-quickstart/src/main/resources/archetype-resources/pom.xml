@@ -17,7 +17,49 @@
     <dependency>
       <groupId>qa.justtestlah</groupId>
       <artifactId>justtestlah-core</artifactId>
-      <version>1.8-SNAPSHOT</version>
+      <version>${jtlVersion}</version>
     </dependency>
+    #if (${applitools} == 'true' || ${applitools} == 'yes' || ${applitools} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-applitools</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
+    #if (${awsdevicefarm} == 'true' || ${awsdevicefarm} == 'yes' || ${awsdevicefarm} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-awsdevicefarm</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
+    #if (${browserstack} == 'true' || ${browserstack} == 'yes' || ${browserstack} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-browserstack</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
+    #if (${galen} == 'true' || ${galen} == 'yes' || ${galen} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-galen</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
+    #if (${mobile} == 'true' || ${mobile} == 'yes' || ${mobile} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-mobile-tools</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
+    #if (${visual} == 'true' || ${visual} == 'yes' || ${visual} == 'y')
+    <dependency>
+      <groupId>qa.justtestlah</groupId>
+      <artifactId>justtestlah-visual</artifactId>
+      <version>${jtlVersion}</version>
+    </dependency>
+    #end
   </dependencies>
 </project>

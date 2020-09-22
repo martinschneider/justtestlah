@@ -1,6 +1,7 @@
 package qa.justtestlah.visual;
 
 import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
+import org.openqa.selenium.Rectangle;
 
 /**
  * Class representing a match.
@@ -12,79 +13,36 @@ import io.appium.java_client.imagecomparison.OccurrenceMatchingResult;
  */
 public class Match implements qa.justtestlah.stubs.Match {
 
-  private boolean found;
-  private int matchX;
-  private int matchY;
+  private Rectangle match;
   private byte[] visualization;
 
   /**
    * Constructor.
    *
    * @param found true, if a match has been detected
+   * @param matchX x coordinate of the center of the match
+   * @param matchY y coordinate of the center of the match
    */
-  public Match(boolean found) {
+  public Match(Rectangle match) {
     super();
-    this.found = found;
+    this.match = match;
   }
 
   /**
    * Constructor.
    *
-   * @param found true, if a match has been detected
-   * @param matchX x coordinate of the center of the match
-   * @param matchY y coordinate of the center of the match
-   */
-  public Match(boolean found, int matchX, int matchY) {
-    super();
-    this.found = found;
-    this.matchX = matchX;
-    this.matchY = matchY;
-  }
-
-  /**
-   * Constructor.
-   *
-   * @param found true, if a match has been detected
-   * @param matchX x coordinate of the center of the match
-   * @param matchY y coordinate of the center of the match
+   * @param match {@link Rectangle} representing the match, null if not found
    * @param visualization a Base64 encoded visualization image of the match
    */
-  public Match(boolean found, int matchX, int matchY, byte[] visualization) {
+  public Match(Rectangle match, byte[] visualization) {
     super();
-    this.found = found;
-    this.matchX = matchX;
-    this.matchY = matchY;
+    this.match = match;
     this.visualization = visualization;
   }
 
   @Override
   public boolean isFound() {
-    return found;
-  }
-
-  @Override
-  public void setFound(boolean found) {
-    this.found = found;
-  }
-
-  @Override
-  public int getX() {
-    return matchX;
-  }
-
-  @Override
-  public void setX(int matchX) {
-    this.matchX = matchX;
-  }
-
-  @Override
-  public int getY() {
-    return matchY;
-  }
-
-  @Override
-  public void setY(int matchY) {
-    this.matchY = matchY;
+    return match != null;
   }
 
   @Override
@@ -108,18 +66,10 @@ public class Match implements qa.justtestlah.stubs.Match {
    */
   public static Match fromOccurrenceMatchingResult(
       boolean found, OccurrenceMatchingResult result, double scalingFactor) {
-    if (!found) {
-      return new Match(false, 0, 0, null);
+    if (result == null) {
+      return new Match(null);
     }
-    return new Match(
-        true,
-        (int)
-            Math.round(
-                (result.getRect().getX() + result.getRect().getHeight() / 2.0) * scalingFactor),
-        (int)
-            Math.round(
-                (result.getRect().getY() + result.getRect().getWidth() / 2.0) * scalingFactor),
-        result.getVisualization());
+    return new Match(result.getRect(), result.getVisualization());
   }
 
   /**
@@ -131,5 +81,10 @@ public class Match implements qa.justtestlah.stubs.Match {
    */
   public static Match fromOccurrenceMatchingResult(boolean found, OccurrenceMatchingResult result) {
     return fromOccurrenceMatchingResult(found, result, 1.0);
+  }
+
+  @Override
+  public Rectangle getRect() {
+    return match;
   }
 }

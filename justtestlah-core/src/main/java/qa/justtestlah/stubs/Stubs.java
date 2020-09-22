@@ -1,6 +1,7 @@
 package qa.justtestlah.stubs;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -46,5 +47,11 @@ public class Stubs implements Applitools, Galen, TemplateMatcher, OCR {
   @Override
   public void setDriver(WebDriver driver) {
     LOG.warn("OCR requires justtestlah-visual.jar on the classpath.");
+  }
+
+  @Override
+  public String getText(WebElement element) {
+    throw new UnsupportedOperationException(
+        "OCR requires justtestlah-visual.jar on the classpath.");
   }
 }

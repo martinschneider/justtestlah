@@ -27,6 +27,7 @@ public class CucumberOptionsBuilder {
     setCucumberProperty(Constants.FILTER_TAGS_PROPERTY_NAME, buildTagsProperty(properties));
     setCucumberProperty(Constants.GLUE_PROPERTY_NAME, buildGlueProperty(properties));
     setCucumberProperty(Constants.PLUGIN_PROPERTY_NAME, buildPluginProperty(properties));
+    setCucumberProperty(Constants.PLUGIN_PUBLISH_ENABLED_PROPERTY_NAME, "true");
     setCucumberProperty(Constants.EXECUTION_STRICT_PROPERTY_NAME, "true");
   }
 
@@ -37,13 +38,6 @@ public class CucumberOptionsBuilder {
 
   private static String buildPluginProperty(PropertiesHolder properties) {
     StringBuilder pluginProperty = new StringBuilder(CucumberLoggingPlugin.class.getName());
-    pluginProperty.append(DELIMITER);
-    pluginProperty.append("html:report");
-    pluginProperty.append(DELIMITER);
-    pluginProperty.append("json:");
-    pluginProperty.append(
-        properties.getProperty(CUCUMBER_REPORT_DIRECTORY_KEY, DEFAULT_CUCUMBER_REPORT_DIRECTORY));
-    pluginProperty.append("/cucumber.json");
     return pluginProperty.toString();
   }
 
