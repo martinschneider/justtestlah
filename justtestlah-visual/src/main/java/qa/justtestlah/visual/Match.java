@@ -19,9 +19,7 @@ public class Match implements qa.justtestlah.stubs.Match {
   /**
    * Constructor.
    *
-   * @param found true, if a match has been detected
-   * @param matchX x coordinate of the center of the match
-   * @param matchY y coordinate of the center of the match
+   * @param match {@link Rectangle} representing the location and size of the match
    */
   public Match(Rectangle match) {
     super();
@@ -62,7 +60,7 @@ public class Match implements qa.justtestlah.stubs.Match {
    * @param result the {@link OccurrenceMatchingResult}
    * @param scalingFactor by how much has the image been scaled in regards to the original image (if
    *     a {@link Match} in regards to the scaled image is required this should be set to 1.0)
-   * @return {@link} Match
+   * @return {@link Match}
    */
   public static Match fromOccurrenceMatchingResult(
       boolean found, OccurrenceMatchingResult result, double scalingFactor) {
@@ -77,7 +75,7 @@ public class Match implements qa.justtestlah.stubs.Match {
    *
    * @param found has a match been found
    * @param result the {@link OccurrenceMatchingResult}
-   * @return {@link} Match
+   * @return {@link Match}
    */
   public static Match fromOccurrenceMatchingResult(boolean found, OccurrenceMatchingResult result) {
     return fromOccurrenceMatchingResult(found, result, 1.0);

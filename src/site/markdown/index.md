@@ -132,7 +132,7 @@ This will create a new directory (based on the `artifactId` you selected). Chang
 
 By default, the sample project will only include the core functionality of JustTestLah! You can add additional modules by passing any of the following arguments:
 ```bash
--Dapplitools=true -Dawsdevicefarm=true -Dbrowserstack=true -Dgalen=true -Dmobile=true -Dvisual=true
+-Dawsdevicefarm=true -Dbrowserstack=true -Dgalen=true -Dmobile=true -Dvisual=true
 ```
 
 ### Option 2: Manual setup using Maven
@@ -282,10 +282,6 @@ cucumber.report.directory=target/report/cucumber
 galen.enabled=false
 galen.inject.locators=true
 galen.report.directory=target/report/galen
-
-# Applitools
-eyes.enabled=false
-eyes.apiKey=
 
 # Template matching
 opencv.enabled=false
@@ -738,21 +734,7 @@ assertThat(googlePage.getLogoText()).isEqualTo("Google");
 
 ### Applitools
 
-Make sure `justtestlah-applitools-1.9-RC2.jar` is on your classpath:
-
-```xml
-<dependency>
-  <groupId>qa.justtestlah</groupId>
-  <artifactId>justtestlah-applitools</artifactId>
-  <version>1.9-RC2</version>
-</dependency>
-```
-
-There is a proof-of-concept integration of [Applitools](https://applitools.com). It can be enabled by setting `eyes.enabled=true` in `justtestlah.properties`. In addition a valid API key must be specified: `eyes.apiKey=...`.
-
-Checks can then be triggered by calling `checkWindow()` on any page object class (the initial run will create baseline images).
-
-Please note that Applitools is a paid service.
+[Applitools](https://applitools.com) support has been removed from the JTL core from version 1.9. That said, it is very easy to integrate Applitools using their [Java SDK](https://github.com/applitools/eyes.sdk.java4). Please note, that their [license excludes commercial use](https://github.com/applitools/eyes.sdk.java4/blob/develop/LICENSE). 
 
 ### Galen
 
@@ -821,7 +803,6 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 - [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
 - [Galen](http://galenframework.com), used for layout based testing
 - [Tesseract](https://github.com/tesseract-ocr/tesseract), used for Optical Charatcer Recognition (OCR)
-- [Applitools](https://applitools.com), used for visual regression testing
 
 ## Requirements and known-issues
 

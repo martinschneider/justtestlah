@@ -31,11 +31,14 @@ import qa.justtestlah.stubs.TemplateMatcher;
  * <p>This class provides methods to check whether a given image (template) is part of another one
  * (target). We use a simple (yet effective) way to detect the template image in various sizes by
  * scaling the target up and down to a minimum and maximum size.
+ *
+ * @deprecated Use {@link OpenCVTemplateMatcher} instead. For Appium, use the built-in image
+ *     locator.
  */
 @Component
 @Primary
 @ConditionalOnProperty(value = "opencv.mode", havingValue = "server")
-@Deprecated
+@Deprecated(forRemoval = true)
 public class AppiumTemplateMatcher implements qa.justtestlah.stubs.AppiumTemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(AppiumTemplateMatcher.class);

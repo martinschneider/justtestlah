@@ -28,7 +28,6 @@ import qa.justtestlah.locator.LocatorPlaceholders;
 import qa.justtestlah.log.LogLevel;
 import qa.justtestlah.log.TestLogWriter;
 import qa.justtestlah.stubs.AppiumTemplateMatcher;
-import qa.justtestlah.stubs.Applitools;
 import qa.justtestlah.stubs.Galen;
 import qa.justtestlah.stubs.Match;
 import qa.justtestlah.stubs.OCR;
@@ -49,8 +48,6 @@ public abstract class BasePage<T> extends Base {
   @Autowired private TemplateMatcher templateMatcher;
 
   @Autowired private LocatorPlaceholders globalPlaceholders;
-
-  @Autowired private Applitools applitools;
 
   @Autowired private Galen galen;
 
@@ -163,29 +160,6 @@ public abstract class BasePage<T> extends Base {
   }
 
   /**
-   * Performs visual checks using Applitools.
-   *
-   * @return this
-   */
-  @SuppressWarnings("unchecked")
-  private T checkWindow() {
-    if (configuration.isEyesEnabled()) {
-      logWriter.log(
-          LogLevel.INFO,
-          TestLogWriter.WEBDRIVER_INDENTATION,
-          "Performing visual checks on class {}",
-          this.getClass().getSimpleName());
-      applitools.checkWindow();
-    } else {
-      LOG.debug(
-          "Eyes disabled, skipping check on class {}. You can enable visual testing with "
-              + "Applitools Eyes by setting eyes.enabled = true in justtestlah.properties.",
-          this.getClass().getSimpleName());
-    }
-    return (T) this;
-  }
-
-  /**
    * Performs layout checks using Galen.
    *
    * @return this
@@ -226,7 +200,7 @@ public abstract class BasePage<T> extends Base {
    * Verifies, that all UI elements defined for the given page object using {@link ScreenIdentifier}
    * are displayed.
    *
-   * <p>Performs Galen and Applitools checks, if enabled.
+   * <p>Performs Galen checks, if enabled.
    *
    * @param timeout the timeout for identifying the first element. Note, that there is no timeout
    *     for any subsequent checks!
@@ -235,8 +209,6 @@ public abstract class BasePage<T> extends Base {
   @SuppressWarnings("unchecked")
   public T verify(int timeout) {
     boolean initialCheck = true;
-    // Applitools
-    checkWindow();
     // Galen
     checkLayout();
     Class<?> clazz = this.getClass();

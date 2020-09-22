@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 /**
  * Basic utility methods for image processing
  *
- * <p>This class is extended in justtestlah-visual {@linkplain} qa.justtestlah.visual.ImageUtils}.
+ * <p>This class is extended in justtestlah-visual qa.justtestlah.visual.ImageUtils.
  */
 @Component
 public class ImageUtils {
