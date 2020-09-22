@@ -227,3 +227,6 @@ $RECYCLE.BIN/
 **/build/**
 
 node_modules/
+
+.firebase/
+

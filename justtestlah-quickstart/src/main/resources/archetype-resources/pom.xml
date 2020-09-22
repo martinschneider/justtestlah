@@ -19,13 +19,6 @@
       <artifactId>justtestlah-core</artifactId>
       <version>${jtlVersion}</version>
     </dependency>
-    #if (${applitools} == 'true' || ${applitools} == 'yes' || ${applitools} == 'y')
-    <dependency>
-      <groupId>qa.justtestlah</groupId>
-      <artifactId>justtestlah-applitools</artifactId>
-      <version>${jtlVersion}</version>
-    </dependency>
-    #end
     #if (${awsdevicefarm} == 'true' || ${awsdevicefarm} == 'yes' || ${awsdevicefarm} == 'y')
     <dependency>
       <groupId>qa.justtestlah</groupId>

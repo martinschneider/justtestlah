@@ -17,14 +17,9 @@ import qa.justtestlah.locator.LocatorMap;
  * org.springframework.context.annotation.Primary}).
  */
 @Component
-public class Stubs implements Applitools, Galen, TemplateMatcher, OCR {
+public class Stubs implements Galen, TemplateMatcher, OCR {
 
   private Logger LOG = LoggerFactory.getLogger(Stubs.class);
-
-  public void checkWindow() {
-    throw new UnsupportedOperationException(
-        "Applitools requires justtestlah-applitools.jar on the classpath.");
-  }
 
   @Override
   public void checkLayout(String specPath, LocatorMap locators) {

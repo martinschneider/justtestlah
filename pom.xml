@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
   <name>JustTestLah!</name>
   <packaging>pom</packaging>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
@@ -56,7 +56,6 @@
     <module>justtestlah-awsdevicefarm</module>
     <module>justtestlah-browserstack</module>
     <module>justtestlah-quickstart</module>
-    <module>justtestlah-applitools</module>
     <module>justtestlah-galen</module>
     <module>justtestlah-visual</module>
   </modules>
@@ -95,7 +94,6 @@
     <wiremock.version>2.27.2</wiremock.version>
     <opencv.version>4.3.0-2</opencv.version>
     <tess4j.version>4.1.1</tess4j.version>
-    <applitools.version>3.178.0</applitools.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.7.0</junit.version>
     <junit.vintage.version>4.12</junit.vintage.version>
@@ -310,17 +308,6 @@
         <groupId>org.openpnp</groupId>
         <artifactId>opencv</artifactId>
         <version>${opencv.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.applitools</groupId>
-        <artifactId>eyes-selenium-java3</artifactId>
-        <version>${applitools.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.galenframework</groupId>
