@@ -57,7 +57,7 @@ mvn test
 ```
 
 ### justtestlah.properties
-The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but it is recommended to explicitly pass its path as a system property:
+The file `justtestlah.properties` holds all parameters required for a test run and is the only source of configuration which needs to be specified. It will be loaded from the classpath by default, but it is recommended to pass its path as a system property explicitly:
 
 ```bash
 mvn test -DjtlProps=/absolute/path/to/your/testabc.properties
@@ -85,7 +85,7 @@ Each run will execute tests for a single platform. Let's see how we can run the 
 
 ### Android demo
 
-To test a mobile app you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for the web test. The Stackoverflow APK file can be found [here](https://apkpure.com/stackoverflow/com.app.infytechnics.stackoverflow).
+To test a mobile app, you need to setup [Appium](https://appium.io) and [start an Appium server](http://appium.io/docs/en/about-appium/getting-started). Make sure there is at least one physical or virtual (Android emulator or iPhone simulator) device connected. Then simply execute the tests by setting `platform=android` in your JustTestLah! properties file. This is the only difference to the configuration for the web test. The Stackoverflow APK file can be found [here](https://apkpure.com/stackoverflow/com.app.infytechnics.stackoverflow).
 
 ### iOS demo
 
@@ -142,7 +142,7 @@ Add the following to your `pom.xml`:
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
@@ -150,17 +150,17 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```yaml
-compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.9-RC2'
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.9-RC3'
 ```
 
 ### Option 4: Manual setup
-Add `justtestlah-core-1.9-RC2.jar` to your classpath.
+Add `justtestlah-core-1.9-RC3.jar` to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
 
 - Page objects are a representation of a UI element (a page, a dialog, a screen etc.).
-- Step definitions use page objects to define the actions of a test.  They form the building blocks to write
+- Step definitions use page objects to define the actions of a test. They form the building blocks to write
 - feature files which represent the test scenarios.
 
 Steps and page objects are designed to be highly re-usable.
@@ -245,7 +245,7 @@ As long as the page object class extends `qa.justtestlah.base.BasePage` JustTest
 
 ### Platform-(in)dependent page objects
 
-[Spring profiles](https://www.baeldung.com/spring-profiles) are used to identify for which platforms (Android, iOS, Web) a page object shoulde be used. Simply annotate the page object class with `@Profile` and pass an array of platforms as its argument:
+[Spring profiles](https://www.baeldung.com/spring-profiles) are used to identify for which platforms (Android, iOS, Web) a page object should be used. Simply annotate the page object class with `@Profile` and pass an array of platforms as its argument:
 
 ```java
 @Component
@@ -253,7 +253,7 @@ As long as the page object class extends `qa.justtestlah.base.BasePage` JustTest
 public class LoginPage extends BasePage<LoginPage>
 ```
 
-Ideally, the same Java object can represent a page for all platforms. This is the case when the only differences are the UI locators (as their keys are platform-independent; their platform-dependent values are only resolved at runtime).
+Ideally, the same Java object can represent a page for all platforms. This is the case when the only differences are the UI locators (the locator keys are platform-independent; their platform-dependent values are only resolved at runtime).
 
 When the above approach is not sufficient, you can use different page object classes for different platforms. In this case, it can be useful to have a base class containing common methods and subclass it for any platform-specific changes.
 
@@ -326,17 +326,17 @@ browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
-browserstack.appium_version=1.9-RC2.0
+browserstack.appium_version=1.9-RC3.0
 browserstack.acceptSslCerts=true
 
 # AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
 # The arn of your AWS Devicefarm project (mandatory)
 aws.projectArn=
 
-# App package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+# App package to use. If this value is empty, it will be created and uploaded to AWS Devicefarm before the test execution
 aws.appPackageArn=
 
-# Test package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+# Test package to use. If this value is empty, it will be created and uploaded to AWS Devicefarm before the test execution
 aws.testPackageArn=
 
 # Optional extra data
@@ -420,7 +420,7 @@ If omitted the default type of locators is `css`.
 Locators can include both dynamic and static placeholders which will be replaced by variables passed to the `$` method.
 
 #### Static placeholders
-You can think of static placeholders as variables. They can be defined in a file called `placeholder.properties` in the root of the pages package (specified as `pages.package` in `justtestlah.properties`). This is the same folder the locator YAML files are placed in.
+You can think of static placeholders as variables. They can be defined in a file called `placeholder.properties` in the root of the `pages` package (specified as `pages.package` in `justtestlah.properties`). This is the same folder the locator YAML files are placed in.
 
 This file continues key/value pairs in the following format:
 
@@ -501,14 +501,21 @@ You can then load test data in your tests as easy as this:
 
 ```java
 User defaultUser = testdata(User.class);
+```
+
+```java
 User validUser = testdata(User.class, "validUser");
+```
+
+```java
 User invalidUser = testdata(User.class, "userWithInvalidPassword");
 ```
 
 The second parameter points to the name of the test entity which is the filename of the YAML file. If ommited, it defaults to `default`. In the above example, you would have three YAML files: `default.yaml`, `validUser.yaml` and `userWithInvalidPassword`.
 
 There are three configuration values for this feature:
-```testdata.enabled=
+```
+testdata.enabled=
 model.package=
 testdata.filter=
 ```
@@ -523,7 +530,7 @@ Please note, that there is an additional check for the string `testdata` in the 
 
 ## Test reports
 
-After the run, [Cluecumber](https://github.com/trivago/cluecumber-report-plugin) test results will be available under `target/report/cucumber`.
+JustTestLah! uses [Cucumber's online reporting feature](https://reports.cucumber.io/).
 
 ## Cloud service integrations
 
@@ -549,16 +556,16 @@ browserstack.geoLocation=SG
 browserstack.networkProfile=
 browserstack.customNetwork=
 browserstack.timezone=SG
-browserstack.appium_version=1.9-RC2.0
+browserstack.appium_version=1.9-RC3.0
 ```
 
-Make sure `justtestlah-browserstack-1.9-RC2.jar` is on your classpath:
+Make sure `justtestlah-browserstack-1.9-RC3.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
@@ -574,10 +581,10 @@ cloudprovider=aws
 # The arn of your AWS Devicefarm project (mandatory)
 aws.projectArn=
 
-# App package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+# App package to use. If this value is empty, it will be created and uploaded to AWS Devicefarm before the test execution
 aws.appPackageArn=
 
-# Test package to use. If this value is empty it will be created and uploaded to AWS Devicefarm before the test execution
+# Test package to use. If this value is empty, it will be created and uploaded to AWS Devicefarm before the test execution
 #aws.testPackageArn=
 
 # Optional extra data
@@ -615,13 +622,13 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm-1.9-RC2.jar` is on your classpath:
+Make sure `justtestlah-awsdevicefarm-1.9-RC3.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
@@ -630,13 +637,13 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 Please note that AWS Devicefarm is a paid service.
 
 ## Visual and layout testing
-Make sure `justtestlah-visual-1.9-RC2.jar` is on your classpath:
+Make sure `justtestlah-visual-1.9-RC3.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
@@ -645,29 +652,16 @@ Make sure `justtestlah-visual-1.9-RC2.jar` is on your classpath:
 JustTestLah! allows locating elements using a template image:
 
 ```java
-boolean isImagePresent = homePage.hasImage("questionIcon.png");
-
-Match image = homePage.findImage("questionIcon.png");
+WebElement ele = homePage.findImage("questionIcon.png");
+ele.click();
 ```
 
-The images are expected under `/src/test/resources/images`.
+The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached. This works sufficiently well in practice, but improvements would still be welcome. Please contribute!
 
-The `Match` object contains the x and y coordinate of the matched image (more precisely, the center of the rectangle representing the match). These can be used to interact with an element located this way. For example, we can tap on an element like this:
-
-```java
-new TouchAction((PerformsTouchActions) WebDriverRunner.getWebDriver())
-.tap(PointOption.point(questionIcon.getX(), questionIcon.getY()))
-.perform();
-```
-
-Future versions of JustTestLah! will include wrappers to perform these actions more conveniently.
-
-The `TemplateMatcher` is scale-invariant (to some extent). The algorithm used to achieve this scales the target image (a screenshot of the device) up and down until either a match is found or a minimum (320) or maximum (3200) image width is reached.
-
-Note, that the closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
+The closer the size of the template matches the size of the image on the screen the faster and more accurate the matching will be.
 
 #### Matching threshold
-Both the `hasImage` and `findImage` method take an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
+The`findImage` method has an optional `threshold` parameter which can be used to define the accuracy of a match. The possible values range from 0 (no match) to 1 (pixel-perfect match). The default is `0.9`.
 
 #### Client and server-side integration
 There are two modes to use template matching which can be configured in `justtestlah.properties`:
@@ -676,19 +670,17 @@ There are two modes to use template matching which can be configured in `justtes
 
 `opencv.mode=server` utilises the [image matching feature of Appium](https://appium.readthedocs.io/en/latest/en/writing-running-appium/image-comparison). This requires OpenCV to be installed on the machine which runs the Appium server. This mode is deprecated, please use Appium's `findByImage` functionality directly or switch to the client-mode.
 
-Note, that not all cloud providers support this.
-
 ### OCR
 
 JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
 
-This requires `justtestlah-visual-1.9-RC2.jar` on the classpath:
+This requires `justtestlah-visual-1.9-RC3.jar` on the classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
@@ -738,19 +730,19 @@ assertThat(googlePage.getLogoText()).isEqualTo("Google");
 
 ### Galen
 
-Make sure `justtestlah-galen-1.9-RC2.jar` is on your classpath:
+Make sure `justtestlah-galen-1.9-RC3.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-galen</artifactId>
-  <version>1.9-RC2</version>
+  <version>1.9-RC3</version>
 </dependency>
 ```
 
-JustTestLah! includes a proof-of-concept integration of the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
+JustTestLah! integrates the [Galen framework](https://galenframework.com). It can be enabled by setting `galen.enabled=true` in `justtestlah.properties`.
 
-Similar to properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
+Similar to the properties-file holding the locator information, there is an (optional) spec file for each page object (in the same package as the Java class under src/main/resources).
 
 Checks can be triggered by calling `checkLayout()` on any page object class. An HTML report is generated in the directory defined in `galen.report.directory` in `justtestlah.properties` (the default is `target/galen-reports/`).
 
@@ -767,7 +759,7 @@ Checks can be triggered by calling `checkLayout()` on any page object class. An 
     visible
 ```
 
-Note, that you do not need to specify the @objects section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key.
+Note, that you do not need to specify the `@objects` section in the Galen spec. This will be auto-generated during runtime based on the page object YAML file. You can refer to any UI element using its key.
 
 See the [Galen documentation](https://galenframework.com/docs/reference-galen-spec-language-guide) for more examples.
 
@@ -791,7 +783,7 @@ Both commands will build JustTestLah! and install it into your local Maven repos
 
 ## Used libraries
 
-JustTestLah! makes use of a variety of frameworks to make writing and executing tests as simple and enjoyable as possible.
+JustTestLah! makes use of a variety of frameworks to make writing and executing tests as enjoyable and straightforward as possible.
 
 - [Selenium](https://www.seleniumhq.org), the main test framework used by JustTestLah!
 - [Appium](https://appium.io), an extension of Selenium for native mobile app testing
@@ -800,7 +792,7 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 - [Selenide](https://selenide.org), a convenience wrapper around Selenium
 - [AssertJ](https://joel-costigliola.github.io/assertj), fluent assertions for unit tests
 - [OpenCV](https://opencv.org), used for image comparison
-- [Spring](https://spring.io), IoC container for some added "magic" behind the scenes
+- [Spring](https://spring.io), IoC container for [dependency injection](https://medium.com/faun/leverage-springs-dependency-injection-for-ui-automation-e32d1d82f738) and some added "magic" behind the scenes
 - [Galen](http://galenframework.com), used for layout based testing
 - [Tesseract](https://github.com/tesseract-ocr/tesseract), used for Optical Charatcer Recognition (OCR)
 

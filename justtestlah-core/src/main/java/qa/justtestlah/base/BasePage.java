@@ -103,6 +103,12 @@ public abstract class BasePage<T> extends Base {
     return findImage(imageName, threshold).isDisplayed();
   }
 
+  /**
+   * Finds the given image within the current screen using the default threshold.
+   *
+   * @param imageName image to check for
+   * @return {@link WebElement}
+   */
   public WebElement findImage(String imageName) {
     return findImage(imageName, 0.9);
   }
@@ -112,7 +118,7 @@ public abstract class BasePage<T> extends Base {
    *
    * @param imageName image to check for
    * @param threshold matching threshold
-   * @return {@link Match}
+   * @return {@link WebElement}
    */
   public WebElement findImage(String imageName, double threshold) {
     WebDriver driver = WebDriverRunner.getWebDriver();
