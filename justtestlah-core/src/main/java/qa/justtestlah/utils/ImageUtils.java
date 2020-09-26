@@ -1,6 +1,7 @@
 package qa.justtestlah.utils;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -33,7 +34,8 @@ public class ImageUtils {
    * @return the fully-qualified path to the specified image
    */
   public static String getFullPath(String imageName) {
-    return ImageUtils.class.getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName).getFile();
+    URL url = ImageUtils.class.getClassLoader().getResource(IMAGE_FOLDER + "/" + imageName);
+    return (url != null) ? url.getFile() : null;
   }
 
   /**

@@ -142,7 +142,7 @@ Add the following to your `pom.xml`:
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-core</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 
@@ -150,11 +150,11 @@ Add the following to your `pom.xml`:
 Add the following to your `build.gradle`:
 
 ```yaml
-compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.9-RC3'
+compile group: 'qa.justtestlah', name: 'justtestlah-core', version: '1.9-RC4'
 ```
 
 ### Option 4: Manual setup
-Add `justtestlah-core-1.9-RC3.jar` to your classpath.
+Add `justtestlah-core-1.9-RC4.jar` to your classpath.
 
 ## Page objects, steps and feature files
 There are three main ingredients for tests in JustTestLah!:
@@ -326,7 +326,7 @@ browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
-browserstack.appium_version=1.9-RC3.0
+browserstack.appium_version=1.9-RC4.0
 browserstack.acceptSslCerts=true
 
 # AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
@@ -556,16 +556,16 @@ browserstack.geoLocation=SG
 browserstack.networkProfile=
 browserstack.customNetwork=
 browserstack.timezone=SG
-browserstack.appium_version=1.9-RC3.0
+browserstack.appium_version=1.9-RC4.0
 ```
 
-Make sure `justtestlah-browserstack-1.9-RC3.jar` is on your classpath:
+Make sure `justtestlah-browserstack-1.9-RC4.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-browserstack</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 
@@ -622,13 +622,13 @@ aws.jobTimeOut=
 aws.skipAppResign=
 ```
 
-Make sure `justtestlah-awsdevicefarm-1.9-RC3.jar` is on your classpath:
+Make sure `justtestlah-awsdevicefarm-1.9-RC4.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 
@@ -637,13 +637,13 @@ You can refer to [this article](https://medium.com/@mart.schneider/mobile-test-a
 Please note that AWS Devicefarm is a paid service.
 
 ## Visual and layout testing
-Make sure `justtestlah-visual-1.9-RC3.jar` is on your classpath:
+Make sure `justtestlah-visual-1.9-RC4.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 
@@ -674,13 +674,13 @@ There are two modes to use template matching which can be configured in `justtes
 
 JustTestLah! integrates [Tesseract](https://github.com/tesseract-ocr/tesseract) to perform [Optical character recognition](https://en.wikipedia.org/wiki/Optical_character_recognition).
 
-This requires `justtestlah-visual-1.9-RC3.jar` on the classpath:
+This requires `justtestlah-visual-1.9-RC4.jar` on the classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-visual</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 
@@ -730,13 +730,13 @@ assertThat(googlePage.getLogoText()).isEqualTo("Google");
 
 ### Galen
 
-Make sure `justtestlah-galen-1.9-RC3.jar` is on your classpath:
+Make sure `justtestlah-galen-1.9-RC4.jar` is on your classpath:
 
 ```xml
 <dependency>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-galen</artifactId>
-  <version>1.9-RC3</version>
+  <version>1.9-RC4</version>
 </dependency>
 ```
 

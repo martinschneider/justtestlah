@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,9 @@ public class OCR implements qa.justtestlah.stubs.OCR {
 
   private TakesScreenshot driver;
   private Tesseract ocr;
+
+  @Value("${tesseract.datapath:}")
+  private String dataPath;
 
   @Autowired
   public OCR(Tesseract ocr) {
@@ -47,6 +51,10 @@ public class OCR implements qa.justtestlah.stubs.OCR {
   }
 
   private String getText(File file) {
+    if (dataPath.length() == 0) {
+      throw new RuntimeException(
+          "tesseract.datapath not set. Please set this property in justtestlah.properties.");
+    }
     LOG.info("Peforming OCR on file {}", file);
     try {
       String text = ocr.doOCR(file).trim();

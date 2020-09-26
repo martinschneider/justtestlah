@@ -29,7 +29,6 @@ import qa.justtestlah.log.LogLevel;
 import qa.justtestlah.log.TestLogWriter;
 import qa.justtestlah.stubs.AppiumTemplateMatcher;
 import qa.justtestlah.stubs.Galen;
-import qa.justtestlah.stubs.Match;
 import qa.justtestlah.stubs.OCR;
 import qa.justtestlah.stubs.TemplateMatcher;
 import qa.justtestlah.utils.ImageUtils;
@@ -133,6 +132,12 @@ public abstract class BasePage<T> extends Base {
         ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
       }
       String path = ImageUtils.getFullPath(imageName);
+      if (path == null) {
+        throw new RuntimeException(
+            String.format(
+                "Template image %s not found on classpath. Please make sure it is located in the images folder",
+                imageName));
+      }
       return new ImageWebElement(
           driver,
           templateMatcher.match(screenshotFile.getAbsolutePath(), path, threshold).getRect(),

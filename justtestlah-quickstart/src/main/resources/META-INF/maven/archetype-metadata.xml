@@ -25,7 +25,7 @@
 	</fileSets>
 	<requiredProperties>
 		<requiredProperty key="jtlVersion">
-			<defaultValue>1.9-RC2</defaultValue>
+			<defaultValue>1.9-RC4</defaultValue>
 		</requiredProperty>
 		<requiredProperty key="awsdevicefarm">
 			<defaultValue>false</defaultValue>
