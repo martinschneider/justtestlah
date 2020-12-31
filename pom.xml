@@ -96,7 +96,7 @@
     <tess4j.version>4.1.1</tess4j.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.7.0</junit.version>
-    <junit.vintage.version>4.12</junit.vintage.version>
+    <junit.vintage.version>4.13.1</junit.vintage.version>
     <slf4j.version>2.0.0-alpha1</slf4j.version>
     <logback.version>1.3.0-alpha4</logback.version>
     <assertj.version>3.17.2</assertj.version>
