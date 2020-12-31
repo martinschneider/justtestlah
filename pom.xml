@@ -89,7 +89,7 @@
     <spring.boot.version>2.3.4.RELEASE</spring.boot.version>
     <appium.version>7.3.0</appium.version>
     <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.14.2</selenide.version>
+    <selenide.version>5.17.2</selenide.version>
     <cucumber.version>6.9.1</cucumber.version>
     <wiremock.version>2.27.2</wiremock.version>
     <opencv.version>4.3.0-3</opencv.version>
