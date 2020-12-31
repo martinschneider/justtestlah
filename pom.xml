@@ -92,7 +92,7 @@
     <selenide.version>5.14.2</selenide.version>
     <cucumber.version>6.9.1</cucumber.version>
     <wiremock.version>2.27.2</wiremock.version>
-    <opencv.version>4.3.0-2</opencv.version>
+    <opencv.version>4.3.0-3</opencv.version>
     <tess4j.version>4.1.1</tess4j.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.7.0</junit.version>
