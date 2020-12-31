@@ -8,9 +8,13 @@ import nu.pattern.OpenCV;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.opencv.core.Core;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 
 public class TemplateMatcherTest {
+
+  private static final Logger LOG = LoggerFactory.getLogger(TemplateMatcherTest.class);
 
   private static OpenCVTemplateMatcher target = new OpenCVTemplateMatcher();
 
@@ -19,7 +23,9 @@ public class TemplateMatcherTest {
   public static void init() {
     OpenCV.loadShared();
     OpenCV.loadLocally();
-    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    if (javaVersionLessThan12()) {
+      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    }
     JustTestLahConfiguration configuration = mock(JustTestLahConfiguration.class);
     when(configuration.isOpenCvEnabled()).thenReturn(true);
     target.setConfiguration(configuration);
@@ -99,5 +105,17 @@ public class TemplateMatcherTest {
 
   private String getPath(String fileName) {
     return this.getClass().getClassLoader().getResource("images/" + fileName).getFile();
+  }
+
+  private static boolean javaVersionLessThan12() {
+    String version = System.getProperty("java.version");
+    LOG.info("Java version is {}", version);
+    if (version.startsWith("12") || version.startsWith("13") || version.startsWith("14")) {
+      LOG.warn(
+          "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/44). Skipping tests!",
+          version);
+      return false;
+    }
+    return true;
   }
 }
