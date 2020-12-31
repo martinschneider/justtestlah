@@ -22,7 +22,6 @@ public class TemplateMatcherTest {
   /** Initialise mocks and configuration. */
   @BeforeAll
   public static void init() {
-    assumeTrue(javaVersionLessThan12());
     OpenCV.loadShared();
     OpenCV.loadLocally();
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -105,17 +104,5 @@ public class TemplateMatcherTest {
 
   private String getPath(String fileName) {
     return this.getClass().getClassLoader().getResource("images/" + fileName).getFile();
-  }
-
-  private static boolean javaVersionLessThan12() {
-    String version = System.getProperty("java.version");
-    LOG.info("Java version is {}", version);
-    if (version.startsWith("12") || version.startsWith("13") || version.startsWith("14")) {
-      LOG.warn(
-          "OpenCV is not compatible with Java {} (https://github.com/openpnp/opencv/issues/44). Skipping tests!",
-          version);
-      return false;
-    }
-    return true;
   }
 }
