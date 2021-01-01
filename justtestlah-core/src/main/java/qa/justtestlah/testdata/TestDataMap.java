@@ -1,20 +1,20 @@
 package qa.justtestlah.testdata;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 
 /**
  * Container to hold test data.
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * <p>Test data is loaded from YAML files on the classpath which match the specified ant pattern.
  */
 @Component
-public class TestDataMap {
+public class TestDataMap implements InitializingBean {
 
   private static final Logger LOG = LoggerFactory.getLogger(TestDataMap.class);
 
@@ -47,12 +47,16 @@ public class TestDataMap {
    */
   private Map<Class<?>, Map<String, Object>> testData = new HashMap<>();
 
+  @Override
+  public void afterPropertiesSet() throws IOException {
+    initializeTestDataMap();
+  }
+  
   /**
    * Initialize the map.
    *
    * @throws IOException {@link IOException} if a test data resource cannot be processed
    */
-  @PostConstruct
   public void initializeTestDataMap() throws IOException {
     if (testDataEnabled) {
       LOG.info("Initialising test data map");

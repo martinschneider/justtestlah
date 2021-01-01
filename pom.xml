@@ -146,7 +146,7 @@
     <aopalliance.version>3.0.1</aopalliance.version>
     <jackson.version>2.12.0</jackson.version>
     <guava.version>30.1-jre</guava.version>
-    <jakarta.version>1.3.5</jakarta.version>
+    <jakarta.version>2.0.0</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
     <aspectj.version>1.9.6</aspectj.version>
 
