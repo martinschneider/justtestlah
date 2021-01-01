@@ -143,7 +143,7 @@
     <fmt.version>2.10</fmt.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.11.930</aws.sdk.version>
-    <aopalliance.version>3.0.0-M2</aopalliance.version>
+    <aopalliance.version>3.0.1</aopalliance.version>
     <jackson.version>2.12.0</jackson.version>
     <guava.version>29.0-jre</guava.version>
     <jakarta.version>1.3.5</jakarta.version>
