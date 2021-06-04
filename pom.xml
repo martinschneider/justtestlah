@@ -87,10 +87,10 @@
     <!-- Version properties -->
     <spring.version>5.3.7</spring.version>
     <spring.boot.version>2.5.0</spring.boot.version>
-    <appium.version>7.4.1</appium.version>
+    <appium.version>7.5.1</appium.version>
     <selenium.version>3.141.59</selenium.version>
     <selenide.version>5.19.0</selenide.version>
-    <cucumber.version>6.10.0</cucumber.version>
+    <cucumber.version>6.10.4</cucumber.version>
     <wiremock.version>2.27.2</wiremock.version>
     <opencv.version>4.5.1-2</opencv.version>
     <tess4j.version>4.5.4</tess4j.version>
@@ -116,7 +116,7 @@
     <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
     <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
-    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
+    <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
     <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -133,13 +133,13 @@
     <dependency.check.maven.plugin.version>6.2.0</dependency.check.maven.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M5</maven.surefire.report.plugin.version>
     <maven.invoker.version>3.1.0</maven.invoker.version>
-    <maven.project.info.reports.plugin>3.1.1</maven.project.info.reports.plugin>
+    <maven.project.info.reports.plugin>3.1.2</maven.project.info.reports.plugin>
     <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
     <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <wagon.ssh.version>3.4.3</wagon.ssh.version>
     <checkstyle.version>8.43</checkstyle.version>
-    <classgraph.version>4.8.102</classgraph.version>
+    <classgraph.version>4.8.107</classgraph.version>
     <fmt.version>2.10</fmt.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.11.1033</aws.sdk.version>
