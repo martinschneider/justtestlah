@@ -1,5 +1,7 @@
 package qa.justtestlah.galen.hooks;
 
+import com.galenframework.reports.HtmlReportBuilder;
+import io.cucumber.java.Scenario;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -9,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.galenframework.reports.HtmlReportBuilder;
-import io.cucumber.java.Scenario;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.galen.GalenTestInfoContainer;
@@ -35,7 +35,7 @@ public class GalenHooks extends AbstractCucumberHook implements InitializingBean
   public void afterPropertiesSet() {
     hooksRegister.addHooks(this);
   }
-  
+
   /**
    * Generate Galen reports.
    *

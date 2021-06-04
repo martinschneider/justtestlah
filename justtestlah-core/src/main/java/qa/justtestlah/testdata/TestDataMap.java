@@ -1,5 +1,8 @@
 package qa.justtestlah.testdata;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
 
 /**
  * Container to hold test data.
@@ -51,7 +51,7 @@ public class TestDataMap implements InitializingBean {
   public void afterPropertiesSet() throws IOException {
     initializeTestDataMap();
   }
-  
+
   /**
    * Initialize the map.
    *
