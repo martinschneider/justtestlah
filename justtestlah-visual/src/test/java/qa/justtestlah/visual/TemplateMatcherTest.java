@@ -3,10 +3,11 @@ package qa.justtestlah.visual;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import nu.pattern.OpenCV;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.opencv.core.Core;
-import nu.pattern.OpenCV;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 
 public class TemplateMatcherTest {

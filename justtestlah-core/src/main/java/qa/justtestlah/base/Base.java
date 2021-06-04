@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContextAware;
  * <p>We inject all page objects. This way it is not necessary to annotate them with {@link
  * org.springframework.beans.factory.annotation.Autowired}.
  */
-public class Base implements ApplicationContextAware, InitializingBean{
+public class Base implements ApplicationContextAware, InitializingBean {
 
   private static final Logger LOG = LoggerFactory.getLogger(Base.class);
   private ApplicationContext applicationContext;

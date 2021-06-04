@@ -1,6 +1,14 @@
 package qa.justtestlah.base;
 
 import static com.codeborne.selenide.Condition.appear;
+
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.ex.ElementNotFound;
+import io.appium.java_client.HasSettings;
+import io.appium.java_client.Setting;
 import java.io.File;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.OutputType;
@@ -11,13 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.ex.ElementNotFound;
-import io.appium.java_client.HasSettings;
-import io.appium.java_client.Setting;
 import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
 import qa.justtestlah.exception.ScreenVerificationException;
@@ -33,7 +34,7 @@ import qa.justtestlah.stubs.TemplateMatcher;
 import qa.justtestlah.utils.ImageUtils;
 
 /** Base class for page objects. */
-public abstract class BasePage<T> extends Base implements InitializingBean       {
+public abstract class BasePage<T> extends Base implements InitializingBean {
   protected static final Logger LOG = LoggerFactory.getLogger(BasePage.class);
   protected static final Logger TESTLOG =
       LoggerFactory.getLogger(TestLogWriter.TESTLOG_LOGGER_NAME);
@@ -154,7 +155,7 @@ public abstract class BasePage<T> extends Base implements InitializingBean      
   public void afterPropertiesSet() {
     initializeLocatorMap();
   }
-  
+
   /** Initialize the {@link LocatorMap}. */
   public void initializeLocatorMap() {
     Class<?> parent = this.getClass();
