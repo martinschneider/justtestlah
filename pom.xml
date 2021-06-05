@@ -669,7 +669,8 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
+	<configuration>
+	  <detectJavaApiLink>false</detectJavaApiLink>
           <additionalOptions>-html5</additionalOptions>
         </configuration>
         <executions>
