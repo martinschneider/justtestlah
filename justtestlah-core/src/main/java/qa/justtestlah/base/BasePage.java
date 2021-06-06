@@ -10,6 +10,7 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import io.appium.java_client.HasSettings;
 import io.appium.java_client.Setting;
 import java.io.File;
+import java.time.Duration;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -217,8 +218,8 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
    *
    * <p>Performs Galen checks, if enabled.
    *
-   * @param timeout the timeout for identifying the first element. Note, that there is no timeout
-   *     for any subsequent checks!
+   * @param timeout the timeout in milliseconds for identifying the first element. Note, that there
+   *     is no timeout for any subsequent checks!
    * @return this page object
    */
   @SuppressWarnings("unchecked")
@@ -241,9 +242,9 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
           try {
             // only use the timeout for the first check
             if (initialCheck) {
-              $(identifier).waitUntil(appear, timeout).isDisplayed();
+              $(identifier).shouldBe(appear, Duration.ofMillis(timeout)).isDisplayed();
             } else {
-              $(identifier).waitUntil(appear, 0).isDisplayed();
+              $(identifier).shouldBe(appear, Duration.ZERO).isDisplayed();
             }
             initialCheck = false;
           } catch (ElementNotFound exception) {

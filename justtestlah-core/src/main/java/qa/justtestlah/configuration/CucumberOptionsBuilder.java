@@ -13,9 +13,7 @@ public class CucumberOptionsBuilder {
 
   private static final String PLATFORM_KEY = "platform";
   private static final String FEATURES_DIRECTORY_KEY = "features.directory";
-  private static final String CUCUMBER_REPORT_DIRECTORY_KEY = "cucumber.report.directory";
   private static final String JUSTTESTLAH_SPRING_CONTEXT_KEY = "justtestlah.use.springcontext";
-  private static final String DEFAULT_CUCUMBER_REPORT_DIRECTORY = "target/report/cucumber";
   private static final String DEFAULT_PLATFORM = "web";
   private static final String DELIMITER = ",";
   private static final String TAGS_KEY = "tags";

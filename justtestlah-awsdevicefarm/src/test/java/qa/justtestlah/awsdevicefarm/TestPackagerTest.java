@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.apache.maven.shared.invoker.PrintStreamHandler;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,12 +27,23 @@ public class TestPackagerTest {
 
   @Mock private PropertiesHolder properties;
 
+  private AutoCloseable mocks;
+
+  @BeforeEach
+  public void setup() {
+    mocks = MockitoAnnotations.openMocks(this);
+  }
+
+  @AfterEach
+  public void finish() throws Exception {
+    mocks.close();
+  }
+
   @Test
   public void testMavenPackaging()
       throws MavenInvocationException, MalformedURLException, IOException,
           ReflectiveOperationException {
     String currentPath = Paths.get("").toFile().getAbsolutePath();
-    MockitoAnnotations.initMocks(this);
     when(properties.getProperty("aws.demo.path")).thenReturn(currentPath);
     when(properties.getProperty("aws.testpackage.name")).thenReturn("justtestlah-awsdevicefarm");
     ByteArrayOutputStream logOutput = new ByteArrayOutputStream();

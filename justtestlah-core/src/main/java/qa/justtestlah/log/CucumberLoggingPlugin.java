@@ -28,6 +28,9 @@ public class CucumberLoggingPlugin implements ConcurrentEventListener {
                   "Scenario: {} ({}:{})",
                   testCase.getName(),
                   testCase.getUri(),
+                  // TODO: getLine() has been deprecated. Once this gets removed from Cucumber, we
+                  // will
+                  // simply drop it from the log too
                   testCase.getLine());
         }
       };
@@ -66,6 +69,10 @@ public class CucumberLoggingPlugin implements ConcurrentEventListener {
                     event.getTestCase().getName(),
                     result.getDuration().toSeconds());
           } else {
+            String errorMsg = error.getMessage();
+            if (errorMsg != null) {
+              errorMsg = errorMsg.replaceAll("[\\t\\n\\r]+", " ");
+            }
             SpringContext.getBean(TestLogWriter.class)
                 .log(
                     LogLevel.INFO,
@@ -74,7 +81,7 @@ public class CucumberLoggingPlugin implements ConcurrentEventListener {
                     result.getStatus(),
                     event.getTestCase().getName(),
                     result.getDuration().toSeconds(),
-                    error.getMessage().replaceAll("[\\t\\n\\r]+", " "));
+                    errorMsg);
           }
         }
       };
