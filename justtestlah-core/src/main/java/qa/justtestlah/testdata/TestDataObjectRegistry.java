@@ -13,7 +13,7 @@ public class TestDataObjectRegistry {
 
   private static final Logger LOG = LoggerFactory.getLogger(TestDataObjectRegistry.class);
 
-  private volatile BiMap<String, Class<?>> registry = Maps.synchronizedBiMap(HashBiMap.create());
+  private BiMap<String, Class<?>> registry = Maps.synchronizedBiMap(HashBiMap.create());
 
   public void register(Class<?> type, String name) {
     // keys must be unique in both directions

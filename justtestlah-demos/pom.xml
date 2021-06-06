@@ -105,10 +105,6 @@
         <configuration>
           <parallel>methods</parallel>
           <useUnlimitedThreads>true</useUnlimitedThreads>
-          <includes>
-            <include>**/*CucumberTest.java</include>
-            <include>**/*TestRunner.java</include>
-          </includes>
         </configuration>
       </plugin>
       <plugin>
