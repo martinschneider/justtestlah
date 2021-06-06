@@ -37,7 +37,7 @@ public class TestLogWriter {
    *        </pre>
    *     in the log message)
    */
-  public void log(int logLevel, int indent, String message, Object... params) {
+  public synchronized void log(int logLevel, int indent, String message, Object... params) {
     switch (logLevel) {
       case LogLevel.OFF:
         break;
@@ -84,7 +84,7 @@ public class TestLogWriter {
 
   // indent the log message based on the indent-level
   private String indentMessage(int level, String message) {
-    StringBuilder strBuilder = new StringBuilder();
+    StringBuilder strBuilder = new StringBuilder(Thread.currentThread().getId() + " ");
     for (int i = 0; i < level; i++) {
       if (i < LOG_PREFIX.length) {
         strBuilder.append(LOG_PREFIX[i]);

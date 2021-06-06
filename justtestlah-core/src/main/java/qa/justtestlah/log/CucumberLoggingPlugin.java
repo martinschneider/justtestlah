@@ -66,6 +66,10 @@ public class CucumberLoggingPlugin implements ConcurrentEventListener {
                     event.getTestCase().getName(),
                     result.getDuration().toSeconds());
           } else {
+            String errorMsg = error.getMessage();
+            if (errorMsg != null) {
+              errorMsg = errorMsg.replaceAll("[\\t\\n\\r]+", " ");
+            }
             SpringContext.getBean(TestLogWriter.class)
                 .log(
                     LogLevel.INFO,
@@ -74,7 +78,7 @@ public class CucumberLoggingPlugin implements ConcurrentEventListener {
                     result.getStatus(),
                     event.getTestCase().getName(),
                     result.getDuration().toSeconds(),
-                    error.getMessage().replaceAll("[\\t\\n\\r]+", " "));
+                    errorMsg);
           }
         }
       };

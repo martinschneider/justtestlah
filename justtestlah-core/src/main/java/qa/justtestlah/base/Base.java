@@ -23,13 +23,14 @@ public class Base implements ApplicationContextAware, InitializingBean {
   public void afterPropertiesSet() {
     initPages();
   }
+
   /**
-   * inject the page objects (without using @org.springframework.beans.factory.annotation.Autowired
-   * annotations)
+   * Recursively inject the page objects (without
+   * using @org.springframework.beans.factory.annotation.Autowired annotations)
    */
   @SuppressWarnings("squid:S3011")
-  public void initPages() {
-    LOG.info("Initializing page objects for class {}", this.getClass());
+  public synchronized void initPages() {
+    LOG.info("Initializing page objects for class {}", this);
     Class<?> clazz = this.getClass();
     while (clazz != Base.class) {
       for (Field field : clazz.getDeclaredFields()) {
@@ -37,9 +38,20 @@ public class Base implements ApplicationContextAware, InitializingBean {
           field.setAccessible(true);
           try {
             LOG.debug("Loading page object {} of type {}", field.getName(), field.getType());
-            field.set(this, applicationContext.getBean(field.getType()));
+            Object bean = applicationContext.getBean(field.getType());
+            if (bean != null) {
+              field.set(this, bean);
+              ((Base) bean).initPages();
+            } else {
+              LOG.error(
+                  "Couldn't inject non-existing page {} into {}. Skipping!",
+                  field.getType().getSimpleName(),
+                  this.getClass().getSimpleName());
+            }
           } catch (BeansException | IllegalArgumentException | IllegalAccessException exception) {
-            LOG.error("Error initializing page objects for class {}", this.getClass());
+            LOG.error(
+                String.format("Error initializing page objects for class {}", this.getClass()),
+                exception);
             LOG.error("Exception", exception);
           }
         }

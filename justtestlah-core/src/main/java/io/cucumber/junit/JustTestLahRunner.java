@@ -31,7 +31,6 @@ import io.cucumber.core.runtime.TypeRegistryConfigurerSupplier;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,11 +51,7 @@ import qa.justtestlah.configuration.CucumberOptionsBuilder;
 import qa.justtestlah.configuration.Platform;
 import qa.justtestlah.configuration.PropertiesHolder;
 
-/**
- * Custom JUnit runner to dynamically set Cucumber options. Based on {@link
- * io.cucumber.junit.Cucumber}.
- */
-public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
+public final class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
 
   private static final String CLOUDPROVIDER_AWS = "aws";
   private static final String CLOUDPROVIDER_LOCAL = "local";
@@ -65,18 +60,17 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
 
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
 
-  private List<ParentRunner<?>> children = new ArrayList<>();
-  private List<Feature> features = new ArrayList<>();
-  private Plugins plugins = null;
-  private EventBus bus = null;
-  private PropertiesHolder properties = new PropertiesHolder();
+  private List<ParentRunner<?>> children;
+  private EventBus bus;
+  private List<Feature> features;
+  private Plugins plugins;
+  private CucumberExecutionContext context;
   private boolean multiThreadingAssumed = false;
-  private CucumberExecutionContext context = null;
 
+  private PropertiesHolder properties = new PropertiesHolder();
   private static final String CLOUD_PROVIDER = "cloudprovider";
   private static final String PLATFORM_KEY = "platform";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-
   private Runner awsRunner;
 
   /**
@@ -96,7 +90,9 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     bridgeLogging();
 
     if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
+      CucumberOptionsBuilder.setCucumberOptions(properties);
       LOG.info("Using qa.justtestlah.awsdevicefarm.AWSTestRunner");
+      initCucumber(clazz);
       awsRunner = getAWSRunner(clazz);
     } else {
       CucumberOptionsBuilder.setCucumberOptions(properties);
@@ -105,10 +101,10 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   }
 
   /**
-   * This is the code taken from {@link io.cucumber.junit.Cucumber}
+   * Constructor called by JUnit.
    *
-   * @param clazz {@link Class}
-   * @throws InitializationError {@link InitializationError}
+   * @param clazz the class with the @RunWith annotation.
+   * @throws org.junit.runners.model.InitializationError if there is another problem
    */
   private void initCucumber(Class<?> clazz) throws InitializationError {
     Assertions.assertNoCucumberAnnotatedMethods(clazz);
@@ -168,7 +164,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     this.plugins.addPlugin(exitStatus);
 
     ObjectFactoryServiceLoader objectFactoryServiceLoader =
-        new ObjectFactoryServiceLoader(runtimeOptions);
+        new ObjectFactoryServiceLoader(classLoader, runtimeOptions);
     ObjectFactorySupplier objectFactorySupplier =
         new ThreadLocalObjectFactorySupplier(objectFactoryServiceLoader);
     BackendSupplier backendSupplier =
@@ -197,12 +193,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
                 })
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
-
-    LOG.info(
-        "Found {} feature(s) in {}: {}",
-        features.size(),
-        System.getProperty("cucumber.features"),
-        features);
   }
 
   @Override
@@ -259,42 +249,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     }
   }
 
-  private void bridgeLogging() {
-    SLF4JBridgeHandler.removeHandlersForRootLogger();
-    SLF4JBridgeHandler.install();
-  }
-
-  private void init() {
-    // set the active Spring profile to the current platform
-    String platform = properties.getProperty(PLATFORM_KEY);
-    if (platform == null || platform.isEmpty()) {
-      LOG.info("No platform specified. Using default ({})", Platform.DEFAULT);
-      platform = Platform.DEFAULT.getPlatformName();
-      System.setProperty(PLATFORM_KEY, platform);
-    }
-    String springProfiles = System.getProperty(SPRING_PROFILES_ACTIVE);
-    if (springProfiles != null && !springProfiles.isEmpty()) {
-      springProfiles += "," + platform;
-    } else {
-      springProfiles = platform;
-    }
-    LOG.info("Setting platform to {}", platform);
-    System.setProperty(SPRING_PROFILES_ACTIVE, springProfiles);
-  }
-
-  @Override
-  public Description getDescription() {
-    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
-      Description suiteDescription =
-          Description.createSuiteDescription(AWS_JUNIT_SUITE_DESCRIPTION);
-      suiteDescription.addChild(
-          Description.createTestDescription("groupName", AWS_JUNIT_GROUP_DESCRIPTION));
-      return suiteDescription;
-    } else {
-      return super.getDescription();
-    }
-  }
-
   /** this method uses reflection to avoid a compile-time dependency on justtestlah-awsdevicefarm */
   private Runner getAWSRunner(Class<?> clazz) {
     try {
@@ -323,5 +277,28 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     } else {
       super.run(notifier);
     }
+  }
+
+  private void bridgeLogging() {
+    SLF4JBridgeHandler.removeHandlersForRootLogger();
+    SLF4JBridgeHandler.install();
+  }
+
+  private void init() {
+    // set the active Spring profile to the current platform
+    String platform = properties.getProperty(PLATFORM_KEY);
+    if (platform == null || platform.isEmpty()) {
+      LOG.info("No platform specified. Using default ({})", Platform.DEFAULT);
+      platform = Platform.DEFAULT.getPlatformName();
+      System.setProperty(PLATFORM_KEY, platform);
+    }
+    String springProfiles = System.getProperty(SPRING_PROFILES_ACTIVE);
+    if (springProfiles != null && !springProfiles.isEmpty()) {
+      springProfiles += "," + platform;
+    } else {
+      springProfiles = platform;
+    }
+    LOG.info("Setting platform to {}", platform);
+    System.setProperty(SPRING_PROFILES_ACTIVE, springProfiles);
   }
 }
