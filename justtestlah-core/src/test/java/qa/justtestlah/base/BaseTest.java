@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,13 +17,20 @@ public class BaseTest {
 
   @Mock private ApplicationContext applicationContext;
 
+  private AutoCloseable mocks;
+
   /** Initialise mocks. */
   @Before
   @SuppressWarnings("unchecked")
   public void init() {
-    MockitoAnnotations.initMocks(this);
+    mocks = MockitoAnnotations.openMocks(this);
     // mocking the Spring application context
     doReturn(new TestPageObject()).when(applicationContext).getBean(any(Class.class));
+  }
+
+  @After
+  public void finish() throws Exception {
+    mocks.close();
   }
 
   /** Test the injection of page objects . */

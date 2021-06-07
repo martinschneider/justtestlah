@@ -10,6 +10,8 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,9 +21,20 @@ public class TestSpecFactoryTest {
 
   @Mock private PropertiesHolder properties;
 
+  private AutoCloseable mocks;
+
+  @BeforeEach
+  public void setup() {
+    mocks = MockitoAnnotations.openMocks(this);
+  }
+
+  @AfterEach
+  public void finish() throws Exception {
+    mocks.close();
+  }
+
   @Test
   public void testCreateTestSpec() throws IOException, URISyntaxException {
-    MockitoAnnotations.initMocks(this);
     when(properties.getProperties()).thenReturn(new Properties());
 
     List<String> expected =

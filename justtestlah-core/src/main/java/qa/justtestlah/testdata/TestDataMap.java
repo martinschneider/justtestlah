@@ -93,7 +93,7 @@ public class TestDataMap implements InitializingBean {
     LOG.info("Scanning classpath for test data classes");
     ClassGraph classGraph = new ClassGraph().enableAnnotationInfo();
     if (modelPackage != null && !modelPackage.isEmpty()) {
-      classGraph = classGraph.whitelistPackages(modelPackage);
+      classGraph = classGraph.acceptPackages(modelPackage);
     }
     try (ScanResult scanResult = classGraph.scan()) {
       for (ClassInfo routeClassInfo :
@@ -112,7 +112,12 @@ public class TestDataMap implements InitializingBean {
   }
 
   public <T> T get(Class<T> type, String name) {
-    return (T) testData.get(type).get(name);
+    try {
+      return (T) testData.get(type).get(name);
+    } catch (NullPointerException e) {
+      throw new RuntimeException(
+          String.format("Error fetching test data. Test data map: %s", testData), e);
+    }
   }
 
   public <T> T get(Class<T> type) {

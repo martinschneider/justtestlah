@@ -31,7 +31,6 @@ import io.cucumber.core.runtime.TypeRegistryConfigurerSupplier;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,8 +54,13 @@ import qa.justtestlah.configuration.PropertiesHolder;
 /**
  * Custom JUnit runner to dynamically set Cucumber options. Based on {@link
  * io.cucumber.junit.Cucumber}.
+ *
+ * <p>There are two reasons for this class: 1. setting Cucumber options at runtime and 2. running
+ * AWS Devicefarm tests as JUnit tests on the client side. 1. might no longer be necessary with the
+ * latest Cucumber version. If so, we should likely use a separate runner class for the AWS
+ * use-case.
  */
-public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
+public final class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
 
   private static final String CLOUDPROVIDER_AWS = "aws";
   private static final String CLOUDPROVIDER_LOCAL = "local";
@@ -65,18 +69,17 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
 
   private static final Logger LOG = LoggerFactory.getLogger(JustTestLahRunner.class);
 
-  private List<ParentRunner<?>> children = new ArrayList<>();
-  private List<Feature> features = new ArrayList<>();
-  private Plugins plugins = null;
-  private EventBus bus = null;
-  private PropertiesHolder properties = new PropertiesHolder();
+  private List<ParentRunner<?>> children;
+  private EventBus bus;
+  private List<Feature> features;
+  private Plugins plugins;
+  private CucumberExecutionContext context;
   private boolean multiThreadingAssumed = false;
-  private CucumberExecutionContext context = null;
 
+  private PropertiesHolder properties = new PropertiesHolder();
   private static final String CLOUD_PROVIDER = "cloudprovider";
   private static final String PLATFORM_KEY = "platform";
   private static final String SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-
   private Runner awsRunner;
 
   /**
@@ -96,7 +99,9 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     bridgeLogging();
 
     if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
+      CucumberOptionsBuilder.setCucumberOptions(properties);
       LOG.info("Using qa.justtestlah.awsdevicefarm.AWSTestRunner");
+      initCucumber(clazz);
       awsRunner = getAWSRunner(clazz);
     } else {
       CucumberOptionsBuilder.setCucumberOptions(properties);
@@ -107,8 +112,10 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
   /**
    * This is the code taken from {@link io.cucumber.junit.Cucumber}
    *
-   * @param clazz {@link Class}
-   * @throws InitializationError {@link InitializationError}
+   * <p>Constructor called by JUnit.
+   *
+   * @param clazz the class with the @RunWith annotation.
+   * @throws org.junit.runners.model.InitializationError if there is another problem
    */
   private void initCucumber(Class<?> clazz) throws InitializationError {
     Assertions.assertNoCucumberAnnotatedMethods(clazz);
@@ -168,7 +175,7 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     this.plugins.addPlugin(exitStatus);
 
     ObjectFactoryServiceLoader objectFactoryServiceLoader =
-        new ObjectFactoryServiceLoader(runtimeOptions);
+        new ObjectFactoryServiceLoader(classLoader, runtimeOptions);
     ObjectFactorySupplier objectFactorySupplier =
         new ThreadLocalObjectFactorySupplier(objectFactoryServiceLoader);
     BackendSupplier backendSupplier =
@@ -197,7 +204,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
                 })
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
-
     LOG.info(
         "Found {} feature(s) in {}: {}",
         features.size(),
@@ -259,6 +265,36 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     }
   }
 
+  /** this method uses reflection to avoid a compile-time dependency on justtestlah-awsdevicefarm */
+  private Runner getAWSRunner(Class<?> clazz) {
+    try {
+      return (Runner)
+          Class.forName("qa.justtestlah.awsdevicefarm.AWSTestRunner")
+              .getConstructor(Class.class)
+              .newInstance(clazz);
+    } catch (InstantiationException
+        | IllegalAccessException
+        | IllegalArgumentException
+        | InvocationTargetException
+        | NoSuchMethodException
+        | SecurityException
+        | ClassNotFoundException exception) {
+      LOG.error(
+          "Unable to create an instance of qa.justtestlah.awsdevicefarm.AWSTestRunner. Ensure justtestlah-aws is on your classpath (check your Maven pom.xml).",
+          exception);
+    }
+    return null;
+  }
+
+  @Override
+  public void run(RunNotifier notifier) {
+    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
+      awsRunner.run(notifier);
+    } else {
+      super.run(notifier);
+    }
+  }
+
   private void bridgeLogging() {
     SLF4JBridgeHandler.removeHandlersForRootLogger();
     SLF4JBridgeHandler.install();
@@ -292,36 +328,6 @@ public class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
       return suiteDescription;
     } else {
       return super.getDescription();
-    }
-  }
-
-  /** this method uses reflection to avoid a compile-time dependency on justtestlah-awsdevicefarm */
-  private Runner getAWSRunner(Class<?> clazz) {
-    try {
-      return (Runner)
-          Class.forName("qa.justtestlah.awsdevicefarm.AWSTestRunner")
-              .getConstructor(Class.class)
-              .newInstance(clazz);
-    } catch (InstantiationException
-        | IllegalAccessException
-        | IllegalArgumentException
-        | InvocationTargetException
-        | NoSuchMethodException
-        | SecurityException
-        | ClassNotFoundException exception) {
-      LOG.error(
-          "Unable to create an instance of qa.justtestlah.awsdevicefarm.AWSTestRunner. Ensure justtestlah-aws is on your classpath (check your Maven pom.xml).",
-          exception);
-    }
-    return null;
-  }
-
-  @Override
-  public void run(RunNotifier notifier) {
-    if (properties.getProperty(CLOUD_PROVIDER, CLOUDPROVIDER_LOCAL).equals(CLOUDPROVIDER_AWS)) {
-      awsRunner.run(notifier);
-    } else {
-      super.run(notifier);
     }
   }
 }

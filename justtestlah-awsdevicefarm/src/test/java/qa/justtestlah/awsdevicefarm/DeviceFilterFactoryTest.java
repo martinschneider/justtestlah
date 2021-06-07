@@ -11,6 +11,7 @@ import com.amazonaws.services.devicefarm.model.Device;
 import com.amazonaws.services.devicefarm.model.ListDevicesResult;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -35,9 +36,11 @@ public class DeviceFilterFactoryTest {
 
   @Mock private ListDevicesResult resultBusy;
 
+  private AutoCloseable mocks;
+
   @BeforeEach
   public void setUp() {
-    MockitoAnnotations.initMocks(this);
+    mocks = MockitoAnnotations.openMocks(this);
     when(awsService.getAws()).thenReturn(awsDeviceFarm);
     when(properties.getProperty("platform")).thenReturn("android");
     doReturn(resultHighlyAvailable)
@@ -57,6 +60,11 @@ public class DeviceFilterFactoryTest {
         .listDevices(
             argThat(argument -> argument.getFilters().contains(DeviceFilterConstants.BUSY_FILTER)));
     target = new DeviceFilterFactory(properties, awsService);
+  }
+
+  @AfterEach
+  public void finish() throws Exception {
+    mocks.close();
   }
 
   @Test
