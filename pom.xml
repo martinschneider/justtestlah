@@ -142,7 +142,7 @@
     <classgraph.version>4.8.110</classgraph.version>
     <fmt.version>2.11</fmt.version>
     <jsch.version>0.1.55</jsch.version>
-    <aws.sdk.version>1.12.20</aws.sdk.version>
+    <aws.sdk.version>1.12.21</aws.sdk.version>
     <aopalliance.version>3.0.2</aopalliance.version>
     <jackson.version>2.12.4</jackson.version>
     <guava.version>30.1.1-jre</guava.version>
