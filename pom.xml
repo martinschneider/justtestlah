@@ -93,7 +93,7 @@
     <cucumber.version>6.10.4</cucumber.version>
     <wiremock.version>2.29.1</wiremock.version>
     <opencv.version>4.5.1-2</opencv.version>
-    <tess4j.version>4.5.4</tess4j.version>
+    <tess4j.version>4.5.5</tess4j.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.7.2</junit.version>
     <junit.vintage.version>4.13.2</junit.vintage.version>
