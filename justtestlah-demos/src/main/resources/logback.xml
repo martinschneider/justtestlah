@@ -14,7 +14,7 @@
 
   <appender name="testlog" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%magenta(%d{HH:mm:ss.SSS} %msg) %n</pattern>
+      <pattern>%t %magenta(%d{HH:mm:ss.SSS} %msg) %n</pattern>
     </encoder>
   </appender>
 
