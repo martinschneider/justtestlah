@@ -88,7 +88,7 @@
     <spring.version>5.3.9</spring.version>
     <spring.boot.version>2.5.4</spring.boot.version>
     <appium.version>7.5.1</appium.version>
-    <selenium.version>3.141.59</selenium.version>
+    <selenium.version>4.0.0</selenium.version>
     <selenide.version>5.24.1</selenide.version>
     <cucumber.version>6.11.0</cucumber.version>
     <wiremock.version>2.30.1</wiremock.version>
