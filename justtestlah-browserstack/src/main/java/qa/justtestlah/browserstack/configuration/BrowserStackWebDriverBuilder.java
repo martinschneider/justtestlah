@@ -1,13 +1,9 @@
 package qa.justtestlah.browserstack.configuration;
 
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.ios.IOSElement;
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
+
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -25,6 +21,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
+import io.appium.java_client.AppiumDriver;
 import qa.justtestlah.browserstack.exception.BrowserstackException;
 import qa.justtestlah.configuration.LocalWebDriverBuilder;
 import qa.justtestlah.configuration.WebDriverBuilder;
@@ -93,7 +94,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getAndroidDriver() {
-    return new AppiumDriver<AndroidElement>(
+    return new AppiumDriver(
         browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
         addAndroidCapabilities(new DesiredCapabilities()));
   }
@@ -105,7 +106,7 @@ public class BrowserStackWebDriverBuilder extends LocalWebDriverBuilder
    */
   @Override
   public WebDriver getIOsDriver() {
-    return new AppiumDriver<IOSElement>(
+    return new AppiumDriver(
         browserStackUrlBuilder.buildBrowserStackUrl(accessKey, username),
         addIOsCapabilities(new DesiredCapabilities()));
   }

@@ -82,6 +82,7 @@ public class JustTestLahConfiguration {
     System.setProperty("browser", browser);
     // not thread-safe!
     Configuration.headless = headless;
+    Configuration.browser = browser;
     Platform platform = getPlatform();
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());

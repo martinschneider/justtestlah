@@ -3,19 +3,13 @@ package qa.justtestlah.configuration;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIVITY;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
 
-import com.codeborne.selenide.WebDriverRunner;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.ios.IOSElement;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
@@ -24,6 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+
+import com.codeborne.selenide.WebDriverRunner;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import qa.justtestlah.annotations.EntryExitLogging;
 import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.log.LogLevel;
@@ -78,7 +78,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     try {
       return registerListener(
           logTestDetails(
-              new AndroidDriver<AndroidElement>(
+              new AndroidDriver(
                   new URL(appiumUrl), addAndroidCapabilities(new DesiredCapabilities()))));
     } catch (MalformedURLException exception) {
       throw new JustTestLahException("Error creating Android WebDriver", exception);
@@ -107,7 +107,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     try {
       return registerListener(
           logTestDetails(
-              new IOSDriver<IOSElement>(
+              new IOSDriver(
                   new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()))));
     } catch (MalformedURLException exception) {
       throw new JustTestLahException("Error creating iOS WebDriver", exception);
@@ -125,25 +125,8 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     }
   }
 
-  private WebDriver logTestDetails(AppiumDriver<? extends WebElement> driver) {
-    testLog.log(
-        LogLevel.INFO, TestLogWriter.CUCUMBER_SCENARIO_INDENTATION, "Platform: {}", platform);
-    String appPath = driver.getSessionDetail("app").toString();
-    if (appPath != null) {
-      testLog.log(
-          LogLevel.INFO,
-          TestLogWriter.CUCUMBER_SCENARIO_INDENTATION,
-          "Application: {}",
-          applicationInfoService.getAppInfo(appPath));
-    }
-    testLog.log(
-        LogLevel.INFO,
-        TestLogWriter.CUCUMBER_SCENARIO_INDENTATION,
-        "Device: {}, manufacturer: {}, OS version: {}, screen size: {}",
-        driver.getSessionDetail("deviceName"),
-        driver.getSessionDetail("deviceManufacturer"),
-        driver.getSessionDetail("platformVersion"),
-        driver.getSessionDetail("deviceScreenSize"));
+  private WebDriver logTestDetails(AppiumDriver driver) {
+	  // TODO: re-implement this for Appium 8
     return driver;
   }
 

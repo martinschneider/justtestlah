@@ -85,12 +85,12 @@ public class ImageWebElement implements WebElement {
   }
 
   @Override
-  public <T extends WebElement> List<T> findElements(By by) {
+  public List<WebElement> findElements(By by) {
     throw new UnsupportedOperationException("operation not supported");
   }
 
   @Override
-  public <T extends WebElement> T findElement(By by) {
+  public WebElement findElement(By by) {
     throw new UnsupportedOperationException("operation not supported");
   }
 

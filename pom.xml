@@ -87,9 +87,9 @@
     <!-- Version properties -->
     <spring.version>5.3.9</spring.version>
     <spring.boot.version>2.5.4</spring.boot.version>
-    <appium.version>7.5.1</appium.version>
-    <selenium.version>3.141.59</selenium.version>
-    <selenide.version>5.24.1</selenide.version>
+    <appium.version>8.0.0-beta</appium.version>
+    <selenium.version>4.1.0</selenium.version>
+    <selenide.version>6.1.1</selenide.version>
     <cucumber.version>6.11.0</cucumber.version>
     <wiremock.version>2.30.1</wiremock.version>
     <opencv.version>4.5.1-2</opencv.version>
@@ -108,6 +108,7 @@
     <bytebuddy.version>1.11.14</bytebuddy.version>
     <gson.version>2.8.8</gson.version>
     <jersey.version>3.0.2</jersey.version>
+    <auto.service.version>1.0.1</auto.service.version>
     <apache.http.components.version>4.5.13</apache.http.components.version>
     <apache.http.components.core.version>4.4.14</apache.http.components.core.version>
     <apache.commons.version>3.12.0</apache.commons.version>
@@ -140,7 +141,7 @@
     <wagon.ssh.version>3.4.3</wagon.ssh.version>
     <checkstyle.version>9.0</checkstyle.version>
     <classgraph.version>4.8.115</classgraph.version>
-    <fmt.version>2.12</fmt.version>
+    <spotless.version>2.17.6</spotless.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.12.60</aws.sdk.version>
     <aopalliance.version>3.0.2</aopalliance.version>
@@ -460,6 +461,11 @@
         <artifactId>tess4j</artifactId>
         <version>${tess4j.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service</artifactId>
+        <version>${auto.service.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <build>
@@ -500,10 +506,10 @@
           </dependencies>
         </plugin>
         <plugin>
-          <groupId>com.coveo</groupId>
-          <artifactId>fmt-maven-plugin</artifactId>
-          <version>${fmt.version}</version>
-        </plugin>
+	  <groupId>com.diffplug.spotless</groupId>
+	  <artifactId>spotless-maven-plugin</artifactId>
+	  <version>${spotless.version}</version>
+  	</plugin>
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -597,6 +603,19 @@
       </plugins>
     </pluginManagement>
     <plugins>
+    <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-compiler-plugin</artifactId>
+	    <configuration>
+	        <annotationProcessorPaths>
+	            <path>
+	                <groupId>com.google.auto.service</groupId>
+	                <artifactId>auto-service</artifactId>
+	                <version>${auto.service.version}</version>>${auto-service.version
+	            </path>
+	        </annotationProcessorPaths>
+	    </configuration>
+	</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -634,15 +653,14 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.coveo</groupId>
-        <artifactId>fmt-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <configuration>
+          <ratchetFrom>origin/main</ratchetFrom>
+          <java>
+            <googleJavaFormat />
+          </java>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.sonatype.plugins</groupId>

@@ -5,6 +5,8 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileBy.ByAccessibilityId;
 import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
@@ -76,13 +78,13 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(ID)) {
       return $(By.id(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
-      return $(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
+      return $(AppiumBy.accessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
-      return $(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
+      return $(AppiumBy.androidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+      return $(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else if (type.equalsIgnoreCase(OPENCV)) {
-      return $(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+      return $(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -107,14 +109,17 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(ID)) {
       return $$(By.id(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
-      return $$(ByAccessibilityId.AccessibilityId(formatValue(rawValue, params)));
+      return $$(AppiumBy.accessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
-      return $$(ByAndroidUIAutomator.AndroidUIAutomator(formatValue(rawValue, params)));
+    	return $$(AppiumBy.androidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
-      return $$(MobileBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+      return $$(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+    } else if (type.equalsIgnoreCase(OPENCV)) {
+      return $$(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else {
       return $$(formatValue(rawValue, params));
     }
+    
   }
 
   /**
