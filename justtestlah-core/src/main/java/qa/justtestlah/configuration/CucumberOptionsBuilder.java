@@ -26,7 +26,6 @@ public class CucumberOptionsBuilder {
     setCucumberProperty(Constants.GLUE_PROPERTY_NAME, buildGlueProperty(properties));
     setCucumberProperty(Constants.PLUGIN_PROPERTY_NAME, buildPluginProperty(properties));
     setCucumberProperty(Constants.PLUGIN_PUBLISH_ENABLED_PROPERTY_NAME, "true");
-    setCucumberProperty(Constants.EXECUTION_STRICT_PROPERTY_NAME, "true");
   }
 
   private static void setCucumberProperty(String key, String value) {

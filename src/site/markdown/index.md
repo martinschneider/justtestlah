@@ -1,19 +1,17 @@
-> 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
+JustTestLah! is an end-to-end UI testing framework for mobile and web applications. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration easy and the test code as simple, readable and maintainable as possible.
 
-JustTestLah! is an end-to-end UI testing framework for mobile and web applications. It started as a demonstration project to showcase concepts shared during [tech talks and conferences](https://github.com/martinschneider/presentations).
-
-This framework follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration as easy and the test code as simple, readable and maintainable as possible.
-
-JustTestLah! is based on [Selenium](https://www.seleniumhq.org) and [Appium](https://www.appium.io).
+JustTestLah! is based on [Selenium](https://www.seleniumhq.org), [Appium](https://www.appium.io) and [Cucumber](https://cucumber.io).
 
 ## Quick start
-Pull the repo and run the demo (a set of simple tests for Stackoverflow):
+Pull the repo and run the demo:
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
 cd justtestlah-demos
 mvn test
 ```
+
+> 🇸🇬 lah ([Singlish](https://en.wikipedia.org/wiki/Singlish)) - Placed at the end of a phrase or sentence either for emphasis or reassurance.
 
 <details>
   <summary>Full documentation</summary>
@@ -337,7 +335,7 @@ browserstack.appiumLogs=true
 browserstack.video=true
 browserstack.geoLocation=SG
 browserstack.timezone=SG
-browserstack.appium_version=1.10-SNAPSHOT.0
+browserstack.appium_version=1.13.0
 browserstack.acceptSslCerts=true
 
 # AWS DEVICEFARM settings (requires `cloudprovider=aws` and `justtestlah-awsdevicefarm` on the classpath)
@@ -813,9 +811,10 @@ JustTestLah! makes use of a variety of frameworks to make writing and executing 
 - The OpenCV integration (used for client-side template matching) [doesn't work with Java 12 and above yet](https://github.com/openpnp/opencv/issues/44).
 - The demos and unit tests use [Google Chrome](https://www.google.com/chrome).
 - `${maven.home}` must be set to build JustTestLah! (unless you skip the unit tests).
+</details>
 
-## Contact and support
-
+<details>
+<summary>Contact and support</summary>
 Please let me know about any feedback, questions or ideas for improvement.
 
 [Martin Schneider - mart.schneider@gmail.com](mailto:mart.schneider@gmail.com)
