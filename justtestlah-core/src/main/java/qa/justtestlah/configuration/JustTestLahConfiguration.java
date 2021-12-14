@@ -81,8 +81,8 @@ public class JustTestLahConfiguration {
     // for web and local testing the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
     // not thread-safe!
-    //Configuration.headless = headless;
-    Configuration.browser = "opera";
+    Configuration.headless = headless;
+    Configuration.browser = browser;
     Platform platform = getPlatform();
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
