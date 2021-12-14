@@ -1,9 +1,10 @@
-JustTestLah! is an end-to-end UI testing framework for mobile and web applications. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. JustTestLah's main aim is to make the configuration easy and the test code as simple, readable and maintainable as possible.
+JustTestLah! is an end-to-end UI testing framework for mobile and web applications. It follows a [BDD](https://martinfowler.com/bliki/GivenWhenThen.html) approach and allows testing on different platforms (Android, iOS and Web) using the same test scenarios. 
+
+JustTestLah's main aim is to make the configuration easy and the test code as simple, readable and maintainable as possible.
 
 JustTestLah! is based on [Selenium](https://www.seleniumhq.org), [Appium](https://www.appium.io) and [Cucumber](https://cucumber.io).
 
 ## Quick start
-Pull the repo and run the demo:
 
 ```bash
 git clone https://github.com/martinschneider/justtestlah.git
