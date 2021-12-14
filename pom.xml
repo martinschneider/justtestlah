@@ -146,7 +146,7 @@
     <aws.sdk.version>1.12.60</aws.sdk.version>
     <aopalliance.version>3.0.2</aopalliance.version>
     <jackson.version>2.12.5</jackson.version>
-    <guava.version>30.1.1-jre</guava.version>
+    <guava.version>31.0.1-jre</guava.version>
     <jakarta.version>2.0.0</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
     <aspectj.version>1.9.7</aspectj.version>
