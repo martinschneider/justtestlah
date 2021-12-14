@@ -85,7 +85,7 @@
   </pluginRepositories>
   <properties>
     <!-- Version properties -->
-    <spring.version>5.3.9</spring.version>
+    <spring.version>5.3.13</spring.version>
     <spring.boot.version>2.5.4</spring.boot.version>
     <appium.version>8.0.0-beta</appium.version>
     <selenium.version>4.1.0</selenium.version>
