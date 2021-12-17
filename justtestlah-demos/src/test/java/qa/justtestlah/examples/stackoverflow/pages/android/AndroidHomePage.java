@@ -1,6 +1,7 @@
 package qa.justtestlah.examples.stackoverflow.pages.android;
 
 import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Condition.appear;
 import static qa.justtestlah.configuration.Platform.Constants.ANDROID;
 
 import org.springframework.context.annotation.Profile;
@@ -20,7 +21,7 @@ public class AndroidHomePage extends HomePage {
 
   @Override
   public QuestionsPage search(String query) {
-    $("SEARCH_FIELD").sendKeys(query + "\n");
+    $("SEARCH_FIELD").should(appear).sendKeys(query + "\n");
     sleep(5000);
     return questionsPage;
   }

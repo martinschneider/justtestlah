@@ -62,6 +62,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   @Value("${mobile.deviceOrientation}")
   protected String deviceOrientation;
+  
+  @Value("${mobile.newCommandTimeout:60}")
+  protected String newCommandTimeout;
+  
+  @Value("${android.adbExecTimeout:20000}")
+  protected String adbExecTimeout;
 
   @Autowired private TestLogWriter testLog;
 
@@ -164,10 +170,12 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     capabilities = addMobileCapabilities(capabilities);
     capabilities.setCapability(APP_PACKAGE, appPackage);
     capabilities.setCapability(APP_ACTIVITY, appActivity);
+    capabilities.setCapability("adbExecTimeout", adbExecTimeout);
     return capabilities;
   }
 
   protected DesiredCapabilities addMobileCapabilities(DesiredCapabilities capabilities) {
+	capabilities.setCapability("newCommandTimeout", newCommandTimeout);
     return capabilities;
   }
 
