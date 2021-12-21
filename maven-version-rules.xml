@@ -7,20 +7,6 @@
     </ignoreVersion>
   </ignoreVersions>
   <rules>
-    <rule groupId="io.cucumber" artifactId="gherkin"
-      comparisonMethod="maven">
-      <ignoreVersions>
-        <ignoreVersion type="regex">5.2.*</ignoreVersion>
-        <ignoreVersion type="regex">[6-9].*</ignoreVersion>
-      </ignoreVersions>
-    </rule>
-    <rule groupId="io.appium" artifactId="java-client"
-      comparisonMethod="maven">
-      <ignoreVersions>
-        <!-- This would require Selenium 4 -->
-        <ignoreVersion type="regex">7.1.0</ignoreVersion>
-      </ignoreVersions>
-    </rule>
     <rule groupId="junit" artifactId="junit"
       comparisonMethod="maven">
       <ignoreVersions>

@@ -85,6 +85,7 @@
   </pluginRepositories>
   <properties>
     <!-- Version properties -->
+    <java.version>10</java.version>
     <spring.boot.version>2.6.1</spring.boot.version>
     <spring.version>5.3.14</spring.version>
     <appium.version>8.0.0-beta</appium.version>
@@ -153,8 +154,8 @@
 
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>10</maven.compiler.source>
-    <maven.compiler.target>10</maven.compiler.target>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <minimum.maven.version>3.3.9</minimum.maven.version>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>

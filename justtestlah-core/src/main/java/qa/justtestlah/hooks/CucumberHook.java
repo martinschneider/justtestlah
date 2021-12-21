@@ -22,9 +22,9 @@ public interface CucumberHook {
    */
   public void after(Scenario scenario);
 
-  /** @return Set of platforms the Hooks are supported. */
+  /** @return Set of platforms the hooks are supported. */
   public Set<Platform> getPlatforms();
 
-  /** @return Set of cloud providers the Hooks are supported. */
+  /** @return Set of cloud providers the hooks are supported. */
   public Set<ExecutionEnvironment> getExecutionEnvironments();
 }
