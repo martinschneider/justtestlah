@@ -13,7 +13,7 @@ public class LocatorMapTest {
     props.put("key1", "value1");
     props.put("key2", "value2");
     props.put("key3", "value3");
-    LocatorMap target = new LocatorMap(null, props);
+    LocatorMap target = new LocatorMap(null, props, null, null);
 
     assertThat(target.replacePlaceholders(null)).isEqualTo(null);
     assertThat(target.replacePlaceholders("")).isEqualTo("");

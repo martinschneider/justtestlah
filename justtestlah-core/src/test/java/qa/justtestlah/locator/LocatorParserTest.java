@@ -16,7 +16,7 @@ public class LocatorParserTest {
   public void testLocatorParser() throws IOException {
     target.setYamlParser(new Yaml());
     String baseFolder = this.getClass().getPackage().getName().replace(".", File.separator);
-    Map<String, Map<String, Map<String, String>>> locatorMap =
+    Map<String, Map<String, Map<String, Object>>> locatorMap =
         target.parse(baseFolder + File.separator + "LocatorParserTest.yaml");
 
     assertThat(locatorMap.get("SEARCH_FIELD")).as("verifying SEARCH_FIELD locator").isNotNull();

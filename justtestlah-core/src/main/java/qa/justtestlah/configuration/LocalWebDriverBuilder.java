@@ -3,11 +3,14 @@ package qa.justtestlah.configuration;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_ACTIVITY;
 import static io.appium.java_client.remote.AndroidMobileCapabilityType.APP_PACKAGE;
 
+import com.codeborne.selenide.WebDriverRunner;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -18,12 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
-import com.codeborne.selenide.WebDriverRunner;
-
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.ios.IOSDriver;
 import qa.justtestlah.annotations.EntryExitLogging;
 import qa.justtestlah.exception.JustTestLahException;
 import qa.justtestlah.log.LogLevel;
@@ -62,10 +59,10 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
 
   @Value("${mobile.deviceOrientation}")
   protected String deviceOrientation;
-  
+
   @Value("${mobile.newCommandTimeout:60}")
   protected String newCommandTimeout;
-  
+
   @Value("${android.adbExecTimeout:20000}")
   protected String adbExecTimeout;
 
@@ -113,8 +110,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
     try {
       return registerListener(
           logTestDetails(
-              new IOSDriver(
-                  new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()))));
+              new IOSDriver(new URL(appiumUrl), addIOsCapabilities(new DesiredCapabilities()))));
     } catch (MalformedURLException exception) {
       throw new JustTestLahException("Error creating iOS WebDriver", exception);
     } catch (WebDriverException exception) {
@@ -132,7 +128,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   }
 
   private WebDriver logTestDetails(AppiumDriver driver) {
-	  // TODO: re-implement this for Appium 8
+    // TODO: re-implement this for Appium 8
     return driver;
   }
 
@@ -175,7 +171,7 @@ public class LocalWebDriverBuilder implements WebDriverBuilder {
   }
 
   protected DesiredCapabilities addMobileCapabilities(DesiredCapabilities capabilities) {
-	capabilities.setCapability("newCommandTimeout", newCommandTimeout);
+    capabilities.setCapability("newCommandTimeout", newCommandTimeout);
     return capabilities;
   }
 

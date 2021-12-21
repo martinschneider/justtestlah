@@ -61,7 +61,8 @@ public class ImageWebElement implements WebElement {
 
   @Override
   public String getTagName() {
-    throw new UnsupportedOperationException("operation not supported");
+    // TODO: not sure what to return here
+    return "IMG";
   }
 
   @Override

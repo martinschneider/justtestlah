@@ -6,3 +6,8 @@ RESULT_STATS:
   web:
     type: id
     value: result-stats
+LOGO:
+  web:
+    type: opencv
+    value: google_small.png
+    threshold: 0.75

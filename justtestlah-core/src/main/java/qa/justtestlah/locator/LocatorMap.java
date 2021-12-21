@@ -5,11 +5,7 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileBy.ByAccessibilityId;
-import io.appium.java_client.MobileBy.ByAndroidUIAutomator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -19,7 +15,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import qa.justtestlah.base.ByImage;
 import qa.justtestlah.configuration.Platform;
+import qa.justtestlah.stubs.OCR;
+import qa.justtestlah.stubs.TemplateMatcher;
 import qa.justtestlah.utils.ImageUtils;
 
 /** Map to hold element locators. */
@@ -27,9 +26,13 @@ public class LocatorMap {
 
   private static final Logger LOG = LoggerFactory.getLogger(LocatorMap.class);
 
-  private Map<String, Map<String, Map<String, String>>> map;
+  private Map<String, Map<String, Map<String, Object>>> map;
 
   private Properties staticPlaceholders;
+
+  private TemplateMatcher templateMatcher;
+
+  private OCR ocr;
 
   private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\$\\{(\\w*)\\}");
 
@@ -53,9 +56,14 @@ public class LocatorMap {
    * @param staticPlaceholders static placeholders to be replaced in any locator
    */
   public LocatorMap(
-      Map<String, Map<String, Map<String, String>>> map, Properties staticPlaceholders) {
+      Map<String, Map<String, Map<String, Object>>> map,
+      Properties staticPlaceholders,
+      TemplateMatcher templateMatcher,
+      OCR ocr) {
     this.map = map;
     this.staticPlaceholders = staticPlaceholders;
+    this.templateMatcher = templateMatcher;
+    this.ocr = ocr;
   }
 
   /**
@@ -67,9 +75,13 @@ public class LocatorMap {
    * @return {@link SelenideElement}
    */
   public SelenideElement getLocator(String key, Platform platform, Object... params) {
-    Pair<String, String> platformKey = getRawLocator(key, platform, params);
-    String type = platformKey.getLeft();
-    String rawValue = platformKey.getRight();
+    Map<String, Object> platformKey = getRawLocator(key, platform, params);
+    if (platformKey == null) {
+      LOG.error("Locator with key {} is undefined for platform {}.", key, platform);
+      return null;
+    }
+    String type = platformKey.get("type").toString();
+    String rawValue = platformKey.get("value").toString();
     LOG.debug("Getting locator {} of type {}", rawValue, type);
     if (type.equalsIgnoreCase(CSS)) {
       return $(By.cssSelector(formatValue(rawValue, params)));
@@ -84,7 +96,9 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(IMAGE)) {
       return $(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else if (type.equalsIgnoreCase(OPENCV)) {
-      return $(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+      return $(
+          ByImage.image(
+              formatValue(rawValue, params), getThreshold(platformKey), templateMatcher, ocr));
     } else {
       return $(formatValue(rawValue, params));
     }
@@ -99,9 +113,9 @@ public class LocatorMap {
    * @return {@link ElementsCollection}
    */
   public ElementsCollection getCollectionLocator(String key, Platform platform, Object... params) {
-    Pair<String, String> platformKey = getRawLocator(key, platform, params);
-    String type = platformKey.getLeft();
-    String rawValue = platformKey.getRight();
+    Map<String, Object> platformKey = getRawLocator(key, platform, params);
+    String type = platformKey.get("type").toString();
+    String rawValue = platformKey.get("value").toString();
     if (type.equalsIgnoreCase(CSS)) {
       return $$(By.cssSelector(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(XPATH)) {
@@ -111,28 +125,28 @@ public class LocatorMap {
     } else if (type.equalsIgnoreCase(ACCESIBILITY_ID)) {
       return $$(AppiumBy.accessibilityId(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(UIAUTOMATOR)) {
-    	return $$(AppiumBy.androidUIAutomator(formatValue(rawValue, params)));
+      return $$(AppiumBy.androidUIAutomator(formatValue(rawValue, params)));
     } else if (type.equalsIgnoreCase(IMAGE)) {
       return $$(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
     } else if (type.equalsIgnoreCase(OPENCV)) {
-      return $$(AppiumBy.image(ImageUtils.getImageAsBase64String(rawValue)));
+      return $$(
+          ByImage.image(
+              formatValue(rawValue, params), getThreshold(platformKey), templateMatcher, ocr));
     } else {
       return $$(formatValue(rawValue, params));
     }
-    
   }
 
   /**
-   * Get the raw locator (type and value). This is exposed to be used for logging purposes.
+   * Get the raw locator (type and value). This is exposed for logging purposes.
    *
    * @param key locator key
    * @param platform platform
    * @param params locator key parameters
    * @return {@link Pair}
    */
-  public Pair<String, String> getRawLocator(String key, Platform platform, Object... params) {
-    Map<String, String> tuple = map.get(key).get(platform.getPlatformName());
-    return Pair.of(tuple.get("type"), tuple.get("value"));
+  public Map<String, Object> getRawLocator(String key, Platform platform, Object... params) {
+    return map.get(key).get(platform.getPlatformName());
   }
 
   /**
@@ -141,11 +155,13 @@ public class LocatorMap {
    */
   public Map<String, Pair<String, String>> getLocatorsForPlatform(Platform platform) {
     Map<String, Pair<String, String>> result = new HashMap<>();
-    for (Map.Entry<String, Map<String, Map<String, String>>> entry : map.entrySet()) {
-      Map<String, String> tuple = entry.getValue().get(platform.getPlatformName());
+    for (Map.Entry<String, Map<String, Map<String, Object>>> entry : map.entrySet()) {
+      Map<String, Object> tuple = entry.getValue().get(platform.getPlatformName());
       if (tuple != null) {
         result.put(
-            entry.getKey(), Pair.of(tuple.get("type"), replacePlaceholders(tuple.get("value"))));
+            entry.getKey(),
+            Pair.of(
+                tuple.get("type").toString(), replacePlaceholders(tuple.get("value").toString())));
       }
     }
     return result;
@@ -169,5 +185,17 @@ public class LocatorMap {
     }
     matcher.appendTail(strBuffer);
     return strBuffer.toString();
+  }
+
+  private double getThreshold(Map<String, ?> platformKey) {
+    try {
+      return (double) platformKey.get("threshold");
+    } catch (Exception e) {
+      LOG.warn(
+          "Invalid or no threshold value {}. Using default: {}",
+          platformKey.get("threshold"),
+          ByImage.DEFAULT_THRESHOLD);
+    }
+    return ByImage.DEFAULT_THRESHOLD;
   }
 }

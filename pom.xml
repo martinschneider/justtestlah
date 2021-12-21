@@ -1,47 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>qa.justtestlah</groupId>
   <artifactId>justtestlah-parent</artifactId>
-  <version>1.10-SNAPSHOT</version>
-  <name>JustTestLah!</name>
+  <version>1.10</version>
   <packaging>pom</packaging>
+  <name>JustTestLah!</name>
   <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
-  <developers>
-    <developer>
-      <name>Martin Schneider</name>
-      <email>mart.schneider@gmail.com</email>
-    </developer>
-  </developers>
   <url>https://martinschneider.github.io/justtestlah</url>
-  <scm>
-    <url>https://github.com/martinschneider/JustTestLah</url>
-    <connection>scm:git:git://github.com/martinschneider/JustTestLah.git</connection>
-  </scm>
-  <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/martinschneider/justtestlah</url>
-  </ciManagement>
-  <issueManagement>
-    <system>GitHub</system>
-    <url>https://github.com/martinschneider/JustTestLah/issues</url>
-  </issueManagement>
-  <distributionManagement>
-    <site>
-      <id>justtestlah.qa</id>
-      <url>scp://justtestlah.qa/var/www/html/justtestlah/</url>
-    </site>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -50,6 +16,12 @@
       <comments>A business-friendly OSS license</comments>
     </license>
   </licenses>
+  <developers>
+    <developer>
+      <name>Martin Schneider</name>
+      <email>mart.schneider@gmail.com</email>
+    </developer>
+  </developers>
   <modules>
     <module>justtestlah-core</module>
     <module>justtestlah-mobile-tools</module>
@@ -59,30 +31,32 @@
     <module>justtestlah-galen</module>
     <module>justtestlah-visual</module>
   </modules>
-  <repositories>
+  <scm>
+    <connection>scm:git:git://github.com/martinschneider/JustTestLah.git</connection>
+    <url>https://github.com/martinschneider/JustTestLah</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/martinschneider/JustTestLah/issues</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Travis CI</system>
+    <url>https://travis-ci.org/martinschneider/justtestlah</url>
+  </ciManagement>
+  <distributionManagement>
     <repository>
-      <id>sonatype-nexus-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-nexus-snapshot</id>
+    <snapshotRepository>
+      <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
+    </snapshotRepository>
+    <site>
+      <id>justtestlah.qa</id>
+      <url>scp://justtestlah.qa/var/www/html/justtestlah/</url>
+    </site>
+  </distributionManagement>
   <properties>
     <!-- Version properties -->
     <java.version>10</java.version>
@@ -94,7 +68,7 @@
     <cucumber.version>7.1.0</cucumber.version>
     <wiremock.version>2.32.0</wiremock.version>
     <opencv.version>4.5.1-2</opencv.version>
-    <tess4j.version>5.0.0</tess4j.version>
+    <tess4j.version>4.0.2</tess4j.version>
     <galen.version>2.4.4</galen.version>
     <junit.version>5.8.2</junit.version>
     <junit.vintage.version>4.13.2</junit.vintage.version>
@@ -137,10 +111,11 @@
     <maven.invoker.version>3.1.0</maven.invoker.version>
     <maven.project.info.reports.plugin>3.1.2</maven.project.info.reports.plugin>
     <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
+    <maven.archetype.plugin.version>3.2.0</maven.archetype.plugin.version>
     <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
-    <wagon.ssh.version>3.5.0</wagon.ssh.version>
-    <checkstyle.version>9.2</checkstyle.version>
+    <wagon.ssh.version>3.5.1</wagon.ssh.version>
+    <checkstyle.version>9.2.1</checkstyle.version>
     <classgraph.version>4.8.138</classgraph.version>
     <spotless.version>2.18.0</spotless.version>
     <jsch.version>0.1.55</jsch.version>
@@ -148,15 +123,15 @@
     <aopalliance.version>3.0.2</aopalliance.version>
     <jackson.version>2.13.1</jackson.version>
     <guava.version>31.0.1-jre</guava.version>
-    <jakarta.version>2.0.0</jakarta.version>
+    <jakarta.version>2.1.0-B1</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
-    <aspectj.version>1.9.7</aspectj.version>
-
+    <aspectj.version>1.9.8.M1</aspectj.version>
+    <googlejavaformat.version>1.13.0</googlejavaformat.version>
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <minimum.maven.version>3.3.9</minimum.maven.version>
+    <minimum.maven.version>3.5.4</minimum.maven.version>
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
@@ -467,8 +442,37 @@
         <artifactId>auto-service</artifactId>
         <version>${auto.service.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.google.googlejavaformat</groupId>
+        <artifactId>google-java-format</artifactId>
+        <version>${googlejavaformat.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>sonatype-nexus-snapshot</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
   <build>
     <pluginManagement>
       <plugins>
@@ -507,10 +511,10 @@
           </dependencies>
         </plugin>
         <plugin>
-	  <groupId>com.diffplug.spotless</groupId>
-	  <artifactId>spotless-maven-plugin</artifactId>
-	  <version>${spotless.version}</version>
-  	</plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${spotless.version}</version>
+        </plugin>
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -530,6 +534,11 @@
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>${maven.jacoco.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>${maven.archetype.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -604,19 +613,19 @@
       </plugins>
     </pluginManagement>
     <plugins>
-    <plugin>
-	    <groupId>org.apache.maven.plugins</groupId>
-	    <artifactId>maven-compiler-plugin</artifactId>
-	    <configuration>
-	        <annotationProcessorPaths>
-	            <path>
-	                <groupId>com.google.auto.service</groupId>
-	                <artifactId>auto-service</artifactId>
-	                <version>${auto.service.version}</version>>${auto-service.version
-	            </path>
-	        </annotationProcessorPaths>
-	    </configuration>
-	</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.auto.service</groupId>
+              <artifactId>auto-service</artifactId>
+              <version>${auto.service.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -639,28 +648,39 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
+        <configuration>
+          <rulesUri>${version.rules.configuration}</rulesUri>
+        </configuration>
         <executions>
           <execution>
-            <phase>verify</phase>
             <goals>
               <goal>display-dependency-updates</goal>
               <goal>display-property-updates</goal>
               <goal>display-plugin-updates</goal>
             </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
-        <configuration>
-          <rulesUri>${version.rules.configuration}</rulesUri>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <configuration>
-          <ratchetFrom>origin/main</ratchetFrom>
           <java>
-            <googleJavaFormat />
+            <googleJavaFormat></googleJavaFormat>
           </java>
+          <pom>
+            <includes>
+              <include>pom.xml</include>
+            </includes>
+            <sortPom></sortPom>
+          </pom>
+          <markdown>
+            <includes>
+              <include>**/*.md</include>
+            </includes>
+            <flexmark></flexmark>
+          </markdown>
         </configuration>
       </plugin>
       <plugin>
@@ -688,10 +708,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-	<configuration>
-	  <detectJavaApiLink>false</detectJavaApiLink>
+        <configuration>
+          <detectJavaApiLink>false</detectJavaApiLink>
           <additionalOptions>-html5</additionalOptions>
+          <skip>${skipTests}</skip>
         </configuration>
+        <dependencies></dependencies>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -700,7 +722,6 @@
             </goals>
           </execution>
         </executions>
-        <dependencies></dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -730,21 +751,22 @@
           </execution>
           <execution>
             <id>report</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <phase>test</phase>
             <configuration>
               <dataFile>${project.build.directory}/jacoco-output/jacoco.exec</dataFile>
               <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+              <skip>${skipTests}</skip>
             </configuration>
           </execution>
           <execution>
             <id>check</id>
-            <phase>verify</phase>
             <goals>
               <goal>check</goal>
             </goals>
+            <phase>verify</phase>
             <configuration>
               <rules>
                 <rule>
@@ -766,6 +788,19 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <ignoredUnusedDeclaredDependencies>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.slf4j:jul-to-slf4j</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>io.cucumber:cucumber-spring</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+          <ignoredUsedUndeclaredDependencies>
+            <ignoredUsedUndeclaredDependency>junit:junit</ignoredUsedUndeclaredDependency>
+          </ignoredUsedUndeclaredDependencies>
+          <skip>${skipTests}</skip>
+        </configuration>
         <executions>
           <execution>
             <id>analyze</id>
@@ -775,21 +810,31 @@
             <phase>package</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>${dependency.check.maven.plugin.version}</version>
         <configuration>
-          <ignoredUnusedDeclaredDependencies>
-            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j
-            </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.slf4j:jul-to-slf4j
-            </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>io.cucumber:cucumber-spring
-            </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.junit.vintage:junit-vintage-engine</ignoredUnusedDeclaredDependency>
-          </ignoredUnusedDeclaredDependencies>
-          <ignoredUsedUndeclaredDependencies>
-            <ignoredUsedUndeclaredDependency>junit:junit</ignoredUsedUndeclaredDependency>
-          </ignoredUsedUndeclaredDependencies>
+          <skip>${skipTests}</skip>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>${maven.surefire.report.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven.project.info.reports.plugin}</version>
       </plugin>
     </plugins>
   </build>
@@ -813,10 +858,10 @@
         </configuration>
         <reportSets>
           <reportSet>
-            <inherited>false</inherited>
             <reports>
               <report>checkstyle</report>
             </reports>
+            <inherited>false</inherited>
           </reportSet>
         </reportSets>
       </plugin>
@@ -824,9 +869,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>${maven.project.info.reports.plugin}</version>
-        <configuration>
-          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -837,10 +879,10 @@
         </configuration>
         <reportSets>
           <reportSet>
-            <inherited>false</inherited>
             <reports>
               <report>report</report>
             </reports>
+            <inherited>false</inherited>
           </reportSet>
         </reportSets>
       </plugin>
@@ -848,6 +890,9 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
         <version>${versions.maven.plugin.version}</version>
+        <configuration>
+          <rulesUri>${version.rules.configuration}</rulesUri>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -857,9 +902,6 @@
             </reports>
           </reportSet>
         </reportSets>
-        <configuration>
-          <rulesUri>${version.rules.configuration}</rulesUri>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.owasp</groupId>
@@ -889,10 +931,10 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <phase>verify</phase>
               </execution>
             </executions>
           </plugin>

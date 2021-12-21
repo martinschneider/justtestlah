@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>justtestlah-awsdevicefarm</artifactId>
-  <name>JustTestLah! AWS Devicefarm</name>
-  <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.10</version>
   </parent>
+  <artifactId>justtestlah-awsdevicefarm</artifactId>
+  <name>JustTestLah! AWS Devicefarm</name>
+  <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -109,10 +107,10 @@
             <executions>
               <execution>
                 <id>copy-dependencies</id>
-                <phase>package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
+                <phase>package</phase>
                 <configuration>
                   <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
                 </configuration>
@@ -137,10 +135,10 @@
             <executions>
               <execution>
                 <id>tests</id>
-                <phase>package</phase>
                 <goals>
                   <goal>single</goal>
                 </goals>
+                <phase>package</phase>
                 <configuration>
                   <finalName>justtestlah-awsdevicefarm</finalName>
                   <appendAssemblyId>false</appendAssemblyId>

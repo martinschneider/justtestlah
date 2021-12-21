@@ -1,0 +1,83 @@
+name: Integration tests
+on: [push]
+
+jobs:
+  opera:
+    env:
+      DISPLAY: :0
+    runs-on: ubuntu-latest
+    name: Opera
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
+          architecture: x64
+      - name: Run Opera tests
+        run: chmod +x ./scripts/opera-verifier.sh && ./scripts/opera-verifier.sh
+  firefox:
+    env:
+      DISPLAY: :0
+    runs-on: ubuntu-latest
+    name: Firefox
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
+          architecture: x64
+      - name: Run Firefox tests
+        run: chmod +x ./scripts/firefox-verifier.sh && ./scripts/firefox-verifier.sh
+  visual:
+    env:
+      DISPLAY: :0
+    runs-on: ubuntu-latest
+    name: OpenCV and Tesseract
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
+          architecture: x64
+      - name: Run visual tests
+        run: chmod +x ./scripts/visual-verifier.sh && ./scripts/visual-verifier.sh
+  archetype:  
+    runs-on: ubuntu-latest
+    name: Maven archetype
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
+          architecture: x64
+      - name: Create and test archetype
+        run: chmod +x ./scripts/archetype-verifier.sh && ./scripts/archetype-verifier.sh
+  android:
+    runs-on: macos-11
+    name: Android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 17
+          architecture: x64
+      - name: Run Appium test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: chmod +x ./scripts/android-verifier.sh && ./scripts/android-verifier.sh

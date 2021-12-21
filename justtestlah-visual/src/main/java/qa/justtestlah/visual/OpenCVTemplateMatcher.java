@@ -15,7 +15,6 @@ import org.openqa.selenium.Rectangle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import qa.justtestlah.configuration.JustTestLahConfiguration;
@@ -34,7 +33,6 @@ import qa.justtestlah.stubs.TemplateMatcher;
  */
 @Component
 @Primary
-@ConditionalOnProperty(value = "opencv.mode", havingValue = "client", matchIfMissing = true)
 public class OpenCVTemplateMatcher implements TemplateMatcher {
 
   private static final Logger LOG = LoggerFactory.getLogger(OpenCVTemplateMatcher.class);
@@ -193,7 +191,7 @@ public class OpenCVTemplateMatcher implements TemplateMatcher {
   private void checkForOpenCv() {
     if (!configuration.isOpenCvEnabled()) {
       throw new UnsupportedOperationException(
-          "OpenCV is not enabled. Set opencv.mode=client in justtestlah.properties!");
+          "OpenCV is not enabled. Set opencv.enabled=true in justtestlah.properties!");
     }
   }
 }

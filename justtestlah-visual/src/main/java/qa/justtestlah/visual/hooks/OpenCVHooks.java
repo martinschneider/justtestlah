@@ -31,11 +31,11 @@ public class OpenCVHooks extends AbstractCucumberHook implements InitializingBea
     if (configuration.isOpenCvEnabled()) {
       try {
         // load OpenCV library
-    	    OpenCV.loadShared();
-    	    OpenCV.loadLocally();
-    	    if (Double.parseDouble(System.getProperty("java.specification.version")) < 12) {
-    	      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    	    }
+        OpenCV.loadShared();
+        OpenCV.loadLocally();
+        if (Double.parseDouble(System.getProperty("java.specification.version")) < 12) {
+          System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        }
       } catch (ExceptionInInitializerError exception) {
         LOG.error("Error loading OpenCV libraries", exception);
       }
