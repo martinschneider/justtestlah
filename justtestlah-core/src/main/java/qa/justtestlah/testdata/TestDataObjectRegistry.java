@@ -2,6 +2,7 @@ package qa.justtestlah.testdata;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ public class TestDataObjectRegistry {
 
   private static final Logger LOG = LoggerFactory.getLogger(TestDataObjectRegistry.class);
 
-  private BiMap<String, Class<?>> registry = HashBiMap.create();
+  private BiMap<String, Class<?>> registry = Maps.synchronizedBiMap(HashBiMap.create());
 
   public void register(Class<?> type, String name) {
     // keys must be unique in both directions
