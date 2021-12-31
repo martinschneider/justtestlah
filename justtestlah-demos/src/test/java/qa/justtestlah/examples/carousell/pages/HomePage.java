@@ -5,7 +5,6 @@ import static qa.justtestlah.configuration.Platform.Constants.IOS;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
 import qa.justtestlah.annotations.ScreenIdentifier;
 import qa.justtestlah.base.BasePage;
 

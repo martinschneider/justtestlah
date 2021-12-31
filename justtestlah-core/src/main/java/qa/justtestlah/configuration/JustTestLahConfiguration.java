@@ -48,8 +48,12 @@ public class JustTestLahConfiguration {
   @Value("${ios.appPath}")
   private String iosAppPath;
 
-  @Value("${opencv.mode:client}")
+  @Deprecated // use opencv.enabled instead
+  @Value("${opencv.mode:server}")
   private String openCVMode;
+
+  @Value("${opencv.enabled:false}")
+  private boolean openCVEnabled;
 
   @Value("${eyes.enabled:false}")
   private boolean eyesEnabled;
@@ -81,8 +85,12 @@ public class JustTestLahConfiguration {
     // for web and local testing the Selenide default behavior is sufficient
     System.setProperty("browser", browser);
     // not thread-safe!
-    Configuration.headless = headless;
-    Configuration.browser = browser;
+    if (System.getProperty("selenide.headless") == null) {
+      Configuration.headless = headless;
+    }
+    if (System.getProperty("selenide.browser") == null) {
+      Configuration.browser = browser;
+    }
     Platform platform = getPlatform();
     if (platform.equals(Platform.ANDROID)) {
       WebDriverRunner.setWebDriver(webDriverBuilder.getAndroidDriver());
@@ -141,7 +149,7 @@ public class JustTestLahConfiguration {
   }
 
   public boolean isOpenCvEnabled() {
-    return "client".equals(openCVMode);
+    return openCVEnabled || "client".equals(openCVMode) || "enabled".equals(openCVMode);
   }
 
   public String getGalenReportDirectory() {

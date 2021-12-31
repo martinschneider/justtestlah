@@ -5,17 +5,10 @@ import static com.codeborne.selenide.Condition.appear;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.ex.ElementNotFound;
-import io.appium.java_client.HasSettings;
-import io.appium.java_client.Setting;
 import java.io.File;
 import java.time.Duration;
-import org.apache.commons.lang3.tuple.Pair;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,11 +21,9 @@ import qa.justtestlah.locator.LocatorParser;
 import qa.justtestlah.locator.LocatorPlaceholders;
 import qa.justtestlah.log.LogLevel;
 import qa.justtestlah.log.TestLogWriter;
-import qa.justtestlah.stubs.AppiumTemplateMatcher;
 import qa.justtestlah.stubs.Galen;
 import qa.justtestlah.stubs.OCR;
 import qa.justtestlah.stubs.TemplateMatcher;
-import qa.justtestlah.utils.ImageUtils;
 
 /** Base class for page objects. */
 public abstract class BasePage<T> extends Base implements InitializingBean {
@@ -85,71 +76,13 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
   }
 
   /**
-   * @param imageName image to check for
-   * @return true, if the image has been found on the current screen
-   */
-  public boolean hasImage(String imageName) {
-    return hasImage(imageName, 0.9);
-  }
-
-  /**
    * Checks for the given image within the current screen.
    *
-   * @param imageName image to check for
-   * @param threshold matching threshold
+   * @param image image to check for
    * @return true, if the image has been found on the current screen
    */
-  public boolean hasImage(String imageName, double threshold) {
-    return findImage(imageName, threshold).isDisplayed();
-  }
-
-  /**
-   * Finds the given image within the current screen using the default threshold.
-   *
-   * @param imageName image to check for
-   * @return {@link WebElement}
-   */
-  public WebElement findImage(String imageName) {
-    return findImage(imageName, 0.9);
-  }
-
-  /**
-   * Finds the given image within the current screen.
-   *
-   * @param imageName image to check for
-   * @param threshold matching threshold
-   * @return {@link WebElement}
-   */
-  public WebElement findImage(String imageName, double threshold) {
-    WebDriver driver = WebDriverRunner.getWebDriver();
-    if (driver instanceof TakesScreenshot) {
-      File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-      if (templateMatcher instanceof AppiumTemplateMatcher) {
-        if (driver instanceof HasSettings) {
-          LOG.info("Setting image matching threshold to {}", threshold);
-          HasSettings settingsDriver = ((HasSettings) driver);
-          settingsDriver.setSetting(Setting.IMAGE_MATCH_THRESHOLD, threshold);
-        }
-        ((AppiumTemplateMatcher) templateMatcher).setDriver(WebDriverRunner.getWebDriver());
-      }
-      String path = ImageUtils.getFullPath(imageName);
-      if (path == null) {
-        throw new RuntimeException(
-            String.format(
-                "Template image %s not found on classpath. Please make sure it is located in the images folder",
-                imageName));
-      }
-      return new ImageWebElement(
-          driver,
-          templateMatcher.match(screenshotFile.getAbsolutePath(), path, threshold).getRect(),
-          ocr,
-          path);
-    } else {
-      throw new UnsupportedOperationException(
-          "This operation is not supported for the current WebDriver: "
-              + driver.getClass().getSimpleName()
-              + ".");
-    }
+  public boolean hasImage(String image) {
+    return $(image).isDisplayed();
   }
 
   @Override
@@ -172,7 +105,9 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
 
   private void loadLocators(String fileName) {
     LOG.info("Loading locators from {}", fileName);
-    locators = new LocatorMap(locatorParser.parse(fileName), globalPlaceholders.getProps());
+    locators =
+        new LocatorMap(
+            locatorParser.parse(fileName), globalPlaceholders.getProps(), templateMatcher, ocr);
   }
 
   /**
@@ -237,7 +172,7 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
       for (ScreenIdentifier identifiers : clazz.getAnnotationsByType(ScreenIdentifier.class)) {
         for (String identifier : identifiers.value()) {
           // rawLocator is only used for logging purposes
-          Pair<String, String> rawLocator =
+          Map<String, Object> rawLocator =
               locators.getRawLocator(identifier, configuration.getPlatform());
           try {
             // only use the timeout for the first check
@@ -256,8 +191,8 @@ public abstract class BasePage<T> extends Base implements InitializingBean {
               TestLogWriter.WEBDRIVER_INDENTATION,
               "[OK] {} is displayed {}:{}",
               identifier,
-              rawLocator.getLeft(),
-              rawLocator.getRight());
+              rawLocator.get("type"),
+              rawLocator.get("value"));
         }
       }
       clazz = clazz.getSuperclass();

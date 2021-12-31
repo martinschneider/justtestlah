@@ -29,7 +29,7 @@ public class LocatorParser {
    * @param fileName the path to the file to parse the locators from
    * @return {@link Map} structure of the locators
    */
-  public Map<String, Map<String, Map<String, String>>> parse(String fileName) {
+  public Map<String, Map<String, Map<String, Object>>> parse(String fileName) {
     InputStream inputStream = BasePage.class.getClassLoader().getResourceAsStream(fileName);
     if (inputStream == null) {
       LOG.warn("Could not load locators from {}", fileName);

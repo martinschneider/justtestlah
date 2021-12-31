@@ -4,27 +4,6 @@ import static io.cucumber.junit.FileNameCompatibleNames.uniqueSuffix;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.time.Clock;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-
-import org.junit.runner.Description;
-import org.junit.runner.Runner;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.ParentRunner;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.RunnerScheduler;
-import org.junit.runners.model.Statement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
-
 import io.cucumber.core.eventbus.EventBus;
 import io.cucumber.core.feature.FeatureParser;
 import io.cucumber.core.filter.Filters;
@@ -47,6 +26,25 @@ import io.cucumber.core.runtime.ObjectFactorySupplier;
 import io.cucumber.core.runtime.ThreadLocalObjectFactorySupplier;
 import io.cucumber.core.runtime.ThreadLocalRunnerSupplier;
 import io.cucumber.core.runtime.TimeServiceEventBus;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.time.Clock;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.RunnerScheduler;
+import org.junit.runners.model.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import qa.justtestlah.configuration.CucumberOptionsBuilder;
 import qa.justtestlah.configuration.Platform;
 import qa.justtestlah.configuration.PropertiesHolder;
@@ -181,21 +179,20 @@ public final class JustTestLahRunner extends ParentRunner<ParentRunner<?>> {
     BackendSupplier backendSupplier =
         new BackendServiceLoader(clazz::getClassLoader, objectFactorySupplier);
     ThreadLocalRunnerSupplier runnerSupplier =
-        new ThreadLocalRunnerSupplier(
-            runtimeOptions,
-            bus,
-            backendSupplier,
-            objectFactorySupplier);
+        new ThreadLocalRunnerSupplier(runtimeOptions, bus, backendSupplier, objectFactorySupplier);
     this.context = new CucumberExecutionContext(bus, exitStatus, runnerSupplier);
     Predicate<Pickle> filters = new Filters(runtimeOptions);
 
-    Map<Optional<String>, List<Feature>> groupedByName = features.stream()
-            .collect(groupingBy(Feature::getName));
-    this.children = features.stream()
-            .map(feature -> {
-                Integer uniqueSuffix = uniqueSuffix(groupedByName, feature, Feature::getName);
-                return FeatureRunner.create(feature, uniqueSuffix, filters, context, junitOptions);
-            })
+    Map<Optional<String>, List<Feature>> groupedByName =
+        features.stream().collect(groupingBy(Feature::getName));
+    this.children =
+        features.stream()
+            .map(
+                feature -> {
+                  Integer uniqueSuffix = uniqueSuffix(groupedByName, feature, Feature::getName);
+                  return FeatureRunner.create(
+                      feature, uniqueSuffix, filters, context, junitOptions);
+                })
             .filter(runner -> !runner.isEmpty())
             .collect(toList());
     LOG.info(

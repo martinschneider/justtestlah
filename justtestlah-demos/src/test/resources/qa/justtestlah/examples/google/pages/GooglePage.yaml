@@ -7,3 +7,8 @@ LOGO:
   web:
     type: id
     value: hplogo
+
+LOGO_IMG:
+  web:
+    type: opencv
+    value: google.png  

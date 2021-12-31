@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>justtestlah-demos</artifactId>
-  <name>JustTestLah! Demos</name>
-  <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <parent>
     <groupId>qa.justtestlah</groupId>
     <artifactId>justtestlah-parent</artifactId>
-    <version>1.10-SNAPSHOT</version>
+    <version>1.10</version>
   </parent>
+  <artifactId>justtestlah-demos</artifactId>
+  <name>JustTestLah! Demos</name>
+  <description>JustTestLah! is a JAVA test framework targeting projects that support multiple platforms, in particular Web, Android and iOS. It follows a BDD approach and allows testing against all platforms using the same feature files. JustTestLah's main aim is to make the configuration and the actual test code as easy as possible.</description>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -84,11 +82,19 @@
   <build>
     <testResources>
       <testResource>
-	    <directory>src/test/resources</directory>
-	    <filtering>true</filtering>
+        <filtering>true</filtering>
+        <directory>src/test/resources</directory>
       </testResource>
-	</testResources>
+    </testResources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <parallel>methods</parallel>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -102,29 +108,27 @@
         <groupId>com.trivago.rta</groupId>
         <artifactId>cluecumber-report-plugin</artifactId>
         <version>2.7.1</version>
-        <executions>
-          <execution>
-            <id>report</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>reporting</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <sourceJsonReportDirectory>${project.build.directory}/report/cucumber</sourceJsonReportDirectory>
           <generatedHtmlReportDirectory>${project.build.directory}/report/cucumber</generatedHtmlReportDirectory>
         </configuration>
+        <executions>
+          <execution>
+            <id>report</id>
+            <goals>
+              <goal>reporting</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <configuration>
           <ignoredUnusedDeclaredDependencies>
-            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-browserstack
-            </ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-awsdevicefarm
-            </ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-browserstack</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>qa.justtestlah:justtestlah-awsdevicefarm</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
         </configuration>
       </plugin>
@@ -142,10 +146,10 @@
             <executions>
               <execution>
                 <id>copy-dependencies</id>
-                <phase>prepare-package</phase>
                 <goals>
                   <goal>copy-dependencies</goal>
                 </goals>
+                <phase>prepare-package</phase>
                 <configuration>
                   <outputDirectory>${project.build.directory}/dependency-jars/</outputDirectory>
                 </configuration>
@@ -170,10 +174,10 @@
             <executions>
               <execution>
                 <id>tests</id>
-                <phase>package</phase>
                 <goals>
                   <goal>single</goal>
                 </goals>
+                <phase>package</phase>
                 <configuration>
                   <finalName>justtestlah-awsdevicefarm</finalName>
                   <appendAssemblyId>false</appendAssemblyId>

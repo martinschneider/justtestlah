@@ -17,7 +17,9 @@
     <rule groupId="net.sourceforge.tess4j" artifactId="tess4j"
       comparisonMethod="maven">
       <ignoreVersions>
-        <ignoreVersion type="regex">4.[2-9].*</ignoreVersion>
+        <!-- stick with 4.0.0 for now -->
+        <ignoreVersion type="regex">4.[1-9].*</ignoreVersion>
+        <ignoreVersion type="regex">5.*</ignoreVersion>
       </ignoreVersions>
     </rule>
   </rules>

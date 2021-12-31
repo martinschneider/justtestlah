@@ -1,6 +1,7 @@
 package qa.justtestlah.examples.stackoverflow.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import qa.justtestlah.base.BaseSteps;
@@ -24,7 +25,9 @@ public class QuestionSteps extends BaseSteps {
    */
   @Then("the question is tagged with {string}")
   public void isQuestionTaggedWith(String tagName) {
-    assertThat(questionPage.hasTag(tagName)).as("Check that tag " + tagName + " is present")
-        .withFailMessage("Tag %s is missing", tagName).isTrue();
+    assertThat(questionPage.hasTag(tagName))
+        .as("Check that tag " + tagName + " is present")
+        .withFailMessage("Tag %s is missing", tagName)
+        .isTrue();
   }
 }

@@ -37,6 +37,32 @@ GDPR_CONSENT_DISMISS:
     value: "//div[@id='js-gdpr-consent-banner']//a[contains(@aria-label,'notice-dismiss')]"
     
 QUESTION_ICON:
+  web:
+    type: opencv
+    value: questionIcon.png   
+    threshold: 0.8
   android:
     type: image
     value: questionIcon.png
+
+QUESTION_ICON_BLURRED:
+  android:
+    type: opencv
+    value: questionIcon_blurred.png
+    
+QUESTION_ICON_DISTORTED:
+  android:
+    type: opencv
+    value: questionIcon_distorted.png
+    threshold: 0.65
+
+QUESTION_ICON_ROTATED:
+  android:
+    type: opencv
+    value: questionIcon_rotated.png
+    threshold: 0.85
+
+FACEBOOK_ICON:
+  android:
+    type: opencv
+    value: facebook.png
