@@ -119,7 +119,7 @@
     <classgraph.version>4.8.138</classgraph.version>
     <spotless.version>2.18.0</spotless.version>
     <jsch.version>0.1.55</jsch.version>
-    <aws.sdk.version>1.12.131</aws.sdk.version>
+    <aws.sdk.version>1.12.132</aws.sdk.version>
     <aopalliance.version>3.0.2</aopalliance.version>
     <jackson.version>2.13.1</jackson.version>
     <guava.version>31.0.1-jre</guava.version>
