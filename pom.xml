@@ -117,7 +117,7 @@
     <wagon.ssh.version>3.5.1</wagon.ssh.version>
     <checkstyle.version>9.2.1</checkstyle.version>
     <classgraph.version>4.8.138</classgraph.version>
-    <spotless.version>2.19.1</spotless.version>
+    <spotless.version>2.19.2</spotless.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.12.135</aws.sdk.version>
     <aopalliance.version>3.0.2</aopalliance.version>
