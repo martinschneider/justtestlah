@@ -116,7 +116,7 @@
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <wagon.ssh.version>3.5.1</wagon.ssh.version>
     <checkstyle.version>9.2.1</checkstyle.version>
-    <classgraph.version>4.8.138</classgraph.version>
+    <classgraph.version>4.8.141</classgraph.version>
     <spotless.version>2.20.0</spotless.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.12.173</aws.sdk.version>
