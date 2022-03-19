@@ -125,7 +125,7 @@
     <guava.version>31.0.1-jre</guava.version>
     <jakarta.version>2.1.0-B1</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
-    <aspectj.version>1.9.8-SNAPSHOT</aspectj.version>
+    <aspectj.version>1.9.8</aspectj.version>
     <googlejavaformat.version>1.13.0</googlejavaformat.version>
     <!-- Other properties -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
