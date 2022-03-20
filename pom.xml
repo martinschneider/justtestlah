@@ -105,7 +105,7 @@
     <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
     <maven.jacoco.plugin.version>0.8.7</maven.jacoco.plugin.version>
     <nexus.staging.maven.plugin.version>1.6.12</nexus.staging.maven.plugin.version>
-    <versions.maven.plugin.version>2.9.0</versions.maven.plugin.version>
+    <versions.maven.plugin.version>2.10.0</versions.maven.plugin.version>
     <dependency.check.maven.plugin.version>6.5.3</dependency.check.maven.plugin.version>
     <maven.surefire.report.plugin.version>3.0.0-M5</maven.surefire.report.plugin.version>
     <maven.invoker.version>3.1.0</maven.invoker.version>
