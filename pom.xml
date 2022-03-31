@@ -123,7 +123,7 @@
     <aopalliance.version>3.0.2</aopalliance.version>
     <jackson.version>2.13.2.2</jackson.version>
     <guava.version>31.1-jre</guava.version>
-    <jakarta.version>2.1.0-B1</jakarta.version>
+    <jakarta.version>2.1.0</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
     <aspectj.version>1.9.9</aspectj.version>
     <googlejavaformat.version>1.15.0</googlejavaformat.version>
