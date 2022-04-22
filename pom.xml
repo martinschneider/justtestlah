@@ -120,7 +120,7 @@
     <spotless.version>2.22.1</spotless.version>
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.12.204</aws.sdk.version>
-    <aopalliance.version>3.0.2</aopalliance.version>
+    <aopalliance.version>3.0.3</aopalliance.version>
     <jackson.version>2.13.2.2</jackson.version>
     <guava.version>31.1-jre</guava.version>
     <jakarta.version>2.1.0</jakarta.version>
