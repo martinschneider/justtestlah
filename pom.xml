@@ -115,7 +115,7 @@
     <maven.dependency.plugin.version>3.3.0</maven.dependency.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
     <wagon.ssh.version>3.5.2</wagon.ssh.version>
-    <checkstyle.version>10.3</checkstyle.version>
+    <checkstyle.version>10.3.1</checkstyle.version>
     <classgraph.version>4.8.147</classgraph.version>
     <spotless.version>2.22.8</spotless.version>
     <jsch.version>0.1.55</jsch.version>
