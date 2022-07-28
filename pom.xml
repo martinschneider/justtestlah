@@ -65,7 +65,7 @@
     <appium.version>8.1.1</appium.version>
     <selenium.version>4.2.2</selenium.version>
     <selenide.version>6.5.2</selenide.version>
-    <cucumber.version>7.4.1</cucumber.version>
+    <cucumber.version>7.5.0</cucumber.version>
     <wiremock.version>2.33.2</wiremock.version>
     <opencv.version>4.5.1-2</opencv.version>
     <tess4j.version>4.0.2</tess4j.version>
