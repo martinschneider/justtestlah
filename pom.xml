@@ -79,7 +79,7 @@
     <snakeyaml.version>1.32</snakeyaml.version>
     <dd.plist.version>1.24</dd.plist.version>
     <apk.parser.version>2.6.10</apk.parser.version>
-    <zip4j.version>2.11.1</zip4j.version>
+    <zip4j.version>2.11.2</zip4j.version>
     <bytebuddy.version>1.12.16</bytebuddy.version>
     <gson.version>2.9.1</gson.version>
     <jersey.version>3.0.8</jersey.version>
