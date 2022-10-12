@@ -121,7 +121,7 @@
     <jsch.version>0.1.55</jsch.version>
     <aws.sdk.version>1.12.319</aws.sdk.version>
     <aopalliance.version>3.0.3</aopalliance.version>
-    <jackson.version>2.13.4</jackson.version>
+    <jackson.version>2.13.4.1</jackson.version>
     <guava.version>31.1-jre</guava.version>
     <jakarta.version>2.1.1</jakarta.version>
     <commons.codec.version>1.15</commons.codec.version>
