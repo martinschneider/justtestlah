@@ -77,7 +77,7 @@
     <mockito.version>4.8.1</mockito.version>
     <assertj.version>3.23.1</assertj.version>
     <snakeyaml.version>1.33</snakeyaml.version>
-    <dd.plist.version>1.25</dd.plist.version>
+    <dd.plist.version>1.26</dd.plist.version>
     <apk.parser.version>2.6.10</apk.parser.version>
     <zip4j.version>2.11.2</zip4j.version>
     <bytebuddy.version>1.12.18</bytebuddy.version>
