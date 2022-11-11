@@ -82,7 +82,7 @@
     <zip4j.version>2.11.2</zip4j.version>
     <bytebuddy.version>1.12.18</bytebuddy.version>
     <gson.version>2.10</gson.version>
-    <jersey.version>3.0.8</jersey.version>
+    <jersey.version>3.1.0</jersey.version>
     <auto.service.version>1.0.1</auto.service.version>
     <apache.http.components.version>4.5.13</apache.http.components.version>
     <apache.http.components.core.version>4.4.15</apache.http.components.core.version>
