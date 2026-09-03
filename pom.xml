@@ -85,7 +85,7 @@
     <jersey.version>3.1.0</jersey.version>
     <auto.service.version>1.0.1</auto.service.version>
     <apache.http.components.version>4.5.13</apache.http.components.version>
-    <apache.http.components.core.version>4.4.15</apache.http.components.core.version>
+    <apache.http.components.core.version>4.4.16</apache.http.components.core.version>
     <apache.commons.version>3.12.0</apache.commons.version>
     <commons.collections.version>4.4</commons.collections.version>
     <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
